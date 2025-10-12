@@ -9,6 +9,7 @@
       margin: 0;
       font-family: Arial, sans-serif;
       background-color: #D1E5F4;
+      overflow-x: hidden;
     }
 
     header {
@@ -40,15 +41,29 @@
       z-index: 2;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
       width: 100%;
-      max-width: 1200px;
-      gap: 40px;
+      max-width: 1400px;
+      gap: 20px;
+      padding: 0 40px;
     }
 
     .nav-section {
       display: flex;
-      gap: 30px;
+      gap: 15px;
+      flex: 1;
+    }
+
+    .nav-section:first-child {
+      justify-content: flex-end;
+    }
+
+    .nav-section:last-child {
+      justify-content: flex-start;
+    }
+
+    .logo {
+      flex-shrink: 0;
     }
 
     nav a {
@@ -56,10 +71,11 @@
       color: white;
       font-size: 22px;
       text-decoration: none;
-      padding: 8px 16px;
+      padding: 8px 20px;
       border: 2px solid white;
       text-shadow: 2px 2px 2px black;
       transition: background 0.3s;
+      white-space: nowrap;
     }
 
     nav a:hover {
@@ -67,12 +83,87 @@
     }
 
     .logo img {
-      height: 140px;
+      height: 180px;
       width: auto;
       z-index: 2;
       border: 2px solid white;
       border-radius: 8px;
       box-sizing: border-box;
+    }
+
+    /* Mobile Navigation */
+    .mobile-menu-toggle {
+      display: none;
+      background: none;
+      border: 2px solid white;
+      color: white;
+      font-size: 28px;
+      padding: 5px 15px;
+      cursor: pointer;
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+    }
+
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: -100%;
+      width: 80%;
+      max-width: 300px;
+      height: 100%;
+      background-color: #496044;
+      z-index: 1000;
+      transition: left 0.3s ease;
+      overflow-y: auto;
+    }
+
+    .mobile-nav.active {
+      left: 0;
+    }
+
+    .mobile-nav-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+    }
+
+    .mobile-nav-overlay.active {
+      display: block;
+    }
+
+    .mobile-nav-content {
+      padding: 60px 20px 20px;
+    }
+
+    .mobile-nav a {
+      display: block;
+      color: white;
+      font-family: Impact, sans-serif;
+      font-size: 20px;
+      text-decoration: none;
+      padding: 15px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      text-shadow: 1px 1px 2px black;
+    }
+
+    .close-mobile-menu {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 30px;
+      cursor: pointer;
     }
 
     .image-box {
@@ -113,8 +204,8 @@
     .welcome-box {
       background-color: #799972;
       color: black;
-      font-family: Impact, sans-serif;
-      font-size: 24px;
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 28px;
       font-weight: 400;
       line-height: 1.6;
       max-width: 1000px;
@@ -127,8 +218,6 @@
       transition: all 1s ease;
       position: relative;
       z-index: 2;
-      -webkit-text-stroke: 0.8px white;
-      text-stroke: 0.8px white;
     }
 
     .welcome-box.visible {
@@ -138,22 +227,23 @@
 
     .cards-section {
       display: flex;
-      justify-content: flex-start;
-      gap: 40px;
-      padding: 0px 20px 60px 80px;
+      justify-content: space-evenly;
+      gap: 60px;
+      padding: 0px 40px 60px 40px;
       flex-wrap: nowrap;
-      max-width: 1400px;
+      max-width: 1600px;
       margin: -30px auto 0;
       overflow-x: auto;
     }
 
     .card {
-      min-width: 450px;
-      max-width: 450px;
+      min-width: 420px;
+      max-width: 420px;
       display: flex;
       flex-direction: column;
       position: relative;
       padding-top: 80px;
+      cursor: default;
     }
 
     .card-header {
@@ -191,8 +281,8 @@
       gap: 15px;
       position: relative;
       margin-top: -60px;
-      min-height: 450px;
-      width: 450px;
+      min-height: 500px;
+      width: 420px;
       opacity: 0;
       transform: translateY(50px);
       transition: all 1s ease 0.2s;
@@ -209,43 +299,263 @@
 
     .card-image {
       width: 100%;
+      max-height: 500px;
       height: auto;
       border: 3px solid #799972;
       border-radius: 8px;
+      object-fit: cover;
+      object-position: center;
     }
 
     .card-textbox {
       background-color: #799972;
       color: black;
-      font-family: Impact, sans-serif;
-      font-size: 18px;
+      font-family: Arial, sans-serif;
+      font-size: 16px;
       padding: 20px;
       border-radius: 8px;
       text-align: center;
-      -webkit-text-stroke: 0.3px white;
-      text-stroke: 0.3px white;
+      line-height: 1.5;
+    }
+
+    /* Mobile Styles */
+    @media (max-width: 1200px) {
+      .header-content {
+        padding: 0 20px;
+      }
+      
+      nav a {
+        font-size: 18px;
+        padding: 6px 15px;
+      }
+      
+      .logo img {
+        height: 140px;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .nav-section {
+        display: none;
+      }
+      
+      .mobile-menu-toggle {
+        display: block;
+      }
+      
+      .mobile-nav {
+        display: block;
+      }
+      
+      .header-content {
+        justify-content: center;
+      }
+      
+      .logo img {
+        height: 120px;
+      }
+      
+      .welcome-box {
+        font-size: 22px;
+        padding: 30px 30px;
+        margin: 0 20px;
+      }
+      
+      .ribbon-container {
+        margin: 40px 0;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header-line, .ribbon-center {
+        height: 80px;
+      }
+      
+      .logo img {
+        height: 100px;
+      }
+      
+      .welcome-box {
+        font-size: 18px;
+        padding: 25px 20px;
+      }
+      
+      .image-box {
+        padding: 10px;
+      }
+      
+      /* Mobile Card Deck Styles */
+      .cards-section {
+        display: block;
+        padding: 0 20px 40px 20px;
+        overflow: visible;
+        margin-top: -20px;
+      }
+      
+      .card-deck-container {
+        position: relative;
+        height: 650px;
+        margin: 0 auto;
+        max-width: 380px;
+      }
+      
+      .card {
+        position: absolute;
+        min-width: auto;
+        max-width: 100%;
+        width: 100%;
+        padding-top: 60px;
+        transform-origin: center bottom;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+      
+      .card:nth-child(1) {
+        z-index: 3;
+      }
+      
+      .card:nth-child(2) {
+        z-index: 2;
+        transform: translateY(20px) scale(0.95);
+      }
+      
+      .card:nth-child(3) {
+        z-index: 1;
+        transform: translateY(40px) scale(0.9);
+      }
+      
+      .card.expanded {
+        z-index: 10;
+        transform: translateY(-50px) scale(1.05);
+      }
+      
+      .card-header img {
+        width: 280px;
+        margin-left: 0;
+      }
+      
+      .card-body {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 80px 15px 15px 15px;
+        min-height: 450px;
+        margin-top: -50px;
+      }
+      
+      .card-image {
+        max-height: 300px;
+      }
+      
+      .card-textbox {
+        font-size: 14px;
+        padding: 15px;
+      }
+      
+      /* Card navigation dots */
+      .card-dots {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+      }
+      
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #496044;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      
+      .dot.active {
+        background-color: #799972;
+        transform: scale(1.3);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .mobile-menu-toggle {
+        font-size: 24px;
+        padding: 5px 10px;
+        right: 10px;
+      }
+      
+      .logo img {
+        height: 80px;
+      }
+      
+      .welcome-box {
+        font-size: 16px;
+        padding: 20px 15px;
+        margin: 0 10px;
+      }
+      
+      .card-deck-container {
+        height: 580px;
+      }
+      
+      .card-header img {
+        width: 240px;
+      }
+      
+      .card-body {
+        min-height: 400px;
+      }
+      
+      .card-image {
+        max-height: 250px;
+      }
+    }
+
+    /* Prevent horizontal scroll on mobile */
+    @media (max-width: 768px) {
+      body {
+        overflow-x: hidden;
+      }
+      
+      .cards-section {
+        overflow-x: visible;
+      }
     }
   </style>
 </head>
 <body>
   <header>
     <div class="header-line"></div>
+    <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
     <div class="header-content">
       <nav class="nav-section">
         <a href="#about">ABOUT US</a>
-        <a href="#faq">FAQ</a>
-        <a href="#testimonials">TESTIMONIALS</a>
+        <a href="#faq">FAQS</a>
+        <a href="#training">TRAINING SERVICES</a>
       </nav>
       <div class="logo">
         <img src="https://i.imgur.com/HrYfECf.jpeg" alt="CanineKind Logo">
       </div>
       <nav class="nav-section">
-        <a href="#training">TRAINING SERVICES</a>
+        <a href="#intake">INTAKE FORM</a>
         <a href="#contact">CONTACT US</a>
         <a href="#shop">SHOP</a>
+        <a href="#directory">SITE DIRECTORY</a>
       </nav>
     </div>
   </header>
+
+  <!-- Mobile Navigation -->
+  <div class="mobile-nav-overlay" onclick="closeMobileMenu()"></div>
+  <nav class="mobile-nav">
+    <button class="close-mobile-menu" onclick="closeMobileMenu()">×</button>
+    <div class="mobile-nav-content">
+      <a href="#about" onclick="closeMobileMenu()">ABOUT US</a>
+      <a href="#faq" onclick="closeMobileMenu()">FAQS</a>
+      <a href="#training" onclick="closeMobileMenu()">TRAINING SERVICES</a>
+      <a href="#intake" onclick="closeMobileMenu()">INTAKE FORM</a>
+      <a href="#contact" onclick="closeMobileMenu()">CONTACT US</a>
+      <a href="#shop" onclick="closeMobileMenu()">SHOP</a>
+      <a href="#directory" onclick="closeMobileMenu()">SITE DIRECTORY</a>
+    </div>
+  </nav>
 
   <div class="image-box">
     <img src="https://i.imgur.com/eFfSTxE.jpeg" alt="Dog training image">
@@ -258,7 +568,7 @@
     </div>
   </div>
 
-  <div class="cards-section">
+  <div class="cards-section" id="cardsSection">
     <div class="card">
       <div class="card-header">
         <img src="https://i.imgur.com/XEs3zeA.jpeg" alt="Why CanineKind">
@@ -266,32 +576,262 @@
       <div class="card-body">
         <div class="side-label left">Background Box</div>
         <img src="https://i.imgur.com/rWpDqoM.jpeg" alt="Image 5" class="card-image">
-        <div class="card-textbox">As the old saying goes, the proof is in the pudding. We pride ourself in the precision of our training and the way our dogs look when working with us and for us. Read about our training background and watch videos of our training at the link below!</div>
+        <div class="card-textbox">As the old saying goes, the proof is in the pudding. We pride ourself in the precision of our training and the way our dogs look when working with us and for us. Read about our training background and watch videos of our training skills on our "About Us" page!</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <img src="https://i.imgur.com/02aILKE.jpeg" alt="Card 2 Header">
+      </div>
+      <div class="card-body">
+        <div class="side-label left">Background Box</div>
+        <img src="https://i.imgur.com/SkbtIgs.jpeg" alt="Card 2 Image" class="card-image">
+        <div class="card-textbox">Read our FAQ to understand how we approach training and our philosophy. We don't believe in simply prescribing to one camp of training or another and never apply a one size fits all approach. We believe that different approaches and applications of behavioral psychology benefit each dog and owner differently. The very first step in our process involves getting to know just about everything about your dog! We use as much information as possible to determine a training protocol that works for you, your dog and your lifestyle.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <img src="https://i.imgur.com/XAKqfbT.jpeg" alt="Card 3 Header">
+      </div>
+      <div class="card-body">
+        <div class="side-label left">Background Box</div>
+        <img src="https://i.imgur.com/GK2KgdT.jpeg" alt="Card 3 Image" class="card-image">
+        <div class="card-textbox">Card 3 text box placeholder</div>
       </div>
     </div>
   </div>
 
   <script>
-    const welcomeBox = document.getElementById('welcomeBox');
-    window.addEventListener('scroll', () => {
-      const boxPosition = welcomeBox.getBoundingClientRect().top;
-      const screenPosition = window.innerHeight / 1.2;
-      if (boxPosition < screenPosition) {
-        welcomeBox.classList.add('visible');
-      }
-    });
+    // Mobile menu functions
+    function toggleMobileMenu() {
+      const mobileNav = document.querySelector('.mobile-nav');
+      const overlay = document.querySelector('.mobile-nav-overlay');
+      mobileNav.classList.add('active');
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
 
-    // Animate cards on scroll
-    const cards = document.querySelectorAll('.card');
-    window.addEventListener('scroll', () => {
-      cards.forEach(card => {
-        const cardPosition = card.getBoundingClientRect().top;
-        const screenPosition = window.innerHeight / 1.2;
-        if (cardPosition < screenPosition) {
-          card.classList.add('visible');
+    function closeMobileMenu() {
+      const mobileNav = document.querySelector('.mobile-nav');
+      const overlay = document.querySelector('.mobile-nav-overlay');
+      mobileNav.classList.remove('active');
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // Welcome box animation
+    const welcomeBox = document.getElementById('welcomeBox');
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    };
+
+    const welcomeObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
         }
       });
+    }, observerOptions);
+
+    welcomeObserver.observe(welcomeBox);
+
+    // Card animations and mobile card deck
+    const cards = document.querySelectorAll('.card');
+    const cardsSection = document.getElementById('cardsSection');
+    let currentCard = 0;
+    let isMobile = window.innerWidth <= 768;
+
+    function initializeCardDeck() {
+      if (isMobile && window.innerWidth <= 768) {
+        // Create card deck container
+        if (!document.querySelector('.card-deck-container')) {
+          const deckContainer = document.createElement('div');
+          deckContainer.className = 'card-deck-container';
+          
+          // Move cards to deck container
+          while (cardsSection.firstChild) {
+            deckContainer.appendChild(cardsSection.firstChild);
+          }
+          
+          cardsSection.appendChild(deckContainer);
+          
+          // Create dots navigation
+          const dotsContainer = document.createElement('div');
+          dotsContainer.className = 'card-dots';
+          
+          cards.forEach((card, index) => {
+            const dot = document.createElement('div');
+            dot.className = 'dot';
+            if (index === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => showCard(index));
+            dotsContainer.appendChild(dot);
+          });
+          
+          cardsSection.appendChild(dotsContainer);
+        }
+        
+        // Set up card click events
+        cards.forEach((card, index) => {
+          card.addEventListener('click', () => {
+            if (!card.classList.contains('expanded')) {
+              expandCard(index);
+            } else {
+              collapseCard(index);
+            }
+          });
+        });
+        
+        updateCardPositions();
+      } else {
+        // Desktop view - restore original structure if needed
+        const deckContainer = document.querySelector('.card-deck-container');
+        const dotsContainer = document.querySelector('.card-dots');
+        
+        if (deckContainer) {
+          while (deckContainer.firstChild) {
+            cardsSection.insertBefore(deckContainer.firstChild, deckContainer);
+          }
+          deckContainer.remove();
+        }
+        
+        if (dotsContainer) {
+          dotsContainer.remove();
+        }
+        
+        // Remove mobile-specific styles
+        cards.forEach(card => {
+          card.style.transform = '';
+          card.style.zIndex = '';
+          card.classList.remove('expanded');
+        });
+      }
+    }
+
+    function updateCardPositions() {
+      if (!isMobile) return;
+      
+      cards.forEach((card, index) => {
+        const offset = index - currentCard;
+        card.style.transition = 'all 0.3s ease';
+        
+        if (offset === 0) {
+          card.style.transform = 'translateY(0) scale(1)';
+          card.style.zIndex = 3;
+        } else if (offset === 1 || (offset < 0 && currentCard === cards.length - 1 && index === 0)) {
+          card.style.transform = 'translateY(20px) scale(0.95)';
+          card.style.zIndex = 2;
+        } else if (offset === 2 || (offset < 0 && currentCard >= cards.length - 2 && index <= 1)) {
+          card.style.transform = 'translateY(40px) scale(0.9)';
+          card.style.zIndex = 1;
+        } else {
+          card.style.transform = 'translateY(60px) scale(0.85)';
+          card.style.zIndex = 0;
+          card.style.opacity = '0';
+        }
+        
+        if (Math.abs(offset) <= 2 || (currentCard >= cards.length - 2 && index <= 1)) {
+          card.style.opacity = '1';
+        }
+      });
+      
+      updateDots();
+    }
+
+    function expandCard(index) {
+      if (!isMobile) return;
+      cards[index].classList.add('expanded');
+    }
+
+    function collapseCard(index) {
+      if (!isMobile) return;
+      cards[index].classList.remove('expanded');
+    }
+
+    function showCard(index) {
+      if (!isMobile) return;
+      currentCard = index;
+      updateCardPositions();
+    }
+
+    function updateDots() {
+      const dots = document.querySelectorAll('.dot');
+      dots.forEach((dot, index) => {
+        if (index === currentCard) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+    }
+
+    // Card visibility animation for desktop
+    const cardObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    cards.forEach(card => {
+      cardObserver.observe(card);
     });
+
+    // Handle resize events
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        const wasMobile = isMobile;
+        isMobile = window.innerWidth <= 768;
+        
+        if (wasMobile !== isMobile) {
+          initializeCardDeck();
+        }
+      }, 250);
+    });
+
+    // Initialize on load
+    window.addEventListener('load', () => {
+      initializeCardDeck();
+    });
+
+    // Touch swipe support for mobile cards
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    cardsSection.addEventListener('touchstart', (e) => {
+      if (!isMobile) return;
+      touchStartX = e.touches[0].clientX;
+    });
+
+    cardsSection.addEventListener('touchmove', (e) => {
+      if (!isMobile) return;
+      touchEndX = e.touches[0].clientX;
+    });
+
+    cardsSection.addEventListener('touchend', () => {
+      if (!isMobile) return;
+      handleSwipe();
+    });
+
+    function handleSwipe() {
+      const swipeDistance = touchStartX - touchEndX;
+      const minSwipeDistance = 50;
+      
+      if (Math.abs(swipeDistance) > minSwipeDistance) {
+        if (swipeDistance > 0 && currentCard < cards.length - 1) {
+          // Swipe left - next card
+          showCard(currentCard + 1);
+        } else if (swipeDistance < 0 && currentCard > 0) {
+          // Swipe right - previous card
+          showCard(currentCard - 1);
+        }
+      }
+    }
   </script>
 </body>
 </html>
