@@ -379,7 +379,7 @@
       gap: 15px;
       position: relative;
       margin-top: -60px;
-      height: 1100px;
+      height: 1150px;
       width: 420px;
       opacity: 0;
       transform: translateY(50px);
@@ -711,7 +711,7 @@
   <div class="ribbon-container">
     <div class="ribbon-center"></div>
     <div class="welcome-box" id="welcomeBox">
-      <img src="https://i.imgur.com/Gvq91A3.png" alt="Welcome to CanineKind" style="width: 100%; height: auto; display: block;">
+      <img src="https://i.imgur.com/Rw1UXg5.png" alt="Welcome to CanineKind" style="width: 100%; height: auto; display: block;">
     </div>
   </div>
 
@@ -723,7 +723,7 @@
       </div>
       <div class="card-body">
         <img src="https://i.imgur.com/rWpDqoM.jpeg" alt="Image 5" class="card-image">
-        <img src="https://i.imgur.com/gOf4wfS.png" alt="Why CanineKind" style="width: 100%; height: auto; border-radius: 8px;">
+        <img src="https://i.imgur.com/79t5rPL.png" alt="Why CanineKind" style="width: 100%; height: auto; border-radius: 8px;">
       </div>
     </div>
 
@@ -733,7 +733,7 @@
       </div>
       <div class="card-body">
         <img src="https://i.imgur.com/SkbtIgs.jpeg" alt="Card 2 Image" class="card-image">
-        <img src="https://i.imgur.com/YQ8gYkg.png" alt="FAQ Content" style="width: 100%; height: auto; border-radius: 8px;">
+        <img src="https://i.imgur.com/r6tak5b.png" alt="FAQ Content" style="width: 100%; height: auto; border-radius: 8px;">
       </div>
     </div>
 
@@ -743,7 +743,7 @@
       </div>
       <div class="card-body">
         <img src="https://i.imgur.com/GK2KgdT.jpeg" alt="Card 3 Image" class="card-image">
-        <img src="https://i.imgur.com/6jqeISR.png" alt="Training Services" style="width: 100%; height: auto; border-radius: 8px;">
+        <img src="https://i.imgur.com/l6vGjgS.png" alt="Training Services" style="width: 100%; height: auto; border-radius: 8px;">
       </div>
     </div>
   </div>
@@ -760,7 +760,7 @@
             </div>
             <div class="mobile-card-body">
               <img src="https://i.imgur.com/rWpDqoM.jpeg" alt="Image 5" style="border: 3px solid #799972;">
-              <img src="https://i.imgur.com/gOf4wfS.png" alt="Why CanineKind">
+              <img src="https://i.imgur.com/79t5rPL.png" alt="Why CanineKind">
             </div>
           </div>
         </div>
@@ -773,7 +773,7 @@
             </div>
             <div class="mobile-card-body">
               <img src="https://i.imgur.com/SkbtIgs.jpeg" alt="Card 2 Image" style="border: 3px solid #799972;">
-              <img src="https://i.imgur.com/YQ8gYkg.png" alt="FAQ Content">
+              <img src="https://i.imgur.com/r6tak5b.png" alt="FAQ Content">
             </div>
           </div>
         </div>
@@ -786,7 +786,7 @@
             </div>
             <div class="mobile-card-body">
               <img src="https://i.imgur.com/GK2KgdT.jpeg" alt="Card 3 Image" style="border: 3px solid #799972;">
-              <img src="https://i.imgur.com/6jqeISR.png" alt="Training Services">
+              <img src="https://i.imgur.com/l6vGjgS.png" alt="Training Services">
             </div>
           </div>
         </div>
@@ -823,10 +823,6 @@
 
   <footer>
     <div class="footer-content">
-      <div class="footer-section">
-        <h3>About CanineKind</h3>
-        <p>Professional dog training services dedicated to building positive relationships between dogs and their humans through science-based, force-free methods.</p>
-      </div>
       <div class="footer-section">
         <h3>Quick Links</h3>
         <ul>
@@ -898,13 +894,6 @@
       if (touchEndX > touchStartX + 50) moveCarousel(-1); // Swipe right
     }
 
-    // Auto-advance carousel
-    setInterval(() => {
-      if (window.innerWidth <= 768) {
-        moveCarousel(1);
-      }
-    }, 5000);
-
     // Shop slideshow functionality
     const slideshowImages = [
       'https://i.imgur.com/otP5ywh.jpeg',
@@ -941,7 +930,7 @@
       });
     });
 
-    // Mobile menu toggle (basic implementation)
+    // Mobile menu toggle
     function toggleMobileMenu() {
       const menu = document.getElementById('mobileNavMenu');
       const overlay = document.getElementById('mobileNavOverlay');
