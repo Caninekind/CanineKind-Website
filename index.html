@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CanineKind Dog Training</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -52,6 +56,8 @@
       display: flex;
       gap: 15px;
       flex: 1;
+      flex-wrap: wrap;
+      align-content: flex-start;
     }
 
     .nav-section:first-child {
@@ -69,9 +75,9 @@
     nav a {
       font-family: Impact, sans-serif;
       color: white;
-      font-size: 22px;
+      font-size: 18px;
       text-decoration: none;
-      padding: 8px 20px;
+      padding: 6px 12px;
       border: 2px solid white;
       text-shadow: 2px 2px 2px black;
       transition: background 0.3s;
@@ -83,7 +89,7 @@
     }
 
     .logo img {
-      height: 180px;
+      height: 220px;
       width: auto;
       z-index: 2;
       border: 2px solid white;
@@ -91,38 +97,17 @@
       box-sizing: border-box;
     }
 
-    /* Mobile Navigation */
+    /* Mobile navigation */
     .mobile-menu-toggle {
       display: none;
-      background: none;
+      background: transparent;
       border: 2px solid white;
       color: white;
-      font-size: 28px;
-      padding: 5px 15px;
+      font-size: 24px;
+      padding: 10px 15px;
       cursor: pointer;
-      position: absolute;
-      right: 20px;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 10;
-    }
-
-    .mobile-nav {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: -100%;
-      width: 80%;
-      max-width: 300px;
-      height: 100%;
-      background-color: #496044;
-      z-index: 1000;
-      transition: left 0.3s ease;
-      overflow-y: auto;
-    }
-
-    .mobile-nav.active {
-      left: 0;
+      position: relative;
+      z-index: 3;
     }
 
     .mobile-nav-overlay {
@@ -130,40 +115,71 @@
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 998;
+    }
+
+    .mobile-nav-menu {
+      display: none;
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 80%;
+      max-width: 300px;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
+      background-color: #496044;
       z-index: 999;
+      transition: right 0.3s ease;
+      overflow-y: auto;
+      box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
     }
 
-    .mobile-nav-overlay.active {
-      display: block;
+    .mobile-nav-menu.active {
+      right: 0;
     }
 
-    .mobile-nav-content {
-      padding: 60px 20px 20px;
+    .mobile-nav-header {
+      padding: 20px;
+      border-bottom: 2px solid #799972;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    .mobile-nav a {
-      display: block;
+    .mobile-nav-close {
+      background: transparent;
+      border: 2px solid white;
       color: white;
-      font-family: Impact, sans-serif;
-      font-size: 20px;
-      text-decoration: none;
-      padding: 15px 20px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-      text-shadow: 1px 1px 2px black;
-    }
-
-    .close-mobile-menu {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: none;
-      border: none;
-      color: white;
-      font-size: 30px;
+      font-size: 24px;
+      padding: 5px 10px;
       cursor: pointer;
+    }
+
+    .mobile-nav-links {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .mobile-nav-links a {
+      font-family: Impact, sans-serif;
+      color: white;
+      font-size: 18px;
+      text-decoration: none;
+      padding: 12px 16px;
+      border: 2px solid white;
+      text-shadow: 2px 2px 2px black;
+      transition: background 0.3s;
+      white-space: nowrap;
+      display: block;
+      text-align: center;
+    }
+
+    .mobile-nav-links a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
     }
 
     .image-box {
@@ -225,15 +241,98 @@
       transform: translateY(0);
     }
 
+    /* Desktop cards section */
     .cards-section {
       display: flex;
       justify-content: space-evenly;
       gap: 60px;
-      padding: 0px 40px 60px 40px;
+      padding: 0px 40px 20px 40px;
       flex-wrap: nowrap;
       max-width: 1600px;
       margin: -30px auto 0;
       overflow-x: auto;
+    }
+
+    /* Mobile carousel (hidden by default) */
+    .carousel-container {
+      display: none;
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      margin: 20px auto;
+      padding: 0 20px;
+    }
+
+    .carousel-wrapper {
+      position: relative;
+      overflow: hidden;
+      border-radius: 15px;
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+
+    .carousel-slide {
+      min-width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .carousel-controls {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 10px;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .carousel-btn {
+      background-color: rgba(73, 96, 68, 0.9);
+      color: white;
+      border: 2px solid white;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      font-size: 20px;
+      cursor: pointer;
+      pointer-events: auto;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .carousel-btn:hover {
+      background-color: #799972;
+      transform: scale(1.1);
+    }
+
+    .carousel-indicators {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: #496044;
+      border: 2px solid #496044;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .indicator.active {
+      background-color: #799972;
+      transform: scale(1.3);
     }
 
     .card {
@@ -243,7 +342,6 @@
       flex-direction: column;
       position: relative;
       padding-top: 80px;
-      cursor: default;
     }
 
     .card-header {
@@ -281,7 +379,7 @@
       gap: 15px;
       position: relative;
       margin-top: -60px;
-      min-height: 500px;
+      height: 1100px;
       width: 420px;
       opacity: 0;
       transform: translateY(50px);
@@ -291,10 +389,6 @@
     .card.visible .card-body {
       opacity: 1;
       transform: translateY(0);
-    }
-
-    .side-label {
-      display: none;
     }
 
     .card-image {
@@ -307,215 +401,263 @@
       object-position: center;
     }
 
-    .card-textbox {
-      background-color: #799972;
-      color: black;
-      font-family: Arial, sans-serif;
-      font-size: 16px;
+    /* Mobile card styling */
+    .mobile-card {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       padding: 20px;
-      border-radius: 8px;
-      text-align: center;
-      line-height: 1.5;
     }
 
-    /* Mobile Styles */
-    @media (max-width: 1200px) {
+    .mobile-card-header {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .mobile-card-header img {
+      width: 280px;
+      height: auto;
+      border-radius: 20px;
+      border: 3px solid #496044;
+    }
+
+    .mobile-card-body {
+      background-color: #496044;
+      border: 4px solid #496044;
+      border-radius: 15px;
+      padding: 30px 15px;
+      width: 100%;
+      max-width: 380px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .mobile-card-body img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .showcase-section {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      padding: 40px 40px;
+      box-sizing: border-box;
+      margin-top: 40px;
+      background-color: #D1E5F4;
+    }
+
+    .showcase-box {
+      width: 1000px;
+      height: 500px;
+      background-color: #496044;
+      border: 4px solid #496044;
+      border-radius: 15px;
+      display: flex;
+      align-items: stretch;
+      gap: 25px;
+      padding: 25px;
+      box-sizing: border-box;
+    }
+
+    .shop-header {
+      font-family: 'Impact', 'Arial Black', sans-serif;
+      font-size: 50px;
+      color: black;
+      text-align: center;
+      margin-bottom: 19px;
+      text-transform: uppercase;
+      letter-spacing: 1.25px;
+    }
+
+    .text-content-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .slideshow-container {
+      flex: 0 0 45%;
+      background-color: #799972;
+      border: 3px solid black;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .slideshow-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .textbox-container {
+      flex: 1;
+      background-color: #799972;
+      border: 3px solid black;
+      border-radius: 8px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-y: auto;
+    }
+
+    footer {
+      background-color: #496044;
+      color: white;
+      padding: 40px 20px 20px 20px;
+      margin-top: 60px;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px;
+      margin-bottom: 30px;
+    }
+
+    .footer-section h3 {
+      font-family: 'Impact', sans-serif;
+      font-size: 20px;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .footer-section p,
+    .footer-section ul {
+      font-size: 14px;
+      line-height: 1.8;
+      margin: 0;
+      padding: 0;
+    }
+
+    .footer-section ul {
+      list-style: none;
+    }
+
+    .footer-section ul li {
+      margin-bottom: 8px;
+    }
+
+    .footer-section a {
+      color: #D1E5F4;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-section a:hover {
+      color: white;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #799972;
+      padding-top: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: #D1E5F4;
+    }
+
+    /* Mobile Responsive Styles */
+    @media (max-width: 768px) {
       .header-content {
+        flex-direction: column;
         padding: 0 20px;
       }
-      
-      nav a {
-        font-size: 18px;
-        padding: 6px 15px;
-      }
-      
-      .logo img {
-        height: 140px;
-      }
-    }
 
-    @media (max-width: 992px) {
+      .header-line {
+        height: 80px;
+      }
+
       .nav-section {
         display: none;
       }
-      
+
       .mobile-menu-toggle {
         display: block;
+        margin-top: 10px;
       }
-      
-      .mobile-nav {
+
+      .mobile-nav-menu {
         display: block;
       }
-      
-      .header-content {
-        justify-content: center;
-      }
-      
+
       .logo img {
-        height: 120px;
+        height: 150px;
       }
-      
+
       .welcome-box {
-        font-size: 22px;
-        padding: 30px 30px;
+        padding: 20px;
         margin: 0 20px;
       }
-      
-      .ribbon-container {
-        margin: 40px 0;
-      }
-    }
 
-    @media (max-width: 768px) {
-      .header-line, .ribbon-center {
+      .ribbon-center {
         height: 80px;
       }
-      
-      .logo img {
-        height: 100px;
-      }
-      
-      .welcome-box {
-        font-size: 18px;
-        padding: 25px 20px;
-      }
-      
-      .image-box {
-        padding: 10px;
-      }
-      
-      /* Mobile Card Deck Styles */
+
+      /* Hide desktop cards, show carousel */
       .cards-section {
+        display: none;
+      }
+
+      .carousel-container {
         display: block;
-        padding: 0 20px 40px 20px;
-        overflow: visible;
-        margin-top: -20px;
       }
-      
-      .card-deck-container {
-        position: relative;
-        height: 650px;
-        margin: 0 auto;
-        max-width: 380px;
+
+      .showcase-box {
+        flex-direction: column;
+        height: auto;
+        padding: 20px;
+        width: 90%;
       }
-      
-      .card {
-        position: absolute;
-        min-width: auto;
-        max-width: 100%;
-        width: 100%;
-        padding-top: 60px;
-        transform-origin: center bottom;
-        transition: all 0.3s ease;
-        cursor: pointer;
+
+      .slideshow-container {
+        flex: 1;
+        height: 250px;
+        margin-bottom: 20px;
       }
-      
-      .card:nth-child(1) {
-        z-index: 3;
+
+      .shop-header {
+        font-size: 28px;
+        margin-bottom: 15px;
       }
-      
-      .card:nth-child(2) {
-        z-index: 2;
-        transform: translateY(20px) scale(0.95);
+
+      .textbox-container {
+        min-height: 150px;
       }
-      
-      .card:nth-child(3) {
-        z-index: 1;
-        transform: translateY(40px) scale(0.9);
-      }
-      
-      .card.expanded {
-        z-index: 10;
-        transform: translateY(-50px) scale(1.05);
-      }
-      
-      .card-header img {
-        width: 280px;
-        margin-left: 0;
-      }
-      
-      .card-body {
-        width: 100%;
-        box-sizing: border-box;
-        padding: 80px 15px 15px 15px;
-        min-height: 450px;
-        margin-top: -50px;
-      }
-      
-      .card-image {
-        max-height: 300px;
-      }
-      
-      .card-textbox {
-        font-size: 14px;
-        padding: 15px;
-      }
-      
-      /* Card navigation dots */
-      .card-dots {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        margin-top: 20px;
-      }
-      
-      .dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background-color: #496044;
-        cursor: pointer;
-        transition: all 0.3s;
-      }
-      
-      .dot.active {
-        background-color: #799972;
-        transform: scale(1.3);
+
+      .textbox-container div {
+        font-size: 16px !important;
       }
     }
 
     @media (max-width: 480px) {
-      .mobile-menu-toggle {
-        font-size: 24px;
-        padding: 5px 10px;
-        right: 10px;
-      }
-      
       .logo img {
-        height: 80px;
+        height: 120px;
       }
-      
-      .welcome-box {
-        font-size: 16px;
-        padding: 20px 15px;
-        margin: 0 10px;
-      }
-      
-      .card-deck-container {
-        height: 580px;
-      }
-      
-      .card-header img {
+
+      .mobile-card-header img {
         width: 240px;
       }
-      
-      .card-body {
-        min-height: 400px;
-      }
-      
-      .card-image {
-        max-height: 250px;
-      }
-    }
 
-    /* Prevent horizontal scroll on mobile */
-    @media (max-width: 768px) {
-      body {
-        overflow-x: hidden;
+      .carousel-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
       }
-      
-      .cards-section {
-        overflow-x: visible;
+
+      .shop-header {
+        font-size: 22px;
       }
     }
   </style>
@@ -523,11 +665,11 @@
 <body>
   <header>
     <div class="header-line"></div>
-    <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
     <div class="header-content">
       <nav class="nav-section">
         <a href="#about">ABOUT US</a>
         <a href="#faq">FAQS</a>
+        <a href="#testimonials">TESTIMONIALS</a>
         <a href="#training">TRAINING SERVICES</a>
       </nav>
       <div class="logo">
@@ -539,23 +681,28 @@
         <a href="#shop">SHOP</a>
         <a href="#directory">SITE DIRECTORY</a>
       </nav>
+      <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
     </div>
   </header>
 
-  <!-- Mobile Navigation -->
-  <div class="mobile-nav-overlay" onclick="closeMobileMenu()"></div>
-  <nav class="mobile-nav">
-    <button class="close-mobile-menu" onclick="closeMobileMenu()">×</button>
-    <div class="mobile-nav-content">
+  <!-- Mobile Navigation Menu -->
+  <div class="mobile-nav-overlay" id="mobileNavOverlay" onclick="closeMobileMenu()"></div>
+  <div class="mobile-nav-menu" id="mobileNavMenu">
+    <div class="mobile-nav-header">
+      <span style="color: white; font-family: Impact, sans-serif; font-size: 20px;">MENU</span>
+      <button class="mobile-nav-close" onclick="closeMobileMenu()">✕</button>
+    </div>
+    <div class="mobile-nav-links">
       <a href="#about" onclick="closeMobileMenu()">ABOUT US</a>
       <a href="#faq" onclick="closeMobileMenu()">FAQS</a>
+      <a href="#testimonials" onclick="closeMobileMenu()">TESTIMONIALS</a>
       <a href="#training" onclick="closeMobileMenu()">TRAINING SERVICES</a>
       <a href="#intake" onclick="closeMobileMenu()">INTAKE FORM</a>
       <a href="#contact" onclick="closeMobileMenu()">CONTACT US</a>
       <a href="#shop" onclick="closeMobileMenu()">SHOP</a>
       <a href="#directory" onclick="closeMobileMenu()">SITE DIRECTORY</a>
     </div>
-  </nav>
+  </div>
 
   <div class="image-box">
     <img src="https://i.imgur.com/eFfSTxE.jpeg" alt="Dog training image">
@@ -564,19 +711,19 @@
   <div class="ribbon-container">
     <div class="ribbon-center"></div>
     <div class="welcome-box" id="welcomeBox">
-      <p>Welcome to CanineKind — our mission is to help dog owners from all walks of life form a relationship with their dog that they can be proud of. We blend an intuitive understanding of canine behavior and motivation with a full spectrum approach to training. At CanineKind we work with the individual dog in front of us. We believe there are many paths to Rome. Our goal is to provide you with the tools, honest feedback and education needed to address your goals for your dog long after we hand over the leash.</p>
+      <img src="https://i.imgur.com/Gvq91A3.png" alt="Welcome to CanineKind" style="width: 100%; height: auto; display: block;">
     </div>
   </div>
 
-  <div class="cards-section" id="cardsSection">
+  <!-- Desktop Cards Section -->
+  <div class="cards-section">
     <div class="card">
       <div class="card-header">
         <img src="https://i.imgur.com/XEs3zeA.jpeg" alt="Why CanineKind">
       </div>
       <div class="card-body">
-        <div class="side-label left">Background Box</div>
         <img src="https://i.imgur.com/rWpDqoM.jpeg" alt="Image 5" class="card-image">
-        <div class="card-textbox">As the old saying goes, the proof is in the pudding. We pride ourself in the precision of our training and the way our dogs look when working with us and for us. Read about our training background and watch videos of our training skills on our "About Us" page!</div>
+        <img src="https://i.imgur.com/gOf4wfS.png" alt="Why CanineKind" style="width: 100%; height: auto; border-radius: 8px;">
       </div>
     </div>
 
@@ -585,9 +732,8 @@
         <img src="https://i.imgur.com/02aILKE.jpeg" alt="Card 2 Header">
       </div>
       <div class="card-body">
-        <div class="side-label left">Background Box</div>
         <img src="https://i.imgur.com/SkbtIgs.jpeg" alt="Card 2 Image" class="card-image">
-        <div class="card-textbox">Read our FAQ to understand how we approach training and our philosophy. We don't believe in simply prescribing to one camp of training or another and never apply a one size fits all approach. We believe that different approaches and applications of behavioral psychology benefit each dog and owner differently. The very first step in our process involves getting to know just about everything about your dog! We use as much information as possible to determine a training protocol that works for you, your dog and your lifestyle.</div>
+        <img src="https://i.imgur.com/YQ8gYkg.png" alt="FAQ Content" style="width: 100%; height: auto; border-radius: 8px;">
       </div>
     </div>
 
@@ -596,242 +742,225 @@
         <img src="https://i.imgur.com/XAKqfbT.jpeg" alt="Card 3 Header">
       </div>
       <div class="card-body">
-        <div class="side-label left">Background Box</div>
         <img src="https://i.imgur.com/GK2KgdT.jpeg" alt="Card 3 Image" class="card-image">
-        <div class="card-textbox">Card 3 text box placeholder</div>
+        <img src="https://i.imgur.com/6jqeISR.png" alt="Training Services" style="width: 100%; height: auto; border-radius: 8px;">
       </div>
     </div>
   </div>
 
+  <!-- Mobile Carousel -->
+  <div class="carousel-container">
+    <div class="carousel-wrapper">
+      <div class="carousel-track" id="carouselTrack">
+        <!-- Slide 1 -->
+        <div class="carousel-slide">
+          <div class="mobile-card">
+            <div class="mobile-card-header">
+              <img src="https://i.imgur.com/XEs3zeA.jpeg" alt="Why CanineKind">
+            </div>
+            <div class="mobile-card-body">
+              <img src="https://i.imgur.com/rWpDqoM.jpeg" alt="Image 5" style="border: 3px solid #799972;">
+              <img src="https://i.imgur.com/gOf4wfS.png" alt="Why CanineKind">
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="carousel-slide">
+          <div class="mobile-card">
+            <div class="mobile-card-header">
+              <img src="https://i.imgur.com/02aILKE.jpeg" alt="Card 2 Header">
+            </div>
+            <div class="mobile-card-body">
+              <img src="https://i.imgur.com/SkbtIgs.jpeg" alt="Card 2 Image" style="border: 3px solid #799972;">
+              <img src="https://i.imgur.com/YQ8gYkg.png" alt="FAQ Content">
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="carousel-slide">
+          <div class="mobile-card">
+            <div class="mobile-card-header">
+              <img src="https://i.imgur.com/XAKqfbT.jpeg" alt="Card 3 Header">
+            </div>
+            <div class="mobile-card-body">
+              <img src="https://i.imgur.com/GK2KgdT.jpeg" alt="Card 3 Image" style="border: 3px solid #799972;">
+              <img src="https://i.imgur.com/6jqeISR.png" alt="Training Services">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="carousel-controls">
+        <button class="carousel-btn" onclick="moveCarousel(-1)">‹</button>
+        <button class="carousel-btn" onclick="moveCarousel(1)">›</button>
+      </div>
+    </div>
+
+    <div class="carousel-indicators">
+      <span class="indicator active" onclick="goToSlide(0)"></span>
+      <span class="indicator" onclick="goToSlide(1)"></span>
+      <span class="indicator" onclick="goToSlide(2)"></span>
+    </div>
+  </div>
+
+  <div class="showcase-section">
+    <div class="showcase-box">
+      <div class="slideshow-container">
+        <img src="https://i.imgur.com/otP5ywh.jpeg" alt="Product 1" id="slideshowImage">
+      </div>
+      <div class="text-content-wrapper">
+        <div class="shop-header">Unique and Handmade Canine Products</div>
+        <div class="textbox-container">
+          <div style="font-family: 'Impact', 'Arial Black', sans-serif; font-size: 22.5px; color: black; text-align: center; line-height: 1.4; text-transform: uppercase; letter-spacing: 0.625px;">
+            Check out our "Shop" page. We sell a variety of handmade products including artisanal and small-batch dog treats, handmade toys and even hand painted collars and leashes. Let us know if you have a custom request! We prefer PayPal Goods & Services or cash at this time but accept other payments as well.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>About CanineKind</h3>
+        <p>Professional dog training services dedicated to building positive relationships between dogs and their humans through science-based, force-free methods.</p>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="#training">Training Services</a></li>
+          <li><a href="#shop">Shop Products</a></li>
+          <li><a href="#testimonials">Testimonials</a></li>
+          <li><a href="#contact">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Contact Info</h3>
+        <p>Email: info@caninekind.com</p>
+        <p>Phone: (555) 123-4567</p>
+        <p>Hours: Mon-Fri 9AM-6PM</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 CanineKind Dog Training. All rights reserved.</p>
+    </div>
+  </footer>
+
   <script>
-    // Mobile menu functions
-    function toggleMobileMenu() {
-      const mobileNav = document.querySelector('.mobile-nav');
-      const overlay = document.querySelector('.mobile-nav-overlay');
-      mobileNav.classList.add('active');
-      overlay.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
+    // Carousel functionality
+    let currentSlide = 0;
+    const totalSlides = 3;
 
-    function closeMobileMenu() {
-      const mobileNav = document.querySelector('.mobile-nav');
-      const overlay = document.querySelector('.mobile-nav-overlay');
-      mobileNav.classList.remove('active');
-      overlay.classList.remove('active');
-      document.body.style.overflow = '';
-    }
-
-    // Welcome box animation
-    const welcomeBox = document.getElementById('welcomeBox');
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -100px 0px'
-    };
-
-    const welcomeObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, observerOptions);
-
-    welcomeObserver.observe(welcomeBox);
-
-    // Card animations and mobile card deck
-    const cards = document.querySelectorAll('.card');
-    const cardsSection = document.getElementById('cardsSection');
-    let currentCard = 0;
-    let isMobile = window.innerWidth <= 768;
-
-    function initializeCardDeck() {
-      if (isMobile && window.innerWidth <= 768) {
-        // Create card deck container
-        if (!document.querySelector('.card-deck-container')) {
-          const deckContainer = document.createElement('div');
-          deckContainer.className = 'card-deck-container';
-          
-          // Move cards to deck container
-          while (cardsSection.firstChild) {
-            deckContainer.appendChild(cardsSection.firstChild);
-          }
-          
-          cardsSection.appendChild(deckContainer);
-          
-          // Create dots navigation
-          const dotsContainer = document.createElement('div');
-          dotsContainer.className = 'card-dots';
-          
-          cards.forEach((card, index) => {
-            const dot = document.createElement('div');
-            dot.className = 'dot';
-            if (index === 0) dot.classList.add('active');
-            dot.addEventListener('click', () => showCard(index));
-            dotsContainer.appendChild(dot);
-          });
-          
-          cardsSection.appendChild(dotsContainer);
-        }
-        
-        // Set up card click events
-        cards.forEach((card, index) => {
-          card.addEventListener('click', () => {
-            if (!card.classList.contains('expanded')) {
-              expandCard(index);
-            } else {
-              collapseCard(index);
-            }
-          });
-        });
-        
-        updateCardPositions();
-      } else {
-        // Desktop view - restore original structure if needed
-        const deckContainer = document.querySelector('.card-deck-container');
-        const dotsContainer = document.querySelector('.card-dots');
-        
-        if (deckContainer) {
-          while (deckContainer.firstChild) {
-            cardsSection.insertBefore(deckContainer.firstChild, deckContainer);
-          }
-          deckContainer.remove();
-        }
-        
-        if (dotsContainer) {
-          dotsContainer.remove();
-        }
-        
-        // Remove mobile-specific styles
-        cards.forEach(card => {
-          card.style.transform = '';
-          card.style.zIndex = '';
-          card.classList.remove('expanded');
-        });
-      }
-    }
-
-    function updateCardPositions() {
-      if (!isMobile) return;
+    function updateCarousel() {
+      const track = document.getElementById('carouselTrack');
+      const offset = -currentSlide * 100;
+      track.style.transform = `translateX(${offset}%)`;
       
-      cards.forEach((card, index) => {
-        const offset = index - currentCard;
-        card.style.transition = 'all 0.3s ease';
-        
-        if (offset === 0) {
-          card.style.transform = 'translateY(0) scale(1)';
-          card.style.zIndex = 3;
-        } else if (offset === 1 || (offset < 0 && currentCard === cards.length - 1 && index === 0)) {
-          card.style.transform = 'translateY(20px) scale(0.95)';
-          card.style.zIndex = 2;
-        } else if (offset === 2 || (offset < 0 && currentCard >= cards.length - 2 && index <= 1)) {
-          card.style.transform = 'translateY(40px) scale(0.9)';
-          card.style.zIndex = 1;
-        } else {
-          card.style.transform = 'translateY(60px) scale(0.85)';
-          card.style.zIndex = 0;
-          card.style.opacity = '0';
-        }
-        
-        if (Math.abs(offset) <= 2 || (currentCard >= cards.length - 2 && index <= 1)) {
-          card.style.opacity = '1';
-        }
-      });
-      
-      updateDots();
-    }
-
-    function expandCard(index) {
-      if (!isMobile) return;
-      cards[index].classList.add('expanded');
-    }
-
-    function collapseCard(index) {
-      if (!isMobile) return;
-      cards[index].classList.remove('expanded');
-    }
-
-    function showCard(index) {
-      if (!isMobile) return;
-      currentCard = index;
-      updateCardPositions();
-    }
-
-    function updateDots() {
-      const dots = document.querySelectorAll('.dot');
-      dots.forEach((dot, index) => {
-        if (index === currentCard) {
-          dot.classList.add('active');
-        } else {
-          dot.classList.remove('active');
-        }
+      // Update indicators
+      const indicators = document.querySelectorAll('.indicator');
+      indicators.forEach((ind, index) => {
+        ind.classList.toggle('active', index === currentSlide);
       });
     }
 
-    // Card visibility animation for desktop
-    const cardObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, observerOptions);
+    function moveCarousel(direction) {
+      currentSlide += direction;
+      if (currentSlide < 0) currentSlide = totalSlides - 1;
+      if (currentSlide >= totalSlides) currentSlide = 0;
+      updateCarousel();
+    }
 
-    cards.forEach(card => {
-      cardObserver.observe(card);
-    });
+    function goToSlide(slideIndex) {
+      currentSlide = slideIndex;
+      updateCarousel();
+    }
 
-    // Handle resize events
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => {
-        const wasMobile = isMobile;
-        isMobile = window.innerWidth <= 768;
-        
-        if (wasMobile !== isMobile) {
-          initializeCardDeck();
-        }
-      }, 250);
-    });
-
-    // Initialize on load
-    window.addEventListener('load', () => {
-      initializeCardDeck();
-    });
-
-    // Touch swipe support for mobile cards
+    // Touch/swipe support for mobile
     let touchStartX = 0;
     let touchEndX = 0;
 
-    cardsSection.addEventListener('touchstart', (e) => {
-      if (!isMobile) return;
-      touchStartX = e.touches[0].clientX;
-    });
+    const carouselWrapper = document.querySelector('.carousel-wrapper');
+    if (carouselWrapper) {
+      carouselWrapper.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      });
 
-    cardsSection.addEventListener('touchmove', (e) => {
-      if (!isMobile) return;
-      touchEndX = e.touches[0].clientX;
-    });
-
-    cardsSection.addEventListener('touchend', () => {
-      if (!isMobile) return;
-      handleSwipe();
-    });
+      carouselWrapper.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      });
+    }
 
     function handleSwipe() {
-      const swipeDistance = touchStartX - touchEndX;
-      const minSwipeDistance = 50;
-      
-      if (Math.abs(swipeDistance) > minSwipeDistance) {
-        if (swipeDistance > 0 && currentCard < cards.length - 1) {
-          // Swipe left - next card
-          showCard(currentCard + 1);
-        } else if (swipeDistance < 0 && currentCard > 0) {
-          // Swipe right - previous card
-          showCard(currentCard - 1);
-        }
-      }
+      if (touchEndX < touchStartX - 50) moveCarousel(1); // Swipe left
+      if (touchEndX > touchStartX + 50) moveCarousel(-1); // Swipe right
     }
+
+    // Auto-advance carousel
+    setInterval(() => {
+      if (window.innerWidth <= 768) {
+        moveCarousel(1);
+      }
+    }, 5000);
+
+    // Shop slideshow functionality
+    const slideshowImages = [
+      'https://i.imgur.com/otP5ywh.jpeg',
+      'https://i.imgur.com/4ZOxg3W.jpeg',
+      'https://i.imgur.com/LL8ncXk.jpeg'
+    ];
+    let currentImageIndex = 0;
+    const slideshowImage = document.getElementById('slideshowImage');
+
+    setInterval(() => {
+      currentImageIndex = (currentImageIndex + 1) % slideshowImages.length;
+      slideshowImage.src = slideshowImages[currentImageIndex];
+    }, 5000);
+
+    // Welcome box animation
+    const welcomeBox = document.getElementById('welcomeBox');
+    window.addEventListener('scroll', () => {
+      const boxPosition = welcomeBox.getBoundingClientRect().top;
+      const screenPosition = window.innerHeight / 1.2;
+      if (boxPosition < screenPosition) {
+        welcomeBox.classList.add('visible');
+      }
+    });
+
+    // Desktop cards animation
+    const cards = document.querySelectorAll('.card');
+    window.addEventListener('scroll', () => {
+      cards.forEach(card => {
+        const cardPosition = card.getBoundingClientRect().top;
+        const screenPosition = window.innerHeight / 1.2;
+        if (cardPosition < screenPosition) {
+          card.classList.add('visible');
+        }
+      });
+    });
+
+    // Mobile menu toggle (basic implementation)
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileNavMenu');
+      const overlay = document.getElementById('mobileNavOverlay');
+      
+      menu.classList.add('active');
+      overlay.style.display = 'block';
+    }
+
+    function closeMobileMenu() {
+      const menu = document.getElementById('mobileNavMenu');
+      const overlay = document.getElementById('mobileNavOverlay');
+      
+      menu.classList.remove('active');
+      overlay.style.display = 'none';
+    }
+
+    // Initialize
+    welcomeBox.classList.add('visible');
+    cards.forEach(card => card.classList.add('visible'));
   </script>
 </body>
 </html>
