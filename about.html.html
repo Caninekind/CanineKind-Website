@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - CanineKind Dog Training</title>
+  <link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #D1E5F4;
+      overflow-x: hidden;
+    }
+
+    header {
+      background-color: #799972;
+      position: relative;
+      padding: 20px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      width: 100%;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    .header-line {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 120px;
+      background-color: #496044;
+      transform: translateY(-50%);
+      z-index: 1;
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 1400px;
+      gap: 20px;
+      padding: 0 40px;
+    }
+
+    .nav-section {
+      display: flex;
+      gap: 15px;
+      flex: 1;
+      flex-wrap: wrap;
+      align-content: flex-start;
+    }
+
+    .nav-section:first-child {
+      justify-content: flex-end;
+    }
+
+    .nav-section:last-child {
+      justify-content: flex-start;
+    }
+
+    .logo {
+      flex-shrink: 0;
+    }
+
+    nav a {
+      font-family: Impact, sans-serif;
+      color: white;
+      font-size: 18px;
+      text-decoration: none;
+      padding: 6px 12px;
+      border: 2px solid white;
+      text-shadow: 2px 2px 2px black;
+      transition: background 0.3s;
+      white-space: nowrap;
+    }
+
+    nav a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .logo img {
+      height: 220px;
+      width: auto;
+      z-index: 2;
+      border: 2px solid white;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+
+    .mobile-menu-toggle {
+      display: none;
+      background: transparent;
+      border: 2px solid white;
+      color: white;
+      font-size: 24px;
+      padding: 10px 15px;
+      cursor: pointer;
+      position: relative;
+      z-index: 3;
+    }
+
+    .mobile-nav-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 998;
+    }
+
+    .mobile-nav-menu {
+      display: none;
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 80%;
+      max-width: 300px;
+      height: 100%;
+      background-color: #496044;
+      z-index: 999;
+      transition: right 0.3s ease;
+      overflow-y: auto;
+      box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .mobile-nav-menu.active {
+      right: 0;
+    }
+
+    .mobile-nav-header {
+      padding: 20px;
+      border-bottom: 2px solid #799972;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .mobile-nav-close {
+      background: transparent;
+      border: 2px solid white;
+      color: white;
+      font-size: 24px;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+    .mobile-nav-links {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .mobile-nav-links a {
+      font-family: Impact, sans-serif;
+      color: white;
+      font-size: 18px;
+      text-decoration: none;
+      padding: 12px 16px;
+      border: 2px solid white;
+      text-shadow: 2px 2px 2px black;
+      transition: background 0.3s;
+      white-space: nowrap;
+      display: block;
+      text-align: center;
+    }
+
+    .mobile-nav-links a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .hero-section {
+      position: relative;
+      width: 100%;
+      height: 400px;
+      background: linear-gradient(rgba(73, 96, 68, 0.7), rgba(73, 96, 68, 0.7)), url('https://images.unsplash.com/photo-1568572933382-74d440642117?w=1200') center/cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+    }
+
+    .hero-content h1 {
+      font-family: Impact, sans-serif;
+      font-size: 72px;
+      margin: 0;
+      text-shadow: 3px 3px 6px black;
+      letter-spacing: 2px;
+    }
+
+    .hero-content p {
+      font-size: 24px;
+      margin: 15px 0 0 0;
+      text-shadow: 2px 2px 4px black;
+    }
+
+    .content-wrapper {
+      max-width: 1200px;
+      margin: 60px auto;
+      padding: 0 40px;
+    }
+
+    .bio-section {
+      background-color: #799972;
+      border-radius: 15px;
+      padding: 50px;
+      margin-bottom: 60px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 1s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .bio-header {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    .bio-image {
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      border: 5px solid #496044;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .bio-title h2 {
+      font-family: Impact, sans-serif;
+      font-size: 48px;
+      color: white;
+      margin: 0;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .bio-title h3 {
+      font-family: Impact, sans-serif;
+      font-size: 28px;
+      color: #496044;
+      margin: 10px 0 0 0;
+      font-weight: normal;
+    }
+
+    .bio-text {
+      font-size: 18px;
+      line-height: 1.8;
+      color: #1a1a1a;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+    }
+
+    .bio-text p {
+      margin-bottom: 20px;
+    }
+
+    .dogs-section {
+      margin-bottom: 60px;
+    }
+
+    .section-header {
+      text-align: center;
+      font-family: Impact, sans-serif;
+      font-size: 56px;
+      color: #496044;
+      margin-bottom: 50px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .dogs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 40px;
+    }
+
+    .dog-card {
+      background-color: #496044;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .dog-card:hover {
+      transform: translateY(-10px);
+    }
+
+    .dog-card-image {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+
+    .dog-card-content {
+      padding: 30px;
+      color: white;
+    }
+
+    .dog-card-content h3 {
+      font-family: Impact, sans-serif;
+      font-size: 36px;
+      margin: 0 0 10px 0;
+      color: #D1E5F4;
+    }
+
+    .dog-card-content h4 {
+      font-family: Impact, sans-serif;
+      font-size: 20px;
+      margin: 0 0 20px 0;
+      color: #799972;
+      font-weight: normal;
+    }
+
+    .dog-card-content p {
+      font-size: 16px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .philosophy-section {
+      background-color: #799972;
+      border-radius: 15px;
+      padding: 50px;
+      margin-bottom: 60px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .philosophy-section h2 {
+      font-family: Impact, sans-serif;
+      font-size: 48px;
+      color: white;
+      margin: 0 0 30px 0;
+      text-align: center;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .philosophy-section p {
+      font-size: 20px;
+      line-height: 1.8;
+      color: #1a1a1a;
+      text-align: center;
+      margin: 0;
+    }
+
+    footer {
+      background-color: #496044;
+      color: white;
+      padding: 40px 20px 20px 20px;
+      margin-top: 60px;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px;
+      margin-bottom: 30px;
+    }
+
+    .footer-section h3 {
+      font-family: 'Impact', sans-serif;
+      font-size: 20px;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .footer-section p,
+    .footer-section ul {
+      font-size: 14px;
+      line-height: 1.8;
+      margin: 0;
+      padding: 0;
+    }
+
+    .footer-section ul {
+      list-style: none;
+    }
+
+    .footer-section ul li {
+      margin-bottom: 8px;
+    }
+
+    .footer-section a {
+      color: #D1E5F4;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-section a:hover {
+      color: white;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #799972;
+      padding-top: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: #D1E5F4;
+    }
+
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        padding: 0 20px;
+      }
+
+      .header-line {
+        height: 80px;
+      }
+
+      .nav-section {
+        display: none;
+      }
+
+      .mobile-menu-toggle {
+        display: block;
+        margin-top: 10px;
+      }
+
+      .mobile-nav-menu {
+        display: block;
+      }
+
+      .logo img {
+        height: 150px;
+        margin-top: 15px;
+      }
+
+      .hero-content h1 {
+        font-size: 48px;
+      }
+
+      .hero-content p {
+        font-size: 18px;
+      }
+
+      .content-wrapper {
+        padding: 0 20px;
+        margin: 40px auto;
+      }
+
+      .bio-section {
+        padding: 30px 20px;
+      }
+
+      .bio-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+      }
+
+      .bio-image {
+        width: 200px;
+        height: 200px;
+      }
+
+      .bio-title h2 {
+        font-size: 36px;
+      }
+
+      .bio-title h3 {
+        font-size: 22px;
+      }
+
+      .bio-text {
+        font-size: 16px;
+      }
+
+      .section-header {
+        font-size: 40px;
+      }
+
+      .dogs-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .philosophy-section {
+        padding: 30px 20px;
+      }
+
+      .philosophy-section h2 {
+        font-size: 36px;
+      }
+
+      .philosophy-section p {
+        font-size: 18px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-content h1 {
+        font-size: 36px;
+      }
+
+      .hero-content p {
+        font-size: 16px;
+      }
+
+      .bio-title h2 {
+        font-size: 28px;
+      }
+
+      .section-header {
+        font-size: 32px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-line"></div>
+    <div class="header-content">
+      <nav class="nav-section">
+        <a href="https://caninekind.io">HOME</a>
+        <a href="#faq">FAQS</a>
+        <a href="#testimonials">TESTIMONIALS</a>
+        <a href="#training">TRAINING SERVICES</a>
+      </nav>
+      <div class="logo">
+        <img src="https://i.imgur.com/HrYfECf.jpeg" alt="CanineKind Logo">
+      </div>
+      <nav class="nav-section">
+        <a href="#intake">INTAKE FORM</a>
+        <a href="#contact">CONTACT US</a>
+        <a href="#shop">SHOP</a>
+        <a href="#directory">SITE DIRECTORY</a>
+      </nav>
+      <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+    </div>
+  </header>
+
+  <div class="mobile-nav-overlay" id="mobileNavOverlay" onclick="closeMobileMenu()"></div>
+  <div class="mobile-nav-menu" id="mobileNavMenu">
+    <div class="mobile-nav-header">
+      <span style="color: white; font-family: Impact, sans-serif; font-size: 20px;">MENU</span>
+      <button class="mobile-nav-close" onclick="closeMobileMenu()">✕</button>
+    </div>
+    <div class="mobile-nav-links">
+      <a href="https://caninekind.io" onclick="closeMobileMenu()">HOME</a>
+      <a href="#faq" onclick="closeMobileMenu()">FAQS</a>
+      <a href="#testimonials" onclick="closeMobileMenu()">TESTIMONIALS</a>
+      <a href="#training" onclick="closeMobileMenu()">TRAINING SERVICES</a>
+      <a href="#intake" onclick="closeMobileMenu()">INTAKE FORM</a>
+      <a href="#contact" onclick="closeMobileMenu()">CONTACT US</a>
+      <a href="#shop" onclick="closeMobileMenu()">SHOP</a>
+      <a href="#directory" onclick="closeMobileMenu()">SITE DIRECTORY</a>
+    </div>
+  </div>
+
+  <div class="hero-section">
+    <div class="hero-content">
+      <h1>ABOUT US</h1>
+      <p>Meet the team behind CanineKind</p>
+    </div>
+  </div>
+
+  <div class="content-wrapper">
+    <div class="bio-section">
+      <div class="bio-header">
+        <img src="https://i.imgur.com/eZb7eGI.jpeg" alt="Marisa" class="bio-image">
+        <div class="bio-title">
+          <h2>MARISA</h2>
+          <h3>Founder</h3>
+        </div>
+      </div>
+      <div class="bio-text">
+        <p>Marisa, Lead Trainer of CanineKind was born and raised in the Boston area. Although she grew up with small family dogs, her real training journey began 6 years ago. After securing a job and apartment in the city of Rochester NY - she knew it was time to fulfill her lifelong dream of adopting a large breed dog to do all the things with!</p>
+        
+        <p>When she brought home Atlas, a German Shepherd/St. Bernard mix puppy who quickly shot to 100lbs it was no easy feat to raise him in a city apartment with no backyard. She was extremely committed to learning everything she could - taking every single training class and seminar, molding Atlas into the ideal companion, service dog and even an energetic dog sport competitor. She transcended old school methods and learned to harness the power of play - quickly falling in love with competitive, motivation based training.</p>
+        
+        <p>At 6 years old Atlas has achieved performance titles of the IGP BH and American Schutzhund AS-BT, passing all temperament testing with flying colors along with his CGC-A, CGC-U and AKC Novice and Intermediate Trick Titles. Atlas is also a task-trained service dog, showcasing his extremely solid temperament and clear alerting skills at busy office jobs throughout the years.</p>
+        
+        <div style="text-align: center; margin: 30px 0;">
+          <img src="https://i.imgur.com/7F6AqI9.png" alt="Atlas" style="max-width: 100%; height: auto; border: 4px solid #496044; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+        </div>
+        
+        <p>Flash forward to 2022, Marisa took on her first sport dog, a well-bred working line German Shepherd named Kismet. After shining in competitive obedience and building precise, energetic focused heeling and other flashy behaviors with a pet dog - she wanted to challenge herself to reach her full potential in terms of competitive canine sports.</p>
+        
+        <div style="text-align: center; margin: 30px 0;">
+          <img src="https://i.imgur.com/nv5xGeR.jpeg" alt="Kismet" style="max-width: 100%; height: auto; border: 4px solid #496044; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+        </div>
+        
+        <div style="text-align: center; margin: 30px 0;">
+          <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; border: 4px solid #496044; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+            <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/VIDEO_ID_HERE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        </div>
+        
+        <p>Marisa is currently pursuing the high level dog sport of "IGP". In this sport - the dog completes three phases: tracking, obedience and protection. Kismet and Marisa recently achieved their introductory "BH" title in IGP and plan to pursue the next level in Spring of 2026! Kismet and Marisa have also thrived in this high level atmosphere building strong precise obedience and powerful protection work that has professional level control, building much of the foundations and mechanics of Kismet's skills at home.</p>
+        
+        <p>If you have ever watched Marisa play with and work her dogs in person, then you know this is no exaggeration! Check out some additional videos of our training below.</p>
+        
+        <div style="text-align: center; margin: 30px 0;">
+          <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; border: 4px solid #496044; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); margin-bottom: 30px;">
+            <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/VIDEO_ID_HERE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          
+          <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; border: 4px solid #496044; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+            <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/VIDEO_ID_HERE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bio-section">
+      <div class="bio-header">
+        <div class="bio-image" style="background-color: #999; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; font-family: Impact, sans-serif;"></div>
+        <div class="bio-title">
+          <h2>RACHEL</h2>
+          <h3>Assistant Trainer and Dog Walker</h3>
+        </div>
+      </div>
+      <div class="bio-text">
+        <p>Coming soon :)</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="#training">Training Services</a></li>
+          <li><a href="#shop">Shop Products</a></li>
+          <li><a href="#testimonials">Testimonials</a></li>
+          <li><a href="#contact">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Contact Info</h3>
+        <p>Email: info@caninekind.com</p>
+        <p>Phone: (555) 123-4567</p>
+        <p>Hours: Mon-Fri 9AM-6PM</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 CanineKind Dog Training. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileNavMenu');
+      const overlay = document.getElementById('mobileNavOverlay');
+      
+      menu.classList.add('active');
+      overlay.style.display = 'block';
+    }
+
+    function closeMobileMenu() {
+      const menu = document.getElementById('mobileNavMenu');
+      const overlay = document.getElementById('mobileNavOverlay');
+      
+      menu.classList.remove('active');
+      overlay.style.display = 'none';
+    }
+  </script>
+</body>
+</html>
