@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop - CanineKind Dog Training</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Square Web Payments SDK -->
+  <script type="text/javascript" src="https://sandbox.web.squarecdn.com/v1/square.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #D1E5F4;
+      overflow-x: hidden;
+    }
+
+    header {
+      background-color: #799972;
+      position: relative;
+      padding: 20px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      width: 100%;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    .header-line {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 120px;
+      background-color: #496044;
+      transform: translateY(-50%);
+      z-index: 1;
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 1400px;
+      gap: 20px;
+      padding: 0 40px;
+    }
+
+    .nav-section {
+      display: flex;
+      gap: 15px;
+      flex: 1;
+      flex-wrap: wrap;
+      align-content: flex-start;
+    }
+
+    .nav-section:first-child {
+      justify-content: flex-end;
+    }
+
+    .nav-section:last-child {
+      justify-content: flex-start;
+    }
+
+    .logo {
+      flex-shrink: 0;
+    }
+
+    nav a {
+      font-family: Impact, sans-serif;
+      color: white;
+      font-size: 18px;
+      text-decoration: none;
+      padding: 6px 12px;
+      border: 2px solid white;
+      text-shadow: 2px 2px 2px black;
+      transition: background 0.3s;
+      white-space: nowrap;
+    }
+
+    nav a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .logo img {
+      height: 220px;
+      width: auto;
+      z-index: 2;
+      border: 2px solid white;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+
+    .cart-icon {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #496044;
+      color: white;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      z-index: 1000;
+      transition: transform 0.3s, background-color 0.3s;
+    }
+
+    .cart-icon:hover {
+      transform: scale(1.1);
+      background-color: #3a4d36;
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background-color: #D1E5F4;
+      color: #496044;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .mobile-menu-toggle {
+      display: none;
+      background: transparent;
+      border: 2px solid white;
+      color: white;
+      font-size: 24px;
+      padding: 10px 15px;
+      cursor: pointer;
+      position: relative;
+      z-index: 3;
+    }
+
+    .mobile-nav-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 998;
+    }
+
+    .mobile-nav-menu {
+      display: none;
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 80%;
+      max-width: 300px;
+      height: 100%;
+      background-color: #496044;
+      z-index: 999;
+      transition: right 0.3s ease;
+      overflow-y: auto;
+      box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .mobile-nav-menu.active {
+      right: 0;
+    }
+
+    .mobile-nav-header {
+      padding: 20px;
+      border-bottom: 2px solid #799972;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .mobile-nav-close {
+      background: transparent;
+      border: 2px solid white;
+      color: white;
+      font-size: 24px;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+    .mobile-nav-links {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .mobile-nav-links a {
+      font-family: Impact, sans-serif;
+      color: white;
+      font-size: 18px;
+      text-decoration: none;
+      padding: 12px 16px;
+      border: 2px solid white;
+      text-shadow: 2px 2px 2px black;
+      transition: background 0.3s;
+      white-space: nowrap;
+      display: block;
+      text-align: center;
+    }
+
+    .mobile-nav-links a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .hero-section {
+      background-color: #496044;
+      color: white;
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .hero-section h1 {
+      font-family: Impact, sans-serif;
+      font-size: 48px;
+      margin-bottom: 15px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .hero-section p {
+      font-size: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .shop-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 60px 20px;
+    }
+
+    .section-title {
+      font-family: Impact, sans-serif;
+      font-size: 36px;
+      color: #496044;
+      text-align: center;
+      margin-bottom: 15px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .section-subtitle {
+      text-align: center;
+      color: #496044;
+      font-size: 18px;
+      margin-bottom: 40px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-bottom: 60px;
+    }
+
+    .product-card {
+      background-color: #799972;
+      border-radius: 15px;
+      padding: 0;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    }
+
+    .product-image {
+      width: 100%;
+      height: 250px;
+      background-color: #D1E5F4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+      color: #496044;
+      border-bottom: 3px solid #496044;
+    }
+
+    .product-content {
+      padding: 25px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-card h3 {
+      font-family: Impact, sans-serif;
+      color: white;
+      font-size: 24px;
+      margin-bottom: 12px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .product-card p {
+      color: white;
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 15px;
+      flex-grow: 1;
+    }
+
+    .product-price {
+      font-size: 28px;
+      font-weight: bold;
+      color: #D1E5F4;
+      margin-bottom: 15px;
+    }
+
+    .product-features {
+      list-style: none;
+      padding: 0;
+      margin: 15px 0;
+      color: white;
+    }
+
+    .product-features li {
+      padding: 5px 0;
+      padding-left: 20px;
+      position: relative;
+      font-size: 15px;
+    }
+
+    .product-features li:before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #D1E5F4;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .product-badge {
+      display: inline-block;
+      background-color: #D1E5F4;
+      color: #496044;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .add-to-cart-button {
+      background-color: #496044;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      margin-top: auto;
+      width: 100%;
+    }
+
+    .add-to-cart-button:hover {
+      background-color: #3a4d36;
+      transform: scale(1.05);
+      color: white;
+    }
+
+    .contact-button {
+      background-color: #799972;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      margin-top: auto;
+      width: 100%;
+    }
+
+    .contact-button:hover {
+      background-color: #6a8863;
+      transform: scale(1.05);
+      color: white;
+    }
+
+    .cart-sidebar {
+      position: fixed;
+      top: 0;
+      right: -450px;
+      width: 450px;
+      height: 100%;
+      background-color: white;
+      box-shadow: -2px 0 10px rgba(0,0,0,0.3);
+      z-index: 1001;
+      transition: right 0.3s ease;
+      overflow-y: auto;
+    }
+
+    .cart-sidebar.active {
+      right: 0;
+    }
+
+    .cart-header {
+      background-color: #496044;
+      color: white;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .cart-header h2 {
+      margin: 0;
+      font-family: Impact, sans-serif;
+      font-size: 24px;
+    }
+
+    .close-cart {
+      background: transparent;
+      border: 2px solid white;
+      color: white;
+      font-size: 24px;
+      padding: 5px 10px;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .cart-items {
+      padding: 20px;
+    }
+
+    .cart-item {
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .cart-item-icon {
+      font-size: 40px;
+      width: 60px;
+      height: 60px;
+      background-color: #D1E5F4;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .cart-item-details {
+      flex-grow: 1;
+    }
+
+    .cart-item-name {
+      font-weight: bold;
+      color: #496044;
+      margin-bottom: 5px;
+    }
+
+    .cart-item-price {
+      color: #666;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .cart-item-quantity {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .qty-btn {
+      background-color: #496044;
+      color: white;
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .qty-btn:hover {
+      background-color: #3a4d36;
+    }
+
+    .remove-item {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 12px;
+      margin-top: 8px;
+    }
+
+    .remove-item:hover {
+      background-color: #c82333;
+    }
+
+    .cart-empty {
+      text-align: center;
+      padding: 40px 20px;
+      color: #666;
+    }
+
+    .cart-empty-icon {
+      font-size: 60px;
+      margin-bottom: 15px;
+    }
+
+    .cart-summary {
+      background-color: #f8f9fa;
+      padding: 20px;
+      margin: 20px;
+      border-radius: 8px;
+    }
+
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 24px;
+      font-weight: bold;
+      color: #496044;
+      margin-bottom: 20px;
+    }
+
+    .checkout-button {
+      background-color: #496044;
+      color: white;
+      padding: 15px;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.3s;
+    }
+
+    .checkout-button:hover {
+      background-color: #3a4d36;
+    }
+
+    .checkout-button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    .checkout-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1002;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .checkout-overlay.active {
+      display: flex;
+    }
+
+    .checkout-modal {
+      background: white;
+      border-radius: 15px;
+      padding: 40px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .checkout-modal h2 {
+      font-family: Impact, sans-serif;
+      color: #496044;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #496044;
+      font-weight: bold;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #D1E5F4;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #496044;
+    }
+
+    #card-container {
+      margin: 20px 0;
+      min-height: 100px;
+    }
+
+    .payment-button {
+      background-color: #496044;
+      color: white;
+      padding: 15px;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    .payment-button:hover {
+      background-color: #3a4d36;
+    }
+
+    .payment-button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    .close-checkout {
+      background-color: #6c757d;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .info-section {
+      background-color: #799972;
+      border-radius: 15px;
+      padding: 40px;
+      margin-bottom: 40px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .info-section h2 {
+      font-family: Impact, sans-serif;
+      color: white;
+      font-size: 32px;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .info-section p {
+      color: white;
+      font-size: 16px;
+      line-height: 1.8;
+      margin-bottom: 15px;
+    }
+
+    .info-section ul {
+      color: white;
+      font-size: 16px;
+      line-height: 1.8;
+      padding-left: 20px;
+    }
+
+    .info-section a {
+      color: #D1E5F4;
+      text-decoration: underline;
+    }
+
+    .payment-icons {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      justify-content: center;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .payment-icon {
+      background-color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      color: #496044;
+      font-size: 14px;
+    }
+
+    footer {
+      background-color: #496044;
+      color: white;
+      padding: 40px 20px 20px 20px;
+      margin-top: 60px;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px;
+      margin-bottom: 30px;
+    }
+
+    .footer-section h3 {
+      font-family: 'Impact', sans-serif;
+      font-size: 20px;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .footer-section p,
+    .footer-section ul {
+      font-size: 14px;
+      line-height: 1.8;
+      margin: 0;
+      padding: 0;
+    }
+
+    .footer-section ul {
+      list-style: none;
+    }
+
+    .footer-section ul li {
+      margin-bottom: 8px;
+    }
+
+    .footer-section a {
+      color: #D1E5F4;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-section a:hover {
+      color: white;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #799972;
+      padding-top: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: #D1E5F4;
+    }
+
+    .success-message {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .success-icon {
+      font-size: 60px;
+      color: #28a745;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        padding: 0 20px;
+      }
+
+      .header-line {
+        height: 80px;
+      }
+
+      .nav-section {
+        display: none;
+      }
+
+      .mobile-menu-toggle {
+        display: block;
+        margin-top: 10px;
+      }
+
+      .mobile-nav-menu {
+        display: block;
+      }
+
+      .logo img {
+        height: 150px;
+        margin-top: 15px;
+      }
+
+      .hero-section h1 {
+        font-size: 36px;
+      }
+
+      .hero-section p {
+        font-size: 18px;
+      }
+
+      .section-title {
+        font-size: 28px;
+      }
+
+      .product-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .info-section {
+        padding: 25px;
+      }
+
+      .cart-sidebar {
+        width: 100%;
+        right: -100%;
+      }
+
+      .checkout-modal {
+        padding: 20px;
+      }
+
+      .cart-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-line"></div>
+    <div class="header-content">
+      <nav class="nav-section">
+        <a href="https://caninekind.io">HOME</a>
+        <a href="https://caninekind.io/about">ABOUT</a>
+        <a href="#testimonials">TESTIMONIALS</a>
+        <a href="training.html">TRAINING SERVICES</a>
+      </nav>
+      <div class="logo">
+        <img src="https://i.imgur.com/HrYfECf.jpeg" alt="CanineKind Logo">
+      </div>
+      <nav class="nav-section">
+        <a href="intake.html">INTAKE FORM</a>
+        <a href="#contact">CONTACT US</a>
+        <a href="shop.html">SHOP</a>
+        <a href="#directory">SITE DIRECTORY</a>
+      </nav>
+      <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+    </div>
+  </header>
+
+  <!-- Shopping Cart Icon -->
+  <div class="cart-icon" onclick="toggleCart()">
+    🛒
+    <span class="cart-badge" id="cartCount">0</span>
+  </div>
+
+  <!-- Mobile Navigation -->
+  <div class="mobile-nav-overlay" id="mobileNavOverlay" onclick="closeMobileMenu()"></div>
+  <div class="mobile-nav-menu" id="mobileNavMenu">
+    <div class="mobile-nav-header">
+      <span style="color: white; font-family: Impact, sans-serif; font-size: 20px;">MENU</span>
+      <button class="mobile-nav-close" onclick="closeMobileMenu()">✕</button>
+    </div>
+    <div class="mobile-nav-links">
+      <a href="https://caninekind.io" onclick="closeMobileMenu()">HOME</a>
+      <a href="https://caninekind.io/about" onclick="closeMobileMenu()">ABOUT</a>
+      <a href="#testimonials" onclick="closeMobileMenu()">TESTIMONIALS</a>
+      <a href="training.html" onclick="closeMobileMenu()">TRAINING SERVICES</a>
+      <a href="intake.html" onclick="closeMobileMenu()">INTAKE FORM</a>
+      <a href="#contact" onclick="closeMobileMenu()">CONTACT US</a>
+      <a href="shop.html" onclick="closeMobileMenu()">SHOP</a>
+      <a href="#directory" onclick="closeMobileMenu()">SITE DIRECTORY</a>
+    </div>
+  </div>
+
+  <!-- Shopping Cart Sidebar -->
+  <div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <h2>Your Cart</h2>
+      <button class="close-cart" onclick="toggleCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty">
+        <div class="cart-empty-icon">🛒</div>
+        <p>Your cart is empty</p>
+      </div>
+    </div>
+    <div class="cart-summary" id="cartSummary" style="display: none;">
+      <div class="cart-total">
+        <span>Total:</span>
+        <span id="cartTotal">$0.00</span>
+      </div>
+      <button class="checkout-button" onclick="openCheckout()">Proceed to Checkout</button>
+    </div>
+  </div>
+
+  <!-- Checkout Modal -->
+  <div class="checkout-overlay" id="checkoutOverlay">
+    <div class="checkout-modal">
+      <h2>Checkout</h2>
+      <form id="checkout-form">
+        <div class="form-group">
+          <label for="customerName">Full Name *</label>
+          <input type="text" id="customerName" required>
+        </div>
+        <div class="form-group">
+          <label for="customerEmail">Email *</label>
+          <input type="email" id="customerEmail" required>
+        </div>
+        <div class="form-group">
+          <label for="customerPhone">Phone</label>
+          <input type="tel" id="customerPhone">
+        </div>
+        <div class="form-group">
+          <label for="shippingAddress">Shipping Address</label>
+          <textarea id="shippingAddress" rows="3" placeholder="Enter your address or choose pickup"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="orderNotes">Order Notes (optional)</label>
+          <textarea id="orderNotes" rows="2" placeholder="Any special requests or customization details..."></textarea>
+        </div>
+
+        <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; margin: 20px 0;">
+          <h3 style="margin: 0 0 10px 0; color: #496044;">Order Summary</h3>
+          <div id="checkoutSummary"></div>
+          <div style="border-top: 2px solid #496044; margin-top: 10px; padding-top: 10px; font-size: 20px; font-weight: bold; color: #496044;">
+            Total: <span id="checkoutTotal">$0.00</span>
+          </div>
+        </div>
+
+        <div id="card-container"></div>
+        
+        <button type="submit" class="payment-button" id="card-button">Complete Payment</button>
+        <button type="button" class="close-checkout" onclick="closeCheckout()">Cancel</button>
+      </form>
+      
+      <div id="payment-status" style="display: none;"></div>
+    </div>
+  </div>
+
+  <div class="hero-section">
+    <h1>SHOP CANINE PRODUCTS</h1>
+    <p>Unique and handmade canine products crafted with love. From artisanal treats to custom-painted collars and leashes, everything is made with your dog's happiness in mind.</p>
+  </div>
+
+  <div class="shop-container">
+    <h2 class="section-title">Dog Treats</h2>
+    <p class="section-subtitle">Small-batch, handcrafted treats made with quality ingredients your dog will love</p>
+    
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="product-image">🍪</div>
+        <div class="product-content">
+          <span class="product-badge">Popular</span>
+          <h3>Artisanal Small Batch Dog Cookie - Seasonal Selection</h3>
+          <div class="product-price">$5.00</div>
+          <p>Delicious, all-natural cookies made in small batches to ensure freshness and quality. Flavors rotate seasonally - contact us for current selection!</p>
+          <ul class="product-features">
+            <li>Made with wholesome ingredients</li>
+            <li>No artificial preservatives</li>
+            <li>Seasonal rotating flavors</li>
+            <li>Perfect for training rewards</li>
+          </ul>
+          <button class="add-to-cart-button" onclick="addToCart(1, 'Artisanal Dog Cookies', 5.00, '🍪')">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-image">🥚</div>
+        <div class="product-content">
+          <span class="product-badge">High Protein</span>
+          <h3>Freeze Dried Quail Egg Yolks 2oz</h3>
+          <div class="product-price">$5.00</div>
+          <p>Pure freeze-dried quail egg yolks - a protein-rich, single-ingredient treat that dogs absolutely love. Perfect for training or as a special snack.</p>
+          <ul class="product-features">
+            <li>100% natural quail egg yolks</li>
+            <li>High protein content</li>
+            <li>Freeze-dried for freshness</li>
+            <li>Great for sensitive stomachs</li>
+          </ul>
+          <button class="add-to-cart-button" onclick="addToCart(2, 'Freeze Dried Quail Egg Yolks 2oz', 5.00, '🥚')">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-image">🦆</div>
+        <div class="product-content">
+          <span class="product-badge">Novel Protein</span>
+          <h3>Duck Wrapped Okra 2oz</h3>
+          <div class="product-price">$5.00</div>
+          <p>Premium duck wrapped around okra for a unique, flavorful treat. High in protein and a great alternative to traditional treats.</p>
+          <ul class="product-features">
+            <li>Real duck and okra</li>
+            <li>Novel protein source</li>
+            <li>Limited ingredients</li>
+            <li>Ideal for picky eaters</li>
+          </ul>
+          <button class="add-to-cart-button" onclick="addToCart(3, 'Duck Wrapped Okra 2oz', 5.00, '🦆')">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="section-title">Training Toys</h2>
+    <p class="section-subtitle">Durable toys perfect for training and play</p>
+    
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="product-image">⚽</div>
+        <div class="product-content">
+          <span class="product-badge">Training Essential</span>
+          <h3>EVA Foam Ball Tug w/ Biothane Handle</h3>
+          <div class="product-price">$18.00</div>
+          <p>Durable EVA foam ball with a strong biothane handle - perfect for training, play, and building drive. Great for fetch, tug games, and reward-based training.</p>
+          <ul class="product-features">
+            <li>Lightweight and durable EVA foam</li>
+            <li>Strong biothane handle</li>
+            <li>Easy to clean</li>
+            <li>Perfect training reward</li>
+          </ul>
+          <button class="add-to-cart-button" onclick="addToCart(4, 'EVA Foam Ball Tug w/ Biothane Handle', 18.00, '⚽')">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="section-title">Custom Orders</h2>
+    <p class="section-subtitle">Handcrafted and hand-painted designs that are as unique as your dog</p>
+    
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="product-image">🖼️</div>
+        <div class="product-content">
+          <span class="product-badge">Custom Made</span>
+          <h3>Dog Portraits</h3>
+          <div class="product-price">Contact for Custom Pricing</div>
+          <p>Beautiful custom portraits of your beloved dog, hand-painted with care and attention to detail. A perfect keepsake or gift to celebrate your furry friend.</p>
+          <ul class="product-features">
+            <li>Hand-painted artwork</li>
+            <li>Various sizes available</li>
+            <li>Capture your dog's personality</li>
+            <li>Perfect for home or office</li>
+          </ul>
+          <a href="mailto:caninekindtraining@gmail.com?subject=Dog Portrait Inquiry" class="contact-button">Request Custom Quote</a>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-image">🎨</div>
+        <div class="product-content">
+          <span class="product-badge">Custom Made</span>
+          <h3>Custom Painted Biothane Gear</h3>
+          <div class="product-price">Contact for Custom Pricing</div>
+          <p>Durable biothane collars, leashes, and gear hand-painted with unique designs. Waterproof, easy to clean, and customized just for you and your dog.</p>
+          <ul class="product-features">
+            <li>Hand-painted biothane material</li>
+            <li>Waterproof and durable</li>
+            <li>Custom colors and designs</li>
+            <li>Collars, leashes, and long lines</li>
+          </ul>
+          <a href="mailto:caninekindtraining@gmail.com?subject=Custom Biothane Gear Inquiry" class="contact-button">Request Custom Quote</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <h2>How to Order</h2>
+      <p><strong>Ready-Made Products:</strong> Simply add items to your cart and checkout with our secure Square payment system.</p>
+      <p style="margin-top: 15px;"><strong>Custom Orders:</strong> Contact us at <a href="mailto:caninekindtraining@gmail.com">caninekindtraining@gmail.com</a> to discuss your custom design ideas.</p>
+      <p style="margin-top: 15px;"><strong>Payment Options:</strong> We accept all major credit cards through Square for online orders. For custom orders, we also accept PayPal and cash.</p>
+      
+      <div class="payment-icons">
+        <div class="payment-icon">💳 Credit Cards</div>
+        <div class="payment-icon">Square</div>
+        <div class="payment-icon">PayPal</div>
+        <div class="payment-icon">Cash</div>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <h2>Why Choose Our Products?</h2>
+      <p>Every product in our shop is handmade with love and attention to detail. We believe your dog deserves the best, which is why we:</p>
+      <ul style="margin-top: 15px;">
+        <li>Use quality materials and ingredients</li>
+        <li>Create each item by hand in small batches</li>
+        <li>Offer customization to match your dog's personality</li>
+        <li>Stand behind the quality of everything we make</li>
+        <li>Support our local dog training community</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="training.html">Training Services</a></li>
+          <li><a href="shop.html">Shop Products</a></li>
+          <li><a href="#testimonials">Testimonials</a></li>
+          <li><a href="#contact">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Contact Info</h3>
+        <p>Email: caninekindtraining@gmail.com</p>
+        <p>Hours: By Appointment</p>
+        <p>Serving the Greater Boston Area</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 CanineKind Dog Training. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // IMPORTANT: Replace YOUR_SANDBOX_APPLICATION_ID_HERE with your actual Sandbox Application ID
+    const SQUARE_APPLICATION_ID = 'sandbox-sq0idb-Orqmme5n4V6GtL8eCnmkGw';
+
+    // Shopping cart state
+    let cart = [];
+    let payments;
+    let card;
+
+    // Load cart from localStorage on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      loadCart();
+      updateCartDisplay();
+    });
+
+    // Initialize Square Payment Form
+    async function initializeSquarePayment() {
+      if (!window.Square) {
+        console.error('Square.js failed to load');
+        return;
+      }
+
+      try {
+        payments = window.Square.payments(SQUARE_APPLICATION_ID);
+        card = await payments.card();
+        await card.attach('#card-container');
+      } catch (e) {
+        console.error('Payment form failed to initialize', e);
+        alert('Payment system failed to load. Please refresh the page and try again.');
+      }
+    }
+
+    // Cart Functions
+    function addToCart(id, name, price, icon) {
+      const existingItem = cart.find(item => item.id === id);
+      
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push({
+          id: id,
+          name: name,
+          price: price,
+          icon: icon,
+          quantity: 1
+        });
+      }
+      
+      saveCart();
+      updateCartDisplay();
+      
+      // Show a brief notification
+      const cartIcon = document.querySelector('.cart-icon');
+      cartIcon.style.transform = 'scale(1.3)';
+      setTimeout(() => {
+        cartIcon.style.transform = 'scale(1)';
+      }, 300);
+    }
+
+    function removeFromCart(id) {
+      cart = cart.filter(item => item.id !== id);
+      saveCart();
+      updateCartDisplay();
+    }
+
+    function updateQuantity(id, change) {
+      const item = cart.find(item => item.id === id);
+      if (item) {
+        item.quantity += change;
+        if (item.quantity <= 0) {
+          removeFromCart(id);
+        } else {
+          saveCart();
+          updateCartDisplay();
+        }
+      }
+    }
+
+    function saveCart() {
+      localStorage.setItem('canineKindCart', JSON.stringify(cart));
+    }
+
+    function loadCart() {
+      const savedCart = localStorage.getItem('canineKindCart');
+      if (savedCart) {
+        cart = JSON.parse(savedCart);
+      }
+    }
+
+    function getCartTotal() {
+      return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+    }
+
+    function updateCartDisplay() {
+      const cartCount = document.getElementById('cartCount');
+      const cartItems = document.getElementById('cartItems');
+      const cartSummary = document.getElementById('cartSummary');
+      const cartTotal = document.getElementById('cartTotal');
+      
+      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+      cartCount.textContent = totalItems;
+      
+      if (cart.length === 0) {
+        cartItems.innerHTML = `
+          <div class="cart-empty">
+            <div class="cart-empty-icon">🛒</div>
+            <p>Your cart is empty</p>
+          </div>
+        `;
+        cartSummary.style.display = 'none';
+      } else {
+        cartItems.innerHTML = cart.map(item => `
+          <div class="cart-item">
+            <div class="cart-item-icon">${item.icon}</div>
+            <div class="cart-item-details">
+              <div class="cart-item-name">${item.name}</div>
+              <div class="cart-item-price">${item.price.toFixed(2)}</div>
+              <div class="cart-item-quantity">
+                <button class="qty-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                <span style="font-weight: bold; min-width: 30px; text-align: center;">${item.quantity}</span>
+                <button class="qty-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+              </div>
+              <button class="remove-item" onclick="removeFromCart(${item.id})">Remove</button>
+            </div>
+          </div>
+        `).join('');
+        
+        cartSummary.style.display = 'block';
+        cartTotal.textContent = `${getCartTotal().toFixed(2)}`;
+      }
+    }
+
+    function toggleCart() {
+      const cartSidebar = document.getElementById('cartSidebar');
+      cartSidebar.classList.toggle('active');
+    }
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileNavMenu');
+      const overlay = document.getElementById('mobileNavOverlay');
+      
+      menu.classList.add('active');
+      overlay.style.display = 'block';
+    }
+
+    function closeMobileMenu() {
+      const menu = document.getElementById('mobileNavMenu');
+      const overlay = document.getElementById('mobileNavOverlay');
+      
+      menu.classList.remove('active');
+      overlay.style.display = 'none';
+    }
+
+    async function openCheckout() {
+      if (cart.length === 0) return;
+      
+      const checkoutOverlay = document.getElementById('checkoutOverlay');
+      const checkoutSummary = document.getElementById('checkoutSummary');
+      const checkoutTotal = document.getElementById('checkoutTotal');
+      
+      // Build checkout summary
+      checkoutSummary.innerHTML = cart.map(item => `
+        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+          <span>${item.name} (x${item.quantity})</span>
+          <span>${(item.price * item.quantity).toFixed(2)}</span>
+        </div>
+      `).join('');
+      
+      checkoutTotal.textContent = `${getCartTotal().toFixed(2)}`;
+      
+      checkoutOverlay.classList.add('active');
+      
+      // Initialize Square payment form
+      await initializeSquarePayment();
+    }
+
+    function closeCheckout() {
+      const checkoutOverlay = document.getElementById('checkoutOverlay');
+      checkoutOverlay.classList.remove('active');
+    }
+
+    // Handle checkout form submission
+    document.getElementById('checkout-form').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      
+      const cardButton = document.getElementById('card-button');
+      cardButton.disabled = true;
+      cardButton.textContent = 'Processing...';
+      
+      try {
+        const result = await card.tokenize();
+        if (result.status === 'OK') {
+          const orderData = {
+            sourceId: result.token,
+            amount: Math.round(getCartTotal() * 100), // Amount in cents
+            customer: {
+              name: document.getElementById('customerName').value,
+              email: document.getElementById('customerEmail').value,
+              phone: document.getElementById('customerPhone').value,
+              address: document.getElementById('shippingAddress').value
+            },
+            items: cart,
+            notes: document.getElementById('orderNotes').value
+          };
+          
+          // Send to Netlify Function
+          const response = await fetch('/.netlify/functions/create-payment', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(orderData)
+          });
+          
+          const data = await response.json();
+          
+          if (data.success) {
+            // Payment successful!
+            showSuccessMessage();
+          } else {
+            throw new Error(data.error || 'Payment failed');
+          }
+          
+        } else {
+          console.error('Tokenization errors:', result.errors);
+          alert('Payment failed. Please check your card details and try again.');
+          cardButton.disabled = false;
+          cardButton.textContent = 'Complete Payment';
+        }
+      } catch (e) {
+        console.error('Payment error:', e);
+        alert('Payment failed: ' + (e.message || 'Please try again.'));
+        cardButton.disabled = false;
+        cardButton.textContent = 'Complete Payment';
+      }
+    });
+
+    function showSuccessMessage() {
+      const paymentStatus = document.getElementById('payment-status');
+      const checkoutForm = document.getElementById('checkout-form');
+      
+      checkoutForm.style.display = 'none';
+      paymentStatus.style.display = 'block';
+      paymentStatus.innerHTML = `
+        <div class="success-message">
+          <div class="success-icon">✓</div>
+          <h3 style="color: #496044; margin: 20px 0;">Payment Successful!</h3>
+          <p>Thank you for your order. We'll contact you shortly with shipping/pickup details.</p>
+          <button class="payment-button" onclick="completeOrder()">Close</button>
+        </div>
+      `;
+    }
+
+    function completeOrder() {
+      // Clear cart
+      cart = [];
+      saveCart();
+      updateCartDisplay();
+      
+      // Close checkout and cart
+      closeCheckout();
+      toggleCart();
+      
+      // Reset form
+      document.getElementById('checkout-form').reset();
+      document.getElementById('checkout-form').style.display = 'block';
+      document.getElementById('payment-status').style.display = 'none';
+      document.getElementById('card-button').disabled = false;
+      document.getElementById('card-button').textContent = 'Complete Payment';
+    }
+  </script>
+</body>
+</html>
