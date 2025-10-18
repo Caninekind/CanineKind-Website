@@ -1,0 +1,8 @@
+{
+  "name": "caninekind-shop",
+  "version": "1.0.0",
+  "description": "CanineKind Dog Training Shop",
+  "dependencies": {
+    "square": "^37.1.0"
+  }
+}
