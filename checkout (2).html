@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - CanineKind Dog Training</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #D1E5F4;
+      overflow-x: hidden;
+    }
+
+    header {
+      background-color: #799972;
+      position: relative;
+      padding: 20px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      width: 100%;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    .header-line {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 120px;
+      background-color: #496044;
+      transform: translateY(-50%);
+      z-index: 1;
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 1400px;
+      gap: 20px;
+      padding: 0 40px;
+    }
+
+    .nav-section {
+      display: flex;
+      gap: 15px;
+      flex: 1;
+      flex-wrap: wrap;
+      align-content: flex-start;
+    }
+
+    .nav-section:first-child {
+      justify-content: flex-end;
+    }
+
+    .nav-section:last-child {
+      justify-content: flex-start;
+    }
+
+    .logo {
+      flex-shrink: 0;
+    }
+
+    nav a {
+      font-family: Impact, sans-serif;
+      color: white;
+      font-size: 18px;
+      text-decoration: none;
+      padding: 6px 12px;
+      border: 2px solid white;
+      text-shadow: 2px 2px 2px black;
+      transition: background 0.3s;
+      white-space: nowrap;
+    }
+
+    nav a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .logo img {
+      height: 220px;
+      width: auto;
+      z-index: 2;
+      border: 2px solid white;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+
+    /* Mobile navigation */
+    .mobile-menu-toggle {
+      display: none;
+      background: transparent;
+      border: 2px solid white;
+      color: white;
+      font-size: 24px;
+      padding: 10px 15px;
+      cursor: pointer;
+      position: relative;
+      z-index: 3;
+    }
+
+    .mobile-nav-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 998;
+    }
+
+    .mobile-nav-menu {
+      display: none;
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 80%;
+      max-width: 300px;
+      height: 100%;
+      background-color: #496044;
+      z-index: 999;
+      transition: right 0.3s ease;
+      overflow-y: auto;
+      box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .mobile-nav-menu.active {
+      right: 0;
+    }
+
+    .mobile-nav-header {
+      padding: 20px;
+      border-bottom: 2px solid #799972;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .mobile-nav-close {
+      background: transparent;
+      border: 2px solid white;
+      color: white;
+      font-size: 24px;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+    .mobile-nav-links {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .mobile-nav-links a {
+      font-family: Impact, sans-serif;
+      color: white;
+      font-size: 18px;
+      text-decoration: none;
+      padding: 12px 16px;
+      border: 2px solid white;
+      text-shadow: 2px 2px 2px black;
+      transition: background 0.3s;
+      white-space: nowrap;
+      display: block;
+      text-align: center;
+    }
+
+    .mobile-nav-links a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .page-title {
+      background-color: #496044;
+      color: white;
+      text-align: center;
+      padding: 40px 20px;
+      font-family: Impact, sans-serif;
+      font-size: 48px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      border-bottom: 5px solid #799972;
+    }
+
+    .checkout-container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 30px;
+    }
+
+    .checkout-section {
+      background-color: white;
+      border: 3px solid #799972;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .section-title {
+      font-family: Impact, sans-serif;
+      font-size: 28px;
+      color: #496044;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #D1E5F4;
+    }
+
+    .cart-item {
+      display: flex;
+      gap: 15px;
+      padding: 15px;
+      border-bottom: 1px solid #D1E5F4;
+      align-items: center;
+    }
+
+    .cart-item:last-child {
+      border-bottom: none;
+    }
+
+    .item-image {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 2px solid #799972;
+    }
+
+    .item-details {
+      flex: 1;
+    }
+
+    .item-name {
+      font-weight: bold;
+      font-size: 18px;
+      color: #496044;
+      margin-bottom: 5px;
+    }
+
+    .item-price {
+      color: #799972;
+      font-size: 16px;
+    }
+
+    .item-quantity {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .qty-btn {
+      background-color: #799972;
+      color: white;
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: background-color 0.3s;
+    }
+
+    .qty-btn:hover {
+      background-color: #496044;
+    }
+
+    .qty-display {
+      font-weight: bold;
+      min-width: 30px;
+      text-align: center;
+    }
+
+    .remove-btn {
+      background-color: #ff4444;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s;
+    }
+
+    .remove-btn:hover {
+      background-color: #cc0000;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 0;
+      font-size: 16px;
+    }
+
+    .summary-row.total {
+      border-top: 2px solid #496044;
+      margin-top: 15px;
+      padding-top: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #496044;
+    }
+
+    .checkout-btn {
+      width: 100%;
+      background-color: #496044;
+      color: white;
+      font-family: Impact, sans-serif;
+      font-size: 24px;
+      padding: 20px;
+      border: 3px solid white;
+      border-radius: 10px;
+      cursor: pointer;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      transition: all 0.3s;
+      margin-top: 20px;
+    }
+
+    .checkout-btn:hover {
+      background-color: #799972;
+      transform: scale(1.02);
+    }
+
+    .checkout-btn:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .continue-shopping {
+      width: 100%;
+      background-color: transparent;
+      color: #496044;
+      font-family: Impact, sans-serif;
+      font-size: 18px;
+      padding: 15px;
+      border: 3px solid #496044;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 15px;
+      text-decoration: none;
+      display: block;
+      text-align: center;
+    }
+
+    .continue-shopping:hover {
+      background-color: #D1E5F4;
+    }
+
+    .empty-cart {
+      text-align: center;
+      padding: 60px 20px;
+      color: #999;
+    }
+
+    .empty-cart-icon {
+      font-size: 80px;
+      margin-bottom: 20px;
+    }
+
+    .empty-cart h3 {
+      font-size: 24px;
+      color: #496044;
+      margin-bottom: 10px;
+    }
+
+    footer {
+      background-color: #496044;
+      color: white;
+      padding: 40px 20px 20px;
+      margin-top: 60px;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    .footer-section h3 {
+      font-family: Impact, sans-serif;
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+
+    .footer-section ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-section ul li {
+      margin-bottom: 10px;
+    }
+
+    .footer-section a {
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-section a:hover {
+      color: #D1E5F4;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 20px;
+      border-top: 2px solid #799972;
+    }
+
+    @media (max-width: 968px) {
+      .checkout-container {
+        grid-template-columns: 1fr;
+      }
+
+      .page-title {
+        font-size: 36px;
+      }
+
+      .logo img {
+        height: 150px;
+      }
+
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .mobile-nav-overlay {
+        display: none;
+      }
+
+      .mobile-nav-menu {
+        display: block;
+      }
+
+      .nav-section {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .page-title {
+        font-size: 28px;
+      }
+
+      .cart-item {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .item-quantity {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-line"></div>
+    <div class="header-content">
+      <nav class="nav-section">
+        <a href="https://caninekind.io">HOME</a>
+        <a href="https://caninekind.io/about">ABOUT US</a>
+        <a href="https://caninekind.io/testimonials">TESTIMONIALS</a>
+      </nav>
+      <div class="logo">
+        <img src="https://i.imgur.com/HrYfECf.jpeg" alt="CanineKind Logo">
+      </div>
+      <nav class="nav-section">
+        <a href="https://caninekind.io/services">TRAINING SERVICES</a>
+        <a href="https://caninekind.io/faqs">FAQS</a>
+        <a href="https://caninekind.io/shop">SHOP</a>
+      </nav>
+      <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Overlay -->
+  <div class="mobile-nav-overlay" id="mobileNavOverlay" onclick="closeMobileMenu()"></div>
+
+  <!-- Mobile Navigation Menu -->
+  <div class="mobile-nav-menu" id="mobileNavMenu">
+    <div class="mobile-nav-header">
+      <span style="color: white; font-weight: bold;">Menu</span>
+      <button class="mobile-nav-close" onclick="closeMobileMenu()">✕</button>
+    </div>
+    <div class="mobile-nav-links">
+      <a href="https://caninekind.io" onclick="closeMobileMenu()">HOME</a>
+      <a href="https://caninekind.io/about" onclick="closeMobileMenu()">ABOUT US</a>
+      <a href="https://caninekind.io/testimonials" onclick="closeMobileMenu()">TESTIMONIALS</a>
+      <a href="https://caninekind.io/services" onclick="closeMobileMenu()">TRAINING SERVICES</a>
+      <a href="https://caninekind.io/intake" onclick="closeMobileMenu()">INTAKE FORM</a>
+      <a href="https://caninekind.io/faqs" onclick="closeMobileMenu()">FAQS</a>
+      <a href="https://caninekind.io/shop" onclick="closeMobileMenu()">SHOP</a>
+    </div>
+  </div>
+
+  <div class="page-title">Checkout</div>
+
+  <div class="checkout-container">
+    <!-- Cart Items -->
+    <div class="checkout-section">
+      <h2 class="section-title">Your Cart</h2>
+      <div id="cartItemsContainer"></div>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="checkout-section">
+      <h2 class="section-title">Order Summary</h2>
+      <div class="summary-row">
+        <span>Subtotal:</span>
+        <span id="subtotal">$0.00</span>
+      </div>
+      <div class="summary-row">
+        <span>Tax (6.25%):</span>
+        <span id="tax">$0.00</span>
+      </div>
+      <div class="summary-row">
+        <span>Shipping:</span>
+        <span id="shipping">$0.00</span>
+      </div>
+      <div class="summary-row total">
+        <span>Total:</span>
+        <span id="total">$0.00</span>
+      </div>
+
+      <button class="checkout-btn" id="proceedToSquare" onclick="proceedToSquareCheckout()">
+        Proceed to Payment
+      </button>
+
+      <a href="https://caninekind.io/shop" class="continue-shopping">
+        Continue Shopping
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="https://caninekind.io">Home</a></li>
+          <li><a href="https://caninekind.io/services">Training Services</a></li>
+          <li><a href="https://caninekind.io/shop">Shop Products</a></li>
+          <li><a href="https://caninekind.io/testimonials">Testimonials</a></li>
+          <li><a href="https://caninekind.io/faqs">FAQs</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Contact Info</h3>
+        <p>Email: info@caninekind.com</p>
+        <p>Phone: (555) 123-4567</p>
+        <p>Hours: Mon-Fri 9AM-6PM</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 CanineKind Dog Training. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Load cart from localStorage
+    function loadCart() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      return cart;
+    }
+
+    // Save cart to localStorage
+    function saveCart(cart) {
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+
+    // Calculate totals
+    function calculateTotals(cart) {
+      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const tax = subtotal * 0.0625; // 6.25% MA tax
+      const shipping = subtotal > 50 ? 0 : 8.99; // Free shipping over $50
+      const total = subtotal + tax + shipping;
+
+      return { subtotal, tax, shipping, total };
+    }
+
+    // Update quantity
+    function updateQuantity(index, change) {
+      const cart = loadCart();
+      cart[index].quantity += change;
+      
+      if (cart[index].quantity < 1) {
+        cart[index].quantity = 1;
+      }
+      
+      saveCart(cart);
+      displayCart();
+    }
+
+    // Remove item
+    function removeItem(index) {
+      const cart = loadCart();
+      cart.splice(index, 1);
+      saveCart(cart);
+      displayCart();
+    }
+
+    // Display cart
+    function displayCart() {
+      const cart = loadCart();
+      const container = document.getElementById('cartItemsContainer');
+      
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div class="empty-cart">
+            <div class="empty-cart-icon">🛒</div>
+            <h3>Your cart is empty</h3>
+            <p>Add some items to get started!</p>
+          </div>
+        `;
+        document.getElementById('proceedToSquare').disabled = true;
+        document.getElementById('subtotal').textContent = '$0.00';
+        document.getElementById('tax').textContent = '$0.00';
+        document.getElementById('shipping').textContent = '$0.00';
+        document.getElementById('total').textContent = '$0.00';
+        return;
+      }
+
+      // Display cart items
+      container.innerHTML = cart.map((item, index) => `
+        <div class="cart-item">
+          <img src="${item.image || 'https://via.placeholder.com/80'}" alt="${item.name}" class="item-image">
+          <div class="item-details">
+            <div class="item-name">${item.name}</div>
+            <div class="item-price">$${item.price.toFixed(2)}</div>
+            <div class="item-quantity">
+              <button class="qty-btn" onclick="updateQuantity(${index}, -1)">−</button>
+              <span class="qty-display">${item.quantity}</span>
+              <button class="qty-btn" onclick="updateQuantity(${index}, 1)">+</button>
+              <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      // Calculate and display totals
+      const { subtotal, tax, shipping, total } = calculateTotals(cart);
+      document.getElementById('subtotal').textContent = '$' + subtotal.toFixed(2);
+      document.getElementById('tax').textContent = '$' + tax.toFixed(2);
+      document.getElementById('shipping').textContent = shipping === 0 ? 'FREE' : '$' + shipping.toFixed(2);
+      document.getElementById('total').textContent = '$' + total.toFixed(2);
+      
+      document.getElementById('proceedToSquare').disabled = false;
+    }
+
+    // Proceed to Square checkout
+    function proceedToSquareCheckout() {
+      const cart = loadCart();
+      const { total } = calculateTotals(cart);
+      
+      // Here you'll integrate with Square
+      // For now, just show an alert
+      alert('Total: $' + total.toFixed(2) + '\n\nSquare checkout integration coming soon!\n\nYour cart has been saved.');
+      
+      // In the future, this will redirect to Square checkout with the cart data
+      // window.location.href = 'YOUR_SQUARE_CHECKOUT_URL';
+    }
+
+    // Mobile menu toggle
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileNavMenu');
+      const overlay = document.getElementById('mobileNavOverlay');
+      
+      menu.classList.add('active');
+      overlay.style.display = 'block';
+    }
+
+    function closeMobileMenu() {
+      const menu = document.getElementById('mobileNavMenu');
+      const overlay = document.getElementById('mobileNavOverlay');
+      
+      menu.classList.remove('active');
+      overlay.style.display = 'none';
+    }
+
+    // Initialize on page load
+    displayCart();
+  </script>
+</body>
+</html>
