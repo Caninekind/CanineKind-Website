@@ -5,753 +5,143 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CanineKind Dog Training</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #D1E5F4;
-      overflow-x: hidden;
-    }
-
-    header {
-      background-color: #799972;
-      position: relative;
-      padding: 20px 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      width: 100%;
-      box-sizing: border-box;
-      overflow: hidden;
-    }
-
-    .header-line {
-      position: absolute;
-      top: 50%;
-      left: 0;
-      width: 100%;
-      height: 120px;
-      background-color: #496044;
-      transform: translateY(-50%);
-      z-index: 1;
-    }
-
-    .header-content {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      max-width: 1400px;
-      gap: 20px;
-      padding: 0 40px;
-    }
-
-    .nav-section {
-      display: flex;
-      gap: 15px;
-      flex: 1;
-      flex-wrap: wrap;
-      align-content: flex-start;
-    }
-
-    .nav-section:first-child {
-      justify-content: flex-end;
-    }
-
-    .nav-section:last-child {
-      justify-content: flex-start;
-    }
-
-    .logo {
-      flex-shrink: 0;
-    }
-
-    nav a {
-      font-family: Impact, sans-serif;
-      color: white;
-      font-size: 18px;
-      text-decoration: none;
-      padding: 6px 12px;
-      border: 2px solid white;
-      text-shadow: 2px 2px 2px black;
-      transition: background 0.3s;
-      white-space: nowrap;
-    }
-
-    nav a:hover {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
-
-    .logo img {
-      height: 220px;
-      width: auto;
-      z-index: 2;
-      border: 2px solid white;
-      border-radius: 8px;
-      box-sizing: border-box;
-    }
-
-    /* Shopping Cart Icon */
-    .cart-icon-container {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 1000;
-      background-color: #496044;
-      border: 3px solid white;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      transition: all 0.3s ease;
-    }
-
-    .cart-icon-container:hover {
-      background-color: #799972;
-      transform: scale(1.1);
-    }
-
-    .cart-icon {
-      font-size: 28px;
-      color: white;
-    }
-
-    .cart-count {
-      position: absolute;
-      top: -5px;
-      right: -5px;
-      background-color: #ff4444;
-      color: white;
-      border-radius: 50%;
-      width: 24px;
-      height: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      font-weight: bold;
-      border: 2px solid white;
-    }
-
-    /* Mobile navigation */
-    .mobile-menu-toggle {
-      display: none;
-      background: transparent;
-      border: 2px solid white;
-      color: white;
-      font-size: 24px;
-      padding: 10px 15px;
-      cursor: pointer;
-      position: relative;
-      z-index: 3;
-    }
-
-    .mobile-nav-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 998;
-    }
-
-    .mobile-nav-menu {
-      display: none;
-      position: fixed;
-      top: 0;
-      right: -100%;
-      width: 80%;
-      max-width: 300px;
-      height: 100%;
-      background-color: #496044;
-      z-index: 999;
-      transition: right 0.3s ease;
-      overflow-y: auto;
-      box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
-    }
-
-    .mobile-nav-menu.active {
-      right: 0;
-    }
-
-    .mobile-nav-header {
-      padding: 20px;
-      border-bottom: 2px solid #799972;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .mobile-nav-close {
-      background: transparent;
-      border: 2px solid white;
-      color: white;
-      font-size: 24px;
-      padding: 5px 10px;
-      cursor: pointer;
-    }
-
-    .mobile-nav-links {
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .mobile-nav-links a {
-      font-family: Impact, sans-serif;
-      color: white;
-      font-size: 18px;
-      text-decoration: none;
-      padding: 12px 16px;
-      border: 2px solid white;
-      text-shadow: 2px 2px 2px black;
-      transition: background 0.3s;
-      white-space: nowrap;
-      display: block;
-      text-align: center;
-    }
-
-    .mobile-nav-links a:hover {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
-
-    .image-box {
-      background-color: #799972;
-      width: 100%;
-      padding: 15px;
-      display: flex;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-
-    .image-box img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    .ribbon-container {
-      position: relative;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      margin: 50px 0;
-      min-height: 200px;
-    }
-
-    .ribbon-center {
-      position: absolute;
-      top: 50%;
-      left: 0;
-      width: 100%;
-      height: 120px;
-      background-color: #496044;
-      transform: translateY(-50%);
-      z-index: 1;
-    }
-
-    .welcome-box {
-      background-color: transparent;
-      color: black;
-      font-family: Helvetica, Arial, sans-serif;
-      font-size: 28px;
-      font-weight: 400;
-      line-height: 1.6;
-      max-width: 100%;
-      width: 100%;
-      margin: 0 auto;
-      padding: 0;
-      border-radius: 0;
-      box-shadow: none;
-      opacity: 0;
-      transform: translateY(50px);
-      transition: all 1s ease;
-      position: relative;
-      z-index: 2;
-    }
-
-    .welcome-box.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Cards Section (Desktop) */
-    .cards-section {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      padding: 60px 20px;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .card {
-      background-color: #799972;
-      border-radius: 12px;
-      overflow: hidden;
-      flex: 1;
-      max-width: 400px;
-      opacity: 0;
-      transform: translateY(50px);
-      transition: all 0.8s ease;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    }
-
-    .card.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, sans-serif; background-color: #D1E5F4; overflow-x: hidden; }
+    header { background-color: #799972; position: relative; padding: 20px 0; display: flex; justify-content: center; align-items: center; flex-direction: column; width: 100%; box-sizing: border-box; overflow: hidden; }
+    .header-line { position: absolute; top: 50%; left: 0; width: 100%; height: 120px; background-color: #496044; transform: translateY(-50%); z-index: 1; }
+    .header-content { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 1800px; gap: 40px; padding: 0 60px; }
+    .nav-section { display: flex; gap: 30px; flex: 1; flex-wrap: nowrap; align-content: flex-start; }
+    .nav-section:first-child { justify-content: flex-end; }
+    .nav-section:last-child { justify-content: flex-start; }
+    .logo { flex-shrink: 0; }
+    nav a { font-family: Impact, sans-serif; color: white; font-size: 20px; text-decoration: none; padding: 12px 24px; border: 3px solid white; text-shadow: 2px 2px 4px black; transition: background 0.3s; white-space: nowrap; background-color: rgba(73, 96, 68, 0.3); }
+    nav a:hover { background-color: rgba(255, 255, 255, 0.2); }
+    .logo img { height: 280px; width: auto; z-index: 2; border: 2px solid white; border-radius: 8px; box-sizing: border-box; }
+    .cart-icon-container { position: fixed; top: 20px; right: 20px; z-index: 1000; background-color: #496044; border: 3px solid white; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: all 0.3s ease; }
+    .cart-icon-container:hover { background-color: #799972; transform: scale(1.1); }
+    .cart-icon { font-size: 28px; color: white; }
+    .cart-count { position: absolute; top: -5px; right: -5px; background-color: #ff4444; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; border: 2px solid white; }
+    .mobile-menu-toggle { display: none; background: transparent; border: 2px solid white; color: white; font-size: 24px; padding: 10px 15px; cursor: pointer; position: relative; z-index: 3; }
+    .mobile-nav-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); z-index: 998; }
+    .mobile-nav-menu { display: none; position: fixed; top: 0; right: -100%; width: 80%; max-width: 300px; height: 100%; background-color: #496044; z-index: 999; transition: right 0.3s ease; overflow-y: auto; box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3); }
+    .mobile-nav-menu.active { right: 0; }
+    .mobile-nav-header { padding: 20px; border-bottom: 2px solid #799972; display: flex; justify-content: space-between; align-items: center; }
+    .mobile-nav-close { background: transparent; border: 2px solid white; color: white; font-size: 24px; padding: 5px 10px; cursor: pointer; }
+    .mobile-nav-links { padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+    .mobile-nav-links a { font-family: Impact, sans-serif; color: white; font-size: 18px; text-decoration: none; padding: 12px 16px; border: 2px solid white; text-shadow: 2px 2px 2px black; transition: background 0.3s; white-space: nowrap; display: block; text-align: center; }
+    .mobile-nav-links a:hover { background-color: rgba(255, 255, 255, 0.2); }
+    .image-box { background-color: #799972; width: 100%; padding: 15px; display: flex; justify-content: center; box-sizing: border-box; }
+    .image-box img { width: 100%; height: auto; display: block; }
+    .ribbon-container { position: relative; width: 100%; display: flex; justify-content: center; margin: 50px 0; min-height: 200px; }
+    .ribbon-center { position: absolute; top: 50%; left: 0; width: 100%; height: 120px; background-color: #496044; transform: translateY(-50%); z-index: 1; }
+    .welcome-box { background-color: transparent; color: black; font-family: Helvetica, Arial, sans-serif; font-size: 28px; font-weight: 400; line-height: 1.6; max-width: 100%; width: 100%; margin: 0 auto; padding: 0; border-radius: 0; box-shadow: none; opacity: 0; transform: translateY(50px); transition: all 1s ease; position: relative; z-index: 2; }
+    .welcome-box.visible { opacity: 1; transform: translateY(0); }
+    .cards-section { display: flex; justify-content: center; gap: 50px; padding: 60px 40px; max-width: 1600px; margin: 0 auto; }
+    .card { background-color: #799972; border-radius: 12px; overflow: hidden; flex: 1; max-width: 480px; min-width: 420px; opacity: 0; transform: translateY(50px); transition: all 0.8s ease; box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+    .card.visible { opacity: 1; transform: translateY(0); }
     .card:nth-child(1) { transition-delay: 0.1s; }
     .card:nth-child(2) { transition-delay: 0.3s; }
     .card:nth-child(3) { transition-delay: 0.5s; }
-
-    .card-header {
-      padding: 15px;
-      background-color: #496044;
-    }
-
-    .card-header img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    .card-body {
-      padding: 20px;
-    }
-
-    .card-image {
-      width: 100%;
-      height: auto;
-      border-radius: 8px;
-      margin-bottom: 15px;
-      border: 3px solid #799972;
-      box-sizing: border-box;
-    }
-
-    /* Mobile Carousel */
-    .carousel-container {
-      display: none;
-      padding: 40px 0;
-      background-color: transparent;
-    }
-
-    .carousel-wrapper {
-      position: relative;
-      overflow: hidden;
-      max-width: 100%;
-      margin: 0 auto;
-    }
-
-    .carousel-track {
-      display: flex;
-      transition: transform 0.5s ease;
-    }
-
-    .carousel-slide {
-      min-width: 100%;
-      display: flex;
-      justify-content: center;
-      padding: 0 20px;
-    }
-
-    .mobile-card {
-      background-color: #799972;
-      border-radius: 12px;
-      overflow: hidden;
-      width: 100%;
-      max-width: 500px;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-    }
-
-    .mobile-card-header {
-      padding: 15px;
-      background-color: #496044;
-    }
-
-    .mobile-card-header img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    .mobile-card-body {
-      padding: 20px;
-    }
-
-    .mobile-card-body img {
-      width: 100%;
-      height: auto;
-      border-radius: 8px;
-      margin-bottom: 15px;
-      box-sizing: border-box;
-    }
-
-    .carousel-controls {
-      position: absolute;
-      top: 50%;
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      padding: 0 10px;
-      pointer-events: none;
-    }
-
-    .carousel-btn {
-      background-color: rgba(73, 96, 68, 0.9);
-      color: white;
-      border: 2px solid white;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      font-size: 24px;
-      cursor: pointer;
-      pointer-events: all;
-      transition: all 0.3s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .carousel-btn:hover {
-      background-color: rgba(121, 153, 114, 0.9);
-      transform: scale(1.1);
-    }
-
-    .carousel-indicators {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .indicator {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background-color: rgba(73, 96, 68, 0.5);
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    .indicator.active {
-      background-color: #496044;
-      transform: scale(1.3);
-    }
-
-    /* Shop Section Styles */
-    .showcase-section {
-      padding: 60px 20px;
-      background-color: transparent;
-    }
-
-    .showcase-box {
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    /* Desktop Shop Layout */
-    .desktop-shop-layout {
-      display: flex;
-      gap: 40px;
-      align-items: flex-start;
-      background-color: #799972;
-      border-radius: 12px;
-      padding: 40px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    }
-
-    .mobile-shop-layout {
-      display: none;
-    }
-
-    .shop-now-btn {
-      background-color: #496044;
-      color: white;
-      font-family: Impact, sans-serif;
-      font-size: 24px;
-      text-decoration: none;
-      padding: 15px 30px;
-      border: 3px solid white;
-      text-shadow: 2px 2px 4px black;
-      display: inline-block;
-      text-align: center;
-      margin-bottom: 20px;
-      transition: all 0.3s;
-      width: 100%;
-    }
-
-    .shop-now-btn:hover {
-      background-color: #799972;
-      transform: scale(1.05);
-    }
-
-    .shop-now-btn-mobile {
-      background-color: #496044;
-      color: white;
-      font-family: Impact, sans-serif;
-      font-size: 24px;
-      text-decoration: none;
-      padding: 15px 30px;
-      border: 3px solid white;
-      text-shadow: 2px 2px 4px black;
-      display: block;
-      text-align: center;
-      margin-bottom: 20px;
-      transition: all 0.3s;
-      width: 100%;
-    }
-
-    .shop-now-btn-mobile:hover {
-      background-color: #799972;
-      transform: scale(1.05);
-    }
-
-    .slideshow-container {
-      width: 100%;
-      border: 3px solid white;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    .slideshow-container img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    .text-content-wrapper {
-      flex: 1;
-    }
-
-    .textbox-container {
-      background-color: rgba(255, 255, 255, 0.1);
-      padding: 20px;
-      border-radius: 8px;
-      border: 2px solid white;
-    }
-
-    /* Shop Mobile Styles */
-    .mobile-shop-content {
-      background-color: #799972;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-    }
-
-    .mobile-shop-text {
-      padding: 20px;
-      background-color: #496044;
-      border-bottom: 3px solid white;
-    }
-
-    .mobile-shop-description {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    .mobile-shop-images {
-      padding: 20px;
-      text-align: center;
-      background-color: #496044;
-      position: relative;
-    }
-
-    .mobile-product-image {
-      width: 100%;
-      height: auto;
-      border: 3px solid white;
-      border-radius: 8px;
-      display: block;
-    }
-
-    /* Banner Section */
-    .banner-section {
-      padding: 60px 20px;
-      text-align: center;
-    }
-
-    /* Footer */
-    footer {
-      background-color: #496044;
-      color: white;
-      padding: 40px 20px 20px;
-    }
-
-    .footer-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
-      gap: 40px;
-      margin-bottom: 30px;
-    }
-
-    .footer-section h3 {
-      margin-bottom: 20px;
-      color: white;
-      font-family: Impact, sans-serif;
-      text-shadow: 2px 2px 2px black;
-    }
-
-    .footer-section ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    .footer-section ul li {
-      margin-bottom: 10px;
-    }
-
-    .footer-section a {
-      color: white;
-      text-decoration: none;
-      transition: color 0.3s;
-    }
-
-    .footer-section a:hover {
-      color: #799972;
-    }
-
-    .footer-bottom {
-      text-align: center;
-      padding-top: 20px;
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    /* Mobile Styles */
+    .card-header { padding: 15px; background-color: #496044; }
+    .card-header img { width: 100%; height: auto; display: block; }
+    .card-body { padding: 20px; }
+    .card-image { width: 100%; height: auto; border-radius: 8px; margin-bottom: 15px; border: 3px solid #799972; box-sizing: border-box; }
+    .carousel-container { display: none; padding: 40px 0; background-color: transparent; }
+    .carousel-wrapper { position: relative; overflow: hidden; max-width: 100%; margin: 0 auto; }
+    .carousel-track { display: flex; transition: transform 0.5s ease; }
+    .carousel-slide { min-width: 100%; display: flex; justify-content: center; padding: 0 20px; }
+    .mobile-card { background-color: #799972; border-radius: 12px; overflow: hidden; width: 100%; max-width: 500px; box-shadow: 0 6px 15px rgba(0,0,0,0.2); }
+    .mobile-card-header { padding: 15px; background-color: #496044; }
+    .mobile-card-header img { width: 100%; height: auto; display: block; }
+    .mobile-card-body { padding: 20px; }
+    .mobile-card-body img { width: 100%; height: auto; border-radius: 8px; margin-bottom: 15px; box-sizing: border-box; }
+    .carousel-controls { position: absolute; top: 50%; width: 100%; display: flex; justify-content: space-between; padding: 0 10px; pointer-events: none; }
+    .carousel-btn { background-color: rgba(73, 96, 68, 0.9); color: white; border: 2px solid white; border-radius: 50%; width: 40px; height: 40px; font-size: 24px; cursor: pointer; pointer-events: all; transition: all 0.3s; display: flex; align-items: center; justify-content: center; }
+    .carousel-btn:hover { background-color: rgba(121, 153, 114, 0.9); transform: scale(1.1); }
+    .carousel-indicators { display: flex; justify-content: center; gap: 10px; margin-top: 20px; }
+    .indicator { width: 12px; height: 12px; border-radius: 50%; background-color: rgba(73, 96, 68, 0.5); cursor: pointer; transition: all 0.3s; }
+    .indicator.active { background-color: #496044; transform: scale(1.3); }
+    .showcase-section { padding: 60px 20px; background-color: transparent; }
+    .showcase-box { max-width: 1400px; margin: 0 auto; }
+    .desktop-shop-layout { display: flex; gap: 40px; align-items: flex-start; background-color: #799972; border-radius: 12px; padding: 40px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+    .mobile-shop-layout { display: none; }
+    .shop-now-btn { background-color: #496044; color: white; font-family: Impact, sans-serif; font-size: 24px; text-decoration: none; padding: 15px 30px; border: 3px solid white; text-shadow: 2px 2px 4px black; display: inline-block; text-align: center; margin-bottom: 20px; transition: all 0.3s; width: 100%; }
+    .shop-now-btn:hover { background-color: #799972; transform: scale(1.05); }
+    .shop-now-btn-mobile { background-color: #496044; color: white; font-family: Impact, sans-serif; font-size: 24px; text-decoration: none; padding: 15px 30px; border: 3px solid white; text-shadow: 2px 2px 4px black; display: block; text-align: center; margin-bottom: 20px; transition: all 0.3s; width: 100%; }
+    .shop-now-btn-mobile:hover { background-color: #799972; transform: scale(1.05); }
+    .slideshow-container { width: 100%; border: 3px solid white; border-radius: 8px; overflow: hidden; }
+    .slideshow-container img { width: 100%; height: auto; display: block; }
+    .text-content-wrapper { flex: 1; }
+    .textbox-container { background-color: rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 8px; border: 2px solid white; }
+    .mobile-shop-content { background-color: #799972; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 15px rgba(0,0,0,0.2); }
+    .mobile-shop-text { padding: 20px; background-color: #496044; border-bottom: 3px solid white; }
+    .mobile-shop-description { width: 100%; height: auto; display: block; }
+    .mobile-shop-images { padding: 20px; text-align: center; background-color: #496044; position: relative; }
+    .mobile-product-image { width: 100%; height: auto; border: 3px solid white; border-radius: 8px; display: block; }
+    .banner-section { padding: 60px 20px; text-align: center; }
+    .desktop-banner { display: block; width: 100%; height: auto; }
+    .mobile-banner { display: none; width: 100%; height: auto; }
+    footer { background-color: #496044; color: white; padding: 40px 20px 20px; }
+    .footer-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-around; flex-wrap: wrap; gap: 40px; margin-bottom: 30px; }
+    .footer-section h3 { margin-bottom: 20px; color: white; font-family: Impact, sans-serif; text-shadow: 2px 2px 2px black; }
+    .footer-section ul { list-style: none; padding: 0; }
+    .footer-section ul li { margin-bottom: 10px; }
+    .footer-section a { color: white; text-decoration: none; transition: color 0.3s; }
+    .footer-section a:hover { color: #799972; }
+    .footer-bottom { text-align: center; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.2); }
     @media (max-width: 768px) {
-      .header-content {
-        padding: 0 20px;
-        flex-direction: row;
-      }
-
-      .nav-section {
-        display: none;
-      }
-
-      .mobile-menu-toggle {
-        display: block;
-      }
-
-      .mobile-nav-overlay {
-        display: none;
-      }
-
-      .mobile-nav-menu {
-        display: block;
-      }
-
-      .logo img {
-        height: 100px;
-      }
-
-      .header-line {
-        height: 60px;
-      }
-
-      .ribbon-center {
-        height: 60px;
-      }
-
-      .cards-section {
-        display: none;
-      }
-
-      .carousel-container {
-        display: block;
-      }
-
-      /* Shop Mobile Display */
-      .desktop-shop-layout {
-        display: none;
-      }
-
-      .mobile-shop-layout {
-        display: block;
-      }
-
-      .showcase-section {
-        padding: 40px 20px;
-      }
-
-      .footer-content {
-        flex-direction: column;
-        text-align: center;
-      }
-
-      .cart-icon-container {
-        width: 50px;
-        height: 50px;
-        top: 15px;
-        right: 70px;
-      }
-
-      .cart-icon {
-        font-size: 22px;
-      }
+      .header-content { padding: 0 80px; flex-direction: row; justify-content: center; gap: 15px; }
+      .nav-section { display: none; }
+      .mobile-menu-toggle { display: block; position: absolute; left: 20px; }
+      .mobile-nav-overlay { display: none; }
+      .mobile-nav-menu { display: block; }
+      .logo { margin-left: 0; }
+      .logo img { height: 80px; }
+      .header-line { height: 60px; }
+      .ribbon-center { height: 60px; }
+      .cards-section { display: none; }
+      .carousel-container { display: block; }
+      .desktop-shop-layout { display: none; }
+      .mobile-shop-layout { display: block; }
+      .showcase-section { padding: 40px 20px; }
+      .footer-content { flex-direction: column; text-align: center; }
+      .cart-icon-container { width: 50px; height: 50px; top: 10px; right: 10px; }
+      .cart-icon { font-size: 22px; }
+      .desktop-banner { display: none !important; }
+      .mobile-banner { display: block !important; }
     }
-
     @media (max-width: 980px) {
-      .nav-section {
-        gap: 10px;
-      }
-
-      nav a {
-        font-size: 16px;
-        padding: 5px 10px;
-      }
-
-      .logo img {
-        height: 160px;
-      }
+      .nav-section { gap: 12px; }
+      nav a { font-size: 17px; padding: 10px 18px; }
+      .logo img { height: 200px; }
+      .header-content { max-width: 1600px; gap: 20px; padding: 0 30px; }
     }
   </style>
 </head>
 <body>
-  <!-- Shopping Cart Icon -->
-  <div class="cart-icon-container" onclick="window.location.href='shop.html'">
+  <div class="cart-icon-container" onclick="window.location.href='checkout.html'">
     <span class="cart-icon">🛒</span>
     <span class="cart-count" id="cartCount">0</span>
   </div>
-
   <header>
     <div class="header-line"></div>
     <div class="header-content">
       <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
       <nav class="nav-section">
-        <a href="#testimonials">TESTIMONIALS</a>
-        <a href="services.html">TRAINING SERVICES</a>
         <a href="intake.html">INTAKE FORM</a>
+        <a href="services.html">TRAINING SERVICES</a>
+        <a href="shop.html">SHOP</a>
       </nav>
       <div class="logo">
-        <img src="https://i.imgur.com/9mKRs8z.jpeg" alt="CanineKind Logo">
+        <img src="https://i.imgur.com/HrYfECf.jpeg" alt="CanineKind Logo">
       </div>
       <nav class="nav-section">
+        <a href="faqs.html">FAQS</a>
         <a href="#contact">CONTACT US</a>
-        <a href="shop.html">SHOP</a>
-        <a href="#directory">SITE DIRECTORY</a>
+        <a href="#testimonials">TESTIMONIALS</a>
       </nav>
     </div>
   </header>
-
-  <!-- Mobile Navigation Menu -->
   <div class="mobile-nav-overlay" id="mobileNavOverlay" onclick="closeMobileMenu()"></div>
   <div class="mobile-nav-menu" id="mobileNavMenu">
     <div class="mobile-nav-header">
@@ -759,27 +149,23 @@
       <button class="mobile-nav-close" onclick="closeMobileMenu()">×</button>
     </div>
     <div class="mobile-nav-links">
-      <a href="#testimonials" onclick="closeMobileMenu()">TESTIMONIALS</a>
-      <a href="services.html" onclick="closeMobileMenu()">TRAINING SERVICES</a>
       <a href="intake.html" onclick="closeMobileMenu()">INTAKE FORM</a>
-      <a href="#contact" onclick="closeMobileMenu()">CONTACT US</a>
+      <a href="services.html" onclick="closeMobileMenu()">TRAINING SERVICES</a>
       <a href="shop.html" onclick="closeMobileMenu()">SHOP</a>
-      <a href="#directory" onclick="closeMobileMenu()">SITE DIRECTORY</a>
+      <a href="faqs.html" onclick="closeMobileMenu()">FAQS</a>
+      <a href="#contact" onclick="closeMobileMenu()">CONTACT US</a>
+      <a href="#testimonials" onclick="closeMobileMenu()">TESTIMONIALS</a>
     </div>
   </div>
-
   <div class="image-box">
     <img src="https://i.imgur.com/eFfSTxE.jpeg" alt="Dog training image">
   </div>
-
   <div class="ribbon-container">
     <div class="ribbon-center"></div>
     <div class="welcome-box" id="welcomeBox">
       <img src="https://i.imgur.com/pIZEl7M.png" alt="Welcome to CanineKind" style="width: 100%; height: auto; display: block;">
     </div>
   </div>
-
-  <!-- Desktop Cards Section -->
   <div class="cards-section">
     <div class="card">
       <div class="card-header">
@@ -790,7 +176,6 @@
         <img src="https://i.imgur.com/xfwIBGS.png" alt="Card 1 Content" style="width: 100%; height: auto; border-radius: 8px;">
       </div>
     </div>
-
     <div class="card">
       <div class="card-header">
         <img src="https://i.imgur.com/WLUUxB4.png" alt="Card 2 Header">
@@ -800,7 +185,6 @@
         <img src="https://i.imgur.com/aJ2k1d6.png" alt="Card 2 Content" style="width: 100%; height: auto; border-radius: 8px;">
       </div>
     </div>
-
     <div class="card">
       <div class="card-header">
         <img src="https://i.imgur.com/nQAWa5Q.png" alt="Card 3 Header">
@@ -811,12 +195,9 @@
       </div>
     </div>
   </div>
-
-  <!-- Mobile Carousel -->
   <div class="carousel-container">
     <div class="carousel-wrapper">
       <div class="carousel-track" id="carouselTrack">
-        <!-- Slide 1 -->
         <div class="carousel-slide">
           <div class="mobile-card">
             <div class="mobile-card-header">
@@ -828,8 +209,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Slide 2 -->
         <div class="carousel-slide">
           <div class="mobile-card">
             <div class="mobile-card-header">
@@ -841,8 +220,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Slide 3 -->
         <div class="carousel-slide">
           <div class="mobile-card">
             <div class="mobile-card-header">
@@ -855,23 +232,19 @@
           </div>
         </div>
       </div>
-
       <div class="carousel-controls">
         <button class="carousel-btn" onclick="moveCarousel(-1)">‹</button>
         <button class="carousel-btn" onclick="moveCarousel(1)">›</button>
       </div>
     </div>
-
     <div class="carousel-indicators">
       <span class="indicator active" onclick="goToSlide(0)"></span>
       <span class="indicator" onclick="goToSlide(1)"></span>
       <span class="indicator" onclick="goToSlide(2)"></span>
     </div>
   </div>
-
   <div class="showcase-section">
     <div class="showcase-box">
-      <!-- Desktop Layout -->
       <div class="desktop-shop-layout">
         <div style="display: flex; flex-direction: column; flex: 0 0 45%;">
           <a href="shop.html" class="shop-now-btn">SHOP NOW</a>
@@ -881,17 +254,15 @@
         </div>
         <div class="text-content-wrapper">
           <div class="textbox-container">
-            <img src="https://i.imgur.com/VXKzKhi.png" alt="Shop Description" style="width: 100%; height: auto; object-fit: contain; display: block;">
+            <img src="https://i.imgur.com/hkZTpBM.png" alt="Shop Description" style="width: 100%; height: auto; object-fit: contain; display: block;">
           </div>
         </div>
       </div>
-      
-      <!-- Mobile Layout - No Carousel -->
       <div class="mobile-shop-layout">
         <a href="shop.html" class="shop-now-btn-mobile">SHOP NOW</a>
         <div class="mobile-shop-content">
           <div class="mobile-shop-text">
-            <img src="https://i.imgur.com/VXKzKhi.png" alt="Shop Description" class="mobile-shop-description">
+            <img src="https://i.imgur.com/hkZTpBM.png" alt="Shop Description" class="mobile-shop-description">
           </div>
           <div class="mobile-shop-images">
             <img src="https://i.imgur.com/otP5ywh.jpeg" alt="Product" class="mobile-product-image" id="mobileProductImage">
@@ -900,11 +271,10 @@
       </div>
     </div>
   </div>
-
   <div class="banner-section">
-    <img src="https://i.imgur.com/ywBmc6J.png" alt="Banner" style="width: 100%; height: auto; display: block;">
+    <img src="https://i.imgur.com/ywBmc6J.png" alt="Payment Processing Desktop" class="desktop-banner">
+    <img src="https://i.imgur.com/84JNhKL.png" alt="Payment Processing Mobile" class="mobile-banner">
   </div>
-
   <footer>
     <div class="footer-content">
       <div class="footer-section">
@@ -927,137 +297,31 @@
       <p>&copy; 2024 CanineKind Dog Training. All rights reserved.</p>
     </div>
   </footer>
-
   <script>
-    // Update cart count from localStorage
-    function updateCartCount() {
-      const cart = JSON.parse(localStorage.getItem('cart')) || [];
-      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-      document.getElementById('cartCount').textContent = totalItems;
-    }
-
-    // Initialize cart count on page load
+    function updateCartCount(){const cart=JSON.parse(localStorage.getItem('cart'))||[];const totalItems=cart.reduce((sum,item)=>sum+item.quantity,0);document.getElementById('cartCount').textContent=totalItems;}
     updateCartCount();
-
-    // Listen for storage changes (when cart is updated on shop page)
-    window.addEventListener('storage', function(e) {
-      if (e.key === 'cart') {
-        updateCartCount();
-      }
-    });
-
-    // Carousel functionality (NO AUTOMATIC SWITCHING FOR CARD CAROUSEL)
-    let currentSlide = 0;
-    const totalSlides = 3;
-
-    function updateCarousel() {
-      const track = document.getElementById('carouselTrack');
-      const offset = -currentSlide * 100;
-      track.style.transform = `translateX(${offset}%)`;
-      
-      // Update indicators
-      const indicators = document.querySelectorAll('.indicator');
-      indicators.forEach((ind, index) => {
-        ind.classList.toggle('active', index === currentSlide);
-      });
-    }
-
-    function moveCarousel(direction) {
-      currentSlide += direction;
-      if (currentSlide < 0) currentSlide = totalSlides - 1;
-      if (currentSlide >= totalSlides) currentSlide = 0;
-      updateCarousel();
-    }
-
-    function goToSlide(slideIndex) {
-      currentSlide = slideIndex;
-      updateCarousel();
-    }
-
-    // Touch/swipe support for mobile
-    let touchStartX = 0;
-    let touchEndX = 0;
-
-    const carouselWrapper = document.querySelector('.carousel-wrapper');
-    if (carouselWrapper) {
-      carouselWrapper.addEventListener('touchstart', (e) => {
-        touchStartX = e.changedTouches[0].screenX;
-      });
-
-      carouselWrapper.addEventListener('touchend', (e) => {
-        touchEndX = e.changedTouches[0].screenX;
-        handleSwipe();
-      });
-    }
-
-    function handleSwipe() {
-      if (touchEndX < touchStartX - 50) moveCarousel(1); // Swipe left
-      if (touchEndX > touchStartX + 50) moveCarousel(-1); // Swipe right
-    }
-
-    // Shop slideshow functionality for desktop AND mobile
-    const slideshowImages = [
-      'https://i.imgur.com/otP5ywh.jpeg',
-      'https://i.imgur.com/4ZOxg3W.jpeg',
-      'https://i.imgur.com/LL8ncXk.jpeg'
-    ];
-    let currentImageIndex = 0;
-    const slideshowImage = document.getElementById('slideshowImage');
-    const mobileProductImage = document.getElementById('mobileProductImage');
-
-    if (slideshowImage) {
-      setInterval(() => {
-        currentImageIndex = (currentImageIndex + 1) % slideshowImages.length;
-        slideshowImage.src = slideshowImages[currentImageIndex];
-        // Also update mobile product image
-        if (mobileProductImage) {
-          mobileProductImage.src = slideshowImages[currentImageIndex];
-        }
-      }, 5000);
-    }
-
-    // Welcome box animation
-    const welcomeBox = document.getElementById('welcomeBox');
-    window.addEventListener('scroll', () => {
-      const boxPosition = welcomeBox.getBoundingClientRect().top;
-      const screenPosition = window.innerHeight / 1.2;
-      if (boxPosition < screenPosition) {
-        welcomeBox.classList.add('visible');
-      }
-    });
-
-    // Desktop cards animation
-    const cards = document.querySelectorAll('.card');
-    window.addEventListener('scroll', () => {
-      cards.forEach(card => {
-        const cardPosition = card.getBoundingClientRect().top;
-        const screenPosition = window.innerHeight / 1.2;
-        if (cardPosition < screenPosition) {
-          card.classList.add('visible');
-        }
-      });
-    });
-
-    // Mobile menu toggle
-    function toggleMobileMenu() {
-      const menu = document.getElementById('mobileNavMenu');
-      const overlay = document.getElementById('mobileNavOverlay');
-      
-      menu.classList.add('active');
-      overlay.style.display = 'block';
-    }
-
-    function closeMobileMenu() {
-      const menu = document.getElementById('mobileNavMenu');
-      const overlay = document.getElementById('mobileNavOverlay');
-      
-      menu.classList.remove('active');
-      overlay.style.display = 'none';
-    }
-
-    // Initialize
+    window.addEventListener('storage',function(e){if(e.key==='cart'){updateCartCount();}});
+    let currentSlide=0;const totalSlides=3;
+    function updateCarousel(){const track=document.getElementById('carouselTrack');const offset=-currentSlide*100;track.style.transform=`translateX(${offset}%)`;const indicators=document.querySelectorAll('.indicator');indicators.forEach((ind,index)=>{ind.classList.toggle('active',index===currentSlide);});}
+    function moveCarousel(direction){currentSlide+=direction;if(currentSlide<0)currentSlide=totalSlides-1;if(currentSlide>=totalSlides)currentSlide=0;updateCarousel();}
+    function goToSlide(slideIndex){currentSlide=slideIndex;updateCarousel();}
+    let touchStartX=0;let touchEndX=0;
+    const carouselWrapper=document.querySelector('.carousel-wrapper');
+    if(carouselWrapper){carouselWrapper.addEventListener('touchstart',(e)=>{touchStartX=e.changedTouches[0].screenX;});carouselWrapper.addEventListener('touchend',(e)=>{touchEndX=e.changedTouches[0].screenX;handleSwipe();});}
+    function handleSwipe(){if(touchEndX<touchStartX-50)moveCarousel(1);if(touchEndX>touchStartX+50)moveCarousel(-1);}
+    const slideshowImages=['https://i.imgur.com/otP5ywh.jpeg','https://i.imgur.com/4ZOxg3W.jpeg','https://i.imgur.com/LL8ncXk.jpeg'];
+    let currentImageIndex=0;
+    const slideshowImage=document.getElementById('slideshowImage');
+    const mobileProductImage=document.getElementById('mobileProductImage');
+    if(slideshowImage){setInterval(()=>{currentImageIndex=(currentImageIndex+1)%slideshowImages.length;slideshowImage.src=slideshowImages[currentImageIndex];if(mobileProductImage){mobileProductImage.src=slideshowImages[currentImageIndex];}},5000);}
+    const welcomeBox=document.getElementById('welcomeBox');
+    window.addEventListener('scroll',()=>{const boxPosition=welcomeBox.getBoundingClientRect().top;const screenPosition=window.innerHeight/1.2;if(boxPosition<screenPosition){welcomeBox.classList.add('visible');}});
+    const cards=document.querySelectorAll('.card');
+    window.addEventListener('scroll',()=>{cards.forEach(card=>{const cardPosition=card.getBoundingClientRect().top;const screenPosition=window.innerHeight/1.2;if(cardPosition<screenPosition){card.classList.add('visible');}});});
+    function toggleMobileMenu(){const menu=document.getElementById('mobileNavMenu');const overlay=document.getElementById('mobileNavOverlay');menu.classList.add('active');overlay.style.display='block';}
+    function closeMobileMenu(){const menu=document.getElementById('mobileNavMenu');const overlay=document.getElementById('mobileNavOverlay');menu.classList.remove('active');overlay.style.display='none';}
     welcomeBox.classList.add('visible');
-    cards.forEach(card => card.classList.add('visible'));
+    cards.forEach(card=>card.classList.add('visible'));
   </script>
 </body>
 </html>
