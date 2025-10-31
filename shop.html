@@ -55,41 +55,22 @@
       padding: 0 40px;
     }
 
-    .nav-section {
-      display: flex;
-      gap: 15px;
-      flex: 1;
-      flex-wrap: wrap;
-      align-content: flex-start;
-    }
-
-    .nav-section:first-child {
-      justify-content: flex-end;
-    }
-
-    .nav-section:last-child {
-      justify-content: flex-start;
-    }
-
-    .logo {
-      flex-shrink: 0;
-    }
-
-    nav a {
-      font-family: Impact, sans-serif;
-      color: white;
-      font-size: 18px;
-      text-decoration: none;
-      padding: 6px 12px;
-      border: 2px solid white;
-      text-shadow: 2px 2px 2px black;
-      transition: background 0.3s;
-      white-space: nowrap;
-    }
-
-    nav a:hover {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
+        .nav-section { display: flex; gap: 15px; flex: 1; flex-wrap: nowrap; align-items: center; }
+    .nav-section:first-child { justify-content: flex-end; }
+    .nav-section:last-child { justify-content: flex-start; }
+    .logo { flex-shrink: 0; }
+    .nav-item { position: relative; }
+    nav a, .nav-dropdown-toggle { font-family: Impact, sans-serif; color: white; font-size: 20px; text-decoration: none; padding: 12px 24px; border: 3px solid white; text-shadow: 2px 2px 4px black; transition: all 0.3s; white-space: nowrap; background-color: rgba(73, 96, 68, 0.3); display: inline-block; cursor: pointer; }
+    nav a:hover, .nav-dropdown-toggle:hover { background-color: rgba(255, 255, 255, 0.2); }
+    .home-btn { background-color: rgba(73, 96, 68, 0.6) !important; font-weight: bold; }
+    .nav-dropdown-toggle { position: relative; padding-right: 35px; }
+    .nav-dropdown-toggle::after { content: '▼'; position: absolute; right: 12px; font-size: 14px; transition: transform 0.3s; }
+    .nav-item:hover .nav-dropdown-toggle::after { transform: rotate(180deg); }
+    .dropdown-menu { position: absolute; top: 100%; left: 0; margin-top: 10px; background-color: #496044; border: 3px solid white; border-radius: 8px; min-width: 220px; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s ease; z-index: 1000; box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+    .nav-item:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+    .dropdown-menu a { display: block; padding: 15px 20px; border: none; border-bottom: 2px solid rgba(255, 255, 255, 0.2); background-color: transparent; font-size: 18px; text-align: left; }
+    .dropdown-menu a:last-child { border-bottom: none; }
+    .dropdown-menu a:hover { background-color: rgba(255, 255, 255, 0.15); }
 
     .logo img {
       height: 220px;
@@ -877,25 +858,36 @@
   </style>
 </head>
 <body>
-  <header>
+    <header>
     <div class="header-line"></div>
     <div class="header-content">
+      <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
       <nav class="nav-section">
-        <a href="index.html">HOME</a>
-        <a href="about.html">ABOUT US</a>
-        <a href="videos.html">VIDEOS</a>
-        <a href="faqs.html">FAQS</a>
+        <a href="index.html" class="home-btn">HOME</a>
+        <div class="nav-item">
+          <span class="nav-dropdown-toggle">LEARN MORE</span>
+          <div class="dropdown-menu">
+            <a href="about.html">About Us</a>
+            <a href="faqs.html">FAQs</a>
+            <a href="videos.html">Videos</a>
+            <a href="contact.html">Contact Us</a>
+          </div>
+        </div>
       </nav>
       <div class="logo">
         <img src="https://i.imgur.com/HrYfECf.jpeg" alt="CanineKind Logo">
       </div>
       <nav class="nav-section">
+        <div class="nav-item">
+          <span class="nav-dropdown-toggle">OUR SERVICES</span>
+          <div class="dropdown-menu">
+            <a href="intake.html">Intake Form</a>
+            <a href="services.html">Training Services</a>
+            <a href="shop.html">Shop</a>
+          </div>
+        </div>
         <a href="testimonials.html">TESTIMONIALS</a>
-        <a href="intake.html">INTAKE FORM</a>
-        <a href="services.html">TRAINING SERVICES</a>
-        <a href="shop.html">SHOP</a>
       </nav>
-      <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
     </div>
   </header>
 
