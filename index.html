@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+.welcome-section::after {
+                display: none;
+            }<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -195,24 +197,6 @@
             text-align: center;
             position: relative;
         }
-        
-        .welcome-section::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            max-width: 900px;
-            height: 400px;
-            background-image: url('https://i.imgur.com/m0lXUsm.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            opacity: 1;
-            z-index: 0;
-            border-radius: 10px;
-        }
 
         .centerpiece-image {
             width: 100%;
@@ -222,8 +206,6 @@
             margin: 30px auto 40px;
             box-shadow: 0 8px 30px rgba(0,0,0,0.15);
             display: block;
-            position: relative;
-            z-index: 1;
         }
 
         .welcome-text {
@@ -232,11 +214,7 @@
             border-radius: 10px;
             margin-top: 30px;
             border: 3px solid #799972;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.08), 
-                        0 0 40px rgba(255, 255, 255, 0.9),
-                        0 0 60px rgba(255, 255, 255, 0.7);
-            position: relative;
-            z-index: 1;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
         }
 
         .welcome-text h1 {
@@ -314,7 +292,10 @@
 
         .service-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15),
+                        0 0 50px rgba(255, 255, 255, 1),
+                        0 0 70px rgba(255, 255, 255, 0.8),
+                        0 0 90px rgba(255, 255, 255, 0.6);
         }
 
         .service-card h3 {
