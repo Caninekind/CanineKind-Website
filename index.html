@@ -216,10 +216,15 @@
         }
 
         .welcome-text h1 {
-            color: #799972;
-            font-size: 2.5em;
-            margin-bottom: 20px;
-            font-weight: bold;
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            color: white;
+            padding: 25px 20px;
+            font-size: 2em;
+            text-align: center;
+            margin: -30px -30px 20px -30px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border-radius: 10px 10px 0 0;
         }
 
         .welcome-text p {
@@ -247,20 +252,34 @@
             margin-right: -50vw;
             background-image: 
                 linear-gradient(to bottom, 
-                    #D1E5F4 0%, 
-                    rgba(209, 229, 244, 0.7) 5%, 
-                    rgba(209, 229, 244, 0.3) 10%, 
-                    transparent 15%, 
-                    transparent 85%, 
-                    rgba(209, 229, 244, 0.3) 90%, 
-                    rgba(209, 229, 244, 0.7) 95%, 
-                    #D1E5F4 100%
+                    rgba(209, 229, 244, 0.95) 0%, 
+                    rgba(209, 229, 244, 0.85) 8%, 
+                    rgba(209, 229, 244, 0.6) 15%, 
+                    rgba(209, 229, 244, 0.4) 25%, 
+                    rgba(209, 229, 244, 0.4) 75%, 
+                    rgba(209, 229, 244, 0.6) 85%, 
+                    rgba(209, 229, 244, 0.85) 92%, 
+                    rgba(209, 229, 244, 0.95) 100%
                 ),
                 url('https://i.imgur.com/cug3epT.jpeg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             padding: 60px 0;
+        }
+        
+        .services-section-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(121, 153, 114, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(121, 153, 114, 0.06) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 0;
         }
 
         .cards-container {
@@ -452,11 +471,15 @@
         }
 
         .shop-section h2 {
-            color: #799972;
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            color: white;
+            padding: 25px 20px;
+            font-size: 1.8em;
             text-align: center;
-            font-size: 2.2em;
-            margin-bottom: 30px;
-            font-weight: bold;
+            margin: -40px -20px 30px -20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border-radius: 10px 10px 0 0;
         }
 
         /* Product Slideshow */
@@ -514,7 +537,7 @@
         .shop-text {
             text-align: center;
             padding: 30px 20px;
-            font-size: 1.1em;
+            font-size: 1.2em;
             line-height: 1.8;
             color: #555;
             max-width: 900px;
@@ -805,7 +828,9 @@
             }
 
             .shop-section h2 {
-                font-size: 1.6em;
+                font-size: 1.5em;
+                padding: 20px 15px;
+                margin: -40px -20px 20px -20px;
             }
 
             .slideshow-slide {
@@ -874,7 +899,7 @@
             }
 
             .shop-text {
-                font-size: 1em;
+                font-size: 1.15em;
             }
         }
     </style>
