@@ -193,6 +193,25 @@
             margin: 40px auto;
             padding: 0 20px;
             text-align: center;
+            position: relative;
+        }
+        
+        .welcome-section::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 900px;
+            height: 400px;
+            background-image: url('https://i.imgur.com/m0lXUsm.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 1;
+            z-index: 0;
+            border-radius: 10px;
         }
 
         .centerpiece-image {
@@ -203,6 +222,8 @@
             margin: 30px auto 40px;
             box-shadow: 0 8px 30px rgba(0,0,0,0.15);
             display: block;
+            position: relative;
+            z-index: 1;
         }
 
         .welcome-text {
@@ -211,7 +232,11 @@
             border-radius: 10px;
             margin-top: 30px;
             border: 3px solid #799972;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08), 
+                        0 0 40px rgba(255, 255, 255, 0.9),
+                        0 0 60px rgba(255, 255, 255, 0.7);
+            position: relative;
+            z-index: 1;
         }
 
         .welcome-text h1 {
@@ -234,6 +259,32 @@
             max-width: 1200px;
             margin: 60px auto;
             padding: 0 20px;
+            position: relative;
+        }
+        
+        .services-section-bg {
+            position: relative;
+            width: 100vw;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            background-image: 
+                linear-gradient(to bottom, 
+                    #D1E5F4 0%, 
+                    rgba(209, 229, 244, 0.7) 5%, 
+                    rgba(209, 229, 244, 0.3) 10%, 
+                    transparent 15%, 
+                    transparent 85%, 
+                    rgba(209, 229, 244, 0.3) 90%, 
+                    rgba(209, 229, 244, 0.7) 95%, 
+                    #D1E5F4 100%
+                ),
+                url('https://i.imgur.com/cug3epT.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 60px 0;
         }
 
         .cards-container {
@@ -241,13 +292,18 @@
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 30px;
             margin-top: 40px;
+            position: relative;
+            z-index: 1;
         }
 
         .service-card {
             background-color: white;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12),
+                        0 0 40px rgba(255, 255, 255, 0.9),
+                        0 0 60px rgba(255, 255, 255, 0.7),
+                        0 0 80px rgba(255, 255, 255, 0.5);
             border: 2px solid #799972;
             display: flex;
             flex-direction: column;
@@ -310,10 +366,29 @@
             margin: 40px auto;
             max-width: 100%;
         }
+        
+        .carousel-container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            background-image: url('https://i.imgur.com/cug3epT.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.15;
+            z-index: 0;
+            border-radius: 10px;
+        }
 
         .carousel-wrapper {
             display: flex;
             transition: transform 0.3s ease;
+            position: relative;
+            z-index: 1;
         }
 
         .carousel-slide {
@@ -367,6 +442,8 @@
             gap: 10px;
             margin-top: 20px;
             padding-bottom: 10px;
+            position: relative;
+            z-index: 1;
         }
 
         .indicator {
@@ -602,39 +679,9 @@
             overflow: hidden;
         }
 
-        .welcome-section::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            right: -120px;
-            width: 350px;
-            height: 350px;
-            background-image: url('https://i.imgur.com/m0lXUsm.png');
-            background-size: contain;
-            background-repeat: no-repeat;
-            opacity: 0.025;
-            transform: translateY(-50%) rotate(10deg);
-            z-index: -1;
-        }
-
         .services-section {
             position: relative;
             overflow: hidden;
-        }
-
-        .services-section::after {
-            content: '';
-            position: absolute;
-            top: 30%;
-            left: -150px;
-            width: 400px;
-            height: 400px;
-            background-image: url('https://i.imgur.com/cug3epT.jpeg');
-            background-size: contain;
-            background-repeat: no-repeat;
-            opacity: 0.025;
-            transform: rotate(-10deg);
-            z-index: -1;
         }
 
         .shop-section {
@@ -695,15 +742,15 @@
                 width: 100%;
                 text-align: center;
                 padding: 14px 20px;
-                background-color: rgba(255, 255, 255, 0.1);
-                border: 1px solid rgba(255, 255, 255, 0.3);
-                border-radius: 5px;
+                background-color: transparent;
+                border: none;
+                border-radius: 0;
                 font-size: 16px;
             }
 
             .nav-menu a:hover {
-                background-color: rgba(255, 255, 255, 0.2);
-                border-color: white;
+                background-color: rgba(255, 255, 255, 0.1);
+                border: none;
                 transform: none;
             }
 
@@ -889,7 +936,8 @@
             </div>
         </section>
 
-        <section class="services-section">
+        <section class="services-section-bg">
+            <div class="services-section">
             <!-- Desktop Cards Grid -->
             <div class="cards-container">
                 <div class="service-card scroll-animate-left">
@@ -1028,20 +1076,13 @@
             </div>
             
             <div class="footer-section">
-                <h3>Our Services</h3>
-                <ul>
-                    <li>Loose Leash Walking</li>
-                    <li>House & Door Manners</li>
-                    <li>Off Leash Reliability</li>
-                    <li>Crate Training</li>
-                    <li>Behavioral Evaluation</li>
-                </ul>
+                <h3>Contact Us</h3>
+                <p><a href="mailto:caninekindtraining@gmail.com">caninekindtraining@gmail.com</a></p>
             </div>
             
             <div class="footer-section">
-                <h3>Contact Us</h3>
-                <p><a href="mailto:caninekindtraining@gmail.com">caninekindtraining@gmail.com</a></p>
-                <p>We come to you!</p>
+                <h3>Privacy</h3>
+                <p>Your privacy is important to us. We are committed to protecting your personal information and using it only to provide our dog training services and products. We do not share your information with third parties without your consent.</p>
             </div>
         </div>
         
