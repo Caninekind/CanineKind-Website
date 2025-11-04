@@ -409,10 +409,10 @@
             background-color: rgba(121, 153, 114, 0.9);
             color: white;
             border: none;
-            width: 40px;
-            height: 60px;
+            width: 28px;
+            height: 70px;
             cursor: pointer;
-            font-size: 20px;
+            font-size: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -423,12 +423,12 @@
 
         .carousel-arrow.prev {
             left: 0;
-            border-radius: 0 5px 5px 0;
+            border-radius: 0 8px 8px 0;
         }
 
         .carousel-arrow.next {
             right: 0;
-            border-radius: 5px 0 0 5px;
+            border-radius: 8px 0 0 8px;
         }
 
         .carousel-arrow:hover {
@@ -518,6 +518,39 @@
             max-width: 100%;
             max-height: 400px;
             object-fit: contain;
+        }
+
+        .slideshow-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(121, 153, 114, 0.9);
+            color: white;
+            border: none;
+            width: 35px;
+            height: 70px;
+            cursor: pointer;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s, background-color 0.3s;
+            z-index: 10;
+            border-radius: 0;
+        }
+
+        .slideshow-arrow.prev {
+            left: 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .slideshow-arrow.next {
+            right: 0;
+            border-radius: 8px 0 0 8px;
+        }
+
+        .slideshow-arrow:hover {
+            background-color: #5a7354;
         }
 
         .slideshow-dots {
@@ -857,9 +890,9 @@
             }
 
             .carousel-arrow {
-                width: 32px;
-                height: 55px;
-                font-size: 18px;
+                width: 22px;
+                height: 60px;
+                font-size: 16px;
             }
 
             .shop-section h2 {
@@ -920,9 +953,9 @@
             }
 
             .carousel-arrow {
-                width: 24px;
-                height: 50px;
-                font-size: 16px;
+                width: 18px;
+                height: 55px;
+                font-size: 14px;
             }
 
             .carousel-arrow.prev {
@@ -1079,6 +1112,8 @@
             <h2>UNIQUE, ARTISANAL & HANDMADE DOG TREATS AND TOYS</h2>
             
             <div class="slideshow-container">
+                <button class="slideshow-arrow prev" onclick="changeProductSlide(-1)">‹</button>
+                <button class="slideshow-arrow next" onclick="changeProductSlide(1)">›</button>
                 <div class="slideshow-slide active">
                     <img src="https://i.imgur.com/otP5ywh.jpeg" alt="Dog Treats">
                 </div>
@@ -1191,30 +1226,35 @@
             showSlides(slideIndex = n);
         }
 
+        function changeProductSlide(direction) {
+            slideIndex += direction;
+            showSlides(slideIndex);
+        }
+
         function showSlides(n) {
             let slides = document.getElementsByClassName("slideshow-slide");
             let dots = document.getElementsByClassName("dot");
-            
+
             if (n > slides.length) { slideIndex = 1 }
             if (n < 1) { slideIndex = slides.length }
-            
+
             for (let i = 0; i < slides.length; i++) {
                 slides[i].classList.remove('active');
             }
-            
+
             for (let i = 0; i < dots.length; i++) {
                 dots[i].classList.remove('active');
             }
-            
+
             slides[slideIndex - 1].classList.add('active');
             dots[slideIndex - 1].classList.add('active');
         }
 
-        // Auto-advance slideshow
+        // Auto-advance slideshow every 6 seconds
         setInterval(() => {
             slideIndex++;
             showSlides(slideIndex);
-        }, 4000);
+        }, 6000);
 
         // Initialize carousel on load
         updateCarousel();
