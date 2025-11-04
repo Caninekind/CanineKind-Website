@@ -11,175 +11,78 @@
 
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
       background-color: #D1E5F4;
+      color: #333;
+      line-height: 1.6;
+      font-size: 20px;
       overflow-x: hidden;
     }
 
+    /* Header Styles */
     header {
       background-color: #799972;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
       position: relative;
-      padding: 20px 0;
+      z-index: 1000;
+    }
+
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 25px 20px;
       display: flex;
-      justify-content: center;
-      align-items: center;
       flex-direction: column;
-      width: 100%;
-      box-sizing: border-box;
-      overflow: hidden;
-    }
-
-    .header-line {
-      position: absolute;
-      top: 50%;
-      left: 0;
-      width: 100%;
-      height: 120px;
-      background-color: #496044;
-      transform: translateY(-50%);
-      z-index: 1;
-    }
-
-    .header-content {
-      position: relative;
-      z-index: 2;
-      display: flex;
       align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      max-width: 1400px;
-      gap: 20px;
-      padding: 0 40px;
-    }
-
-    .nav-section {
-      display: flex;
-      gap: 15px;
-      flex: 1;
-      flex-wrap: wrap;
-      align-content: flex-start;
-    }
-
-    .nav-section:first-child {
-      justify-content: flex-end;
-    }
-
-    .nav-section:last-child {
-      justify-content: flex-start;
+      justify-content: center;
     }
 
     .logo {
-      flex-shrink: 0;
-    }
-
-    nav a {
-      font-family: Impact, sans-serif;
-      color: white;
-      font-size: 18px;
-      text-decoration: none;
-      padding: 6px 12px;
-      border: 2px solid white;
-      text-shadow: 2px 2px 2px black;
-      transition: background 0.3s;
-      white-space: nowrap;
-    }
-
-    nav a:hover {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
-
-    .logo img {
-      height: 220px;
+      height: 160px;
       width: auto;
-      z-index: 2;
-      border: 2px solid white;
-      border-radius: 8px;
-      box-sizing: border-box;
+      filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
+      margin-bottom: 20px;
     }
 
-    /* Mobile navigation */
-    .mobile-menu-toggle {
-      display: none;
-      background: transparent;
-      border: 2px solid white;
-      color: white;
-      font-size: 24px;
-      padding: 10px 15px;
-      cursor: pointer;
-      position: relative;
-      z-index: 3;
-    }
-
-    .mobile-nav-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 998;
-    }
-
-    .mobile-nav-menu {
-      display: none;
-      position: fixed;
-      top: 0;
-      right: -100%;
-      width: 80%;
-      max-width: 300px;
-      height: 100%;
-      background-color: #496044;
-      z-index: 999;
-      transition: right 0.3s ease;
-      overflow-y: auto;
-      box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
-    }
-
-    .mobile-nav-menu.active {
-      right: 0;
-    }
-
-    .mobile-nav-header {
-      padding: 20px;
-      border-bottom: 2px solid #799972;
+    nav {
+      width: 100%;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
     }
 
-    .mobile-nav-close {
-      background: transparent;
-      border: 2px solid white;
-      color: white;
-      font-size: 24px;
-      padding: 5px 10px;
-      cursor: pointer;
-    }
-
-    .mobile-nav-links {
-      padding: 20px;
+    .nav-menu {
       display: flex;
-      flex-direction: column;
-      gap: 15px;
+      list-style: none;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
-    .mobile-nav-links a {
-      font-family: Impact, sans-serif;
+    .nav-menu a {
       color: white;
-      font-size: 18px;
       text-decoration: none;
-      padding: 12px 16px;
-      border: 2px solid white;
-      text-shadow: 2px 2px 2px black;
-      transition: background 0.3s;
-      white-space: nowrap;
-      display: block;
-      text-align: center;
+      padding: 12px 20px;
+      border: 2px solid transparent;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      font-size: 18px;
     }
 
-    .mobile-nav-links a:hover {
+    .nav-menu a:hover {
       background-color: rgba(255, 255, 255, 0.2);
+      border-color: white;
+    }
+
+    /* Mobile Menu Toggle */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: white;
     }
 
     .page-title {
@@ -379,27 +282,34 @@
       margin-bottom: 10px;
     }
 
+    /* Footer Styles */
     footer {
-      background-color: #496044;
+      background-color: #799972;
       color: white;
-      padding: 40px 20px 20px;
-      margin-top: 60px;
+      margin-top: 80px;
+      padding: 50px 20px 30px;
     }
 
-    .footer-content {
+    .footer-container {
       max-width: 1200px;
       margin: 0 auto;
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
-      gap: 30px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px;
       margin-bottom: 30px;
     }
 
     .footer-section h3 {
-      font-family: Impact, sans-serif;
-      font-size: 24px;
+      color: white;
+      font-size: 1.4em;
       margin-bottom: 15px;
+      font-weight: bold;
+    }
+
+    .footer-section p,
+    .footer-section ul {
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.9);
     }
 
     .footer-section ul {
@@ -414,46 +324,84 @@
     .footer-section a {
       color: white;
       text-decoration: none;
-      transition: color 0.3s;
+      transition: opacity 0.3s;
     }
 
     .footer-section a:hover {
-      color: #D1E5F4;
+      opacity: 0.8;
+      text-decoration: underline;
     }
 
     .footer-bottom {
       text-align: center;
-      padding-top: 20px;
-      border-top: 2px solid #799972;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.9em;
     }
 
-    @media (max-width: 968px) {
+    /* Mobile Styles */
+    @media (max-width: 768px) {
+      body {
+        font-size: 16px;
+      }
+
+      .header-container {
+        padding: 15px;
+      }
+
+      .logo {
+        height: 120px;
+        margin-bottom: 15px;
+      }
+
+      .nav-menu {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        gap: 5px;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .nav-menu.active {
+        display: flex;
+      }
+
+      .nav-menu a {
+        width: 100%;
+        text-align: center;
+        padding: 14px 20px;
+        background-color: transparent;
+        border: none;
+        border-radius: 0;
+        font-size: 16px;
+      }
+
+      .nav-menu a:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        border: none;
+        transform: none;
+      }
+
+      .nav-menu li {
+        width: 100%;
+      }
+
+      .menu-toggle {
+        display: block;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+      }
+
       .checkout-container {
         grid-template-columns: 1fr;
       }
 
       .page-title {
         font-size: 36px;
-      }
-
-      .logo img {
-        height: 150px;
-      }
-
-      .mobile-menu-toggle {
-        display: block;
-      }
-
-      .mobile-nav-overlay {
-        display: none;
-      }
-
-      .mobile-nav-menu {
-        display: block;
-      }
-
-      .nav-section {
-        display: none;
       }
     }
 
@@ -470,53 +418,33 @@
       .item-quantity {
         justify-content: center;
       }
+
+      .nav-menu a {
+        font-size: 15px;
+        padding: 12px 15px;
+      }
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="header-line"></div>
-    <div class="header-content">
-      <nav class="nav-section">
-        <a href="index.html">HOME</a>
-        <a href="about.html">ABOUT US</a>
-        <a href="videos.html">VIDEOS</a>
-        <a href="faqs.html">FAQS</a>
+    <div class="header-container">
+      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+      <img src="https://i.imgur.com/OXiQWa3.jpeg" alt="CanineKind Logo" class="logo">
+      <nav>
+        <ul class="nav-menu" id="navMenu">
+          <li><a href="https://caninekind.io">HOME</a></li>
+          <li><a href="https://caninekind.io/about">ABOUT US</a></li>
+          <li><a href="https://caninekind.io/videos">VIDEOS</a></li>
+          <li><a href="https://caninekind.io/faqs">FAQs</a></li>
+          <li><a href="https://caninekind.io/testimonials">TESTIMONIALS</a></li>
+          <li><a href="https://caninekind.io/intake">INTAKE FORM</a></li>
+          <li><a href="https://caninekind.io/services">TRAINING SERVICES</a></li>
+          <li><a href="https://caninekind.io/shop">SHOP</a></li>
+        </ul>
       </nav>
-      <div class="logo">
-        <img src="https://i.imgur.com/HrYfECf.jpeg" alt="CanineKind Logo">
-      </div>
-      <nav class="nav-section">
-        <a href="testimonials.html">TESTIMONIALS</a>
-        <a href="intake.html">INTAKE FORM</a>
-        <a href="services.html">TRAINING SERVICES</a>
-        <a href="shop.html">SHOP</a>
-      </nav>
-      <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
     </div>
   </header>
-
-  <!-- Mobile Navigation Overlay -->
-  <div class="mobile-nav-overlay" id="mobileNavOverlay" onclick="closeMobileMenu()"></div>
-
-  <!-- Mobile Navigation Menu -->
-  <div class="mobile-nav-menu" id="mobileNavMenu">
-    <div class="mobile-nav-header">
-      <span style="color: white; font-weight: bold;">Menu</span>
-      <button class="mobile-nav-close" onclick="closeMobileMenu()">✕</button>
-    </div>
-    <div class="mobile-nav-links">
-      <a href="index.html" onclick="closeMobileMenu()">HOME</a>
-      <a href="about.html" onclick="closeMobileMenu()">ABOUT US</a>
-      <a href="videos.html" onclick="closeMobileMenu()">VIDEOS</a>
-      <a href="faqs.html" onclick="closeMobileMenu()">FAQS</a>
-      <a href="testimonials.html" onclick="closeMobileMenu()">TESTIMONIALS</a>
-      <a href="intake.html" onclick="closeMobileMenu()">INTAKE FORM</a>
-      <a href="services.html" onclick="closeMobileMenu()">TRAINING SERVICES</a>
-      <a href="shop.html" onclick="closeMobileMenu()">SHOP</a>
-      <a href="contact.html" onclick="closeMobileMenu()">CONTACT US</a>
-    </div>
-  </div>
 
   <div class="page-title">Checkout</div>
 
@@ -558,26 +486,36 @@
   </div>
 
   <footer>
-    <div class="footer-content">
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>CANINEKIND</h3>
+        <p>Professional dog training services building relationships you can be proud of.</p>
+      </div>
+
       <div class="footer-section">
         <h3>Quick Links</h3>
         <ul>
-          <li><a href="https://caninekind.io">Home</a></li>
+          <li><a href="https://caninekind.io/about">About Us</a></li>
           <li><a href="https://caninekind.io/services">Training Services</a></li>
-          <li><a href="https://caninekind.io/shop">Shop Products</a></li>
+          <li><a href="https://caninekind.io/intake">Intake Form</a></li>
           <li><a href="https://caninekind.io/testimonials">Testimonials</a></li>
-          <li><a href="https://caninekind.io/faqs">FAQs</a></li>
+          <li><a href="https://caninekind.io/shop">Shop</a></li>
         </ul>
       </div>
+
       <div class="footer-section">
-        <h3>Contact Info</h3>
-        <p>Email: info@caninekind.com</p>
-        <p>Phone: (555) 123-4567</p>
-        <p>Hours: Mon-Fri 9AM-6PM</p>
+        <h3>Contact Us</h3>
+        <p><a href="mailto:caninekindtraining@gmail.com">caninekindtraining@gmail.com</a></p>
+      </div>
+
+      <div class="footer-section">
+        <h3>Privacy</h3>
+        <p>Your privacy is important to us. We are committed to protecting your personal information and using it only to provide our dog training services and products. We do not share your information with third parties without your consent.</p>
       </div>
     </div>
+
     <div class="footer-bottom">
-      <p>&copy; 2024 CanineKind Dog Training. All rights reserved.</p>
+      <p>&copy; 2024 CanineKind. All rights reserved.</p>
     </div>
   </footer>
 
@@ -685,21 +623,10 @@
       // window.location.href = 'YOUR_SQUARE_CHECKOUT_URL';
     }
 
-    // Mobile menu toggle
-    function toggleMobileMenu() {
-      const menu = document.getElementById('mobileNavMenu');
-      const overlay = document.getElementById('mobileNavOverlay');
-      
-      menu.classList.add('active');
-      overlay.style.display = 'block';
-    }
-
-    function closeMobileMenu() {
-      const menu = document.getElementById('mobileNavMenu');
-      const overlay = document.getElementById('mobileNavOverlay');
-      
-      menu.classList.remove('active');
-      overlay.style.display = 'none';
+    // Mobile Menu Toggle
+    function toggleMenu() {
+      const navMenu = document.getElementById('navMenu');
+      navMenu.classList.toggle('active');
     }
 
     // Initialize on page load
