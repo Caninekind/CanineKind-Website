@@ -241,6 +241,39 @@
             margin: 0 auto;
         }
 
+        /* CTA Buttons Section */
+        .cta-buttons-container {
+            max-width: 1200px;
+            margin: 50px auto 60px;
+            padding: 0 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 18px 40px;
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(121, 153, 114, 0.3);
+            letter-spacing: 0.5px;
+            min-width: 200px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(121, 153, 114, 0.4);
+            background: linear-gradient(135deg, #8aaa83 0%, #799972 100%);
+        }
+
         /* Service Cards Section */
         .services-section {
             max-width: 1200px;
@@ -953,6 +986,19 @@
             .payment-image.mobile {
                 display: block;
             }
+
+            .cta-buttons-container {
+                flex-direction: column;
+                gap: 20px;
+                margin: 40px auto 50px;
+            }
+
+            .cta-button {
+                width: 100%;
+                max-width: 300px;
+                font-size: 1.1em;
+                padding: 16px 30px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1053,6 +1099,11 @@
                 </p>
             </div>
         </section>
+
+        <div class="cta-buttons-container">
+            <a href="https://caninekind.io/services" class="cta-button">Book Now</a>
+            <a href="https://caninekind.io/contact" class="cta-button">Contact Us</a>
+        </div>
 
         <section class="services-section-bg">
             <div class="services-section">
