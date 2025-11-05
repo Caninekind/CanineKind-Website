@@ -226,6 +226,48 @@
       font-size: 1.3em;
     }
 
+    .bonus-features {
+      list-style: none;
+      padding: 0;
+      margin: 25px 0 25px 0;
+    }
+
+    .bonus-features li {
+      padding: 15px 0 15px 45px;
+      position: relative;
+      color: #555;
+      font-size: 1em;
+      border-bottom: 1px solid #eee;
+    }
+
+    .bonus-features li:last-child {
+      border-bottom: none;
+    }
+
+    .bonus-features li.workbook:before {
+      content: "📖";
+      position: absolute;
+      left: 0;
+      font-size: 1.8em;
+      top: 10px;
+    }
+
+    .bonus-features li.pdf:before {
+      content: "📄";
+      position: absolute;
+      left: 0;
+      font-size: 1.8em;
+      top: 10px;
+    }
+
+    .bonus-features li.treats:before {
+      content: "🦴";
+      position: absolute;
+      left: 0;
+      font-size: 1.8em;
+      top: 10px;
+    }
+
     .booking-button {
       display: inline-block;
       background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
@@ -447,11 +489,11 @@
           <div class="service-price">FREE</div>
         </div>
         <div class="service-description">
-          If you are a first time client looking to get started, click here to fill out our intake form and schedule your free 15 minute phone consultation! The intake form will guide you to:
+          If you are a first-time client looking to get started, click the button below to fill out our intake form and schedule your free 15-minute phone consultation. Once the form is completed, it will guide you to a free scheduling link.
         </div>
         <ul class="service-features">
-          <li>No commitment or card information</li>
-          <li>Schedule online - we will call you</li>
+          <li>No card information required</li>
+          <li>Easy scheduling online - we will call you</li>
           <li>Learn about our program and all the things we can do for you and your dog!</li>
         </ul>
         <a href="https://caninekind.io/intake" class="booking-button">Fill Out Intake Form</a>
@@ -464,14 +506,17 @@
           <div class="service-price">$50</div>
         </div>
         <div class="service-description">
-          <strong>Private In Person Training Session (First Time Clients Click Here!)</strong><br><br>
-          If you are looking to book your first session and have completed your initial phone consultation - click here to book your session via Square appointments!
+          If you have completed your initial phone consultation and are ready to book your first in person session - click here to book your first training session!
         </div>
         <ul class="service-features">
           <li>We will come to your home, a local park, etc. to work with you and your dog</li>
-          <li>Your first session will last approximately 45 minutes - 1 hour and a half based on the needs of you and your dog!</li>
-          <li>Your first session includes an overview of a recommended training plan and a follow up email regarding further training steps and recommendations</li>
-          <li>First time clients also receive a free treat for their dog from our store!</li>
+          <li>Your first session will last approximately 45 minutes - 1.5 hours based on the needs of you and your dog! We never rush our first time evaluation with a dog.</li>
+          <li>Your first session includes the following bonuses</li>
+        </ul>
+        <ul class="bonus-features">
+          <li class="workbook"><strong>Personalized Training Workbook</strong> – A customized training workbook with guidance and exercises for your dog's specific needs</li>
+          <li class="pdf"><strong>A personalized follow-up summary</strong> based on the results of your training session, with tailored notes and next-step recommendations</li>
+          <li class="treats"><strong>Complimentary Treat Sampler</strong> – Enjoy a free 2oz baggie of assorted treats from our shop!</li>
         </ul>
         <a href="https://book.squareup.com/appointments/yxzgsmqobnwc1j/location/L2B0T1QEWHCFE/services" class="booking-button" target="_blank">Book Your First Session</a>
       </div>
