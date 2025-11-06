@@ -128,6 +128,96 @@
             padding: 0 20px;
         }
 
+        /* Hero Video Section */
+        .hero-video-section {
+            max-width: 1200px;
+            margin: 0 auto 60px;
+            padding: 0;
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            border: 3px solid #799972;
+        }
+
+        .hero-video-header {
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .hero-video-header h2 {
+            color: white;
+            font-size: 2em;
+            margin: 0;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .hero-video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .hero-video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .hero-video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2em;
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(121, 153, 114, 0.9) 0%, rgba(138, 170, 131, 0.9) 100%);
+        }
+
+        .hero-video-placeholder::before {
+            content: '▶';
+            font-size: 4em;
+            margin-bottom: 20px;
+            opacity: 0.8;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+        }
+
+        .hero-video-description {
+            padding: 30px;
+            text-align: center;
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #555;
+            background: linear-gradient(to bottom, white, #fafafa);
+        }
+
         .intro-text {
             text-align: center;
             font-size: 1.2em;
@@ -416,6 +506,21 @@
                 font-size: 1em;
                 padding: 20px;
             }
+
+            .hero-video-section {
+                margin: 0 10px 40px;
+                border-radius: 12px;
+            }
+
+            .hero-video-header h2 {
+                font-size: 1.5em;
+                padding: 20px 15px;
+            }
+
+            .hero-video-description {
+                padding: 20px;
+                font-size: 1em;
+            }
         }
 
         @media (max-width: 600px) {
@@ -456,16 +561,28 @@
             <h1 class="page-title" id="pageTitle">TRAINING VIDEOS</h1>
         </div>
 
-        <div class="videos-section">
-            <div class="intro-text">
-                <p>Watch our training videos to see CanineKind's methods in action. These videos showcase real results with real dogs, demonstrating effective training techniques and success stories.</p>
+        <!-- Hero Video Section - Featured Commercial -->
+        <section class="hero-video-section">
+            <div class="hero-video-header">
+                <h2>Featured: CanineKind Commercial</h2>
             </div>
+            <div class="hero-video-container">
+                <!-- Replace YOUR_VIDEO_ID with your actual YouTube video ID -->
+                <!-- Example: If your YouTube URL is https://www.youtube.com/watch?v=dQw4w9WgXcQ, use dQw4w9WgXcQ -->
+                <!-- Uncomment the line below and replace YOUR_VIDEO_ID when you have your commercial ready -->
+                <!-- <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" allowfullscreen></iframe> -->
 
-            <!-- Placeholder message - Remove this section when adding actual videos -->
-            <div class="placeholder-message">
-                <h3>Videos Coming Soon!</h3>
-                <p>This section is ready for your YouTube video embeds. Simply replace the placeholder content below with your actual YouTube video IDs.</p>
+                <!-- Placeholder - Remove this div when you add your actual video -->
+                <div class="hero-video-placeholder">
+                    <p>Your commercial video will appear here.<br>Ready to showcase CanineKind!</p>
+                </div>
             </div>
+            <div class="hero-video-description">
+                <p>Experience the CanineKind difference. Watch our story and see why we're the trusted choice for dog training and artisanal dog products.</p>
+            </div>
+        </section>
+
+        <div class="videos-section">
 
             <!-- Video Grid - Add your YouTube videos here -->
             <div class="videos-grid">
