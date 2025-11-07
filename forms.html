@@ -387,6 +387,109 @@
             display: block;
         }
 
+        /* Collapsible Cancellation Policy Section */
+        .policy-collapsible-section {
+            margin: 30px 0;
+            border: 3px solid #799972;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .policy-header {
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            color: white;
+            padding: 20px 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 1.2em;
+        }
+
+        .policy-header:hover {
+            background: linear-gradient(135deg, #6a8863 0%, #799972 100%);
+        }
+
+        .policy-header-text {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .policy-header-title {
+            font-size: 1.1em;
+            font-weight: 700;
+        }
+
+        .policy-header-subtitle {
+            font-size: 0.85em;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+
+        .policy-toggle-icon {
+            font-size: 28px;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .policy-toggle-icon.active {
+            transform: rotate(180deg);
+        }
+
+        .policy-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            background-color: white;
+        }
+
+        .policy-content.active {
+            max-height: 3500px;
+        }
+
+        .policy-content-inner {
+            padding: 25px;
+        }
+
+        .policy-content-inner h4 {
+            color: #799972;
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+            font-weight: 600;
+        }
+
+        .policy-content-inner h4:first-child {
+            margin-top: 0;
+        }
+
+        .policy-content-inner p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 12px;
+        }
+
+        .policy-content-inner ul {
+            margin-left: 20px;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .policy-notice {
+            background-color: #fff9e6;
+            border: 2px solid #799972;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            font-weight: 600;
+            color: #333;
+            text-align: center;
+        }
+
         /* Footer Styles */
         footer {
             background-color: #799972;
@@ -661,6 +764,83 @@
                         </ul>
                     </div>
 
+                    <!-- COLLAPSIBLE CANCELLATION POLICY SECTION -->
+                    <div class="policy-collapsible-section">
+                        <div class="policy-header" onclick="toggleCancellationPolicy()">
+                            <div class="policy-header-text">
+                                <div class="policy-header-title">📋 CANCELLATION & REFUND POLICY</div>
+                                <div class="policy-header-subtitle">Click here to review our cancellation and refund terms before signing</div>
+                            </div>
+                            <span class="policy-toggle-icon" id="policyToggleIcon">+</span>
+                        </div>
+                        <div class="policy-content" id="policyContent">
+                            <div class="policy-content-inner">
+                                <p><strong>We understand that schedules change. This policy helps protect both your time and ours by setting clear expectations for cancellations, rescheduling, and refunds. All appointments are scheduled through Square Appointments.</strong></p>
+
+                                <h4>24-Hour Notice Required</h4>
+                                <p>• Free cancellation or rescheduling is available up to 24 hours before your scheduled appointment time<br>
+                                • You may cancel or reschedule yourself online through Square Appointments up until the 24-hour cutoff<br>
+                                • Simply use the link in your confirmation email or text message</p>
+
+                                <h4>Within 24 Hours (Late Cancellation)</h4>
+                                <p>If you cancel or reschedule with less than 24 hours notice:<br>
+                                • You will be charged 50% of the service fee OR $30 flat fee (whichever applies to your service)<br>
+                                • This fee will be automatically charged to the card on file with your permission<br>
+                                • At the trainer's discretion, this fee may be waived for emergencies (see Emergency Exceptions below)</p>
+
+                                <h4>No-Show Policy</h4>
+                                <p>If you miss your appointment without any notice:<br>
+                                • You will be charged the full service fee (100%)<br>
+                                • This will be automatically charged to the card on file<br>
+                                • Future bookings may require prepayment</p>
+
+                                <h4>Same-Day Emergency Cancellations</h4>
+                                <p>We understand that true emergencies happen. Same-day cancellations may be waived at the trainer's discretion for:<br>
+                                • Medical emergencies (human or dog)<br>
+                                • Family emergencies<br>
+                                • Severe weather that makes travel unsafe<br>
+                                • Other unavoidable circumstances</p>
+
+                                <p><strong>To request a waiver:</strong> Contact us immediately by email at caninekindtraining@gmail.com<br>
+                                Do not rely solely on the automated cancellation system for emergencies.</p>
+
+                                <h4>PACKAGE & MULTI-SESSION DEALS</h4>
+                                <p><strong>Package Cancellation</strong><br>
+                                If you purchase a package (e.g., 5-session bundle) and need to cancel:<br>
+                                &nbsp;&nbsp;◦ Before first session: Full refund available<br>
+                                &nbsp;&nbsp;◦ After first session has occurred: No refund on unused sessions, but sessions do not expire and can be rescheduled<br>
+                                &nbsp;&nbsp;◦ Standard 24-hour cancellation policy applies to each individual session</p>
+
+                                <p><strong>Package Expiration</strong><br>
+                                • Multi-session packages are valid for 1 year from date of purchase<br>
+                                • Extensions may be granted for medical or family emergencies<br>
+                                • Unused sessions after expiration are forfeited</p>
+
+                                <h4>Mutual Satisfaction Guarantee</h4>
+                                <p>If either you or the trainer feels that the training relationship isn't working out, we offer the following mid-package refund option:</p>
+                                <p>After completing at least half of the total sessions of a multi-session package, either party may request to end the training arrangement. In this case:<br>
+                                • You will receive a refund for all unused sessions<br>
+                                • This option is NOT available for single-session cancellations (standard cancellation policy applies)</p>
+
+                                <h4>TRAINER-INITIATED CANCELLATIONS</h4>
+                                <p><strong>If We Cancel</strong><br>
+                                Sometimes we need to cancel due to illness, emergency, or other unforeseen circumstances. If this happens:<br>
+                                • You will be notified as soon as possible<br>
+                                • You will receive a full refund OR<br>
+                                • We will offer to reschedule at your convenience<br>
+                                • No cancellation fees will apply to you</p>
+
+                                <p><strong>Weather Cancellations</strong><br>
+                                • If severe weather makes training unsafe or travel impossible, we will cancel and offer to reschedule at no charge<br>
+                                • For light rain or snow, training typically proceeds</p>
+
+                                <div class="policy-notice">
+                                    ⚠️ Please review this policy carefully. By signing below, you acknowledge that you have read and agree to these cancellation and refund terms.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Electronic Signature Consent Checkbox -->
                     <div class="agreement-section">
                         <div class="checkbox-group">
@@ -676,7 +856,7 @@
                         <div class="checkbox-group">
                             <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
                             <label for="agreeTerms">
-                                <strong>I hereby acknowledge that I have read, understood, and agree to all terms outlined in this Consent, Release & Privacy Agreement including: Scope of Services, Training Methods & Tools Acknowledgment, Assumption of Risk, Liability Release & Indemnification, Health & Behavior Disclosure, and Privacy Policy. My digital signature below constitutes a legally binding agreement. *</strong>
+                                <strong>I hereby acknowledge that I have read, understood, and agree to all terms outlined in this Consent, Release & Privacy Agreement including: Scope of Services, Training Methods & Tools Acknowledgment, Assumption of Risk, Liability Release & Indemnification, Health & Behavior Disclosure, Privacy Policy, and Cancellation & Refund Policy. My digital signature below constitutes a legally binding agreement. *</strong>
                             </label>
                         </div>
                     </div>
@@ -742,6 +922,21 @@
         function toggleMenu() {
             const navMenu = document.getElementById('navMenu');
             navMenu.classList.toggle('active');
+        }
+
+        // Cancellation Policy Toggle
+        function toggleCancellationPolicy() {
+            const content = document.getElementById('policyContent');
+            const icon = document.getElementById('policyToggleIcon');
+
+            content.classList.toggle('active');
+            icon.classList.toggle('active');
+
+            if (content.classList.contains('active')) {
+                icon.textContent = '−';
+            } else {
+                icon.textContent = '+';
+            }
         }
 
         // Page Title Animation
@@ -870,6 +1065,7 @@ AGREEMENTS ACKNOWLEDGED:
 ✓ Liability Release & Indemnification - AGREED
 ✓ Health & Behavior Disclosure - AGREED
 ✓ Privacy Policy (including Photo/Video Release) - AGREED
+✓ Cancellation & Refund Policy - AGREED
 
 DIGITAL SIGNATURE:
 ------------------
