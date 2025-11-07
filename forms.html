@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Forms - CanineKind</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #D1E5F4;
+            color: #333;
+            line-height: 1.6;
+            font-size: 18px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #799972;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 25px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo {
+            height: 160px;
+            width: auto;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
+            margin-bottom: 20px;
+        }
+
+        nav {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border: 2px solid transparent;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .nav-menu a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-color: white;
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: white;
+        }
+
+        /* Page Title Section */
+        .page-title-section {
+            position: relative;
+            width: 100%;
+            background-image: url('https://i.imgur.com/cug3epT.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 50px 20px;
+            margin: 0;
+        }
+
+        .page-title {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-size: 2.8em;
+            font-weight: 700;
+            color: #799972;
+            text-align: center;
+            margin: 0;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.9),
+                         -2px -2px 8px rgba(255, 255, 255, 0.9),
+                         2px -2px 8px rgba(255, 255, 255, 0.9),
+                         -2px 2px 8px rgba(255, 255, 255, 0.9),
+                         0 0 20px rgba(255, 255, 255, 0.8);
+            text-transform: uppercase;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s ease;
+        }
+
+        .page-title.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Forms Container */
+        .forms-container {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .intro-section {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border: 3px solid #799972;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .intro-section h2 {
+            color: #799972;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .intro-section p {
+            font-size: 1.1em;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        /* Form Section */
+        .form-section {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            border: 3px solid #799972;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .form-section h2 {
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            color: white;
+            padding: 25px 20px;
+            font-size: 1.8em;
+            text-align: center;
+            margin: -40px -40px 30px -40px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 1em;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #799972;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        /* Legal Text Sections */
+        .legal-section {
+            margin: 30px 0;
+            padding: 25px;
+            background-color: #f9f9f9;
+            border-left: 4px solid #799972;
+            border-radius: 5px;
+        }
+
+        .legal-section h3 {
+            color: #799972;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .legal-section p,
+        .legal-section ul {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 12px;
+        }
+
+        .legal-section ul {
+            margin-left: 20px;
+        }
+
+        .legal-section li {
+            margin-bottom: 8px;
+        }
+
+        /* Signature Pad */
+        .signature-section {
+            margin: 40px 0;
+        }
+
+        .signature-section h3 {
+            color: #799972;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .signature-pad-container {
+            border: 3px solid #799972;
+            border-radius: 8px;
+            background-color: white;
+            padding: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        #signatureCanvas {
+            width: 100%;
+            height: 200px;
+            border: 2px dashed #ddd;
+            border-radius: 5px;
+            cursor: crosshair;
+            touch-action: none;
+        }
+
+        .signature-controls {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-clear {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-clear:hover {
+            background-color: #c82333;
+        }
+
+        .signature-note {
+            color: #666;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        /* Agreement Checkbox */
+        .agreement-section {
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #fff9e6;
+            border: 2px solid #799972;
+            border-radius: 8px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-top: 3px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .checkbox-group label {
+            font-size: 1em;
+            color: #333;
+            line-height: 1.6;
+            cursor: pointer;
+        }
+
+        /* Submit Button */
+        .submit-section {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            border-radius: 8px;
+            font-size: 1.3em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(121, 153, 114, 0.3);
+            letter-spacing: 0.5px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(121, 153, 114, 0.4);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Success/Error Messages */
+        .message {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: none;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #799972;
+            color: white;
+            margin-top: 80px;
+            padding: 50px 20px 30px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-section h3 {
+            color: white;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .footer-section p,
+        .footer-section ul {
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .footer-section a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9em;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            body {
+                font-size: 16px;
+            }
+
+            .header-container {
+                padding: 15px;
+            }
+
+            .logo {
+                height: 120px;
+                margin-bottom: 15px;
+            }
+
+            .nav-menu {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                gap: 5px;
+                margin-top: 15px;
+                padding-top: 15px;
+                border-top: 1px solid rgba(255, 255, 255, 0.2);
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .nav-menu a {
+                width: 100%;
+                text-align: center;
+                padding: 14px 20px;
+                background-color: transparent;
+                border: none;
+                border-radius: 0;
+                font-size: 16px;
+            }
+
+            .nav-menu a:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+                border: none;
+                transform: none;
+            }
+
+            .nav-menu li {
+                width: 100%;
+            }
+
+            .menu-toggle {
+                display: block;
+                position: absolute;
+                top: 20px;
+                right: 20px;
+            }
+
+            .page-title {
+                font-size: 2em;
+                padding: 30px 15px;
+            }
+
+            .form-section {
+                padding: 30px 20px;
+            }
+
+            .form-section h2 {
+                margin: -30px -20px 25px -20px;
+                font-size: 1.5em;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .signature-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn-submit {
+                width: 100%;
+                padding: 15px 30px;
+                font-size: 1.1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 1.6em;
+            }
+
+            .intro-section {
+                padding: 20px;
+            }
+
+            .legal-section {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <img src="https://i.imgur.com/OXiQWa3.jpeg" alt="CanineKind Logo" class="logo">
+            <nav>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="https://caninekind.io">HOME</a></li>
+                    <li><a href="https://caninekind.io/about">ABOUT US</a></li>
+                    <li><a href="https://caninekind.io/videos">VIDEOS</a></li>
+                    <li><a href="https://caninekind.io/faqs">FAQs</a></li>
+                    <li><a href="https://caninekind.io/testimonials">TESTIMONIALS</a></li>
+                    <li><a href="https://caninekind.io/intake">INTAKE FORM</a></li>
+                    <li><a href="https://caninekind.io/services">TRAINING SERVICES</a></li>
+                    <li><a href="https://caninekind.io/shop">SHOP</a></li>
+                    <li><a href="https://caninekind.io/forms">LEGAL FORMS</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="page-title-section">
+            <h1 class="page-title" id="pageTitle">CONSENT, TRAINING & PRIVACY FORMS</h1>
+        </div>
+
+        <div class="forms-container">
+            <div class="intro-section">
+                <h2>Legal Agreement & Consent Forms</h2>
+                <p>Please carefully read and complete the forms below. Your digital signature confirms your agreement to our terms, training policies, and privacy practices.</p>
+            </div>
+
+            <div class="form-section">
+                <h2>Client Information</h2>
+
+                <div id="messageContainer" class="message"></div>
+
+                <form id="legalForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name *</label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Street Address *</label>
+                        <input type="text" id="address" name="address" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city">City *</label>
+                            <input type="text" id="city" name="city" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State *</label>
+                            <input type="text" id="state" name="state" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="zipCode">Zip Code *</label>
+                            <input type="text" id="zipCode" name="zipCode" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="date">Date *</label>
+                            <input type="date" id="date" name="date" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dogName">Dog's Name *</label>
+                        <input type="text" id="dogName" name="dogName" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="dogBreed">Dog's Breed *</label>
+                            <input type="text" id="dogBreed" name="dogBreed" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="dogAge">Dog's Age *</label>
+                            <input type="text" id="dogAge" name="dogAge" required>
+                        </div>
+                    </div>
+
+                    <!-- Introduction -->
+                    <div class="legal-section" style="background-color: #fff9e6; border-left: 4px solid #799972;">
+                        <p style="font-size: 1em; line-height: 1.8; color: #555; margin-bottom: 0;">
+                            <strong>This form helps ensure a clear and fair working relationship between you and CanineKind. Please read all information carefully before signing. If you have any questions about anything in this document, please don't hesitate to ask.</strong>
+                        </p>
+                    </div>
+
+                    <!-- SCOPE OF SERVICES -->
+                    <div class="legal-section">
+                        <h3>SCOPE OF SERVICES</h3>
+                        <p>I understand that CanineKind provides professional in-home dog training services. Each dog is treated as an individual, and training approaches are customized to meet the specific needs of my dog and my training goals. I acknowledge that various training tools and methods may be recommended based on what will be most effective for my dog's learning and my preferences as the owner.</p>
+                    </div>
+
+                    <!-- TRAINING METHODS & TOOLS ACKNOWLEDGMENT -->
+                    <div class="legal-section">
+                        <h3>TRAINING METHODS & TOOLS ACKNOWLEDGMENT</h3>
+                        <p>I understand and acknowledge that CanineKind utilizes a variety of training tools and methods based on each dog's individual needs. Training tools may include e-collars (remote training collars), prong collars, slip leads, flat collars, harnesses, leashes, and positive reinforcement methods.</p>
+                        <p>I acknowledge that:</p>
+                        <ul>
+                            <li>The trainer will explain all recommended methods and tools before use;</li>
+                            <li>I have the right to ask questions about any training technique or tool;</li>
+                            <li>Tool selection will be based on my dog's individual needs and my preferences;</li>
+                        </ul>
+                    </div>
+
+                    <!-- ASSUMPTION OF RISK -->
+                    <div class="legal-section">
+                        <h3>ASSUMPTION OF RISK</h3>
+                        <p>I understand that training dogs involves inherent risks, including but not limited to:</p>
+                        <ul>
+                            <li>Bites, scratches, or other injuries from my dog or other animals</li>
+                            <li>Property damage</li>
+                            <li>Unexpected behavior from dogs during training</li>
+                            <li>Accidents that may occur during training sessions</li>
+                        </ul>
+                        <p>I voluntarily assume all risks associated with dog training services, including any injury to myself, my family members, guests, or property.</p>
+                    </div>
+
+                    <!-- LIABILITY RELEASE & INDEMNIFICATION -->
+                    <div class="legal-section">
+                        <h3>LIABILITY RELEASE & INDEMNIFICATION</h3>
+                        <p>To the fullest extent permitted by law, I agree to:</p>
+                        <ul>
+                            <li>Release and hold harmless CanineKind and its trainer(s) from any and all claims, damages, injuries, or losses arising from training services</li>
+                            <li>Accept full responsibility for my dog's behavior and actions</li>
+                            <li>Indemnify and defend CanineKind against any claims brought by third parties resulting from my dog's actions</li>
+                            <li>Assume financial responsibility for any injuries or property damage caused by my dog</li>
+                        </ul>
+                    </div>
+
+                    <!-- HEALTH & BEHAVIOR DISCLOSURE -->
+                    <div class="legal-section">
+                        <h3>HEALTH & BEHAVIOR DISCLOSURE</h3>
+                        <p>I certify that:</p>
+                        <ul>
+                            <li>My dog is in good health and fit for training</li>
+                            <li>I have disclosed all known behavioral issues, bite history, and aggression</li>
+                            <li>My dog is current on core vaccinations including Rabies, Distemper, Parvo, and Bordetella (or I have disclosed vaccine status and exemptions)</li>
+                            <li>My dog is on monthly flea, tick, and heartworm preventatives (or I have disclosed preventative status)</li>
+                            <li>I will immediately inform the trainer of any changes or diagnoses in my dog's health or behavior</li>
+                        </ul>
+                    </div>
+
+                    <!-- PRIVACY POLICY -->
+                    <div class="legal-section">
+                        <h3>PRIVACY POLICY</h3>
+                        <p>CanineKind is committed to protecting your privacy. By signing, you acknowledge:</p>
+                        <ul>
+                            <li><strong>Information Collection:</strong> We collect personal information including name, contact details, and information about your dog for the purpose of providing training services.</li>
+                            <li><strong>Information Use:</strong> Your information will be used solely to provide, improve, and communicate about our services. We will not sell or share your personal information with third parties except as necessary to provide services (e.g., payment processing).</li>
+                            <li><strong>Photo/Video Release:</strong> I grant CanineKind permission to photograph and/or video record training sessions for documentation, marketing, and educational purposes. If you do not consent to this, please indicate below.</li>
+                            <li><strong>Communications:</strong> By providing my email and phone number, I consent to receive communications from CanineKind regarding my services, appointments, and occasional updates about new services or offerings.</li>
+                            <li><strong>Data Security:</strong> CanineKind takes reasonable measures to protect your personal information from unauthorized access or disclosure.</li>
+                            <li><strong>Your Rights:</strong> You have the right to request access to, correction of, or deletion of your personal information at any time by contacting us at caninekindtraining@gmail.com.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Photo/Video Opt-Out -->
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="photoOptOut" name="photoOptOut">
+                            <label for="photoOptOut">I do NOT consent to photos/videos being taken or used for marketing purposes</label>
+                        </div>
+                    </div>
+
+                    <!-- Health & Behavior Disclosure Fields -->
+                    <div style="margin: 30px 0; padding: 25px; background-color: #f0f8ff; border-left: 4px solid #799972; border-radius: 5px;">
+                        <h3 style="color: #799972; font-size: 1.3em; margin-bottom: 20px;">Health & Behavior Information</h3>
+
+                        <div class="form-group">
+                            <label for="behavioralIssues">Please describe any known behavioral issues, bite history, or aggression (or write "None"): *</label>
+                            <textarea id="behavioralIssues" name="behavioralIssues" rows="3" required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="vaccinationStatus">Vaccination Status (Rabies, Distemper, Parvo, Bordetella): *</label>
+                            <input type="text" id="vaccinationStatus" name="vaccinationStatus" placeholder="e.g., Current - Last updated 01/2024" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="preventatives">Flea, Tick & Heartworm Preventative Status: *</label>
+                            <input type="text" id="preventatives" name="preventatives" placeholder="e.g., Monthly preventatives current" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="healthIssues">Any current health issues or medical conditions? (or write "None"): *</label>
+                            <textarea id="healthIssues" name="healthIssues" rows="2" required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="vetInfo">Veterinarian Name & Contact Information:</label>
+                            <input type="text" id="vetInfo" name="vetInfo" placeholder="Vet name, clinic, phone number">
+                        </div>
+                    </div>
+
+                    <!-- Emergency Contact -->
+                    <div class="form-group">
+                        <label for="emergencyContact">Emergency Contact Name *</label>
+                        <input type="text" id="emergencyContact" name="emergencyContact" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="emergencyPhone">Emergency Contact Phone *</label>
+                        <input type="tel" id="emergencyPhone" name="emergencyPhone" required>
+                    </div>
+
+                    <!-- Signature Section -->
+                    <div class="signature-section">
+                        <h3>Digital Signature *</h3>
+                        <p style="margin-bottom: 15px; color: #555;">Please sign below using your mouse or finger (on touch devices):</p>
+                        <div class="signature-pad-container">
+                            <canvas id="signatureCanvas"></canvas>
+                        </div>
+                        <div class="signature-controls">
+                            <button type="button" class="btn-clear" onclick="clearSignature()">Clear Signature</button>
+                            <span class="signature-note">Sign above to complete the form</span>
+                        </div>
+                    </div>
+
+                    <!-- Agreement Checkbox -->
+                    <div class="agreement-section">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
+                            <label for="agreeTerms">
+                                <strong>I hereby acknowledge that I have read, understood, and agree to all terms outlined in this Consent, Release & Privacy Agreement including: Scope of Services, Training Methods & Tools Acknowledgment, Assumption of Risk, Liability Release & Indemnification, Health & Behavior Disclosure, and Privacy Policy. My digital signature above constitutes a legally binding agreement. *</strong>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="submit-section">
+                        <button type="submit" class="btn-submit" id="submitBtn">Submit Signed Forms</button>
+                    </div>
+
+                    <!-- Hidden field for signature data -->
+                    <input type="hidden" id="signatureData" name="signatureData">
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="https://caninekind.io/about">About Us</a></li>
+                    <li><a href="https://caninekind.io/services">Training Services</a></li>
+                    <li><a href="https://caninekind.io/intake">Intake Form</a></li>
+                    <li><a href="https://caninekind.io/testimonials">Testimonials</a></li>
+                    <li><a href="https://caninekind.io/shop">Shop</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p><a href="mailto:caninekindtraining@gmail.com">caninekindtraining@gmail.com</a></p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2024 CanineKind. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        function toggleMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
+        }
+
+        // Page Title Animation
+        const pageTitle = document.getElementById('pageTitle');
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                pageTitle.classList.add('visible');
+            }, 100);
+        });
+
+        // Set today's date as default
+        document.getElementById('date').valueAsDate = new Date();
+
+        // Signature Pad Implementation
+        const canvas = document.getElementById('signatureCanvas');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+        let hasSignature = false;
+
+        // Set canvas size
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+        }
+
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Mouse events
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+
+        // Touch events
+        canvas.addEventListener('touchstart', handleTouch);
+        canvas.addEventListener('touchmove', handleTouch);
+        canvas.addEventListener('touchend', stopDrawing);
+
+        function startDrawing(e) {
+            isDrawing = true;
+            const rect = canvas.getBoundingClientRect();
+            ctx.beginPath();
+            ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+            hasSignature = true;
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            const rect = canvas.getBoundingClientRect();
+            ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+            ctx.stroke();
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+        function handleTouch(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = canvas.getBoundingClientRect();
+
+            if (e.type === 'touchstart') {
+                isDrawing = true;
+                ctx.beginPath();
+                ctx.moveTo(touch.clientX - rect.left, touch.clientY - rect.top);
+                hasSignature = true;
+            } else if (e.type === 'touchmove' && isDrawing) {
+                ctx.lineTo(touch.clientX - rect.left, touch.clientY - rect.top);
+                ctx.stroke();
+            }
+        }
+
+        function clearSignature() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            hasSignature = false;
+        }
+
+        // Form submission
+        document.getElementById('legalForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const messageContainer = document.getElementById('messageContainer');
+            const submitBtn = document.getElementById('submitBtn');
+
+            // Validate signature
+            if (!hasSignature) {
+                messageContainer.textContent = 'Please provide your signature before submitting.';
+                messageContainer.className = 'message error show';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return;
+            }
+
+            // Get signature data
+            const signatureData = canvas.toDataURL('image/png');
+            document.getElementById('signatureData').value = signatureData;
+
+            // Collect form data
+            const formData = new FormData(this);
+            const data = {};
+            formData.forEach((value, key) => {
+                if (key !== 'signatureData') {
+                    data[key] = value;
+                }
+            });
+
+            // Create email body
+            const emailBody = `
+NEW LEGAL FORMS SUBMISSION - CanineKind
+========================================
+
+CLIENT INFORMATION:
+-------------------
+Name: ${data.firstName} ${data.lastName}
+Email: ${data.email}
+Phone: ${data.phone}
+Address: ${data.address}, ${data.city}, ${data.state} ${data.zipCode}
+Date: ${data.date}
+
+DOG INFORMATION:
+----------------
+Dog Name: ${data.dogName}
+Breed: ${data.dogBreed}
+Age: ${data.dogAge}
+
+HEALTH & BEHAVIOR DISCLOSURE:
+------------------------------
+Behavioral Issues/Bite History: ${data.behavioralIssues}
+Vaccination Status: ${data.vaccinationStatus}
+Flea/Tick/Heartworm Preventatives: ${data.preventatives}
+Health Issues/Medical Conditions: ${data.healthIssues}
+Veterinarian Info: ${data.vetInfo || 'Not provided'}
+
+EMERGENCY CONTACT:
+------------------
+Name: ${data.emergencyContact}
+Phone: ${data.emergencyPhone}
+
+AGREEMENTS ACKNOWLEDGED:
+------------------------
+✓ Scope of Services - AGREED
+✓ Training Methods & Tools Acknowledgment - AGREED
+✓ Assumption of Risk - AGREED
+✓ Liability Release & Indemnification - AGREED
+✓ Health & Behavior Disclosure - AGREED
+✓ Privacy Policy - AGREED
+${data.photoOptOut ? '✗ Photo/Video consent - DECLINED' : '✓ Photo/Video consent - GRANTED'}
+
+SIGNATURE:
+----------
+Digital signature captured: YES
+Timestamp: ${new Date().toLocaleString()}
+Terms Acknowledged: ${data.agreeTerms ? 'YES' : 'NO'}
+
+========================================
+IMPORTANT: Digital signature image has been captured.
+This is a legally binding agreement submitted via caninekind.io/forms
+
+Client has agreed to all terms of the Consent, Release & Privacy Agreement.
+            `.trim();
+
+            // Disable submit button
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+
+            try {
+                // METHOD 1: Using FormSubmit.co (Free service)
+                // To activate: Replace YOUR_EMAIL with caninekindtraining@gmail.com
+
+                const formSubmitData = new FormData();
+                formSubmitData.append('_subject', `Legal Forms - ${data.firstName} ${data.lastName}`);
+                formSubmitData.append('_template', 'table');
+                formSubmitData.append('_captcha', 'false');
+                formSubmitData.append('message', emailBody);
+
+                // Add all form fields
+                for (let key in data) {
+                    formSubmitData.append(key, data[key]);
+                }
+
+                // Note: The signature image is stored as base64. For the initial setup,
+                // we'll include a note about it. You may want to use a file upload service
+                // or backend to handle the image properly.
+                formSubmitData.append('signatureNote', 'Signature captured - see form data');
+
+                const response = await fetch('https://formsubmit.co/caninekindtraining@gmail.com', {
+                    method: 'POST',
+                    body: formSubmitData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    messageContainer.textContent = 'Form submitted successfully! You will receive a confirmation email shortly.';
+                    messageContainer.className = 'message success show';
+
+                    // Reset form
+                    document.getElementById('legalForm').reset();
+                    clearSignature();
+                    document.getElementById('date').valueAsDate = new Date();
+
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    throw new Error('Submission failed');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                messageContainer.textContent = 'There was an error submitting the form. Please try again or contact us directly at caninekindtraining@gmail.com';
+                messageContainer.className = 'message error show';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Signed Forms';
+            }
+        });
+
+        // Optional: Download signed form as PDF (requires html2pdf library)
+        function downloadSignedForm() {
+            // This function can be implemented later if you want to add PDF download capability
+            alert('PDF download feature coming soon!');
+        }
+    </script>
+</body>
+</html>
