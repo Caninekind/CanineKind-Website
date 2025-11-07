@@ -584,22 +584,6 @@
                 <div id="messageContainer" class="message"></div>
 
                 <form id="legalForm">
-                    <div class="form-group">
-                        <label for="dogName">Dog's Name *</label>
-                        <input type="text" id="dogName" name="dogName" required>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="dogBreed">Dog's Breed *</label>
-                            <input type="text" id="dogBreed" name="dogBreed" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="dogAge">Dog's Age *</label>
-                            <input type="text" id="dogAge" name="dogAge" required>
-                        </div>
-                    </div>
-
                     <!-- Introduction -->
                     <div class="legal-section" style="background-color: #fff9e6; border-left: 4px solid #799972;">
                         <p style="font-size: 1em; line-height: 1.8; color: #555; margin-bottom: 0;">
@@ -670,68 +654,37 @@
                         <ul>
                             <li><strong>Information Collection:</strong> We collect personal information including name, contact details, and information about your dog for the purpose of providing training services.</li>
                             <li><strong>Information Use:</strong> Your information will be used solely to provide, improve, and communicate about our services. We will not sell or share your personal information with third parties except as necessary to provide services (e.g., payment processing).</li>
-                            <li><strong>Photo/Video Release:</strong> I grant CanineKind permission to photograph and/or video record training sessions for documentation, marketing, and educational purposes. If you do not consent to this, please indicate below.</li>
-                            <li><strong>Communications:</strong> By providing my email and phone number, I consent to receive communications from CanineKind regarding my services, appointments, and occasional updates about new services or offerings.</li>
+                            <li><strong>Photo/Video Release:</strong> I grant CanineKind permission to photograph and/or video record training sessions for documentation, marketing, and educational purposes.</li>
+                            <li><strong>Communications:</strong> I consent to receive communications from CanineKind regarding my services, appointments, and occasional updates about new services or offerings.</li>
                             <li><strong>Data Security:</strong> CanineKind takes reasonable measures to protect your personal information from unauthorized access or disclosure.</li>
                             <li><strong>Your Rights:</strong> You have the right to request access to, correction of, or deletion of your personal information at any time by contacting us at caninekindtraining@gmail.com.</li>
                         </ul>
                     </div>
 
-                    <!-- Photo/Video Opt-Out -->
-                    <div class="form-group">
+                    <!-- Electronic Signature Consent Checkbox -->
+                    <div class="agreement-section">
                         <div class="checkbox-group">
-                            <input type="checkbox" id="photoOptOut" name="photoOptOut">
-                            <label for="photoOptOut">I do NOT consent to photos/videos being taken or used for marketing purposes</label>
+                            <input type="checkbox" id="electronicConsent" name="electronicConsent" required>
+                            <label for="electronicConsent">
+                                <strong>By signing this form electronically, I agree and consent to conduct this transaction using electronic signatures. I acknowledge that my electronic signature has the same legal effect as a handwritten signature. Both parties agree to be bound by the terms of this agreement through the use of electronic signatures. *</strong>
+                            </label>
                         </div>
                     </div>
 
-                    <!-- Health & Behavior Disclosure Fields -->
-                    <div style="margin: 30px 0; padding: 25px; background-color: #f0f8ff; border-left: 4px solid #799972; border-radius: 5px;">
-                        <h3 style="color: #799972; font-size: 1.3em; margin-bottom: 20px;">Health & Behavior Information</h3>
-
-                        <div class="form-group">
-                            <label for="behavioralIssues">Please describe any known behavioral issues, bite history, or aggression (or write "None"): *</label>
-                            <textarea id="behavioralIssues" name="behavioralIssues" rows="3" required></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="vaccinationStatus">Vaccination Status (Rabies, Distemper, Parvo, Bordetella): *</label>
-                            <input type="text" id="vaccinationStatus" name="vaccinationStatus" placeholder="e.g., Current - Last updated 01/2024" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="preventatives">Flea, Tick & Heartworm Preventative Status: *</label>
-                            <input type="text" id="preventatives" name="preventatives" placeholder="e.g., Monthly preventatives current" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="healthIssues">Any current health issues or medical conditions? (or write "None"): *</label>
-                            <textarea id="healthIssues" name="healthIssues" rows="2" required></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="vetInfo">Veterinarian Name & Contact Information:</label>
-                            <input type="text" id="vetInfo" name="vetInfo" placeholder="Vet name, clinic, phone number">
+                    <!-- Agreement Acknowledgment Checkbox -->
+                    <div class="agreement-section">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
+                            <label for="agreeTerms">
+                                <strong>I hereby acknowledge that I have read, understood, and agree to all terms outlined in this Consent, Release & Privacy Agreement including: Scope of Services, Training Methods & Tools Acknowledgment, Assumption of Risk, Liability Release & Indemnification, Health & Behavior Disclosure, and Privacy Policy. My digital signature below constitutes a legally binding agreement. *</strong>
+                            </label>
                         </div>
                     </div>
 
-                    <!-- Emergency Contact -->
-                    <div class="form-group">
-                        <label for="emergencyContact">Emergency Contact Name *</label>
-                        <input type="text" id="emergencyContact" name="emergencyContact" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="emergencyPhone">Emergency Contact Phone *</label>
-                        <input type="tel" id="emergencyPhone" name="emergencyPhone" required>
-                    </div>
-
-                    <!-- Electronic Signature Consent -->
-                    <div class="legal-section" style="background-color: #fff9e6; border: 2px solid #799972;">
-                        <h3 style="color: #799972; margin-bottom: 15px;">Electronic Signature Consent</h3>
-                        <p style="line-height: 1.8; color: #333;">
-                            By signing this form electronically, you agree and consent to conduct this transaction using electronic signatures. You acknowledge that your electronic signature has the same legal effect as a handwritten signature. Both parties agree to be bound by the terms of this agreement through the use of electronic signatures.
-                        </p>
+                    <!-- Name Input -->
+                    <div class="form-group" style="max-width: 600px; margin: 30px auto;">
+                        <label for="fullName" style="font-size: 1.1em; font-weight: 600;">Type Your Full Name *</label>
+                        <input type="text" id="fullName" name="fullName" required style="font-size: 1.1em; padding: 15px;">
                     </div>
 
                     <!-- Signature Section -->
@@ -744,16 +697,6 @@
                         <div class="signature-controls">
                             <button type="button" class="btn-clear" onclick="clearSignature()">Clear Signature</button>
                             <span class="signature-note">Sign above to complete the form</span>
-                        </div>
-                    </div>
-
-                    <!-- Agreement Checkbox -->
-                    <div class="agreement-section">
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
-                            <label for="agreeTerms">
-                                <strong>I hereby acknowledge that I have read, understood, and agree to all terms outlined in this Consent, Release & Privacy Agreement including: Scope of Services, Training Methods & Tools Acknowledgment, Assumption of Risk, Liability Release & Indemnification, Health & Behavior Disclosure, and Privacy Policy. My digital signature above constitutes a legally binding agreement. *</strong>
-                            </label>
                         </div>
                     </div>
 
@@ -779,6 +722,7 @@
                     <li><a href="https://caninekind.io/intake">Intake Form</a></li>
                     <li><a href="https://caninekind.io/testimonials">Testimonials</a></li>
                     <li><a href="https://caninekind.io/shop">Shop</a></li>
+                    <li><a href="https://caninekind.io/forms">Legal Forms</a></li>
                 </ul>
             </div>
 
@@ -912,46 +856,36 @@
 NEW LEGAL FORMS SUBMISSION - CanineKind
 ========================================
 
-DOG INFORMATION:
-----------------
-Dog Name: ${data.dogName}
-Breed: ${data.dogBreed}
-Age: ${data.dogAge}
-
-HEALTH & BEHAVIOR DISCLOSURE:
-------------------------------
-Behavioral Issues/Bite History: ${data.behavioralIssues}
-Vaccination Status: ${data.vaccinationStatus}
-Flea/Tick/Heartworm Preventatives: ${data.preventatives}
-Health Issues/Medical Conditions: ${data.healthIssues}
-Veterinarian Info: ${data.vetInfo || 'Not provided'}
-
-EMERGENCY CONTACT:
-------------------
-Name: ${data.emergencyContact}
-Phone: ${data.emergencyPhone}
+SIGNER INFORMATION:
+-------------------
+Full Name: ${data.fullName}
+Date & Time: ${new Date().toLocaleString()}
 
 AGREEMENTS ACKNOWLEDGED:
 ------------------------
+✓ Electronic Signature Consent - AGREED
 ✓ Scope of Services - AGREED
 ✓ Training Methods & Tools Acknowledgment - AGREED
 ✓ Assumption of Risk - AGREED
 ✓ Liability Release & Indemnification - AGREED
 ✓ Health & Behavior Disclosure - AGREED
-✓ Privacy Policy - AGREED
-${data.photoOptOut ? '✗ Photo/Video consent - DECLINED' : '✓ Photo/Video consent - GRANTED'}
+✓ Privacy Policy (including Photo/Video Release) - AGREED
 
-SIGNATURE:
-----------
-Digital signature captured: YES
-Timestamp: ${new Date().toLocaleString()}
-Terms Acknowledged: ${data.agreeTerms ? 'YES' : 'NO'}
+DIGITAL SIGNATURE:
+------------------
+✓ Digital signature captured
+✓ Electronic consent confirmed: ${data.electronicConsent ? 'YES' : 'NO'}
+✓ Terms acknowledged: ${data.agreeTerms ? 'YES' : 'NO'}
 
 ========================================
-IMPORTANT: Digital signature image has been captured.
-This is a legally binding agreement submitted via caninekind.io/forms
+IMPORTANT: This is a legally binding electronic agreement.
+Digital signature image has been captured and stored.
 
-Client has agreed to all terms of the Consent, Release & Privacy Agreement.
+Submitted via: caninekind.io/forms
+Client: ${data.fullName}
+
+The client has electronically signed and agreed to all terms
+of the Consent, Release & Privacy Agreement.
             `.trim();
 
             // Disable submit button
@@ -963,7 +897,7 @@ Client has agreed to all terms of the Consent, Release & Privacy Agreement.
                 // To activate: Replace YOUR_EMAIL with caninekindtraining@gmail.com
 
                 const formSubmitData = new FormData();
-                formSubmitData.append('_subject', `Legal Forms Submission - ${data.dogName}`);
+                formSubmitData.append('_subject', `Legal Forms Signed - ${data.fullName}`);
                 formSubmitData.append('_template', 'table');
                 formSubmitData.append('_captcha', 'false');
                 formSubmitData.append('message', emailBody);
