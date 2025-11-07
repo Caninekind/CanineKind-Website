@@ -562,7 +562,6 @@
                     <li><a href="https://caninekind.io/intake">INTAKE FORM</a></li>
                     <li><a href="https://caninekind.io/services">TRAINING SERVICES</a></li>
                     <li><a href="https://caninekind.io/shop">SHOP</a></li>
-                    <li><a href="https://caninekind.io/forms">LEGAL FORMS</a></li>
                 </ul>
             </nav>
         </div>
@@ -580,59 +579,11 @@
             </div>
 
             <div class="form-section">
-                <h2>Client Information</h2>
+                <h2>Legal Agreement & Consent</h2>
 
                 <div id="messageContainer" class="message"></div>
 
                 <form id="legalForm">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="firstName">First Name *</label>
-                            <input type="text" id="firstName" name="firstName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="lastName">Last Name *</label>
-                            <input type="text" id="lastName" name="lastName" required>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">Email Address *</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="phone">Phone Number *</label>
-                        <input type="tel" id="phone" name="phone" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="address">Street Address *</label>
-                        <input type="text" id="address" name="address" required>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="city">City *</label>
-                            <input type="text" id="city" name="city" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="state">State *</label>
-                            <input type="text" id="state" name="state" required>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="zipCode">Zip Code *</label>
-                            <input type="text" id="zipCode" name="zipCode" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="date">Date *</label>
-                            <input type="date" id="date" name="date" required>
-                        </div>
-                    </div>
-
                     <div class="form-group">
                         <label for="dogName">Dog's Name *</label>
                         <input type="text" id="dogName" name="dogName" required>
@@ -775,6 +726,14 @@
                         <input type="tel" id="emergencyPhone" name="emergencyPhone" required>
                     </div>
 
+                    <!-- Electronic Signature Consent -->
+                    <div class="legal-section" style="background-color: #fff9e6; border: 2px solid #799972;">
+                        <h3 style="color: #799972; margin-bottom: 15px;">Electronic Signature Consent</h3>
+                        <p style="line-height: 1.8; color: #333;">
+                            By signing this form electronically, you agree and consent to conduct this transaction using electronic signatures. You acknowledge that your electronic signature has the same legal effect as a handwritten signature. Both parties agree to be bound by the terms of this agreement through the use of electronic signatures.
+                        </p>
+                    </div>
+
                     <!-- Signature Section -->
                     <div class="signature-section">
                         <h3>Digital Signature *</h3>
@@ -848,9 +807,6 @@
                 pageTitle.classList.add('visible');
             }, 100);
         });
-
-        // Set today's date as default
-        document.getElementById('date').valueAsDate = new Date();
 
         // Signature Pad Implementation
         const canvas = document.getElementById('signatureCanvas');
@@ -956,14 +912,6 @@
 NEW LEGAL FORMS SUBMISSION - CanineKind
 ========================================
 
-CLIENT INFORMATION:
--------------------
-Name: ${data.firstName} ${data.lastName}
-Email: ${data.email}
-Phone: ${data.phone}
-Address: ${data.address}, ${data.city}, ${data.state} ${data.zipCode}
-Date: ${data.date}
-
 DOG INFORMATION:
 ----------------
 Dog Name: ${data.dogName}
@@ -1015,7 +963,7 @@ Client has agreed to all terms of the Consent, Release & Privacy Agreement.
                 // To activate: Replace YOUR_EMAIL with caninekindtraining@gmail.com
 
                 const formSubmitData = new FormData();
-                formSubmitData.append('_subject', `Legal Forms - ${data.firstName} ${data.lastName}`);
+                formSubmitData.append('_subject', `Legal Forms Submission - ${data.dogName}`);
                 formSubmitData.append('_template', 'table');
                 formSubmitData.append('_captcha', 'false');
                 formSubmitData.append('message', emailBody);
@@ -1045,7 +993,6 @@ Client has agreed to all terms of the Consent, Release & Privacy Agreement.
                     // Reset form
                     document.getElementById('legalForm').reset();
                     clearSignature();
-                    document.getElementById('date').valueAsDate = new Date();
 
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 } else {
