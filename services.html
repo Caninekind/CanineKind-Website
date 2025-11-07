@@ -128,6 +128,59 @@
       padding: 0 20px;
     }
 
+    /* Getting Started Section */
+    .getting-started-section {
+      background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+      border-radius: 15px;
+      padding: 40px;
+      margin-bottom: 50px;
+      box-shadow: 0 6px 20px rgba(121, 153, 114, 0.3);
+      color: white;
+    }
+
+    .getting-started-section h2 {
+      font-size: 2.2em;
+      margin: 0 0 30px 0;
+      text-align: center;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .steps-container {
+      display: grid;
+      gap: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .step-item {
+      background-color: rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      padding: 20px 25px;
+      border-left: 5px solid white;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .step-item:hover {
+      background-color: rgba(255, 255, 255, 0.25);
+      transform: translateX(5px);
+    }
+
+    .step-item strong {
+      font-size: 1.15em;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .step-item p {
+      margin: 0;
+      line-height: 1.6;
+      font-size: 1em;
+      opacity: 0.95;
+    }
+
     .service-card {
       background-color: white;
       border-radius: 15px;
@@ -444,6 +497,22 @@
         width: 100%;
         text-align: center;
       }
+
+      .getting-started-section {
+        padding: 30px 20px;
+      }
+
+      .getting-started-section h2 {
+        font-size: 1.8em;
+      }
+
+      .step-item {
+        padding: 15px 20px;
+      }
+
+      .step-item:hover {
+        transform: none;
+      }
     }
 
     @media (max-width: 600px) {
@@ -481,6 +550,31 @@
     </div>
 
     <div class="services-container">
+
+      <!-- Getting Started Section -->
+      <div class="getting-started-section">
+        <h2>Getting Started is Easy!</h2>
+        <div class="steps-container">
+          <div class="step-item">
+            <strong>📋 Step 1: Complete The Intake Form to Schedule your FREE Phone Consultation.</strong>
+          </div>
+          <div class="step-item">
+            <strong>📞 Step 2: Book your complimentary 15-minute consultation to discuss your training goals.</strong>
+          </div>
+          <div class="step-item">
+            <strong>📅 Step 3: Schedule Your First Session</strong>
+            <p>After we chat, we'll send you a link to book your first in-home training session or package.</p>
+          </div>
+          <div class="step-item">
+            <strong>✍️ Step 4: Sign Your Forms</strong>
+            <p>Complete our consent and policy forms (at least 24 hours before your appointment).</p>
+          </div>
+          <div class="step-item">
+            <strong>🎉 Step 5: Ready to Train!</strong>
+            <p>Keep an eye on your email. We'll see you and your dog soon!</p>
+          </div>
+        </div>
+      </div>
 
       <!-- Initial Phone Consultation -->
       <div class="service-card">
