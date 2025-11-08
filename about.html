@@ -182,13 +182,102 @@
     .bio-text {
       font-size: 18px;
       line-height: 1.8;
-      color: #1a1a1a;
+      color: white;
       font-family: Arial, sans-serif;
-      font-weight: bold;
+      font-weight: normal;
     }
 
     .bio-text p {
       margin-bottom: 20px;
+    }
+
+    /* Image Gallery Styles */
+    .image-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin: 30px 0;
+    }
+
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.05);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Modal for enlarged images */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.9);
+      padding: 20px;
+    }
+
+    .modal-content {
+      margin: auto;
+      display: block;
+      max-width: 90%;
+      max-height: 90%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 30px;
+      right: 50px;
+      color: white;
+      font-size: 50px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 10001;
+    }
+
+    .close-modal:hover {
+      color: #799972;
+    }
+
+    /* Video Button */
+    .video-button {
+      display: inline-block;
+      background: linear-gradient(135deg, #496044 0%, #5a7354 100%);
+      color: white;
+      padding: 18px 40px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.2em;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .video-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+      background: linear-gradient(135deg, #5a7354 0%, #6a8463 100%);
     }
 
     .dogs-section {
@@ -451,6 +540,23 @@
       .philosophy-section p {
         font-size: 18px;
       }
+
+      .image-gallery {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+
+      .video-button {
+        width: 100%;
+        font-size: 1em;
+        padding: 15px 30px;
+      }
+
+      .close-modal {
+        top: 10px;
+        right: 20px;
+        font-size: 40px;
+      }
     }
 
     @media (max-width: 480px) {
@@ -500,44 +606,35 @@
         <img src="https://i.imgur.com/eZb7eGI.jpeg" alt="Marisa" class="bio-image">
         <div class="bio-title">
           <h2>MARISA</h2>
-          <h3>Founder</h3>
+          <h3>Founder & Lead Trainer</h3>
         </div>
       </div>
       <div class="bio-text">
         <p>Marisa, Lead Trainer of CanineKind was born and raised in the Boston area. Although she grew up with small family dogs, her real training journey began 6 years ago. After securing a job and apartment in the city of Rochester NY - she knew it was time to fulfill her lifelong dream of adopting a large breed dog to do all the things with!</p>
-        
-        <p>When she brought home Atlas, a German Shepherd/St. Bernard mix puppy who quickly shot to 100lbs it was no easy feat to raise him in a city apartment with no backyard. She was extremely committed to learning everything she could - taking every single training class and seminar, molding Atlas into the ideal companion, service dog and even an energetic dog sport competitor. She transcended old school methods and learned to harness the power of play - quickly falling in love with competitive, motivation based training.</p>
-        
-        <p>At 6 years old Atlas has achieved performance titles of the IGP BH and American Schutzhund AS-BT, passing all temperament testing with flying colors along with his CGC-A, CGC-U and AKC Novice and Intermediate Trick Titles. Atlas is also a task-trained service dog, showcasing his extremely solid temperament and clear alerting skills at busy office jobs throughout the years.</p>
-        
-        <div style="text-align: center; margin: 30px 0;">
-          <img src="https://i.imgur.com/7F6AqI9.png" alt="Atlas" style="max-width: 100%; height: auto; border: 4px solid #496044; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
-        </div>
-        
-        <p>Flash forward to 2022, Marisa took on her first sport dog, a well-bred working line German Shepherd named Kismet. After shining in competitive obedience and building precise, energetic focused heeling and other flashy behaviors with a pet dog - she wanted to challenge herself to reach her full potential in terms of competitive canine sports.</p>
-        
-        <div style="text-align: center; margin: 30px 0;">
-          <img src="https://i.imgur.com/nv5xGeR.jpeg" alt="Kismet" style="max-width: 100%; height: auto; border: 4px solid #496044; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
-        </div>
-        
-        <div style="text-align: center; margin: 30px 0;">
-          <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; border: 4px solid #496044; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
-            <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/VIDEO_ID_HERE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+        <p>When she brought home Atlas, a German Shepherd/St. Bernard mix puppy who quickly shot to 100lbs under a year, it was no easy feat to raise him in a city apartment with no backyard and working a full time 9-5. She was committed to learning everything she could to provide Atlas his best life - taking every single training class and seminar, molding Atlas into the ideal companion, service dog and even an energetic dog sport competitor. She transcended old school methods and learned to harness the power of play and natural engagement - quickly falling in love with competitive, motivation based training.</p>
+
+        <p>At 6 years old Atlas has achieved performance/companion titles of the IGP BH and American Schutzhund AS-BT, passing all temperament testing with flying colors along with his AKC CGC-A, CGC-U and AKC Novice and Intermediate Trick Titles. Atlas is also a task-trained service dog, showcasing his extremely solid temperament and clear alerting skills at busy office jobs throughout the years.</p>
+
+        <div class="image-gallery">
+          <div class="gallery-item" onclick="openModal('https://i.imgur.com/VTua2tT.jpeg')">
+            <img src="https://i.imgur.com/VTua2tT.jpeg" alt="Marisa and Atlas">
+          </div>
+          <div class="gallery-item" onclick="openModal('https://i.imgur.com/WslvoYP.jpeg')">
+            <img src="https://i.imgur.com/WslvoYP.jpeg" alt="Marisa and Atlas">
           </div>
         </div>
-        
-        <p>Marisa is currently pursuing the high level dog sport of "IGP". In this sport - the dog completes three phases: tracking, obedience and protection. Kismet and Marisa recently achieved their introductory "BH" title in IGP and plan to pursue the next level in Spring of 2026! Kismet and Marisa have also thrived in this high level atmosphere building strong precise obedience and powerful protection work that has professional level control, building much of the foundations and mechanics of Kismet's skills at home.</p>
-        
-        <p>If you have ever watched Marisa play with and work her dogs in person, then you know this is no exaggeration! Check out some additional videos of our training below.</p>
-        
-        <div style="text-align: center; margin: 30px 0;">
-          <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; border: 4px solid #496044; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); margin-bottom: 30px;">
-            <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/VIDEO_ID_HERE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-          
-          <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; border: 4px solid #496044; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
-            <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/VIDEO_ID_HERE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
+
+        <p>Flash forward to 2022, Marisa took on her first competitive sport dog, a well-bred working line German Shepherd named Kismet. After shining in competitive obedience and building precise, energetic focused heeling and other flashy behaviors with her pet dog - she wanted to challenge herself to reach her full potential in terms of competitive canine sports.</p>
+
+        <p>When she is not training pet dogs, Marisa is pursuing the high level dog sport of "IGP". In this sport - the dog completes three phases: scent tracking, obedience and protection. Kismet and Marisa recently achieved their introductory "BH" title in IGP and plan to pursue the next level in Spring of 2026!</p>
+
+        <p>Kismet and Marisa have thrived in this high level atmosphere building strong precise obedience through a powerful understanding of motivation and engagement along with powerful protection work that has professional level control, building much of the foundations and mechanics of Kismet's skills at home.</p>
+
+        <p>If you have ever watched Marisa play with and work her dogs in person, then you know this is no exaggeration! Check out our "Videos" page for examples of what our training looks like and the skills we have developed with our dogs.</p>
+
+        <div style="text-align: center; margin-top: 30px;">
+          <a href="https://caninekind.io/videos" class="video-button">Now watch CanineKind in action!</a>
         </div>
       </div>
     </div>
@@ -581,6 +678,12 @@
     </div>
   </footer>
 
+  <!-- Image Modal -->
+  <div id="imageModal" class="modal" onclick="closeModal()">
+    <span class="close-modal">&times;</span>
+    <img class="modal-content" id="modalImage">
+  </div>
+
   <script>
     // Mobile Menu Toggle
     function toggleMenu() {
@@ -591,6 +694,25 @@
     // Page Title Animation
     window.addEventListener('load', () => {
       document.getElementById('pageTitle').classList.add('visible');
+    });
+
+    // Image Modal Functions
+    function openModal(imageSrc) {
+      const modal = document.getElementById('imageModal');
+      const modalImg = document.getElementById('modalImage');
+      modal.style.display = 'block';
+      modalImg.src = imageSrc;
+    }
+
+    function closeModal() {
+      document.getElementById('imageModal').style.display = 'none';
+    }
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        closeModal();
+      }
     });
   </script>
 </body>
