@@ -195,7 +195,7 @@
     .image-gallery {
       position: relative;
       height: 400px;
-      margin: 40px 0;
+      margin: 40px 0 20px 0;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -214,7 +214,7 @@
     .gallery-item:nth-child(1) {
       width: 280px;
       height: 350px;
-      left: 10%;
+      left: 5%;
       top: 0;
       transform: rotate(-5deg);
       z-index: 2;
@@ -223,7 +223,7 @@
     .gallery-item:nth-child(2) {
       width: 300px;
       height: 380px;
-      right: 15%;
+      right: 10%;
       top: 10px;
       transform: rotate(8deg);
       z-index: 1;
@@ -232,10 +232,19 @@
     .gallery-item:nth-child(3) {
       width: 260px;
       height: 340px;
-      left: 35%;
+      left: 30%;
       top: 20px;
       transform: rotate(-3deg);
       z-index: 3;
+    }
+
+    .gallery-item:nth-child(4) {
+      width: 270px;
+      height: 360px;
+      right: 35%;
+      top: 5px;
+      transform: rotate(4deg);
+      z-index: 2;
     }
 
     .gallery-item:hover {
@@ -575,25 +584,35 @@
 
       .image-gallery {
         height: auto;
-        min-height: 600px;
+        min-height: 700px;
       }
 
       .gallery-item:nth-child(1) {
-        width: 220px;
-        height: 280px;
-        left: 5%;
+        width: 200px;
+        height: 260px;
+        left: 2%;
+        top: 0;
       }
 
       .gallery-item:nth-child(2) {
-        width: 240px;
-        height: 300px;
-        right: 5%;
+        width: 220px;
+        height: 280px;
+        right: 2%;
+        top: 180px;
       }
 
       .gallery-item:nth-child(3) {
-        width: 200px;
-        height: 260px;
-        left: 30%;
+        width: 190px;
+        height: 250px;
+        left: 25%;
+        top: 100px;
+      }
+
+      .gallery-item:nth-child(4) {
+        width: 210px;
+        height: 270px;
+        right: 20%;
+        top: 20px;
       }
 
       .video-button {
@@ -673,8 +692,11 @@
           <div class="gallery-item" onclick="openModal('https://i.imgur.com/WslvoYP.jpeg')">
             <img src="https://i.imgur.com/WslvoYP.jpeg" alt="Marisa and Atlas">
           </div>
-          <div class="gallery-item" onclick="openModal('https://i.imgur.com/VTua2tT.jpeg')">
-            <img src="https://i.imgur.com/VTua2tT.jpeg" alt="Marisa and Atlas">
+          <div class="gallery-item" onclick="openModal('https://i.imgur.com/xqocoXO.jpeg')">
+            <img src="https://i.imgur.com/xqocoXO.jpeg" alt="Marisa and Atlas">
+          </div>
+          <div class="gallery-item" onclick="openModal('https://i.imgur.com/DHl0hly.jpeg')">
+            <img src="https://i.imgur.com/DHl0hly.jpeg" alt="Marisa training">
           </div>
         </div>
 
