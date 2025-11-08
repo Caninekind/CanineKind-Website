@@ -191,14 +191,15 @@
       margin-bottom: 20px;
     }
 
-    /* Image Gallery Styles - Card Deck Spread */
+    /* Image Gallery Styles - Zig-Zag Cascade */
     .image-gallery {
       position: relative;
-      height: 280px;
+      height: auto;
+      min-height: 900px;
       margin: 40px 0 20px 0;
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
     }
 
     .gallery-item {
@@ -213,59 +214,66 @@
       height: 280px;
     }
 
-    /* Card deck spread - overlapping vertical pattern */
+    /* Zig-zag cascade pattern - 20% overlap at alternating corners */
+    /* Card 1: Starting position */
     .gallery-item:nth-child(1) {
-      left: calc(50% - 450px);
-      top: -10px;
-      transform: rotate(-7deg);
-      z-index: 1;
+      left: calc(50% - 110px);
+      top: 0;
+      transform: rotate(-3deg);
+      z-index: 7;
     }
 
+    /* Card 2: Overlaps bottom-left of Card 1 */
     .gallery-item:nth-child(2) {
-      left: calc(50% - 280px);
-      top: 5px;
-      transform: rotate(-4deg);
-      z-index: 2;
+      left: calc(50% - 286px);
+      top: 224px;
+      transform: rotate(2deg);
+      z-index: 6;
     }
 
+    /* Card 3: Overlaps bottom-right of Card 2 */
     .gallery-item:nth-child(3) {
       left: calc(50% - 110px);
-      top: -5px;
-      transform: rotate(0deg);
+      top: 448px;
+      transform: rotate(-2deg);
+      z-index: 5;
+    }
+
+    /* Card 4: Overlaps bottom-left of Card 3 */
+    .gallery-item:nth-child(4) {
+      left: calc(50% - 286px);
+      top: 672px;
+      transform: rotate(3deg);
+      z-index: 4;
+    }
+
+    /* Card 5: Overlaps bottom-right of Card 4 */
+    .gallery-item:nth-child(5) {
+      left: calc(50% - 110px);
+      top: 896px;
+      transform: rotate(-2deg);
       z-index: 3;
     }
 
-    .gallery-item:nth-child(4) {
-      left: calc(50% + 60px);
-      top: 5px;
-      transform: rotate(4deg);
-      z-index: 2;
-    }
-
-    .gallery-item:nth-child(5) {
-      left: calc(50% + 230px);
-      top: -10px;
-      transform: rotate(7deg);
-      z-index: 1;
-    }
-
+    /* Card 6: Overlaps bottom-left of Card 5 */
     .gallery-item:nth-child(6) {
-      left: calc(50% - 195px);
-      top: 15px;
-      transform: rotate(-2deg);
-      z-index: 2;
-    }
-
-    .gallery-item:nth-child(7) {
-      left: calc(50% + 145px);
-      top: 15px;
+      left: calc(50% - 286px);
+      top: 1120px;
       transform: rotate(2deg);
       z-index: 2;
     }
 
+    /* Card 7: Overlaps bottom-right of Card 6 */
+    .gallery-item:nth-child(7) {
+      left: calc(50% - 110px);
+      top: 1344px;
+      transform: rotate(-3deg);
+      z-index: 1;
+    }
+
     .gallery-item:hover {
       transform: scale(1.15) rotate(0deg) translateY(-20px) !important;
-      z-index: 10 !important;
+      z-index: 100 !important;
       box-shadow: 0 15px 40px rgba(0,0,0,0.6);
     }
 
@@ -600,49 +608,36 @@
 
       .image-gallery {
         height: auto;
-        min-height: 700px;
+        min-height: auto;
         flex-direction: column;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px 0;
       }
 
       .gallery-item {
         width: 180px;
         height: 230px;
-        position: relative !important;
+        position: static !important;
         left: auto !important;
         top: auto !important;
-        margin: 10px auto;
+        margin: 15px auto;
+        transform: none !important;
       }
 
-      .gallery-item:nth-child(1) {
-        transform: rotate(-5deg);
+      /* Apply slight rotations for visual interest on mobile */
+      .gallery-item:nth-child(odd) {
+        transform: rotate(-3deg) !important;
       }
 
-      .gallery-item:nth-child(2) {
-        transform: rotate(3deg);
-      }
-
-      .gallery-item:nth-child(3) {
-        transform: rotate(-2deg);
-      }
-
-      .gallery-item:nth-child(4) {
-        transform: rotate(4deg);
-      }
-
-      .gallery-item:nth-child(5) {
-        transform: rotate(-3deg);
-      }
-
-      .gallery-item:nth-child(6) {
-        transform: rotate(4deg);
-      }
-
-      .gallery-item:nth-child(7) {
-        transform: rotate(-4deg);
+      .gallery-item:nth-child(even) {
+        transform: rotate(3deg) !important;
       }
 
       .gallery-item:hover {
-        transform: scale(1.05) rotate(0deg) !important;
+        transform: scale(1.08) rotate(0deg) !important;
+        z-index: 100 !important;
       }
 
       .video-button {
@@ -670,6 +665,12 @@
 
       .section-header {
         font-size: 32px;
+      }
+
+      .gallery-item {
+        width: 160px;
+        height: 205px;
+        margin: 12px auto;
       }
     }
   </style>
