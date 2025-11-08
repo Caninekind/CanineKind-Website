@@ -194,7 +194,7 @@
     /* Image Gallery Styles - Card Deck Spread */
     .image-gallery {
       position: relative;
-      height: 320px;
+      height: 280px;
       margin: 40px 0 20px 0;
       display: flex;
       justify-content: center;
@@ -209,51 +209,58 @@
       cursor: pointer;
       transition: all 0.3s ease;
       border: 5px solid white;
-      width: 240px;
-      height: 300px;
+      width: 220px;
+      height: 280px;
     }
 
-    /* Card deck spread - horizontal line arrangement */
+    /* Card deck spread - overlapping vertical pattern */
     .gallery-item:nth-child(1) {
-      left: calc(50% - 500px);
-      transform: rotate(-9deg);
+      left: calc(50% - 450px);
+      top: -10px;
+      transform: rotate(-7deg);
       z-index: 1;
     }
 
     .gallery-item:nth-child(2) {
-      left: calc(50% - 300px);
-      transform: rotate(-6deg);
+      left: calc(50% - 280px);
+      top: 5px;
+      transform: rotate(-4deg);
       z-index: 2;
     }
 
     .gallery-item:nth-child(3) {
-      left: calc(50% - 150px);
-      transform: rotate(-3deg);
+      left: calc(50% - 110px);
+      top: -5px;
+      transform: rotate(0deg);
       z-index: 3;
     }
 
     .gallery-item:nth-child(4) {
-      left: calc(50% - 50px);
-      transform: rotate(0deg);
-      z-index: 4;
+      left: calc(50% + 60px);
+      top: 5px;
+      transform: rotate(4deg);
+      z-index: 2;
     }
 
     .gallery-item:nth-child(5) {
-      left: calc(50% + 100px);
-      transform: rotate(3deg);
-      z-index: 3;
+      left: calc(50% + 230px);
+      top: -10px;
+      transform: rotate(7deg);
+      z-index: 1;
     }
 
     .gallery-item:nth-child(6) {
-      left: calc(50% + 250px);
-      transform: rotate(6deg);
+      left: calc(50% - 195px);
+      top: 15px;
+      transform: rotate(-2deg);
       z-index: 2;
     }
 
     .gallery-item:nth-child(7) {
-      left: calc(50% + 450px);
-      transform: rotate(9deg);
-      z-index: 1;
+      left: calc(50% + 145px);
+      top: 15px;
+      transform: rotate(2deg);
+      z-index: 2;
     }
 
     .gallery-item:hover {
@@ -593,16 +600,17 @@
 
       .image-gallery {
         height: auto;
-        min-height: 800px;
+        min-height: 700px;
         flex-direction: column;
       }
 
       .gallery-item {
-        width: 200px;
-        height: 250px;
+        width: 180px;
+        height: 230px;
         position: relative !important;
         left: auto !important;
-        margin: 15px auto;
+        top: auto !important;
+        margin: 10px auto;
       }
 
       .gallery-item:nth-child(1) {
@@ -765,14 +773,14 @@
 
     <div class="bio-section">
       <div class="bio-header">
-        <div class="bio-image" style="background-color: #999; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; font-family: Impact, sans-serif;"></div>
+        <img src="https://i.imgur.com/pmsI0aJ.jpeg" alt="Rachel" class="bio-image">
         <div class="bio-title">
           <h2>RACHEL</h2>
           <h3>Assistant Trainer and Dog Walker</h3>
         </div>
       </div>
       <div class="bio-text">
-        <p>Coming soon :)</p>
+        <p>Rachel is our assistant trainer and a professional dog walker. Rachel has been a professional dog walker for over 3 years with clients of all sizes including a kitty client! Rachel assists our lead trainer in training evaluations, dog walking and witness for testing purposes.</p>
       </div>
     </div>
   </div>
