@@ -191,10 +191,10 @@
       margin-bottom: 20px;
     }
 
-    /* Image Gallery Styles - Overlapping Collage */
+    /* Image Gallery Styles - Card Deck Spread */
     .image-gallery {
       position: relative;
-      height: 400px;
+      height: 320px;
       margin: 40px 0 20px 0;
       display: flex;
       justify-content: center;
@@ -205,52 +205,61 @@
       position: absolute;
       overflow: hidden;
       border-radius: 10px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
       cursor: pointer;
       transition: all 0.3s ease;
-      border: 4px solid white;
+      border: 5px solid white;
+      width: 240px;
+      height: 300px;
     }
 
+    /* Card deck spread - horizontal line arrangement */
     .gallery-item:nth-child(1) {
-      width: 280px;
-      height: 350px;
-      left: 5%;
-      top: 0;
-      transform: rotate(-5deg);
-      z-index: 2;
-    }
-
-    .gallery-item:nth-child(2) {
-      width: 300px;
-      height: 380px;
-      right: 10%;
-      top: 10px;
-      transform: rotate(8deg);
+      left: calc(50% - 500px);
+      transform: rotate(-9deg);
       z-index: 1;
     }
 
+    .gallery-item:nth-child(2) {
+      left: calc(50% - 300px);
+      transform: rotate(-6deg);
+      z-index: 2;
+    }
+
     .gallery-item:nth-child(3) {
-      width: 260px;
-      height: 340px;
-      left: 30%;
-      top: 20px;
+      left: calc(50% - 150px);
       transform: rotate(-3deg);
       z-index: 3;
     }
 
     .gallery-item:nth-child(4) {
-      width: 270px;
-      height: 360px;
-      right: 35%;
-      top: 5px;
-      transform: rotate(4deg);
+      left: calc(50% - 50px);
+      transform: rotate(0deg);
+      z-index: 4;
+    }
+
+    .gallery-item:nth-child(5) {
+      left: calc(50% + 100px);
+      transform: rotate(3deg);
+      z-index: 3;
+    }
+
+    .gallery-item:nth-child(6) {
+      left: calc(50% + 250px);
+      transform: rotate(6deg);
       z-index: 2;
     }
 
+    .gallery-item:nth-child(7) {
+      left: calc(50% + 450px);
+      transform: rotate(9deg);
+      z-index: 1;
+    }
+
     .gallery-item:hover {
-      transform: scale(1.1) rotate(0deg) !important;
+      transform: scale(1.15) rotate(0deg) translateY(-20px) !important;
       z-index: 10 !important;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.6);
     }
 
     .gallery-item img {
@@ -584,35 +593,48 @@
 
       .image-gallery {
         height: auto;
-        min-height: 700px;
+        min-height: 800px;
+        flex-direction: column;
+      }
+
+      .gallery-item {
+        width: 200px;
+        height: 250px;
+        position: relative !important;
+        left: auto !important;
+        margin: 15px auto;
       }
 
       .gallery-item:nth-child(1) {
-        width: 200px;
-        height: 260px;
-        left: 2%;
-        top: 0;
+        transform: rotate(-5deg);
       }
 
       .gallery-item:nth-child(2) {
-        width: 220px;
-        height: 280px;
-        right: 2%;
-        top: 180px;
+        transform: rotate(3deg);
       }
 
       .gallery-item:nth-child(3) {
-        width: 190px;
-        height: 250px;
-        left: 25%;
-        top: 100px;
+        transform: rotate(-2deg);
       }
 
       .gallery-item:nth-child(4) {
-        width: 210px;
-        height: 270px;
-        right: 20%;
-        top: 20px;
+        transform: rotate(4deg);
+      }
+
+      .gallery-item:nth-child(5) {
+        transform: rotate(-3deg);
+      }
+
+      .gallery-item:nth-child(6) {
+        transform: rotate(4deg);
+      }
+
+      .gallery-item:nth-child(7) {
+        transform: rotate(-4deg);
+      }
+
+      .gallery-item:hover {
+        transform: scale(1.05) rotate(0deg) !important;
       }
 
       .video-button {
@@ -695,8 +717,11 @@
           <div class="gallery-item" onclick="openModal('https://i.imgur.com/xqocoXO.jpeg')">
             <img src="https://i.imgur.com/xqocoXO.jpeg" alt="Marisa and Atlas">
           </div>
-          <div class="gallery-item" onclick="openModal('https://i.imgur.com/DHl0hly.jpeg')">
-            <img src="https://i.imgur.com/DHl0hly.jpeg" alt="Marisa training">
+          <div class="gallery-item" onclick="openModal('https://i.imgur.com/GK2KgdT.jpeg')">
+            <img src="https://i.imgur.com/GK2KgdT.jpeg" alt="Marisa and Atlas">
+          </div>
+          <div class="gallery-item" onclick="openModal('https://i.imgur.com/SkbtIgs.jpeg')">
+            <img src="https://i.imgur.com/SkbtIgs.jpeg" alt="Marisa and Atlas">
           </div>
         </div>
 
@@ -705,6 +730,30 @@
         <p>When she is not training pet dogs, Marisa is pursuing the high level dog sport of "IGP". In this sport - the dog completes three phases: scent tracking, obedience and protection. Kismet and Marisa recently achieved their introductory "BH" title in IGP and plan to pursue the next level in Spring of 2026!</p>
 
         <p>Kismet and Marisa have thrived in this high level atmosphere building strong precise obedience through a powerful understanding of motivation and engagement along with powerful protection work that has professional level control, building much of the foundations and mechanics of Kismet's skills at home.</p>
+
+        <div class="image-gallery">
+          <div class="gallery-item" onclick="openModal('https://i.imgur.com/nv5xGeR.jpeg')">
+            <img src="https://i.imgur.com/nv5xGeR.jpeg" alt="Kismet training">
+          </div>
+          <div class="gallery-item" onclick="openModal('https://i.imgur.com/g39xCz9.jpeg')">
+            <img src="https://i.imgur.com/g39xCz9.jpeg" alt="Kismet training">
+          </div>
+          <div class="gallery-item" onclick="openModal('https://i.imgur.com/rWpDqoM.jpeg')">
+            <img src="https://i.imgur.com/rWpDqoM.jpeg" alt="Kismet training">
+          </div>
+          <div class="gallery-item" onclick="openModal('https://i.imgur.com/qBPXaxl.jpeg')">
+            <img src="https://i.imgur.com/qBPXaxl.jpeg" alt="Kismet training">
+          </div>
+          <div class="gallery-item" onclick="openModal('https://i.imgur.com/1iRmdMA.jpeg')">
+            <img src="https://i.imgur.com/1iRmdMA.jpeg" alt="Kismet training">
+          </div>
+          <div class="gallery-item" onclick="openModal('https://i.imgur.com/eHbq2pE.jpeg')">
+            <img src="https://i.imgur.com/eHbq2pE.jpeg" alt="Kismet training">
+          </div>
+          <div class="gallery-item" onclick="openModal('https://i.imgur.com/qZ9WMZx.jpeg')">
+            <img src="https://i.imgur.com/qZ9WMZx.jpeg" alt="Kismet training">
+          </div>
+        </div>
 
         <p>If you have ever watched Marisa play with and work her dogs in person, then you know this is no exaggeration! Check out our "Videos" page for examples of what our training looks like and the skills we have developed with our dogs.</p>
 
