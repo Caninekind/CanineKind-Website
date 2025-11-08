@@ -128,26 +128,60 @@
       padding: 0 20px;
     }
 
-    /* Getting Started Section */
+    /* Getting Started Section - Collapsible */
     .getting-started-section {
       background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
       border-radius: 15px;
-      padding: 40px;
       margin-bottom: 50px;
       box-shadow: 0 6px 20px rgba(121, 153, 114, 0.3);
       color: white;
+      overflow: hidden;
+    }
+
+    .getting-started-header {
+      padding: 20px 30px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background-color 0.3s ease;
+    }
+
+    .getting-started-header:hover {
+      background-color: rgba(0, 0, 0, 0.1);
     }
 
     .getting-started-section h2 {
-      font-size: 2.2em;
-      margin: 0 0 30px 0;
-      text-align: center;
+      font-size: 1.8em;
+      margin: 0;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 1px;
     }
 
+    .toggle-icon {
+      font-size: 32px;
+      font-weight: bold;
+      transition: transform 0.3s ease;
+    }
+
+    .toggle-icon.active {
+      transform: rotate(180deg);
+    }
+
     .steps-container {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.4s ease;
+      padding: 0 40px;
+    }
+
+    .steps-container.active {
+      max-height: 800px;
+      padding: 20px 40px 40px 40px;
+    }
+
+    .steps-grid {
       display: grid;
       gap: 20px;
       max-width: 900px;
@@ -350,6 +384,43 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
 
+    /* FAQ Callout Box */
+    .faq-callout {
+      background-color: white;
+      border: 3px solid #799972;
+      border-radius: 15px;
+      padding: 40px;
+      text-align: center;
+      margin-top: 60px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .faq-callout h3 {
+      color: #799972;
+      font-size: 1.8em;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .faq-button {
+      display: inline-block;
+      background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+      color: white;
+      padding: 15px 40px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.1em;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      margin-top: 10px;
+    }
+
+    .faq-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+    }
+
     /* Footer Styles */
     footer {
       background-color: #799972;
@@ -498,12 +569,20 @@
         text-align: center;
       }
 
-      .getting-started-section {
-        padding: 30px 20px;
+      .getting-started-header {
+        padding: 15px 20px;
       }
 
       .getting-started-section h2 {
-        font-size: 1.8em;
+        font-size: 1.4em;
+      }
+
+      .steps-container {
+        padding: 0 20px;
+      }
+
+      .steps-container.active {
+        padding: 15px 20px 30px 20px;
       }
 
       .step-item {
@@ -512,6 +591,18 @@
 
       .step-item:hover {
         transform: none;
+      }
+
+      .faq-callout {
+        padding: 30px 20px;
+      }
+
+      .faq-callout h3 {
+        font-size: 1.4em;
+      }
+
+      .faq-button {
+        width: 100%;
       }
     }
 
@@ -551,27 +642,32 @@
 
     <div class="services-container">
 
-      <!-- Getting Started Section -->
+      <!-- Getting Started Section - Collapsible -->
       <div class="getting-started-section">
-        <h2>Getting Started is Easy!</h2>
-        <div class="steps-container">
-          <div class="step-item">
-            <strong>📋 Step 1: Complete The Intake Form to Schedule your FREE Phone Consultation.</strong>
-          </div>
-          <div class="step-item">
-            <strong>📞 Step 2: Book your complimentary 15-minute consultation to discuss your training goals.</strong>
-          </div>
-          <div class="step-item">
-            <strong>📅 Step 3: Schedule Your First Session</strong>
-            <p>After we chat, we'll send you a link to book your first in-home training session or package.</p>
-          </div>
-          <div class="step-item">
-            <strong>✍️ Step 4: Sign Your Forms</strong>
-            <p>Complete our consent and policy forms (at least 24 hours before your appointment).</p>
-          </div>
-          <div class="step-item">
-            <strong>🎉 Step 5: Ready to Train!</strong>
-            <p>Keep an eye on your email. We'll see you and your dog soon!</p>
+        <div class="getting-started-header" onclick="toggleGettingStarted()">
+          <h2>Getting Started is Easy!</h2>
+          <span class="toggle-icon" id="gettingStartedIcon">+</span>
+        </div>
+        <div class="steps-container" id="stepsContainer">
+          <div class="steps-grid">
+            <div class="step-item">
+              <strong>📋 Step 1: Complete The Intake Form to Schedule your FREE Phone Consultation.</strong>
+            </div>
+            <div class="step-item">
+              <strong>📞 Step 2: Book your complimentary 15-minute consultation to discuss your training goals.</strong>
+            </div>
+            <div class="step-item">
+              <strong>📅 Step 3: Schedule Your First Session</strong>
+              <p>After we chat, we'll send you a link to book your first in-home training session or package.</p>
+            </div>
+            <div class="step-item">
+              <strong>✍️ Step 4: Sign Your Forms</strong>
+              <p>Complete our consent and policy forms (at least 24 hours before your appointment).</p>
+            </div>
+            <div class="step-item">
+              <strong>🎉 Step 5: Ready to Train!</strong>
+              <p>Keep an eye on your email. We'll see you and your dog soon!</p>
+            </div>
           </div>
         </div>
       </div>
@@ -593,10 +689,10 @@
         <a href="https://caninekind.io/intake" class="booking-button">Fill Out Intake Form</a>
       </div>
 
-      <!-- First Time Evaluation -->
+      <!-- First Time Client - In Person Private Lesson -->
       <div class="service-card">
         <div class="service-header">
-          <h2>First Time Evaluation</h2>
+          <h2>First Time Client - In Person Private Lesson</h2>
           <div class="service-price">$50</div>
         </div>
         <div class="service-description">
@@ -613,20 +709,12 @@
           <li class="treats"><strong>Complimentary Treat Sampler</strong> – Enjoy a free 2oz baggie of assorted treats from our shop!</li>
         </ul>
         <a href="https://book.squareup.com/appointments/yxzgsmqobnwc1j/location/L2B0T1QEWHCFE/services/VHH52VWSJULH7KSPVHNPKDAJ" class="booking-button" target="_blank">Book Your First Session</a>
-
-        <div style="margin-top: 25px; padding: 20px; background-color: #fff9e6; border-left: 4px solid #799972; border-radius: 5px; text-align: center;">
-          <p style="margin-bottom: 15px; font-size: 1.05em; color: #555; line-height: 1.6;">
-            <strong>Required Before Your First Session:</strong><br>
-            Please complete our Consent, Release & Privacy Agreement forms
-          </p>
-          <a href="https://caninekind.io/forms" class="booking-button" style="background: linear-gradient(135deg, #8aaa83 0%, #799972 100%);">Complete Legal Forms</a>
-        </div>
       </div>
 
-      <!-- Returning Client -->
+      <!-- Returning Client - In Person Private Lesson -->
       <div class="service-card">
         <div class="service-header">
-          <h2>Returning Client</h2>
+          <h2>Returning Client - In Person Private Lesson</h2>
           <div class="service-price">$50</div>
         </div>
         <div class="service-description">
@@ -637,24 +725,6 @@
           <li>Each session includes a go home email with a summary of what was worked on, homework if needed and further recommendations</li>
         </ul>
         <a href="https://book.squareup.com/appointments/yxzgsmqobnwc1j/location/L2B0T1QEWHCFE/services/NTPHP7B6XU6K4RWJXVPWBDC5" class="booking-button" target="_blank">Book Your Session</a>
-      </div>
-
-      <!-- Virtual Training Appointment -->
-      <div class="service-card">
-        <div class="service-header">
-          <h2>Virtual Training Appointment</h2>
-          <div class="service-price">$35</div>
-        </div>
-        <div class="service-description">
-          Connect with our professional trainers from the comfort of your home through a virtual training session.
-        </div>
-        <ul class="service-features">
-          <li>One hour virtual training session via video call</li>
-          <li>Personalized training guidance and demonstrations</li>
-          <li>Perfect for remote consultations and follow-up sessions</li>
-          <li>Flexible scheduling to fit your lifestyle</li>
-        </ul>
-        <a href="https://book.squareup.com/appointments/yxzgsmqobnwc1j/location/L2B0T1QEWHCFE/services/TN4WMUHMBDPXTS54UWVLDOIC" class="booking-button" target="_blank">Book Virtual Session</a>
       </div>
 
       <!-- Multi Session Training Package (MOST POPULAR) -->
@@ -678,10 +748,28 @@
         <a href="#" class="booking-button disabled" onclick="return false;">Book Now (Coming Soon)</a>
       </div>
 
-      <!-- Single Dog Walking Session -->
+      <!-- Virtual Training Lesson -->
       <div class="service-card">
         <div class="service-header">
-          <h2>Single Dog Walking Session</h2>
+          <h2>Virtual Training Lesson</h2>
+          <div class="service-price">$35</div>
+        </div>
+        <div class="service-description">
+          Connect with our professional trainers from the comfort of your home through a virtual training session.
+        </div>
+        <ul class="service-features">
+          <li>One hour virtual training session via video call</li>
+          <li>Personalized training guidance and demonstrations</li>
+          <li>Perfect for remote consultations and follow-up sessions</li>
+          <li>Flexible scheduling to fit your lifestyle</li>
+        </ul>
+        <a href="https://book.squareup.com/appointments/yxzgsmqobnwc1j/location/L2B0T1QEWHCFE/services/TN4WMUHMBDPXTS54UWVLDOIC" class="booking-button" target="_blank">Book Virtual Session</a>
+      </div>
+
+      <!-- Dog Walking & Loose Leash Outpatient Program - Standalone Session -->
+      <div class="service-card">
+        <div class="service-header">
+          <h2>Dog Walking & Loose Leash Outpatient Program - Standalone Session</h2>
           <div class="service-price">$50</div>
         </div>
         <div class="service-description">
@@ -694,11 +782,11 @@
         <a href="https://book.squareup.com/appointments/yxzgsmqobnwc1j/location/L2B0T1QEWHCFE/services/XEMSAWUVEZPWH5NLFAHOBMQA" class="booking-button" target="_blank">Book Dog Walking</a>
       </div>
 
-      <!-- Multi Session Dog Walking Package (MOST POPULAR) -->
+      <!-- Dog Walking & Loose Leash Outpatient Program - Multi Session (MOST POPULAR) -->
       <div class="service-card popular">
         <div class="popular-badge">Most Popular</div>
         <div class="service-header">
-          <h2>Multi Session Dog Walking Package</h2>
+          <h2>Dog Walking & Loose Leash Outpatient Program - Multi Session</h2>
           <div class="service-price discounted">
             <span class="original-price">$300</span>
             <span>$250</span>
@@ -714,25 +802,11 @@
         <a href="#" class="booking-button disabled" onclick="return false;">Book Now (Coming Soon)</a>
       </div>
 
-      <!-- Dog Walking and Training Multi Session Combo -->
-      <div class="service-card">
-        <div class="service-header">
-          <h2>Dog Walking and Training Multi Session Combo</h2>
-          <div class="service-price discounted">
-            <span class="original-price">$500</span>
-            <span>$400</span>
-          </div>
-        </div>
-        <div class="service-description">
-          <strong>Loose Leash Walking Outpatient Program</strong><br><br>
-          The ultimate package combining professional training with regular walking sessions for comprehensive leash manner development.
-        </div>
-        <ul class="service-features">
-          <li>Combination of training sessions and walking practice</li>
-          <li>Perfect for developing and maintaining excellent leash manners</li>
-          <li>Complete support from initial training through regular practice</li>
-        </ul>
-        <a href="#" class="booking-button disabled" onclick="return false;">Book Now (Coming Soon)</a>
+      <!-- FAQ Callout Box -->
+      <div class="faq-callout">
+        <h3>Have more questions about what to expect?</h3>
+        <p>Check out our FAQ page for answers to common questions about our training services, methods, and policies.</p>
+        <a href="https://caninekind.io/faqs" class="faq-button">Visit Our FAQs</a>
       </div>
 
     </div>
@@ -768,6 +842,21 @@
     function toggleMenu() {
       const navMenu = document.getElementById('navMenu');
       navMenu.classList.toggle('active');
+    }
+
+    // Getting Started Toggle
+    function toggleGettingStarted() {
+      const container = document.getElementById('stepsContainer');
+      const icon = document.getElementById('gettingStartedIcon');
+
+      container.classList.toggle('active');
+      icon.classList.toggle('active');
+
+      if (container.classList.contains('active')) {
+        icon.textContent = '−';
+      } else {
+        icon.textContent = '+';
+      }
     }
 
     // Page Title Animation
