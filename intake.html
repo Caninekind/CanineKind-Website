@@ -1252,6 +1252,7 @@
       const form = document.getElementById('newsletterForm');
       const successMsg = document.getElementById('newsletterSuccess');
       let isPopupShown = false;
+      let exitIntentTriggered = false;
 
       // Check localStorage to see if user has already interacted
       let hasSubmitted = localStorage.getItem('canineKindNewsletterSubmitted');
@@ -1263,46 +1264,52 @@
       }
 
       // Function to show popup
-      function showPopup(e) {
-        // Don't show if already submitted or if already showing
-        if (hasSubmitted || isPopupShown) {
+      function showPopup() {
+        // Don't show if already submitted, dismissed, or already showing
+        if (hasSubmitted || hasDismissed || isPopupShown || exitIntentTriggered) {
           return;
-        }
-
-        // Prevent default action and show popup
-        if (e) {
-          e.preventDefault();
-          e.returnValue = '';
         }
 
         overlay.classList.add('active');
         isPopupShown = true;
-        return '';
+        exitIntentTriggered = true;
       }
+
+      // Exit Intent Detection - Mouse moving toward top of page (back button, address bar, close)
+      document.addEventListener('mouseout', function(e) {
+        // Check if mouse is leaving from the top of the viewport
+        if (!e.toElement && !e.relatedTarget) {
+          showPopup();
+        } else if (e.clientY < 0) {
+          // Mouse moved above the top of the viewport
+          showPopup();
+        }
+      });
+
+      // Also detect on mouseleave for better coverage
+      document.addEventListener('mouseleave', function(e) {
+        if (e.clientY < 0) {
+          showPopup();
+        }
+      });
 
       // Intercept navigation link clicks
       document.querySelectorAll('.nav-menu a').forEach(link => {
         link.addEventListener('click', function(e) {
           // Don't show if already submitted or dismissed
-          if (!hasSubmitted && !hasDismissed) {
+          if (!hasSubmitted && !hasDismissed && !exitIntentTriggered) {
             e.preventDefault();
             const targetUrl = this.href;
 
             // Show the popup
             overlay.classList.add('active');
             isPopupShown = true;
+            exitIntentTriggered = true;
 
             // Store the target URL to redirect after closing
             overlay.dataset.redirectUrl = targetUrl;
           }
         });
-      });
-
-      // Detect browser back button or page unload
-      window.addEventListener('beforeunload', function(e) {
-        if (!hasSubmitted && !hasDismissed) {
-          return showPopup(e);
-        }
       });
 
       // Close button functionality
