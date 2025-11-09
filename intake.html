@@ -498,25 +498,28 @@
 
     .newsletter-close {
       position: absolute;
-      top: 15px;
-      right: 15px;
-      background: none;
-      border: none;
-      font-size: 28px;
-      color: #666;
+      top: 10px;
+      right: 10px;
+      background-color: #799972;
+      border: 2px solid white;
+      font-size: 32px;
+      color: white;
       cursor: pointer;
-      width: 35px;
-      height: 35px;
+      width: 45px;
+      height: 45px;
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 50%;
-      transition: all 0.2s;
+      transition: all 0.3s;
+      font-weight: bold;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
 
     .newsletter-close:hover {
-      background-color: #f0f0f0;
-      color: #333;
+      background-color: #496044;
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
 
     .newsletter-popup h3 {
@@ -571,6 +574,16 @@
       text-align: center;
       margin-top: 15px;
       display: none;
+    }
+
+    .newsletter-dog-image {
+      width: 100%;
+      max-width: 300px;
+      height: auto;
+      margin: 20px auto 0;
+      display: block;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
     /* Minimized Flag Button */
@@ -714,6 +727,17 @@
         font-size: 12px;
         max-width: 160px;
       }
+
+      .newsletter-close {
+        width: 40px;
+        height: 40px;
+        font-size: 28px;
+      }
+
+      .newsletter-dog-image {
+        max-width: 250px;
+        margin-top: 15px;
+      }
     }
   </style>
 </head>
@@ -742,13 +766,14 @@
     <div class="newsletter-popup">
       <button class="newsletter-close" id="closeNewsletter">&times;</button>
       <h3>Not Quite Ready to Hit Submit?</h3>
-      <p>We understand! Dog training and paperwork take time. Enter your email and/or phone number here to be put on our mailing list and learn about discounts and future events. We promise not to bug you.</p>
+      <p>We understand! Dog training and paperwork take time. Enter your email and/or phone number here to be put on our mailing list and learn about discounts and future events. We promise not to bug you. Just occasional discounts, events and the highest quality cute dog pics of course.</p>
       <form class="newsletter-form" id="newsletterForm">
         <input type="email" id="newsletterEmail" placeholder="Email Address (optional)">
         <input type="tel" id="newsletterPhone" placeholder="Phone Number (optional)">
         <button type="submit" class="newsletter-submit">Sign Me Up!</button>
       </form>
       <div class="newsletter-success" id="newsletterSuccess">Thanks! We'll be in touch soon.</div>
+      <img src="https://i.imgur.com/s5RZtYb.png" alt="Cute dog" class="newsletter-dog-image">
     </div>
   </div>
 
@@ -1226,38 +1251,78 @@
       const flag = document.getElementById('newsletterFlag');
       const form = document.getElementById('newsletterForm');
       const successMsg = document.getElementById('newsletterSuccess');
+      let isPopupShown = false;
 
       // Check localStorage to see if user has already interacted
-      const hasSubmitted = localStorage.getItem('canineKindNewsletterSubmitted');
-      const hasDismissed = localStorage.getItem('canineKindNewsletterDismissed');
+      let hasSubmitted = localStorage.getItem('canineKindNewsletterSubmitted');
+      let hasDismissed = localStorage.getItem('canineKindNewsletterDismissed');
 
-      // Show pop-up after 2 seconds if user hasn't interacted before
-      if (!hasSubmitted && !hasDismissed) {
-        setTimeout(() => {
-          overlay.classList.add('active');
-        }, 2000);
-      } else if (hasDismissed && !hasSubmitted) {
-        // Show the flag if they dismissed but haven't submitted
+      // Show flag if they dismissed but haven't submitted
+      if (hasDismissed && !hasSubmitted) {
         flag.classList.add('visible');
       }
+
+      // Function to show popup
+      function showPopup(e) {
+        // Don't show if already submitted or if already showing
+        if (hasSubmitted || isPopupShown) {
+          return;
+        }
+
+        // Prevent default action and show popup
+        if (e) {
+          e.preventDefault();
+          e.returnValue = '';
+        }
+
+        overlay.classList.add('active');
+        isPopupShown = true;
+        return '';
+      }
+
+      // Intercept navigation link clicks
+      document.querySelectorAll('.nav-menu a').forEach(link => {
+        link.addEventListener('click', function(e) {
+          // Don't show if already submitted or dismissed
+          if (!hasSubmitted && !hasDismissed) {
+            e.preventDefault();
+            const targetUrl = this.href;
+
+            // Show the popup
+            overlay.classList.add('active');
+            isPopupShown = true;
+
+            // Store the target URL to redirect after closing
+            overlay.dataset.redirectUrl = targetUrl;
+          }
+        });
+      });
+
+      // Detect browser back button or page unload
+      window.addEventListener('beforeunload', function(e) {
+        if (!hasSubmitted && !hasDismissed) {
+          return showPopup(e);
+        }
+      });
 
       // Close button functionality
       closeBtn.addEventListener('click', function() {
         overlay.classList.remove('active');
+        isPopupShown = false;
+
+        // Update localStorage
+        hasSubmitted = localStorage.getItem('canineKindNewsletterSubmitted');
         if (!hasSubmitted) {
           localStorage.setItem('canineKindNewsletterDismissed', 'true');
+          hasDismissed = 'true';
           flag.classList.add('visible');
         }
-      });
 
-      // Close when clicking outside the popup
-      overlay.addEventListener('click', function(e) {
-        if (e.target === overlay) {
-          overlay.classList.remove('active');
-          if (!hasSubmitted) {
-            localStorage.setItem('canineKindNewsletterDismissed', 'true');
-            flag.classList.add('visible');
-          }
+        // If there's a redirect URL stored, navigate to it
+        if (overlay.dataset.redirectUrl) {
+          const url = overlay.dataset.redirectUrl;
+          delete overlay.dataset.redirectUrl;
+          window.location.href = url;
         }
       });
 
@@ -1265,6 +1330,7 @@
       flag.addEventListener('click', function() {
         flag.classList.remove('visible');
         overlay.classList.add('active');
+        isPopupShown = true;
       });
 
       // Handle form submission
@@ -1310,10 +1376,20 @@
             // Mark as submitted in localStorage
             localStorage.setItem('canineKindNewsletterSubmitted', 'true');
             localStorage.removeItem('canineKindNewsletterDismissed');
+            hasSubmitted = 'true';
+            hasDismissed = null;
 
             // Auto-close after 3 seconds
             setTimeout(() => {
               overlay.classList.remove('active');
+              isPopupShown = false;
+
+              // If there's a redirect URL stored, navigate to it
+              if (overlay.dataset.redirectUrl) {
+                const url = overlay.dataset.redirectUrl;
+                delete overlay.dataset.redirectUrl;
+                window.location.href = url;
+              }
             }, 3000);
           } else {
             alert('Failed to submit. Please try again or contact us directly.');
