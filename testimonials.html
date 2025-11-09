@@ -308,49 +308,44 @@
       margin-top: 20px;
     }
 
-    /* Review Buttons Section */
+    /* Social/Review Buttons Section */
     .review-buttons-section {
-      max-width: 600px;
+      max-width: 500px;
       margin: 60px auto 40px;
-      padding: 40px 20px;
-      text-align: center;
+      padding: 0 20px;
     }
 
-    .review-buttons-section h2 {
-      color: #496044;
-      font-size: 32px;
-      margin-bottom: 30px;
-      font-weight: bold;
-    }
-
-    .review-buttons {
+    .social-buttons-container {
+      background-color: white;
+      border: 3px solid #799972;
+      border-radius: 15px;
+      padding: 20px;
       display: flex;
-      gap: 30px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .review-button {
-      display: inline-flex;
-      align-items: center;
       gap: 15px;
-      padding: 20px 40px;
-      border-radius: 12px;
-      text-decoration: none;
-      font-size: 20px;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
 
-    .review-button:hover {
+    .social-button {
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .social-button:hover {
       transform: translateY(-3px);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
     }
 
     .google-button {
       background-color: #4285F4;
-      color: white;
     }
 
     .google-button:hover {
@@ -359,14 +354,29 @@
 
     .yelp-button {
       background-color: #D32323;
-      color: white;
     }
 
     .yelp-button:hover {
       background-color: #b91d1d;
     }
 
-    .review-icon {
+    .facebook-button {
+      background-color: #1877F2;
+    }
+
+    .facebook-button:hover {
+      background-color: #0d65d9;
+    }
+
+    .instagram-button {
+      background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    }
+
+    .instagram-button:hover {
+      opacity: 0.9;
+    }
+
+    .social-icon {
       width: 32px;
       height: 32px;
     }
@@ -572,14 +582,19 @@
         right: 5px;
       }
 
-      .review-buttons {
-        flex-direction: column;
-        gap: 20px;
+      .social-buttons-container {
+        padding: 15px;
+        gap: 12px;
       }
 
-      .review-button {
-        width: 100%;
-        justify-content: center;
+      .social-button {
+        width: 50px;
+        height: 50px;
+      }
+
+      .social-icon {
+        width: 28px;
+        height: 28px;
       }
     }
 
@@ -746,28 +761,37 @@
     </div>
   </div>
 
-  <!-- Review Buttons Section -->
+  <!-- Social/Review Buttons Section -->
   <div class="review-buttons-section">
-    <h2>Leave Us a Review!</h2>
-    <div class="review-buttons">
-      <a href="YOUR_GOOGLE_REVIEW_LINK_HERE" class="review-button google-button" target="_blank">
-        <svg class="review-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <div class="social-buttons-container">
+      <a href="YOUR_GOOGLE_REVIEW_LINK_HERE" class="social-button google-button" target="_blank" title="Google Reviews">
+        <svg class="social-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z" fill="#FFC107"/>
           <path d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z" fill="#FF3D00"/>
           <path d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0124 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z" fill="#4CAF50"/>
           <path d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 01-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z" fill="#1976D2"/>
         </svg>
-        Google Reviews
       </a>
-      <a href="YOUR_YELP_REVIEW_LINK_HERE" class="review-button yelp-button" target="_blank">
-        <svg class="review-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <a href="YOUR_YELP_REVIEW_LINK_HERE" class="social-button yelp-button" target="_blank" title="Yelp">
+        <svg class="social-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M24.675 33.84l-7.47 3.57c-.78.375-1.71-.09-1.89-.945l-.96-4.62c-.12-.57.165-1.155.66-1.455l7.35-4.44c.66-.39 1.485-.12 1.8.57l1.26 2.715c.315.69.06 1.5-.6 1.89l-.15.075z" fill="white"/>
           <path d="M27.84 14.34l3.57-7.47c.375-.78-.09-1.71-.945-1.89l-4.62-.96c-.57-.12-1.155.165-1.455.66l-4.44 7.35c-.39.66-.12 1.485.57 1.8l2.715 1.26c.69.315 1.5.06 1.89-.6l.075-.15z" fill="white"/>
           <path d="M14.16 20.325l-7.47-3.57c-.78-.375-1.71.09-1.89.945l-.96 4.62c-.12.57.165 1.155.66 1.455l7.35 4.44c.66.39 1.485.12 1.8-.57l1.26-2.715c.315-.69.06-1.5-.6-1.89l-.15-.075z" fill="white"/>
           <path d="M33.84 23.325l7.47 3.57c.78.375 1.71-.09 1.89-.945l.96-4.62c.12-.57-.165-1.155-.66-1.455l-7.35-4.44c-.66-.39-1.485-.12-1.8.57l-1.26 2.715c-.315.69-.06 1.5.6 1.89l.15.075z" fill="white"/>
           <path d="M20.16 27.675l-3.57 7.47c-.375.78.09 1.71.945 1.89l4.62.96c.57.12 1.155-.165 1.455-.66l4.44-7.35c.39-.66.12-1.485-.57-1.8l-2.715-1.26c-.69-.315-1.5-.06-1.89.6l-.075.15z" fill="white"/>
         </svg>
-        Yelp Reviews
+      </a>
+      <a href="YOUR_FACEBOOK_LINK_HERE" class="social-button facebook-button" target="_blank" title="Facebook">
+        <svg class="social-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 4C12.954 4 4 12.954 4 24s8.954 20 20 20 20-8.954 20-20S35.046 4 24 4zm5 20h-3v12h-5V24h-2v-4h2v-2.5c0-3.038 1.792-4.5 4.5-4.5h3v4h-2c-.653 0-1 .347-1 1v2h3l-.5 4z" fill="white"/>
+        </svg>
+      </a>
+      <a href="YOUR_INSTAGRAM_LINK_HERE" class="social-button instagram-button" target="_blank" title="Instagram">
+        <svg class="social-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 4.5c6.423 0 7.188.028 9.713.14 2.344.107 3.62.497 4.468.825 1.123.437 1.925.959 2.768 1.802.843.843 1.365 1.645 1.802 2.768.328.848.718 2.124.825 4.468.112 2.525.14 3.29.14 9.713s-.028 7.188-.14 9.713c-.107 2.344-.497 3.62-.825 4.468-.437 1.123-.959 1.925-1.802 2.768-.843.843-1.645 1.365-2.768 1.802-.848.328-2.124.718-4.468.825-2.525.112-3.29.14-9.713.14s-7.188-.028-9.713-.14c-2.344-.107-3.62-.497-4.468-.825-1.123-.437-1.925-.959-2.768-1.802-.843-.843-1.365-1.645-1.802-2.768-.328-.848-.718-2.124-.825-4.468-.112-2.525-.14-3.29-.14-9.713s.028-7.188.14-9.713c.107-2.344.497-3.62.825-4.468.437-1.123.959-1.925 1.802-2.768.843-.843 1.645-1.365 2.768-1.802.848-.328 2.124-.718 4.468-.825 2.525-.112 3.29-.14 9.713-.14zM24 0c-6.537 0-7.355.028-9.92.142-2.558.117-4.308.524-5.837 1.119-1.581.615-2.922 1.438-4.257 2.773C2.651 5.369 1.828 6.71 1.213 8.291.618 9.82.211 11.57.094 14.128-.022 16.693 0 17.511 0 24.048s.028 7.355.142 9.92c.117 2.558.524 4.308 1.119 5.837.615 1.581 1.438 2.922 2.773 4.257 1.335 1.335 2.676 2.158 4.257 2.773 1.529.595 3.279 1.002 5.837 1.119 2.565.114 3.383.142 9.92.142s7.355-.028 9.92-.142c2.558-.117 4.308-.524 5.837-1.119 1.581-.615 2.922-1.438 4.257-2.773 1.335-1.335 2.158-2.676 2.773-4.257.595-1.529 1.002-3.279 1.119-5.837.114-2.565.142-3.383.142-9.92s-.028-7.355-.142-9.92c-.117-2.558-.524-4.308-1.119-5.837-.615-1.581-1.438-2.922-2.773-4.257-1.335-1.335-2.676-2.158-4.257-2.773-1.529-.595-3.279-1.002-5.837-1.119C31.355.028 30.537 0 24 0z" fill="white"/>
+          <path d="M24 11.892c-6.683 0-12.108 5.425-12.108 12.108S17.317 36.108 24 36.108 36.108 30.683 36.108 24 30.683 11.892 24 11.892zM24 32c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8z" fill="white"/>
+          <circle cx="36.775" cy="11.225" r="2.83" fill="white"/>
+        </svg>
       </a>
     </div>
   </div>
@@ -795,6 +819,20 @@
       <div class="footer-section">
         <h3>Contact Us</h3>
         <p><a href="mailto:caninekindtraining@gmail.com">caninekindtraining@gmail.com</a></p>
+        <div style="display: flex; gap: 10px; margin-top: 15px;">
+          <a href="YOUR_FACEBOOK_LINK_HERE" target="_blank" style="display: inline-block; width: 40px; height: 40px; background-color: #1877F2; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+            <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M24 4C12.954 4 4 12.954 4 24s8.954 20 20 20 20-8.954 20-20S35.046 4 24 4zm5 20h-3v12h-5V24h-2v-4h2v-2.5c0-3.038 1.792-4.5 4.5-4.5h3v4h-2c-.653 0-1 .347-1 1v2h3l-.5 4z" fill="white"/>
+            </svg>
+          </a>
+          <a href="YOUR_INSTAGRAM_LINK_HERE" target="_blank" style="display: inline-block; width: 40px; height: 40px; background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+            <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M24 4.5c6.423 0 7.188.028 9.713.14 2.344.107 3.62.497 4.468.825 1.123.437 1.925.959 2.768 1.802.843.843 1.365 1.645 1.802 2.768.328.848.718 2.124.825 4.468.112 2.525.14 3.29.14 9.713s-.028 7.188-.14 9.713c-.107 2.344-.497 3.62-.825 4.468-.437 1.123-.959 1.925-1.802 2.768-.843.843-1.645 1.365-2.768 1.802-.848.328-2.124.718-4.468.825-2.525.112-3.29.14-9.713.14s-7.188-.028-9.713-.14c-2.344-.107-3.62-.497-4.468-.825-1.123-.437-1.925-.959-2.768-1.802-.843-.843-1.365-1.645-1.802-2.768-.328-.848-.718-2.124-.825-4.468-.112-2.525-.14-3.29-.14-9.713s.028-7.188.14-9.713c.107-2.344.497-3.62.825-4.468.437-1.123.959-1.925 1.802-2.768.843-.843 1.645-1.365 2.768-1.802.848-.328 2.124-.718 4.468-.825 2.525-.112 3.29-.14 9.713-.14zM24 0c-6.537 0-7.355.028-9.92.142-2.558.117-4.308.524-5.837 1.119-1.581.615-2.922 1.438-4.257 2.773C2.651 5.369 1.828 6.71 1.213 8.291.618 9.82.211 11.57.094 14.128-.022 16.693 0 17.511 0 24.048s.028 7.355.142 9.92c.117 2.558.524 4.308 1.119 5.837.615 1.581 1.438 2.922 2.773 4.257 1.335 1.335 2.676 2.158 4.257 2.773 1.529.595 3.279 1.002 5.837 1.119 2.565.114 3.383.142 9.92.142s7.355-.028 9.92-.142c2.558-.117 4.308-.524 5.837-1.119 1.581-.615 2.922-1.438 4.257-2.773 1.335-1.335 2.158-2.676 2.773-4.257.595-1.529 1.002-3.279 1.119-5.837.114-2.565.142-3.383.142-9.92s-.028-7.355-.142-9.92c-.117-2.558-.524-4.308-1.119-5.837-.615-1.581-1.438-2.922-2.773-4.257-1.335-1.335-2.676-2.158-4.257-2.773-1.529-.595-3.279-1.002-5.837-1.119C31.355.028 30.537 0 24 0z" fill="white"/>
+              <path d="M24 11.892c-6.683 0-12.108 5.425-12.108 12.108S17.317 36.108 24 36.108 36.108 30.683 36.108 24 30.683 11.892 24 11.892zM24 32c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8z" fill="white"/>
+              <circle cx="36.775" cy="11.225" r="2.83" fill="white"/>
+            </svg>
+          </a>
+        </div>
       </div>
     </div>
 
