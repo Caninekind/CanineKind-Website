@@ -484,12 +484,27 @@
       background-color: white;
       border-radius: 15px;
       box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-      max-width: 500px;
+      max-width: 900px;
       width: 90%;
       padding: 30px;
       position: relative;
       transform: scale(0.9);
       transition: transform 0.3s ease;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .newsletter-content {
+      flex: 1;
+    }
+
+    .newsletter-image-container {
+      flex: 0 0 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .newsletter-overlay.active .newsletter-popup {
@@ -581,7 +596,7 @@
       width: 100%;
       max-width: 300px;
       height: auto;
-      margin: 20px auto 0;
+      margin: 0;
       display: block;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -708,6 +723,12 @@
         width: 92%;
         max-height: 90vh;
         overflow-y: auto;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .newsletter-image-container {
+        flex: 0 0 auto;
       }
 
       .newsletter-popup h3 {
@@ -780,15 +801,19 @@
   <div class="newsletter-overlay" id="newsletterOverlay">
     <div class="newsletter-popup">
       <button class="newsletter-close" id="closeNewsletter">&times;</button>
-      <h3>Not Quite Ready to Hit Submit?</h3>
-      <p>We really get it.<br>Dog training and paperwork take time. If you wish, you can enter your email and/or phone number here to learn about discounts, future events at CanineKind and free training tips. We promise not to bug you, and cute pup pics are always included.</p>
-      <form class="newsletter-form" id="newsletterForm">
-        <input type="email" id="newsletterEmail" placeholder="Email Address (optional)">
-        <input type="tel" id="newsletterPhone" placeholder="Phone Number (optional)">
-        <button type="submit" class="newsletter-submit">Sign Me Up!</button>
-      </form>
-      <div class="newsletter-success" id="newsletterSuccess">Thanks! We'll be in touch soon.</div>
-      <img src="https://i.imgur.com/s5RZtYb.png" alt="Cute dog" class="newsletter-dog-image">
+      <div class="newsletter-content">
+        <h3>Not Quite Ready to Hit Submit?</h3>
+        <p>We really get it.<br>Dog training and paperwork take time. If you wish, you can enter your email and/or phone number here to learn about discounts, future events at CanineKind and free training tips. We promise not to bug you, and cute pup pics are always included.</p>
+        <form class="newsletter-form" id="newsletterForm">
+          <input type="email" id="newsletterEmail" placeholder="Email Address (optional)">
+          <input type="tel" id="newsletterPhone" placeholder="Phone Number (optional)">
+          <button type="submit" class="newsletter-submit">Sign Me Up!</button>
+        </form>
+        <div class="newsletter-success" id="newsletterSuccess">Thanks! We'll be in touch soon.</div>
+      </div>
+      <div class="newsletter-image-container">
+        <img src="https://i.imgur.com/s5RZtYb.png" alt="Cute dog" class="newsletter-dog-image">
+      </div>
     </div>
   </div>
 
@@ -829,12 +854,9 @@
                     <h2 class="fs-title" style="margin-top: -10px;">Owner Information</h2>
                     <p class="fs-subtitle">Let's get to know your dog's best friend!</p>
                     <label>1. Owner Name</label>
-                    <input type="text" name="owner_first_name" placeholder="First Name"/>
-                    <input type="text" name="owner_last_name" placeholder="Last Name"/>
+                    <input type="text" name="owner_full_name" placeholder="Full Name (First Last)"/>
                     <label>2. State, City, Zipcode</label>
-                    <input type="text" name="owner_state" placeholder="State"/>
-                    <input type="text" name="owner_city" placeholder="City"/>
-                    <input type="text" name="owner_zip" placeholder="Zip Code"/>
+                    <input type="text" name="owner_location" placeholder="City State Zipcode (e.g., Stoughton Massachusetts 02072)"/>
                     <label>3. Email</label>
                     <input type="email" name="owner_email" placeholder="Email Address"/>
                     <label>4. Phone Number</label>
@@ -849,11 +871,10 @@
                     </div>
                     <input type="text" name="responsible_other_text" placeholder="If other, please specify..."/>
                     <label>6. Have you worked with a dog trainer or received professional dog training before?</label>
-                    <select name="previous_trainer_experience">
-                      <option value="">Select</option>
-                      <option value="yes">Yes</option>
-                      <option value="no">No</option>
-                    </select>
+                    <div class="checkbox-group-horizontal">
+                      <label><input type="checkbox" name="previous_trainer_yes" value="yes"/> Yes</label>
+                      <label><input type="checkbox" name="previous_trainer_no" value="no"/> No</label>
+                    </div>
                     <label>7. What services are you interested in?</label>
                     <div class="checkbox-group-horizontal">
                       <label><input type="checkbox" name="service_general_private" value="yes"/> General private lesson</label>
@@ -885,17 +906,15 @@
                     <label>3. Breed</label>
                     <input type="text" name="dog_breed" placeholder="Breed or Mix"/>
                     <label>4. Gender</label>
-                    <select name="dog_gender">
-                      <option value="">Select Gender</option>
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                    </select>
+                    <div class="checkbox-group-horizontal">
+                      <label><input type="checkbox" name="dog_gender_male" value="male"/> Male</label>
+                      <label><input type="checkbox" name="dog_gender_female" value="female"/> Female</label>
+                    </div>
                     <label>5. Spayed/Neutered?</label>
-                    <select name="dog_fixed">
-                      <option value="">Select</option>
-                      <option value="yes">Yes</option>
-                      <option value="no">No</option>
-                    </select>
+                    <div class="checkbox-group-horizontal">
+                      <label><input type="checkbox" name="dog_fixed_yes" value="yes"/> Yes</label>
+                      <label><input type="checkbox" name="dog_fixed_no" value="no"/> No</label>
+                    </div>
                     <label>6. Weight</label>
                     <input type="text" name="dog_weight" placeholder="Weight (lbs)"/>
                     <label>7. Where did you get your dog?</label>

@@ -151,6 +151,53 @@
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
     }
 
+    /* Report Card Styles */
+    .report-card {
+      background: linear-gradient(135deg, #f5f9f7 0%, #e8f4f0 100%);
+      border: 3px solid #799972;
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 30px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    .report-card-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 2px solid rgba(121, 153, 114, 0.2);
+    }
+
+    .report-card-row:last-child {
+      border-bottom: none;
+      padding-top: 15px;
+      justify-content: center;
+    }
+
+    .report-card-label {
+      font-weight: bold;
+      color: #496044;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      flex: 0 0 40%;
+    }
+
+    .report-card-value {
+      color: #333;
+      font-size: 16px;
+      flex: 1;
+      text-align: right;
+      font-weight: 500;
+    }
+
+    .report-card-stars {
+      color: #FFD700;
+      font-size: 28px;
+      letter-spacing: 3px;
+    }
+
     .testimonial-info {
       text-align: center;
       margin-bottom: 30px;
@@ -186,8 +233,9 @@
       max-width: 800px;
       height: 450px;
       margin: 30px auto;
-      margin-bottom: 6rem;
+      margin-bottom: 12rem;
       padding: 50px 20px;
+      padding-bottom: 80px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -675,10 +723,27 @@
   <div class="testimonials-container">
     <!-- Testimonial 1 -->
     <div class="testimonial-card">
-      <div class="testimonial-info">
-        <h3>Loose Leash Outpatient Program</h3>
-        <div class="client-name">Beth</div>
-        <div class="star-rating">★★★★★</div>
+      <!-- Report Card -->
+      <div class="report-card">
+        <div class="report-card-row">
+          <div class="report-card-label">Client Name</div>
+          <div class="report-card-value">Beth</div>
+        </div>
+        <div class="report-card-row">
+          <div class="report-card-label">Dog Name(s)/Breed(s)</div>
+          <div class="report-card-value">Insert Dog Info</div>
+        </div>
+        <div class="report-card-row">
+          <div class="report-card-label">Program</div>
+          <div class="report-card-value">Loose Leash Outpatient Program</div>
+        </div>
+        <div class="report-card-row">
+          <div class="report-card-label">Skill Focus</div>
+          <div class="report-card-value">Loose Leash Walking</div>
+        </div>
+        <div class="report-card-row">
+          <div class="report-card-stars">★★★★★</div>
+        </div>
       </div>
 
       <!-- Image Carousel -->
@@ -703,10 +768,27 @@
 
     <!-- Testimonial 2 -->
     <div class="testimonial-card">
-      <div class="testimonial-info">
-        <h3>Training Program Name</h3>
-        <div class="client-name">Client Name</div>
-        <div class="star-rating">★★★★★</div>
+      <!-- Report Card -->
+      <div class="report-card">
+        <div class="report-card-row">
+          <div class="report-card-label">Client Name</div>
+          <div class="report-card-value">Client Name</div>
+        </div>
+        <div class="report-card-row">
+          <div class="report-card-label">Dog Name(s)/Breed(s)</div>
+          <div class="report-card-value">Insert Dog Info</div>
+        </div>
+        <div class="report-card-row">
+          <div class="report-card-label">Program</div>
+          <div class="report-card-value">Training Program Name</div>
+        </div>
+        <div class="report-card-row">
+          <div class="report-card-label">Skill Focus</div>
+          <div class="report-card-value">Insert Skill Focus</div>
+        </div>
+        <div class="report-card-row">
+          <div class="report-card-stars">★★★★★</div>
+        </div>
       </div>
 
       <!-- Image Carousel -->
@@ -734,10 +816,27 @@
 
     <!-- Testimonial 3 -->
     <div class="testimonial-card">
-      <div class="testimonial-info">
-        <h3>Training Program Name</h3>
-        <div class="client-name">Client Name</div>
-        <div class="star-rating">★★★★★</div>
+      <!-- Report Card -->
+      <div class="report-card">
+        <div class="report-card-row">
+          <div class="report-card-label">Client Name</div>
+          <div class="report-card-value">Client Name</div>
+        </div>
+        <div class="report-card-row">
+          <div class="report-card-label">Dog Name(s)/Breed(s)</div>
+          <div class="report-card-value">Insert Dog Info</div>
+        </div>
+        <div class="report-card-row">
+          <div class="report-card-label">Program</div>
+          <div class="report-card-value">Training Program Name</div>
+        </div>
+        <div class="report-card-row">
+          <div class="report-card-label">Skill Focus</div>
+          <div class="report-card-value">Insert Skill Focus</div>
+        </div>
+        <div class="report-card-row">
+          <div class="report-card-stars">★★★★★</div>
+        </div>
       </div>
 
       <!-- Image Carousel -->
