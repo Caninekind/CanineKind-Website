@@ -1253,6 +1253,8 @@
       const successMsg = document.getElementById('newsletterSuccess');
       let isPopupShown = false;
       let exitIntentTriggered = false;
+      let mouseY = 0;
+      let enableExitIntent = false;
 
       // Check localStorage to see if user has already interacted
       let hasSubmitted = localStorage.getItem('canineKindNewsletterSubmitted');
@@ -1263,10 +1265,20 @@
         flag.classList.add('visible');
       }
 
+      // Enable exit intent detection after 1 second (prevents triggering on page load)
+      setTimeout(() => {
+        enableExitIntent = true;
+      }, 1000);
+
+      // Track mouse position
+      document.addEventListener('mousemove', function(e) {
+        mouseY = e.clientY;
+      });
+
       // Function to show popup
       function showPopup() {
-        // Don't show if already submitted, dismissed, or already showing
-        if (hasSubmitted || hasDismissed || isPopupShown || exitIntentTriggered) {
+        // Don't show if already submitted or already showing
+        if (hasSubmitted || isPopupShown || exitIntentTriggered || !enableExitIntent) {
           return;
         }
 
@@ -1275,20 +1287,21 @@
         exitIntentTriggered = true;
       }
 
-      // Exit Intent Detection - Mouse moving toward top of page (back button, address bar, close)
+      // Exit Intent Detection - Mouse moving toward top of page
       document.addEventListener('mouseout', function(e) {
-        // Check if mouse is leaving from the top of the viewport
-        if (!e.toElement && !e.relatedTarget) {
-          showPopup();
-        } else if (e.clientY < 0) {
-          // Mouse moved above the top of the viewport
-          showPopup();
+        // Only trigger if mouse is moving upward out of the page (toward browser controls)
+        if (!e.relatedTarget && !e.toElement) {
+          // Mouse left the document
+          if (mouseY < 100) {
+            // Was near the top of the page
+            showPopup();
+          }
         }
       });
 
-      // Also detect on mouseleave for better coverage
+      // Detect mouse leaving the viewport from the top
       document.addEventListener('mouseleave', function(e) {
-        if (e.clientY < 0) {
+        if (e.clientY <= 0) {
           showPopup();
         }
       });
@@ -1296,8 +1309,8 @@
       // Intercept navigation link clicks
       document.querySelectorAll('.nav-menu a').forEach(link => {
         link.addEventListener('click', function(e) {
-          // Don't show if already submitted or dismissed
-          if (!hasSubmitted && !hasDismissed && !exitIntentTriggered) {
+          // Don't show if already submitted
+          if (!hasSubmitted && !exitIntentTriggered) {
             e.preventDefault();
             const targetUrl = this.href;
 
