@@ -586,35 +586,6 @@
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
-    /* Minimized Flag Button */
-    .newsletter-flag {
-      position: fixed;
-      top: 80px;
-      right: 20px;
-      background-color: #799972;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: bold;
-      z-index: 1500;
-      display: none;
-      transition: all 0.3s;
-      max-width: 200px;
-      text-align: center;
-    }
-
-    .newsletter-flag:hover {
-      background-color: #496044;
-      transform: scale(1.05);
-    }
-
-    .newsletter-flag.visible {
-      display: block;
-    }
-
     @media (max-width: 768px) {
       body {
         font-size: 16px;
@@ -708,35 +679,44 @@
       }
 
       .newsletter-popup {
-        padding: 25px;
-        width: 85%;
+        padding: 20px;
+        width: 92%;
+        max-height: 90vh;
+        overflow-y: auto;
       }
 
       .newsletter-popup h3 {
-        font-size: 20px;
+        font-size: 18px;
+        margin-bottom: 12px;
       }
 
       .newsletter-popup p {
         font-size: 14px;
-      }
-
-      .newsletter-flag {
-        top: 70px;
-        right: 10px;
-        padding: 10px 15px;
-        font-size: 12px;
-        max-width: 160px;
+        margin-bottom: 15px;
       }
 
       .newsletter-close {
-        width: 40px;
-        height: 40px;
-        font-size: 28px;
+        width: 38px;
+        height: 38px;
+        font-size: 26px;
+        top: 8px;
+        right: 8px;
+      }
+
+      .newsletter-form input {
+        padding: 10px;
+        font-size: 15px;
+        margin-bottom: 10px;
+      }
+
+      .newsletter-submit {
+        padding: 12px;
+        font-size: 16px;
       }
 
       .newsletter-dog-image {
-        max-width: 250px;
-        margin-top: 15px;
+        max-width: 200px;
+        margin-top: 12px;
       }
     }
   </style>
@@ -775,11 +755,6 @@
       <div class="newsletter-success" id="newsletterSuccess">Thanks! We'll be in touch soon.</div>
       <img src="https://i.imgur.com/s5RZtYb.png" alt="Cute dog" class="newsletter-dog-image">
     </div>
-  </div>
-
-  <!-- Minimized Newsletter Flag -->
-  <div class="newsletter-flag" id="newsletterFlag">
-    Join Our Mailing List
   </div>
 
   <div class="container-fluid" id="grad1">
@@ -1244,51 +1219,52 @@
       navMenu.classList.toggle('active');
     }
 
-    // Newsletter Pop-up Logic
+    // Newsletter Pop-up Logic - Simple exit-intent for new clients only
     (function() {
       const overlay = document.getElementById('newsletterOverlay');
       const closeBtn = document.getElementById('closeNewsletter');
-      const flag = document.getElementById('newsletterFlag');
       const form = document.getElementById('newsletterForm');
       const successMsg = document.getElementById('newsletterSuccess');
-      let isPopupShown = false;
       let exitIntentTriggered = false;
+      let mouseY = 0;
+      let enableExitIntent = false;
 
-      // Check localStorage to see if user has already interacted
-      let hasSubmitted = localStorage.getItem('canineKindNewsletterSubmitted');
-      let hasDismissed = localStorage.getItem('canineKindNewsletterDismissed');
+      // Enable exit intent detection after 1 second (prevents triggering on page load)
+      setTimeout(() => {
+        enableExitIntent = true;
+      }, 1000);
 
-      // Show flag if they dismissed but haven't submitted
-      if (hasDismissed && !hasSubmitted) {
-        flag.classList.add('visible');
-      }
+      // Track mouse position
+      document.addEventListener('mousemove', function(e) {
+        mouseY = e.clientY;
+      });
 
       // Function to show popup
       function showPopup() {
-        // Don't show if already submitted, dismissed, or already showing
-        if (hasSubmitted || hasDismissed || isPopupShown || exitIntentTriggered) {
+        // Only show once per session
+        if (exitIntentTriggered || !enableExitIntent) {
           return;
         }
 
         overlay.classList.add('active');
-        isPopupShown = true;
         exitIntentTriggered = true;
       }
 
-      // Exit Intent Detection - Mouse moving toward top of page (back button, address bar, close)
+      // Exit Intent Detection - Mouse moving toward top of page
       document.addEventListener('mouseout', function(e) {
-        // Check if mouse is leaving from the top of the viewport
-        if (!e.toElement && !e.relatedTarget) {
-          showPopup();
-        } else if (e.clientY < 0) {
-          // Mouse moved above the top of the viewport
-          showPopup();
+        // Only trigger if mouse is moving upward out of the page (toward browser controls)
+        if (!e.relatedTarget && !e.toElement) {
+          // Mouse left the document
+          if (mouseY < 100) {
+            // Was near the top of the page
+            showPopup();
+          }
         }
       });
 
-      // Also detect on mouseleave for better coverage
+      // Detect mouse leaving the viewport from the top
       document.addEventListener('mouseleave', function(e) {
-        if (e.clientY < 0) {
+        if (e.clientY <= 0) {
           showPopup();
         }
       });
@@ -1296,14 +1272,12 @@
       // Intercept navigation link clicks
       document.querySelectorAll('.nav-menu a').forEach(link => {
         link.addEventListener('click', function(e) {
-          // Don't show if already submitted or dismissed
-          if (!hasSubmitted && !hasDismissed && !exitIntentTriggered) {
+          if (!exitIntentTriggered) {
             e.preventDefault();
             const targetUrl = this.href;
 
             // Show the popup
             overlay.classList.add('active');
-            isPopupShown = true;
             exitIntentTriggered = true;
 
             // Store the target URL to redirect after closing
@@ -1315,15 +1289,6 @@
       // Close button functionality
       closeBtn.addEventListener('click', function() {
         overlay.classList.remove('active');
-        isPopupShown = false;
-
-        // Update localStorage
-        hasSubmitted = localStorage.getItem('canineKindNewsletterSubmitted');
-        if (!hasSubmitted) {
-          localStorage.setItem('canineKindNewsletterDismissed', 'true');
-          hasDismissed = 'true';
-          flag.classList.add('visible');
-        }
 
         // If there's a redirect URL stored, navigate to it
         if (overlay.dataset.redirectUrl) {
@@ -1331,13 +1296,6 @@
           delete overlay.dataset.redirectUrl;
           window.location.href = url;
         }
-      });
-
-      // Flag click to re-open popup
-      flag.addEventListener('click', function() {
-        flag.classList.remove('visible');
-        overlay.classList.add('active');
-        isPopupShown = true;
       });
 
       // Handle form submission
@@ -1380,16 +1338,9 @@
             form.style.display = 'none';
             successMsg.style.display = 'block';
 
-            // Mark as submitted in localStorage
-            localStorage.setItem('canineKindNewsletterSubmitted', 'true');
-            localStorage.removeItem('canineKindNewsletterDismissed');
-            hasSubmitted = 'true';
-            hasDismissed = null;
-
             // Auto-close after 3 seconds
             setTimeout(() => {
               overlay.classList.remove('active');
-              isPopupShown = false;
 
               // If there's a redirect URL stored, navigate to it
               if (overlay.dataset.redirectUrl) {
