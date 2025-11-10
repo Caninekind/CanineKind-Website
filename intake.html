@@ -524,9 +524,10 @@
 
     .newsletter-popup h3 {
       color: #799972;
-      font-size: 24px;
-      margin-bottom: 15px;
+      font-size: 48px;
+      margin-bottom: 20px;
       font-family: Impact, sans-serif;
+      line-height: 1.1;
     }
 
     .newsletter-popup p {
@@ -584,6 +585,30 @@
       display: block;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Mailing List Banner - Always Visible */
+    .mailing-list-banner {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #799972;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+      z-index: 1500;
+      transition: all 0.3s;
+      max-width: 200px;
+      text-align: center;
+    }
+
+    .mailing-list-banner:hover {
+      background-color: #496044;
+      transform: scale(1.05);
     }
 
     @media (max-width: 768px) {
@@ -686,13 +711,15 @@
       }
 
       .newsletter-popup h3 {
-        font-size: 18px;
-        margin-bottom: 12px;
+        font-size: 32px;
+        margin-bottom: 15px;
+        line-height: 1.1;
       }
 
       .newsletter-popup p {
         font-size: 14px;
         margin-bottom: 15px;
+        line-height: 1.5;
       }
 
       .newsletter-close {
@@ -717,6 +744,14 @@
       .newsletter-dog-image {
         max-width: 200px;
         margin-top: 12px;
+      }
+
+      .mailing-list-banner {
+        bottom: 10px;
+        right: 10px;
+        padding: 10px 15px;
+        font-size: 12px;
+        max-width: 150px;
       }
     }
   </style>
@@ -746,7 +781,7 @@
     <div class="newsletter-popup">
       <button class="newsletter-close" id="closeNewsletter">&times;</button>
       <h3>Not Quite Ready to Hit Submit?</h3>
-      <p>We understand! Dog training and paperwork take time. Enter your email and/or phone number here to be put on our mailing list and learn about discounts and future events. We promise not to bug you. Just occasional discounts, events and the highest quality cute dog pics of course.</p>
+      <p>We really get it.<br>Dog training and paperwork take time. If you wish, you can enter your email and/or phone number here to learn about discounts, future events at CanineKind and free training tips. We promise not to bug you, and cute pup pics are always included.</p>
       <form class="newsletter-form" id="newsletterForm">
         <input type="email" id="newsletterEmail" placeholder="Email Address (optional)">
         <input type="tel" id="newsletterPhone" placeholder="Phone Number (optional)">
@@ -755,6 +790,11 @@
       <div class="newsletter-success" id="newsletterSuccess">Thanks! We'll be in touch soon.</div>
       <img src="https://i.imgur.com/s5RZtYb.png" alt="Cute dog" class="newsletter-dog-image">
     </div>
+  </div>
+
+  <!-- Mailing List Banner - Always Visible -->
+  <div class="mailing-list-banner" id="mailingListBanner">
+    📧 Join Our Mailing List
   </div>
 
   <div class="container-fluid" id="grad1">
@@ -1223,11 +1263,17 @@
     (function() {
       const overlay = document.getElementById('newsletterOverlay');
       const closeBtn = document.getElementById('closeNewsletter');
+      const banner = document.getElementById('mailingListBanner');
       const form = document.getElementById('newsletterForm');
       const successMsg = document.getElementById('newsletterSuccess');
       let exitIntentTriggered = false;
       let mouseY = 0;
       let enableExitIntent = false;
+
+      // Make banner clickable to open popup
+      banner.addEventListener('click', function() {
+        overlay.classList.add('active');
+      });
 
       // Enable exit intent detection after 1 second (prevents triggering on page load)
       setTimeout(() => {
