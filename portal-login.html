@@ -236,7 +236,7 @@
             <p>Your portal is protected with Google OAuth authentication. Only authorized Canine Kind clients can access their personalized training materials and progress reports.</p>
         </div>
 
-        <a href="portal-access.html" class="back-link">← Back to Access Page</a>
+        <a href="index.html" class="back-link">← Back to Main Site</a>
     </div>
 
     <!-- Firebase SDK -->
@@ -245,16 +245,8 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
     <script>
-        // Check if user has master password access
+        // Check for existing Firebase auth session
         window.addEventListener('load', () => {
-            const portalAccess = sessionStorage.getItem('portalAccess');
-            if (portalAccess !== 'granted') {
-                // Redirect back to access page if they don't have the master password
-                window.location.href = 'portal-access.html';
-                return;
-            }
-
-            // Check for existing Firebase auth session
             if (firebase.apps.length > 0) {
                 firebase.auth().onAuthStateChanged((user) => {
                     if (user) {
@@ -373,7 +365,7 @@
         function signOut() {
             auth.signOut().then(() => {
                 sessionStorage.clear();
-                window.location.href = 'portal-access.html';
+                window.location.href = 'portal-login.html';
             });
         }
     </script>
