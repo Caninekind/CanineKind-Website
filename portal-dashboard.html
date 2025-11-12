@@ -332,14 +332,7 @@
             auth.onAuthStateChanged(async (user) => {
                 if (!user) {
                     // Not signed in, redirect to login
-                    window.location.href = 'portal-access.html';
-                    return;
-                }
-
-                // Check if user has portal access
-                const portalAccess = sessionStorage.getItem('portalAccess');
-                if (portalAccess !== 'granted') {
-                    window.location.href = 'portal-access.html';
+                    window.location.href = 'portal-login.html';
                     return;
                 }
 
@@ -350,7 +343,8 @@
                     if (!userDoc.exists) {
                         // User not authorized
                         await auth.signOut();
-                        window.location.href = 'portal-access.html';
+                        sessionStorage.clear();
+                        window.location.href = 'portal-login.html';
                         return;
                     }
 
@@ -377,7 +371,7 @@
         function signOut() {
             auth.signOut().then(() => {
                 sessionStorage.clear();
-                window.location.href = 'portal-access.html';
+                window.location.href = 'portal-login.html';
             }).catch((error) => {
                 console.error('Sign out error:', error);
                 alert('Error signing out. Please try again.');
