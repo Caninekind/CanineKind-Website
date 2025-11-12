@@ -190,52 +190,8 @@
     </div>
 
     <script>
-        // Master password validation
-        // TODO: This will be replaced with secure backend validation
-        // For now, this is a placeholder - DO NOT use in production without proper backend
-        const MASTER_PASSWORD = "CanineKindClients2024"; // This should be stored securely on backend
-
-        function validateAccess(event) {
-            event.preventDefault();
-
-            const accessCode = document.getElementById('accessCode').value;
-            const errorMessage = document.getElementById('errorMessage');
-
-            // In production, this should make a secure API call to validate
-            if (accessCode === MASTER_PASSWORD) {
-                // Store access token (temporary solution - will be replaced with JWT)
-                sessionStorage.setItem('portalAccess', 'granted');
-                sessionStorage.setItem('accessTimestamp', Date.now().toString());
-
-                // Redirect to login page
-                window.location.href = 'portal-login.html';
-            } else {
-                // Show error message
-                errorMessage.classList.add('show');
-                document.getElementById('accessCode').value = '';
-                document.getElementById('accessCode').focus();
-
-                // Hide error after 3 seconds
-                setTimeout(() => {
-                    errorMessage.classList.remove('show');
-                }, 3000);
-            }
-
-            return false;
-        }
-
-        // Clear any old session data on page load
-        window.addEventListener('load', () => {
-            // Check if access token exists and if it's expired (24 hour expiry)
-            const accessTime = sessionStorage.getItem('accessTimestamp');
-            if (accessTime) {
-                const hoursSinceAccess = (Date.now() - parseInt(accessTime)) / (1000 * 60 * 60);
-                if (hoursSinceAccess > 24) {
-                    sessionStorage.removeItem('portalAccess');
-                    sessionStorage.removeItem('accessTimestamp');
-                }
-            }
-        });
+        // This page is deprecated - redirect to portal login
+        window.location.href = 'portal-login.html';
     </script>
 </body>
 </html>

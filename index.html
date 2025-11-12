@@ -75,6 +75,58 @@
             border-color: white;
         }
 
+        /* Dropdown Menu Styles */
+        .nav-menu li {
+            position: relative;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown > a {
+            cursor: pointer;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #799972;
+            min-width: 220px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            z-index: 1000;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        .dropdown-content a {
+            color: white;
+            padding: 12px 20px;
+            text-decoration: none;
+            display: block;
+            font-size: 16px;
+            border: none;
+            border-radius: 0;
+        }
+
+        .dropdown-content a:first-child {
+            border-radius: 5px 5px 0 0;
+        }
+
+        .dropdown-content a:last-child {
+            border-radius: 0 0 5px 5px;
+        }
+
+        .dropdown-content a:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
         /* Mobile Menu Toggle */
         .menu-toggle {
             display: none;
@@ -891,6 +943,25 @@
                 width: 100%;
             }
 
+            /* Mobile Dropdown Styles */
+            .dropdown-content {
+                position: static;
+                display: none;
+                box-shadow: none;
+                margin-top: 0;
+                background-color: rgba(255, 255, 255, 0.1);
+                border-radius: 0;
+            }
+
+            .dropdown-content a {
+                padding-left: 40px;
+                font-size: 15px;
+            }
+
+            .dropdown.active .dropdown-content {
+                display: block;
+            }
+
             .menu-toggle {
                 display: block;
                 position: absolute;
@@ -1080,8 +1151,14 @@
                     <li><a href="https://caninekind.io/videos">VIDEOS</a></li>
                     <li><a href="https://caninekind.io/faqs">FAQs</a></li>
                     <li><a href="https://caninekind.io/testimonials">TESTIMONIALS</a></li>
-                    <li><a href="https://caninekind.io/intake">INTAKE FORM</a></li>
-                    <li><a href="https://caninekind.io/services">TRAINING SERVICES</a></li>
+                    <li class="dropdown">
+                        <a onclick="toggleDropdown(event)">GET TRAINING</a>
+                        <div class="dropdown-content">
+                            <a href="https://caninekind.io/services">Pricing</a>
+                            <a href="https://caninekind.io/intake">New Client Intake</a>
+                            <a href="https://caninekind.io/portal-login">Client Portal</a>
+                        </div>
+                    </li>
                     <li><a href="https://caninekind.io/shop">SHOP</a></li>
                 </ul>
             </nav>
@@ -1270,6 +1347,16 @@
         function toggleMenu() {
             const navMenu = document.getElementById('navMenu');
             navMenu.classList.toggle('active');
+        }
+
+        // Dropdown Toggle for Mobile
+        function toggleDropdown(event) {
+            // Only toggle on mobile, desktop uses CSS hover
+            if (window.innerWidth <= 768) {
+                event.preventDefault();
+                const dropdown = event.target.closest('.dropdown');
+                dropdown.classList.toggle('active');
+            }
         }
 
         // Carousel Functionality
