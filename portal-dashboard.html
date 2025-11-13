@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Portal Dashboard - CanineKind</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #D1E5F4;
+            color: #333;
+            line-height: 1.6;
+            font-size: 18px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #799972;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 25px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo {
+            height: 120px;
+            width: auto;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
+            margin-bottom: 15px;
+        }
+
+        /* User Info Bar */
+        .user-info-bar {
+            background-color: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-photo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid #799972;
+        }
+
+        .user-details h3 {
+            color: #799972;
+            font-size: 18px;
+            margin-bottom: 3px;
+        }
+
+        .user-details p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .sign-out-btn {
+            background-color: #799972;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .sign-out-btn:hover {
+            background-color: #5a7a4f;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .welcome-section {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .welcome-section h1 {
+            color: #799972;
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+
+        .welcome-section p {
+            color: #555;
+            font-size: 18px;
+            line-height: 1.8;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .dashboard-card h2 {
+            color: #799972;
+            font-size: 24px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dashboard-card p {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .card-icon {
+            font-size: 32px;
+        }
+
+        .card-btn {
+            display: inline-block;
+            background-color: #799972;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .card-btn:hover {
+            background-color: #5a7a4f;
+        }
+
+        .card-btn.secondary {
+            background-color: #D1E5F4;
+            color: #799972;
+        }
+
+        .card-btn.secondary:hover {
+            background-color: #b8d4e8;
+        }
+
+        /* Coming Soon Badge */
+        .coming-soon {
+            display: inline-block;
+            background-color: #ffd700;
+            color: #333;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        /* Quick Links Section */
+        .quick-links {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .quick-links h2 {
+            color: #799972;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .quick-link-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            background-color: #f8f8f8;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        .quick-link-item:hover {
+            background-color: #D1E5F4;
+            transform: translateX(5px);
+        }
+
+        .quick-link-icon {
+            font-size: 24px;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #799972;
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        footer p {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: underline;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .welcome-section h1 {
+                font-size: 28px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .user-info-bar {
+                justify-content: center;
+                text-align: center;
+            }
+
+            .user-info {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                height: 100px;
+            }
+
+            .welcome-section {
+                padding: 25px 20px;
+            }
+
+            .dashboard-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <img src="https://i.imgur.com/wPcBSty.png" alt="CanineKind Logo" class="logo">
+        </div>
+    </header>
+
+    <!-- User Info Bar -->
+    <div class="user-info-bar">
+        <div class="user-info">
+            <img id="userPhoto" src="" alt="User Photo" class="user-photo" style="display: none;">
+            <div class="user-details">
+                <h3 id="userName">Loading...</h3>
+                <p id="userEmail"></p>
+            </div>
+        </div>
+        <button class="sign-out-btn" id="signOutBtn">Sign Out</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <h1>Welcome to Your Client Portal!</h1>
+            <p>Track your training progress, manage appointments, and access exclusive resources all in one place.</p>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Training Progress Card -->
+            <div class="dashboard-card">
+                <h2><span class="card-icon">📊</span>Training Progress</h2>
+                <p>View your dog's training milestones and track improvement over time.</p>
+                <button class="card-btn">View Progress <span class="coming-soon">Coming Soon</span></button>
+            </div>
+
+            <!-- Appointments Card -->
+            <div class="dashboard-card">
+                <h2><span class="card-icon">📅</span>Appointments</h2>
+                <p>Schedule new sessions or view your upcoming training appointments.</p>
+                <a href="https://book.squareup.com/appointments/yxzgsmqobnwc1j/location/L8H5N5KVRNVAH/services" target="_blank" class="card-btn">Book Appointment</a>
+            </div>
+
+            <!-- Training Resources Card -->
+            <div class="dashboard-card">
+                <h2><span class="card-icon">🎓</span>Training Resources</h2>
+                <p>Access training videos, guides, and materials for your dog.</p>
+                <a href="videos.html" class="card-btn">View Resources</a>
+            </div>
+
+            <!-- Training Plan Card -->
+            <div class="dashboard-card">
+                <h2><span class="card-icon">📋</span>Your Training Plan</h2>
+                <p>Review your customized training plan and session notes.</p>
+                <button class="card-btn">View Plan <span class="coming-soon">Coming Soon</span></button>
+            </div>
+
+            <!-- Messages Card -->
+            <div class="dashboard-card">
+                <h2><span class="card-icon">💬</span>Messages</h2>
+                <p>Send messages to your trainer and get quick responses.</p>
+                <button class="card-btn">Send Message <span class="coming-soon">Coming Soon</span></button>
+            </div>
+
+            <!-- Account Settings Card -->
+            <div class="dashboard-card">
+                <h2><span class="card-icon">⚙️</span>Account Settings</h2>
+                <p>Manage your profile information and preferences.</p>
+                <button class="card-btn secondary">Settings <span class="coming-soon">Coming Soon</span></button>
+            </div>
+        </div>
+
+        <!-- Quick Links Section -->
+        <div class="quick-links">
+            <h2>Quick Links</h2>
+            <div class="links-grid">
+                <a href="index.html" class="quick-link-item">
+                    <span class="quick-link-icon">🏠</span>
+                    <span>Back to Homepage</span>
+                </a>
+                <a href="services.html" class="quick-link-item">
+                    <span class="quick-link-icon">💰</span>
+                    <span>View Pricing</span>
+                </a>
+                <a href="faqs.html" class="quick-link-item">
+                    <span class="quick-link-icon">❓</span>
+                    <span>FAQs</span>
+                </a>
+                <a href="contact.html" class="quick-link-item">
+                    <span class="quick-link-icon">📧</span>
+                    <span>Contact Us</span>
+                </a>
+                <a href="shop.html" class="quick-link-item">
+                    <span class="quick-link-icon">🛍️</span>
+                    <span>Shop Products</span>
+                </a>
+                <a href="testimonials.html" class="quick-link-item">
+                    <span class="quick-link-icon">⭐</span>
+                    <span>Testimonials</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>Email: <a href="mailto:caninekindtraining@gmail.com">caninekindtraining@gmail.com</a></p>
+        <p>&copy; 2024 CanineKind. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
+    <!-- Firebase Config -->
+    <script src="firebase-config.js"></script>
+
+    <!-- Dashboard Script -->
+    <script>
+        // Initialize Firebase when page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            const initialized = initializeFirebase();
+
+            if (!initialized) {
+                alert('Failed to initialize Firebase. Redirecting to login...');
+                window.location.href = 'portal-login.html';
+                return;
+            }
+
+            // Protect this page - redirect to login if not authenticated
+            auth.onAuthStateChanged((user) => {
+                if (!user) {
+                    // User is not signed in, redirect to login
+                    console.log('User not authenticated, redirecting to login...');
+                    window.location.href = 'portal-login.html';
+                } else {
+                    // User is signed in, display their information
+                    displayUserInfo(user);
+                }
+            });
+        });
+
+        // Display user information
+        function displayUserInfo(user) {
+            const userNameElement = document.getElementById('userName');
+            const userEmailElement = document.getElementById('userEmail');
+            const userPhotoElement = document.getElementById('userPhoto');
+
+            if (user.displayName) {
+                userNameElement.textContent = `Welcome, ${user.displayName}!`;
+            } else {
+                userNameElement.textContent = 'Welcome!';
+            }
+
+            userEmailElement.textContent = user.email;
+
+            if (user.photoURL) {
+                userPhotoElement.src = user.photoURL;
+                userPhotoElement.style.display = 'block';
+            }
+        }
+
+        // Handle Sign Out
+        document.getElementById('signOutBtn').addEventListener('click', async () => {
+            const confirmed = confirm('Are you sure you want to sign out?');
+
+            if (confirmed) {
+                const success = await signOut();
+
+                if (success) {
+                    window.location.href = 'portal-login.html';
+                } else {
+                    alert('Failed to sign out. Please try again.');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
