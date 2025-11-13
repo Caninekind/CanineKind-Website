@@ -86,6 +86,7 @@
 
     .dropdown > a {
       cursor: pointer;
+      color: white;
     }
 
     .dropdown-content {
@@ -109,6 +110,7 @@
       font-size: 16px;
       border: none;
       border-radius: 0;
+      text-transform: uppercase;
     }
 
     .dropdown-content a:first-child {
@@ -125,6 +127,14 @@
 
     .dropdown:hover .dropdown-content {
       display: block;
+    }
+
+    .mobile-only {
+      display: none;
+    }
+
+    .desktop-only {
+      display: list-item;
     }
 
     /* Mobile Menu Toggle */
@@ -354,23 +364,13 @@
         width: 100%;
       }
 
-      /* Mobile Dropdown Styles */
-      .dropdown-content {
-        position: static;
+      /* Mobile Menu Items */
+      .mobile-only {
+        display: list-item;
+      }
+
+      .desktop-only {
         display: none;
-        box-shadow: none;
-        margin-top: 0;
-        background-color: rgba(255, 255, 255, 0.1);
-        border-radius: 0;
-      }
-
-      .dropdown-content a {
-        padding-left: 40px;
-        font-size: 15px;
-      }
-
-      .dropdown.active .dropdown-content {
-        display: block;
       }
 
       .menu-toggle {
@@ -415,7 +415,7 @@
           <li><a href="https://caninekind.io/videos">VIDEOS</a></li>
           <li><a href="https://caninekind.io/faqs">FAQs</a></li>
           <li><a href="https://caninekind.io/testimonials">TESTIMONIALS</a></li>
-          <li class="dropdown">
+          <li class="dropdown desktop-only">
             <a onclick="toggleDropdown(event)">GET TRAINING</a>
             <div class="dropdown-content">
               <a href="https://caninekind.io/services">Pricing</a>
@@ -423,6 +423,9 @@
               <a href="https://caninekind.io/portal-login">Client Portal</a>
             </div>
           </li>
+          <li class="mobile-only"><a href="https://caninekind.io/services">PRICING</a></li>
+          <li class="mobile-only"><a href="https://caninekind.io/intake">NEW CLIENT INTAKE</a></li>
+          <li class="mobile-only"><a href="https://caninekind.io/portal-login">CLIENT PORTAL</a></li>
           <li><a href="https://caninekind.io/shop">SHOP</a></li>
         </ul>
       </nav>
