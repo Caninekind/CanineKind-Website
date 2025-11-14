@@ -78,6 +78,68 @@
             border-color: white;
         }
 
+        /* Dropdown Menu Styles */
+        .nav-menu li {
+            position: relative;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown > a {
+            cursor: pointer;
+            color: white;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #799972;
+            min-width: 220px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            z-index: 1000;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        .dropdown-content a {
+            color: white;
+            padding: 12px 20px;
+            text-decoration: none;
+            display: block;
+            font-size: 16px;
+            border: none;
+            border-radius: 0;
+            text-transform: uppercase;
+        }
+
+        .dropdown-content a:first-child {
+            border-radius: 5px 5px 0 0;
+        }
+
+        .dropdown-content a:last-child {
+            border-radius: 0 0 5px 5px;
+        }
+
+        .dropdown-content a:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .mobile-only {
+            display: none;
+        }
+
+        .desktop-only {
+            display: list-item;
+        }
+
         /* Mobile menu toggle */
         .mobile-menu-toggle {
             display: none;
@@ -281,6 +343,20 @@
                 display: flex;
             }
 
+            /* Mobile Menu Items */
+            .mobile-only {
+                display: list-item;
+            }
+
+            .desktop-only {
+                display: none;
+            }
+
+            .nav-menu a {
+                width: 100%;
+                text-align: center;
+            }
+
             .login-container {
                 padding: 40px 30px;
             }
@@ -321,10 +397,18 @@
                     <li><a href="index.html">HOME</a></li>
                     <li><a href="about.html">ABOUT US</a></li>
                     <li><a href="videos.html">VIDEOS</a></li>
-                    <li><a href="faqs.html">FAQS</a></li>
-                    <li><a href="services.html">PRICING</a></li>
+                    <li><a href="faqs.html">FAQs</a></li>
+                    <li class="dropdown desktop-only">
+                        <a onclick="toggleDropdown(event)">GET TRAINING</a>
+                        <div class="dropdown-content">
+                            <a href="services.html">Services</a>
+                            <a href="portal-login.html">Client Portal</a>
+                        </div>
+                    </li>
+                    <li class="mobile-only"><a href="services.html">SERVICES</a></li>
+                    <li class="mobile-only"><a href="portal-login.html">CLIENT PORTAL</a></li>
+                    <li><a href="intake.html">NEW CLIENT INTAKE</a></li>
                     <li><a href="shop.html">SHOP</a></li>
-                    <li><a href="contact.html">CONTACT</a></li>
                 </ul>
             </nav>
         </div>
@@ -385,6 +469,16 @@
         function toggleMenu() {
             const navMenu = document.getElementById('navMenu');
             navMenu.classList.toggle('active');
+        }
+
+        // Dropdown Toggle for Mobile
+        function toggleDropdown(event) {
+            // Only toggle on mobile, desktop uses CSS hover
+            if (window.innerWidth <= 768) {
+                event.preventDefault();
+                const dropdown = event.target.closest('.dropdown');
+                dropdown.classList.toggle('active');
+            }
         }
 
         // Initialize Firebase when page loads
