@@ -2,15 +2,14 @@
 // This file handles Firebase setup and authentication
 
 // Firebase configuration object
-// IMPORTANT: Replace these values with your actual Firebase project credentials
-// Get these from: Firebase Console > Project Settings > General > Your apps > SDK setup and configuration
+// CanineKind Client Portal Configuration
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY_HERE",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyCL6xXmXT0XSNOd-v2iGEApFYFF9FI6tQs",
+    authDomain: "caninekind-client-portal.firebaseapp.com",
+    projectId: "caninekind-client-portal",
+    storageBucket: "caninekind-client-portal.firebasestorage.app",
+    messagingSenderId: "934622852125",
+    appId: "1:934622852125:web:0cec9fcf3be24efc1c02f4"
 };
 
 // Initialize Firebase
