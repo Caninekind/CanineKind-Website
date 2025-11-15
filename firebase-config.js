@@ -17,6 +17,7 @@ let app;
 let auth;
 let provider;
 let db;
+let storage;
 
 function initializeFirebase() {
     try {
@@ -28,6 +29,9 @@ function initializeFirebase() {
 
         // Initialize Firestore Database
         db = firebase.firestore();
+
+        // Initialize Firebase Storage
+        storage = firebase.storage();
 
         // Initialize Google Auth Provider
         provider = new firebase.auth.GoogleAuthProvider();
@@ -371,5 +375,68 @@ async function deleteUser(email) {
     } catch (error) {
         console.error('Error deleting user:', error);
         return { success: false, error: error.message };
+    }
+}
+
+// ==========================================
+// DOCUMENT MANAGEMENT FUNCTIONS
+// ==========================================
+
+// Check if user has completed required documents
+async function checkDocumentsComplete(email) {
+    try {
+        const userDoc = await db.collection('users').doc(email).get();
+        if (!userDoc.exists) {
+            return false;
+        }
+        const userData = userDoc.data();
+        return userData.documentsComplete || false;
+    } catch (error) {
+        console.error('Error checking documents:', error);
+        return false;
+    }
+}
+
+// Get signed document for user
+async function getSignedDocument(email, documentId = 'legal-agreement') {
+    try {
+        const docRef = db.collection('users').doc(email)
+            .collection('signedDocuments').doc(documentId);
+        const doc = await docRef.get();
+
+        if (!doc.exists) {
+            return null;
+        }
+
+        return doc.data();
+    } catch (error) {
+        console.error('Error getting signed document:', error);
+        return null;
+    }
+}
+
+// Get all signed documents for all users (admin only)
+async function getAllSignedDocuments() {
+    try {
+        const users = await getAllUsers();
+        const allDocuments = [];
+
+        for (const user of users) {
+            const docData = await getSignedDocument(user.email);
+            if (docData) {
+                allDocuments.push({
+                    email: user.email,
+                    fullName: docData.fullName || user.displayName,
+                    signedAt: docData.signedAt,
+                    pdfURL: docData.pdfURL,
+                    ...docData
+                });
+            }
+        }
+
+        return allDocuments;
+    } catch (error) {
+        console.error('Error getting all signed documents:', error);
+        return [];
     }
 }

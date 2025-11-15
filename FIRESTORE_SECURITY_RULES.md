@@ -25,6 +25,11 @@ service cloud.firestore {
                     && request.auth.token.email == email
                     && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['lastLogin', 'displayName', 'photoURL']);
 
+      // Allow users to update documentsComplete field when signing documents
+      allow update: if request.auth != null
+                    && request.auth.token.email == email
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['documentsComplete', 'documentsCompletedAt']);
+
       // Allow admins to read ALL user documents
       allow read: if request.auth != null
                   && exists(/databases/$(database)/documents/users/$(request.auth.token.email))
@@ -39,6 +44,24 @@ service cloud.firestore {
       allow delete: if request.auth != null
                     && exists(/databases/$(database)/documents/users/$(request.auth.token.email))
                     && get(/databases/$(database)/documents/users/$(request.auth.token.email)).data.role == 'admin';
+
+      // Signed Documents Subcollection
+      match /signedDocuments/{documentId} {
+        // Allow users to read their own signed documents
+        allow read: if request.auth != null && request.auth.token.email == email;
+
+        // Allow users to create their own signed documents
+        allow create: if request.auth != null && request.auth.token.email == email;
+
+        // Prevent users from modifying signed documents after creation
+        allow update: if false;
+        allow delete: if false;
+
+        // Allow admins to read ALL signed documents
+        allow read: if request.auth != null
+                    && exists(/databases/$(database)/documents/users/$(request.auth.token.email))
+                    && get(/databases/$(database)/documents/users/$(request.auth.token.email)).data.role == 'admin';
+      }
     }
   }
 }
@@ -128,3 +151,64 @@ The portal now includes detailed console logging:
 **"Error creating user: [error message]"**
 - Check the exact error message in console for details
 - Solution: Follow the specific error guidance
+
+---
+
+## Firebase Storage Security Rules
+
+In addition to Firestore rules, you need to deploy Storage rules for signed document PDFs.
+
+### Storage Rules to Deploy:
+
+Go to Firebase Console → Storage → Rules tab and use:
+
+```javascript
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Signed documents - users can upload their own, admins can read all
+    match /signed-documents/{userEmail}/{allPaths=**} {
+      // Allow users to upload their own documents
+      allow write: if request.auth != null
+                   && request.auth.token.email == userEmail;
+
+      // Allow users to read their own documents
+      allow read: if request.auth != null
+                  && request.auth.token.email == userEmail;
+
+      // Allow admins to read all documents
+      allow read: if request.auth != null
+                  && firestore.get(/databases/(default)/documents/users/$(request.auth.token.email)).data.role == 'admin';
+    }
+
+    // Signatures - same rules as signed documents
+    match /signatures/{userEmail}/{allPaths=**} {
+      // Allow users to upload their own signatures
+      allow write: if request.auth != null
+                   && request.auth.token.email == userEmail;
+
+      // Allow users to read their own signatures
+      allow read: if request.auth != null
+                  && request.auth.token.email == userEmail;
+
+      // Allow admins to read all signatures
+      allow read: if request.auth != null
+                  && firestore.get(/databases/(default)/documents/users/$(request.auth.token.email)).data.role == 'admin';
+    }
+  }
+}
+```
+
+### How to Deploy Storage Rules:
+
+1. Go to Firebase Console → Storage
+2. Click the **Rules** tab
+3. Replace everything with the rules above
+4. Click **Publish**
+
+These storage rules ensure:
+- ✅ Users can upload PDFs and signatures to their own folder
+- ✅ Users can view/download their own documents
+- ✅ Users CANNOT view other users' documents
+- ✅ Admins can view/download all documents
+- ✅ Documents cannot be modified after creation (only read/write, no update)

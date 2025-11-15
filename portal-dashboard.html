@@ -245,6 +245,62 @@
             font-size: 24px;
         }
 
+        /* Alert Banner for Unsigned Documents */
+        .alert-banner {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            display: none;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .alert-banner.show {
+            display: flex;
+        }
+
+        .alert-icon {
+            font-size: 3em;
+            flex-shrink: 0;
+        }
+
+        .alert-content {
+            flex: 1;
+        }
+
+        .alert-content h3 {
+            font-size: 1.4em;
+            margin-bottom: 8px;
+        }
+
+        .alert-content p {
+            opacity: 0.95;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .alert-btn {
+            background: white;
+            color: #ff6b6b;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .alert-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
         /* Footer Styles */
         footer {
             background-color: #799972;
@@ -325,6 +381,16 @@
         <div class="welcome-section">
             <h1>Welcome to Your Client Portal!</h1>
             <p>Track your training progress, manage appointments, and access exclusive resources all in one place.</p>
+        </div>
+
+        <!-- Alert Banner for Unsigned Documents -->
+        <div class="alert-banner" id="documentsAlert">
+            <div class="alert-icon">⚠️</div>
+            <div class="alert-content">
+                <h3>Action Required: Sign Legal Documents</h3>
+                <p>Before you can fully access the portal, please review and sign our legal agreement and consent forms. This only takes a few minutes and ensures we have all necessary authorizations for your training services.</p>
+                <a href="portal-forms.html" class="alert-btn">Complete Forms Now →</a>
+            </div>
         </div>
 
         <!-- Dashboard Grid -->
@@ -452,6 +518,9 @@
                         // User is approved, display their information
                         console.log('User approved, displaying dashboard...');
                         displayUserInfo(user);
+
+                        // Check if documents are complete
+                        checkAndShowDocumentAlert(user.email);
                     }
                 }
             });
@@ -480,6 +549,24 @@
             const isAdmin = await isUserAdmin();
             if (isAdmin) {
                 document.getElementById('adminCard').style.display = 'block';
+            }
+        }
+
+        // Check and show document alert if documents not complete
+        async function checkAndShowDocumentAlert(email) {
+            try {
+                const documentsComplete = await checkDocumentsComplete(email);
+
+                if (!documentsComplete) {
+                    // Show alert banner if documents not complete
+                    const alertBanner = document.getElementById('documentsAlert');
+                    alertBanner.classList.add('show');
+                    console.log('⚠️ User has not completed legal documents');
+                } else {
+                    console.log('✅ User has completed legal documents');
+                }
+            } catch (error) {
+                console.error('Error checking document status:', error);
             }
         }
 
