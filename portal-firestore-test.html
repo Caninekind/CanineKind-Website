@@ -327,8 +327,20 @@
             }
         });
 
-        // Initialize
-        log('Page loaded. Please sign in to start testing.');
+        // Initialize Firebase when page loads
+        if (typeof initializeFirebase === 'function') {
+            const initialized = initializeFirebase();
+            if (initialized) {
+                log('✅ Firebase initialized successfully');
+                log('Page loaded. Please sign in to start testing.');
+            } else {
+                log('❌ Failed to initialize Firebase', 'error');
+                showResult('authResult', '❌ Firebase initialization failed. Check console for details.', false);
+            }
+        } else {
+            log('❌ initializeFirebase function not found. Make sure firebase-config.js is loaded.', 'error');
+            showResult('authResult', '❌ Firebase configuration not loaded properly.', false);
+        }
     </script>
 </body>
 </html>
