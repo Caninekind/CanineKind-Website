@@ -240,9 +240,17 @@ async function isUserAdmin() {
 // Get all users (admin only)
 async function getAllUsers() {
     try {
-        const usersSnapshot = await db.collection('users')
-            .orderBy('createdAt', 'desc')
-            .get();
+        // Try to get users ordered by creation date
+        let usersSnapshot;
+        try {
+            usersSnapshot = await db.collection('users')
+                .orderBy('createdAt', 'desc')
+                .get();
+        } catch (indexError) {
+            // If ordering fails (no index), just get all users unordered
+            console.log('Firestore index not available, fetching users without ordering');
+            usersSnapshot = await db.collection('users').get();
+        }
 
         const users = [];
         usersSnapshot.forEach(doc => {
@@ -252,6 +260,15 @@ async function getAllUsers() {
             });
         });
 
+        // Sort manually if we couldn't use orderBy
+        users.sort((a, b) => {
+            if (a.createdAt && b.createdAt) {
+                return b.createdAt.toMillis() - a.createdAt.toMillis();
+            }
+            return 0;
+        });
+
+        console.log(`Found ${users.length} users in database`);
         return users;
     } catch (error) {
         console.error('Error getting all users:', error);
