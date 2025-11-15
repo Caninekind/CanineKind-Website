@@ -76,7 +76,7 @@
 
         /* Page Container */
         .page-container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 40px auto;
             padding: 0 20px;
         }
@@ -101,349 +101,152 @@
             font-size: 1.1em;
         }
 
-        /* Alert Banner */
-        .alert-banner {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
-            color: white;
-            padding: 20px 30px;
+        /* Documents Grid */
+        .documents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .document-card {
+            background: white;
             border-radius: 10px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .alert-banner.success {
-            background: linear-gradient(135deg, #51cf66 0%, #40c057 100%);
-            box-shadow: 0 4px 15px rgba(64, 192, 87, 0.3);
-        }
-
-        .alert-icon {
-            font-size: 2em;
-        }
-
-        .alert-content h3 {
-            font-size: 1.3em;
-            margin-bottom: 5px;
-        }
-
-        .alert-content p {
-            opacity: 0.95;
-        }
-
-        /* Form Section */
-        .form-section {
-            background-color: white;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-        }
-
-        .form-section h3 {
-            color: #799972;
-            font-size: 1.5em;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-
-        /* Legal Sections */
-        .legal-section {
-            margin: 25px 0;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border-left: 4px solid #799972;
-            border-radius: 5px;
-        }
-
-        .legal-section h4 {
-            color: #799972;
-            font-size: 1.2em;
-            margin-bottom: 12px;
-            font-weight: 600;
-        }
-
-        .legal-section p {
-            color: #555;
-            line-height: 1.8;
-            margin-bottom: 10px;
-        }
-
-        .legal-section ul {
-            margin-left: 20px;
-            color: #555;
-            line-height: 1.8;
-        }
-
-        .legal-section li {
-            margin-bottom: 8px;
-        }
-
-        /* Collapsible Policy Section */
-        .policy-collapsible {
-            margin: 30px 0;
-            border: 3px solid #799972;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .policy-header {
-            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
-            color: white;
-            padding: 20px 25px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.3s ease;
-        }
-
-        .policy-header:hover {
-            background: linear-gradient(135deg, #6a8863 0%, #799972 100%);
-        }
-
-        .policy-header-text h4 {
-            font-size: 1.2em;
-            margin-bottom: 5px;
-        }
-
-        .policy-header-text p {
-            font-size: 0.9em;
-            opacity: 0.95;
-        }
-
-        .policy-toggle-icon {
-            font-size: 28px;
-            transition: transform 0.3s ease;
-        }
-
-        .policy-toggle-icon.active {
-            transform: rotate(180deg);
-        }
-
-        .policy-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease;
-            background-color: white;
-        }
-
-        .policy-content.active {
-            max-height: 3500px;
-        }
-
-        .policy-content-inner {
             padding: 25px;
-        }
-
-        .policy-content-inner h5 {
-            color: #799972;
-            font-size: 1.1em;
-            margin: 15px 0 10px 0;
-            font-weight: 600;
-        }
-
-        .policy-notice {
-            background-color: #fff9e6;
-            border: 2px solid #799972;
-            border-radius: 5px;
-            padding: 15px;
-            margin-top: 15px;
-            font-weight: 600;
-            text-align: center;
-        }
-
-        /* Checkbox Agreements */
-        .agreement-section {
-            margin: 25px 0;
-            padding: 20px;
-            background-color: #fff9e6;
-            border: 2px solid #799972;
-            border-radius: 8px;
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-        }
-
-        .checkbox-group input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            margin-top: 3px;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-
-        .checkbox-group label {
-            font-size: 1em;
-            color: #333;
-            line-height: 1.6;
-            cursor: pointer;
-        }
-
-        /* Name Input */
-        .name-input-section {
-            max-width: 600px;
-            margin: 30px auto;
-        }
-
-        .name-input-section label {
-            display: block;
-            font-size: 1.1em;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        .name-input-section input {
-            width: 100%;
-            padding: 15px;
-            font-size: 1.1em;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            font-family: inherit;
-        }
-
-        .name-input-section input:focus {
-            outline: none;
-            border-color: #799972;
-        }
-
-        /* Signature Section */
-        .signature-section {
-            margin: 40px 0;
-        }
-
-        .signature-section h4 {
-            color: #799972;
-            font-size: 1.3em;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-
-        .signature-section p {
-            margin-bottom: 15px;
-            color: #555;
-        }
-
-        .signature-pad-container {
-            border: 3px solid #799972;
-            border-radius: 8px;
-            background-color: white;
-            padding: 10px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        #signatureCanvas {
-            width: 100%;
-            height: 200px;
-            border: 2px dashed #ddd;
-            border-radius: 5px;
-            cursor: crosshair;
-            touch-action: none;
-        }
-
-        .signature-controls {
-            display: flex;
-            gap: 15px;
-            margin-top: 15px;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .btn-clear {
-            background-color: #dc3545;
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 5px;
-            font-size: 1em;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .btn-clear:hover {
-            background-color: #c82333;
-        }
-
-        .signature-note {
-            color: #666;
-            font-size: 0.9em;
-            font-style: italic;
-        }
-
-        /* Submit Section */
-        .submit-section {
-            margin-top: 40px;
-            text-align: center;
-        }
-
-        .btn-submit {
-            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
-            color: white;
-            border: none;
-            padding: 18px 50px;
-            border-radius: 8px;
-            font-size: 1.3em;
-            font-weight: 600;
-            cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(121, 153, 114, 0.3);
+            border-left: 5px solid #ccc;
         }
 
-        .btn-submit:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(121, 153, 114, 0.4);
+        .document-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
         }
 
-        .btn-submit:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
+        .document-card.completed {
+            border-left-color: #51cf66;
         }
 
-        /* Messages */
-        .message {
-            padding: 15px 20px;
-            border-radius: 8px;
-            margin: 20px 0;
-            display: none;
-            text-align: center;
+        .document-card.needs-signature {
+            border-left-color: #ffa726;
+        }
+
+        .document-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .document-title {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 10px;
             font-weight: 600;
         }
 
-        .message.success {
+        .document-description {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .document-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .document-status.completed {
             background-color: #d4edda;
             color: #155724;
-            border: 2px solid #c3e6cb;
         }
 
-        .message.error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 2px solid #f5c6cb;
+        .document-status.needs-signature {
+            background-color: #fff3cd;
+            color: #856404;
         }
 
-        .message.show {
-            display: block;
+        .document-date {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 15px;
         }
 
-        /* Loading Spinner */
-        .loading-spinner {
+        .document-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
             display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
+            text-align: center;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .btn-primary {
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(121, 153, 114, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #799972;
+            border: 2px solid #799972;
+        }
+
+        .btn-secondary:hover {
+            background: #799972;
+            color: white;
+        }
+
+        .btn-view {
+            background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+            color: white;
+        }
+
+        .btn-view:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(74, 144, 226, 0.3);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .empty-state-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            color: #999;
         }
 
         /* Mobile Styles */
@@ -471,13 +274,8 @@
                 font-size: 1.8em;
             }
 
-            .form-section {
-                padding: 25px 20px;
-            }
-
-            .alert-banner {
-                flex-direction: column;
-                text-align: center;
+            .documents-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -503,233 +301,19 @@
         <!-- Page Header -->
         <div class="page-header">
             <h2>Forms & Documents</h2>
-            <p>Complete and sign required legal documents for your training services</p>
+            <p>Manage and sign all required legal documents and training agreements</p>
         </div>
 
-        <!-- Alert Banner (will be shown/hidden based on status) -->
-        <div id="alertBanner" class="alert-banner" style="display: none;">
-            <div class="alert-icon">⚠️</div>
-            <div class="alert-content">
-                <h3>Action Required</h3>
-                <p>Please review and sign the required legal documents below to complete your account setup.</p>
-            </div>
+        <!-- Documents Grid -->
+        <div class="documents-grid" id="documentsGrid">
+            <!-- Documents will be loaded here dynamically -->
         </div>
 
-        <!-- Already Signed Message -->
-        <div id="alreadySignedBanner" class="alert-banner success" style="display: none;">
-            <div class="alert-icon">✅</div>
-            <div class="alert-content">
-                <h3>Documents Completed</h3>
-                <p>You signed these documents on <span id="signedDate"></span>. <a href="#" onclick="viewSignedDocument(); return false;" style="color: white; text-decoration: underline;">View signed document</a></p>
-            </div>
-        </div>
-
-        <!-- Legal Forms Section -->
-        <div class="form-section" id="formSection">
-            <h3>Legal Agreement & Consent Forms</h3>
-
-            <div id="messageContainer" class="message"></div>
-
-            <form id="legalForm">
-                <!-- Introduction -->
-                <div class="legal-section" style="background-color: #fff9e6;">
-                    <p><strong>This form helps ensure a clear and fair working relationship between you and CanineKind. Please read all information carefully before signing. If you have any questions about anything in this document, please don't hesitate to ask.</strong></p>
-                </div>
-
-                <!-- SCOPE OF SERVICES -->
-                <div class="legal-section">
-                    <h4>SCOPE OF SERVICES</h4>
-                    <p>I understand that CanineKind provides professional in-home dog training services. Each dog is treated as an individual, and training approaches are customized to meet the specific needs of my dog and my training goals. I acknowledge that various training tools and methods may be recommended based on what will be most effective for my dog's learning and my preferences as the owner.</p>
-                </div>
-
-                <!-- TRAINING METHODS & TOOLS ACKNOWLEDGMENT -->
-                <div class="legal-section">
-                    <h4>TRAINING METHODS & TOOLS ACKNOWLEDGMENT</h4>
-                    <p>I understand and acknowledge that CanineKind utilizes a variety of training tools and methods based on each dog's individual needs. Training tools may include e-collars (remote training collars), prong collars, slip leads, flat collars, harnesses, leashes, and positive reinforcement methods.</p>
-                    <p>I acknowledge that:</p>
-                    <ul>
-                        <li>The trainer will explain all recommended methods and tools before use;</li>
-                        <li>I have the right to ask questions about any training technique or tool;</li>
-                        <li>Tool selection will be based on my dog's individual needs and my preferences;</li>
-                    </ul>
-                </div>
-
-                <!-- ASSUMPTION OF RISK -->
-                <div class="legal-section">
-                    <h4>ASSUMPTION OF RISK</h4>
-                    <p>I understand that training dogs involves inherent risks, including but not limited to:</p>
-                    <ul>
-                        <li>Bites, scratches, or other injuries from my dog or other animals</li>
-                        <li>Property damage</li>
-                        <li>Unexpected behavior from dogs during training</li>
-                        <li>Accidents that may occur during training sessions</li>
-                    </ul>
-                    <p>I voluntarily assume all risks associated with dog training services, including any injury to myself, my family members, guests, or property.</p>
-                </div>
-
-                <!-- LIABILITY RELEASE & INDEMNIFICATION -->
-                <div class="legal-section">
-                    <h4>LIABILITY RELEASE & INDEMNIFICATION</h4>
-                    <p>To the fullest extent permitted by law, I agree to:</p>
-                    <ul>
-                        <li>Release and hold harmless CanineKind and its trainer(s) from any and all claims, damages, injuries, or losses arising from training services</li>
-                        <li>Accept full responsibility for my dog's behavior and actions</li>
-                        <li>Indemnify and defend CanineKind against any claims brought by third parties resulting from my dog's actions</li>
-                        <li>Assume financial responsibility for any injuries or property damage caused by my dog</li>
-                    </ul>
-                </div>
-
-                <!-- HEALTH & BEHAVIOR DISCLOSURE -->
-                <div class="legal-section">
-                    <h4>HEALTH & BEHAVIOR DISCLOSURE</h4>
-                    <p>I certify that:</p>
-                    <ul>
-                        <li>My dog is in good health and fit for training</li>
-                        <li>I have disclosed all known behavioral issues, bite history, and aggression</li>
-                        <li>My dog is current on core vaccinations including Rabies, Distemper, Parvo, and Bordetella (or I have disclosed vaccine status and exemptions)</li>
-                        <li>My dog is on monthly flea, tick, and heartworm preventatives (or I have disclosed preventative status)</li>
-                        <li>I will immediately inform the trainer of any changes or diagnoses in my dog's health or behavior</li>
-                    </ul>
-                </div>
-
-                <!-- PRIVACY POLICY -->
-                <div class="legal-section">
-                    <h4>PRIVACY POLICY</h4>
-                    <p>CanineKind is committed to protecting your privacy. By signing, you acknowledge:</p>
-                    <ul>
-                        <li><strong>Information Collection:</strong> We collect personal information including name, contact details, and information about your dog for the purpose of providing training services.</li>
-                        <li><strong>Information Use:</strong> Your information will be used solely to provide, improve, and communicate about our services. We will not sell or share your personal information with third parties except as necessary to provide services (e.g., payment processing).</li>
-                        <li><strong>Photo/Video Release:</strong> I grant CanineKind permission to photograph and/or video record training sessions for documentation, marketing, and educational purposes.</li>
-                        <li><strong>Communications:</strong> I consent to receive communications from CanineKind regarding my services, appointments, and occasional updates about new services or offerings.</li>
-                        <li><strong>Data Security:</strong> CanineKind takes reasonable measures to protect your personal information from unauthorized access or disclosure.</li>
-                        <li><strong>Your Rights:</strong> You have the right to request access to, correction of, or deletion of your personal information at any time by contacting us at caninekindtraining@gmail.com.</li>
-                    </ul>
-                </div>
-
-                <!-- COLLAPSIBLE CANCELLATION POLICY -->
-                <div class="policy-collapsible">
-                    <div class="policy-header" onclick="toggleCancellationPolicy()">
-                        <div class="policy-header-text">
-                            <h4>📋 CANCELLATION & REFUND POLICY</h4>
-                            <p>Click here to review our cancellation and refund terms before signing</p>
-                        </div>
-                        <span class="policy-toggle-icon" id="policyToggleIcon">+</span>
-                    </div>
-                    <div class="policy-content" id="policyContent">
-                        <div class="policy-content-inner">
-                            <p><strong>We understand that schedules change. This policy helps protect both your time and ours by setting clear expectations for cancellations, rescheduling, and refunds. All appointments are scheduled through Square Appointments.</strong></p>
-
-                            <h5>24-Hour Notice Required</h5>
-                            <p>• Free cancellation or rescheduling is available up to 24 hours before your scheduled appointment time<br>
-                            • You may cancel or reschedule yourself online through Square Appointments up until the 24-hour cutoff<br>
-                            • Simply use the link in your confirmation email or text message</p>
-
-                            <h5>Within 24 Hours (Late Cancellation)</h5>
-                            <p>If you cancel or reschedule with less than 24 hours notice:<br>
-                            • You will be charged 50% of the service fee OR $30 flat fee (whichever applies to your service)<br>
-                            • This fee will be automatically charged to the card on file with your permission<br>
-                            • At the trainer's discretion, this fee may be waived for emergencies (see Emergency Exceptions below)</p>
-
-                            <h5>No-Show Policy</h5>
-                            <p>If you miss your appointment without any notice:<br>
-                            • You will be charged the full service fee (100%)<br>
-                            • This will be automatically charged to the card on file<br>
-                            • Future bookings may require prepayment</p>
-
-                            <h5>Same-Day Emergency Cancellations</h5>
-                            <p>We understand that true emergencies happen. Same-day cancellations may be waived at the trainer's discretion for:<br>
-                            • Medical emergencies (human or dog)<br>
-                            • Family emergencies<br>
-                            • Severe weather that makes travel unsafe<br>
-                            • Other unavoidable circumstances</p>
-
-                            <p><strong>To request a waiver:</strong> Contact us immediately by email at caninekindtraining@gmail.com<br>
-                            Do not rely solely on the automated cancellation system for emergencies.</p>
-
-                            <h5>PACKAGE & MULTI-SESSION DEALS</h5>
-                            <p><strong>Package Cancellation</strong><br>
-                            If you purchase a package (e.g., 5-session bundle) and need to cancel:<br>
-                            &nbsp;&nbsp;◦ Before first session: Full refund available<br>
-                            &nbsp;&nbsp;◦ After first session has occurred: No refund on unused sessions, but sessions do not expire and can be rescheduled<br>
-                            &nbsp;&nbsp;◦ Standard 24-hour cancellation policy applies to each individual session</p>
-
-                            <p><strong>Package Expiration</strong><br>
-                            • Multi-session packages are valid for 1 year from date of purchase<br>
-                            • Extensions may be granted for medical or family emergencies<br>
-                            • Unused sessions after expiration are forfeited</p>
-
-                            <h5>Mutual Satisfaction Guarantee</h5>
-                            <p>If either you or the trainer feels that the training relationship isn't working out, we offer the following mid-package refund option:</p>
-                            <p>After completing at least half of the total sessions of a multi-session package, either party may request to end the training arrangement. In this case:<br>
-                            • You will receive a refund for all unused sessions<br>
-                            • This option is NOT available for single-session cancellations (standard cancellation policy applies)</p>
-
-                            <h5>TRAINER-INITIATED CANCELLATIONS</h5>
-                            <p><strong>If We Cancel</strong><br>
-                            Sometimes we need to cancel due to illness, emergency, or other unforeseen circumstances. If this happens:<br>
-                            • You will be notified as soon as possible<br>
-                            • You will receive a full refund OR<br>
-                            • We will offer to reschedule at your convenience<br>
-                            • No cancellation fees will apply to you</p>
-
-                            <p><strong>Weather Cancellations</strong><br>
-                            • If severe weather makes training unsafe or travel impossible, we will cancel and offer to reschedule at no charge<br>
-                            • For light rain or snow, training typically proceeds</p>
-
-                            <div class="policy-notice">
-                                ⚠️ Please review this policy carefully. By signing below, you acknowledge that you have read and agree to these cancellation and refund terms.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Electronic Signature Consent -->
-                <div class="agreement-section">
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="electronicConsent" name="electronicConsent" required>
-                        <label for="electronicConsent">
-                            <strong>By signing this form electronically, I agree and consent to conduct this transaction using electronic signatures. I acknowledge that my electronic signature has the same legal effect as a handwritten signature. Both parties agree to be bound by the terms of this agreement through the use of electronic signatures. *</strong>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Agreement Acknowledgment -->
-                <div class="agreement-section">
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
-                        <label for="agreeTerms">
-                            <strong>I hereby acknowledge that I have read, understood, and agree to all terms outlined in this Consent, Release & Privacy Agreement including: Scope of Services, Training Methods & Tools Acknowledgment, Assumption of Risk, Liability Release & Indemnification, Health & Behavior Disclosure, Privacy Policy, and Cancellation & Refund Policy. My digital signature below constitutes a legally binding agreement. *</strong>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Name Input -->
-                <div class="name-input-section">
-                    <label for="fullName">Type Your Full Name *</label>
-                    <input type="text" id="fullName" name="fullName" required placeholder="John Doe">
-                </div>
-
-                <!-- Signature Section -->
-                <div class="signature-section">
-                    <h4>Digital Signature *</h4>
-                    <p>Please sign below using your mouse or finger (on touch devices):</p>
-                    <div class="signature-pad-container">
-                        <canvas id="signatureCanvas"></canvas>
-                    </div>
-                    <div class="signature-controls">
-                        <button type="button" class="btn-clear" onclick="clearSignature()">Clear Signature</button>
-                        <span class="signature-note">Sign above to complete the form</span>
-                    </div>
-                </div>
-
-                <!-- Submit Button -->
-                <div class="submit-section">
-                    <button type="submit" class="btn-submit" id="submitBtn">
-                        <span id="submitText">Submit Signed Forms</span>
-                        <span id="submitLoader" style="display: none;"><span class="loading-spinner"></span> Processing...</span>
-                    </button>
-                </div>
-            </form>
+        <!-- Empty State (shown when no documents) -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="empty-state-icon">📄</div>
+            <h3>No Documents Available</h3>
+            <p>There are currently no forms or documents assigned to your account.</p>
         </div>
     </div>
 
@@ -739,15 +323,11 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 
-    <!-- jsPDF Library for PDF Generation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
     <!-- Firebase Config -->
     <script src="firebase-config.js"></script>
 
     <script>
         let currentUser = null;
-        let hasSignature = false;
 
         // Initialize Firebase and check authentication
         document.addEventListener('DOMContentLoaded', async () => {
@@ -765,268 +345,74 @@
                     window.location.href = 'portal-login.html';
                 } else {
                     currentUser = user;
-                    await checkDocumentStatus();
+                    await loadDocuments();
                 }
             });
         });
 
-        // Check if user has already signed documents
-        async function checkDocumentStatus() {
-            try {
-                const docRef = db.collection('users').doc(currentUser.email)
-                    .collection('signedDocuments').doc('legal-agreement');
+        // Load all documents for the user
+        async function loadDocuments() {
+            const documentsGrid = document.getElementById('documentsGrid');
+            const emptyState = document.getElementById('emptyState');
 
-                const doc = await docRef.get();
-
-                if (doc.exists) {
-                    const data = doc.data();
-                    document.getElementById('alreadySignedBanner').style.display = 'flex';
-                    document.getElementById('signedDate').textContent = new Date(data.signedAt.toDate()).toLocaleDateString();
-                    document.getElementById('formSection').style.display = 'none';
-                } else {
-                    document.getElementById('alertBanner').style.display = 'flex';
+            // Define available documents (you can expand this list later)
+            const availableDocuments = [
+                {
+                    id: 'legal-agreement',
+                    title: 'Legal Agreement & Consent Forms',
+                    description: 'Comprehensive agreement covering training services, liability, privacy policy, and cancellation terms.',
+                    icon: '📋'
                 }
-            } catch (error) {
-                console.error('Error checking document status:', error);
+            ];
+
+            // Check status of each document
+            const documentsHTML = [];
+            for (const doc of availableDocuments) {
+                const signedDoc = await getSignedDocument(currentUser.email, doc.id);
+                const isCompleted = signedDoc !== null;
+
+                const statusHTML = isCompleted
+                    ? `<div class="document-status completed">
+                        <span>✅</span>
+                        <span>Signed & Completed</span>
+                       </div>
+                       <div class="document-date">
+                        Signed on ${new Date(signedDoc.signedAt.toDate()).toLocaleDateString()}
+                       </div>`
+                    : `<div class="document-status needs-signature">
+                        <span>⚠️</span>
+                        <span>Signature Required</span>
+                       </div>
+                       <div class="document-date">
+                        Please review and sign this document
+                       </div>`;
+
+                const actionsHTML = isCompleted
+                    ? `<a href="${signedDoc.pdfURL}" target="_blank" class="btn btn-view">View Signed PDF</a>`
+                    : `<a href="portal-sign-document.html?doc=${doc.id}" class="btn btn-primary">Review & Sign</a>`;
+
+                const cardClass = isCompleted ? 'completed' : 'needs-signature';
+
+                documentsHTML.push(`
+                    <div class="document-card ${cardClass}">
+                        <div class="document-icon">${doc.icon}</div>
+                        <div class="document-title">${doc.title}</div>
+                        <div class="document-description">${doc.description}</div>
+                        ${statusHTML}
+                        <div class="document-actions">
+                            ${actionsHTML}
+                        </div>
+                    </div>
+                `);
             }
-        }
 
-        // Cancellation Policy Toggle
-        function toggleCancellationPolicy() {
-            const content = document.getElementById('policyContent');
-            const icon = document.getElementById('policyToggleIcon');
-
-            content.classList.toggle('active');
-            icon.classList.toggle('active');
-
-            if (content.classList.contains('active')) {
-                icon.textContent = '−';
+            if (documentsHTML.length > 0) {
+                documentsGrid.innerHTML = documentsHTML.join('');
+                emptyState.style.display = 'none';
             } else {
-                icon.textContent = '+';
+                documentsGrid.innerHTML = '';
+                emptyState.style.display = 'block';
             }
-        }
-
-        // Signature Pad Implementation
-        const canvas = document.getElementById('signatureCanvas');
-        const ctx = canvas.getContext('2d');
-        let isDrawing = false;
-
-        function resizeCanvas() {
-            const rect = canvas.getBoundingClientRect();
-            canvas.width = rect.width;
-            canvas.height = rect.height;
-            ctx.strokeStyle = '#000';
-            ctx.lineWidth = 2;
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-        }
-
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
-
-        // Mouse events
-        canvas.addEventListener('mousedown', startDrawing);
-        canvas.addEventListener('mousemove', draw);
-        canvas.addEventListener('mouseup', stopDrawing);
-        canvas.addEventListener('mouseout', stopDrawing);
-
-        // Touch events
-        canvas.addEventListener('touchstart', handleTouch);
-        canvas.addEventListener('touchmove', handleTouch);
-        canvas.addEventListener('touchend', stopDrawing);
-
-        function startDrawing(e) {
-            isDrawing = true;
-            const rect = canvas.getBoundingClientRect();
-            ctx.beginPath();
-            ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
-            hasSignature = true;
-        }
-
-        function draw(e) {
-            if (!isDrawing) return;
-            const rect = canvas.getBoundingClientRect();
-            ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
-            ctx.stroke();
-        }
-
-        function stopDrawing() {
-            isDrawing = false;
-        }
-
-        function handleTouch(e) {
-            e.preventDefault();
-            const touch = e.touches[0];
-            const rect = canvas.getBoundingClientRect();
-
-            if (e.type === 'touchstart') {
-                isDrawing = true;
-                ctx.beginPath();
-                ctx.moveTo(touch.clientX - rect.left, touch.clientY - rect.top);
-                hasSignature = true;
-            } else if (e.type === 'touchmove' && isDrawing) {
-                ctx.lineTo(touch.clientX - rect.left, touch.clientY - rect.top);
-                ctx.stroke();
-            }
-        }
-
-        function clearSignature() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            hasSignature = false;
-        }
-
-        // Form Submission
-        document.getElementById('legalForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            const messageContainer = document.getElementById('messageContainer');
-            const submitBtn = document.getElementById('submitBtn');
-            const submitText = document.getElementById('submitText');
-            const submitLoader = document.getElementById('submitLoader');
-
-            // Validate signature
-            if (!hasSignature) {
-                messageContainer.textContent = 'Please provide your signature before submitting.';
-                messageContainer.className = 'message error show';
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                return;
-            }
-
-            // Disable submit button and show loading
-            submitBtn.disabled = true;
-            submitText.style.display = 'none';
-            submitLoader.style.display = 'inline';
-
-            try {
-                console.log('🔵 Starting document submission...');
-
-                // Get form data
-                const fullName = document.getElementById('fullName').value;
-                const signatureDataURL = canvas.toDataURL('image/png');
-
-                console.log('🔵 Generating PDF...');
-
-                // Generate PDF using jsPDF
-                const { jsPDF } = window.jspdf;
-                const pdf = new jsPDF();
-
-                // Add content to PDF
-                let yPos = 20;
-                pdf.setFontSize(16);
-                pdf.text('CanineKind Training Services', 105, yPos, { align: 'center' });
-                yPos += 10;
-                pdf.setFontSize(14);
-                pdf.text('Legal Agreement & Consent Forms', 105, yPos, { align: 'center'});
-                yPos += 15;
-
-                pdf.setFontSize(10);
-                pdf.text(`Signed by: ${fullName}`, 20, yPos);
-                yPos += 7;
-                pdf.text(`Email: ${currentUser.email}`, 20, yPos);
-                yPos += 7;
-                pdf.text(`Date: ${new Date().toLocaleString()}`, 20, yPos);
-                yPos += 10;
-
-                // Add a note about full agreement
-                pdf.setFontSize(9);
-                const fullText = 'This document confirms that the signer has read, understood, and agreed to all terms including: Scope of Services, Training Methods & Tools Acknowledgment, Assumption of Risk, Liability Release & Indemnification, Health & Behavior Disclosure, Privacy Policy (including Photo/Video Release), and Cancellation & Refund Policy.';
-                const splitText = pdf.splitTextToSize(fullText, 170);
-                pdf.text(splitText, 20, yPos);
-                yPos += (splitText.length * 5) + 10;
-
-                // Add signature image
-                if (yPos > 250) {
-                    pdf.addPage();
-                    yPos = 20;
-                }
-                pdf.text('Digital Signature:', 20, yPos);
-                yPos += 5;
-                pdf.addImage(signatureDataURL, 'PNG', 20, yPos, 80, 30);
-
-                // Convert PDF to blob
-                const pdfBlob = pdf.output('blob');
-                console.log('✅ PDF generated successfully');
-
-                // Upload to Firebase Storage
-                console.log('🔵 Uploading to Firebase Storage...');
-                const storage = firebase.storage();
-                const timestamp = Date.now();
-                const fileName = `legal-agreement-${currentUser.email.replace('@', '_at_')}-${timestamp}.pdf`;
-                const storageRef = storage.ref(`signed-documents/${currentUser.email}/${fileName}`);
-
-                const uploadTask = await storageRef.put(pdfBlob);
-                const downloadURL = await uploadTask.ref.getDownloadURL();
-                console.log('✅ PDF uploaded to Storage');
-
-                // Save signature image separately
-                const signatureBlob = await (await fetch(signatureDataURL)).blob();
-                const signatureFileName = `signature-${currentUser.email.replace('@', '_at_')}-${timestamp}.png`;
-                const signatureRef = storage.ref(`signatures/${currentUser.email}/${signatureFileName}`);
-                const signatureUpload = await signatureRef.put(signatureBlob);
-                const signatureURL = await signatureUpload.ref.getDownloadURL();
-                console.log('✅ Signature uploaded to Storage');
-
-                // Save record to Firestore
-                console.log('🔵 Saving to Firestore...');
-                await db.collection('users').doc(currentUser.email)
-                    .collection('signedDocuments').doc('legal-agreement').set({
-                        fullName: fullName,
-                        email: currentUser.email,
-                        signedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                        pdfURL: downloadURL,
-                        pdfFileName: fileName,
-                        signatureURL: signatureURL,
-                        ipAddress: 'client-side', // Can be enhanced with server-side tracking
-                        documentsAgreed: [
-                            'Scope of Services',
-                            'Training Methods & Tools Acknowledgment',
-                            'Assumption of Risk',
-                            'Liability Release & Indemnification',
-                            'Health & Behavior Disclosure',
-                            'Privacy Policy',
-                            'Cancellation & Refund Policy'
-                        ]
-                    });
-                console.log('✅ Saved to Firestore');
-
-                // Update main user document to mark documents as complete
-                await db.collection('users').doc(currentUser.email).update({
-                    documentsComplete: true,
-                    documentsCompletedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-
-                // Show success message
-                messageContainer.textContent = 'Documents successfully submitted and signed! You can now access all portal features.';
-                messageContainer.className = 'message success show';
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-
-                // Reload page after 2 seconds
-                setTimeout(() => {
-                    window.location.reload();
-                }, 2000);
-
-            } catch (error) {
-                console.error('❌ Error submitting documents:', error);
-                messageContainer.textContent = 'An error occurred while submitting your documents. Please try again or contact support.';
-                messageContainer.className = 'message error show';
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-
-                // Re-enable submit button
-                submitBtn.disabled = false;
-                submitText.style.display = 'inline';
-                submitLoader.style.display = 'none';
-            }
-        });
-
-        // View signed document
-        function viewSignedDocument() {
-            db.collection('users').doc(currentUser.email)
-                .collection('signedDocuments').doc('legal-agreement').get()
-                .then(doc => {
-                    if (doc.exists) {
-                        window.open(doc.data().pdfURL, '_blank');
-                    }
-                });
         }
 
         // Sign out function
