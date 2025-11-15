@@ -147,11 +147,16 @@ function protectPage(redirectUrl = 'portal-login.html') {
 
 // Check if user exists and is approved in Firestore
 async function checkUserApproval(email) {
+    console.log('🔵 [FIRESTORE] checkUserApproval() called for:', email);
+
     try {
+        console.log('🔵 [FIRESTORE] Querying Firestore for users/' + email);
         const userDoc = await db.collection('users').doc(email).get();
+        console.log('🔵 [FIRESTORE] Query complete. User exists:', userDoc.exists);
 
         if (!userDoc.exists) {
             // User doesn't exist in database
+            console.log('🔵 [FIRESTORE] User does not exist in database');
             return {
                 exists: false,
                 approved: false,
@@ -160,13 +165,19 @@ async function checkUserApproval(email) {
         }
 
         const userData = userDoc.data();
-        return {
+        console.log('🔵 [FIRESTORE] User data retrieved:', userData);
+
+        const result = {
             exists: true,
             approved: userData.approved || false,
             role: userData.role || 'client'
         };
+        console.log('🔵 [FIRESTORE] Returning approval result:', result);
+        return result;
     } catch (error) {
-        console.error('Error checking user approval:', error);
+        console.error('❌ [FIRESTORE] Error checking user approval:', error);
+        console.error('❌ [FIRESTORE] Error code:', error.code);
+        console.error('❌ [FIRESTORE] Error message:', error.message);
         return {
             exists: false,
             approved: false,
@@ -178,13 +189,23 @@ async function checkUserApproval(email) {
 
 // Create or update user in Firestore after Google sign-in
 async function createOrUpdateUser(user, approved = false, role = 'client') {
+    console.log('🔵 [FIRESTORE] createOrUpdateUser() called');
+    console.log('🔵 [FIRESTORE] User email:', user.email);
+    console.log('🔵 [FIRESTORE] Approved:', approved);
+    console.log('🔵 [FIRESTORE] Role:', role);
+
     try {
+        console.log('🔵 [FIRESTORE] Getting reference to users/' + user.email);
         const userRef = db.collection('users').doc(user.email);
+
+        console.log('🔵 [FIRESTORE] Checking if user document exists...');
         const userDoc = await userRef.get();
+        console.log('🔵 [FIRESTORE] User exists:', userDoc.exists);
 
         if (!userDoc.exists) {
             // Create new user record
-            await userRef.set({
+            console.log('🔵 [FIRESTORE] Creating new user document...');
+            const userData = {
                 email: user.email,
                 displayName: user.displayName,
                 photoURL: user.photoURL,
@@ -193,21 +214,31 @@ async function createOrUpdateUser(user, approved = false, role = 'client') {
                 role: role,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                 lastLogin: firebase.firestore.FieldValue.serverTimestamp()
-            });
-            console.log('New user created in database');
+            };
+            console.log('🔵 [FIRESTORE] User data to write:', userData);
+
+            await userRef.set(userData);
+            console.log('✅ [FIRESTORE] New user created successfully in database!');
         } else {
             // Update last login
-            await userRef.update({
+            console.log('🔵 [FIRESTORE] User exists - updating last login...');
+            const updateData = {
                 lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
                 displayName: user.displayName,
                 photoURL: user.photoURL
-            });
-            console.log('User last login updated');
+            };
+            console.log('🔵 [FIRESTORE] Update data:', updateData);
+
+            await userRef.update(updateData);
+            console.log('✅ [FIRESTORE] User last login updated successfully!');
         }
 
         return { success: true };
     } catch (error) {
-        console.error('Error creating/updating user:', error);
+        console.error('❌ [FIRESTORE] Error creating/updating user:', error);
+        console.error('❌ [FIRESTORE] Error code:', error.code);
+        console.error('❌ [FIRESTORE] Error message:', error.message);
+        console.error('❌ [FIRESTORE] Full error:', error);
         return { success: false, error: error.message };
     }
 }
