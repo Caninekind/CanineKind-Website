@@ -20,8 +20,8 @@
         }
 
         .portal-header {
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -49,35 +49,45 @@
         }
 
         .portal-logo h1 {
-            color: #799972;
+            color: white;
             font-size: 1.5rem;
+            font-weight: 600;
         }
 
         .portal-nav {
             display: flex;
-            gap: 2rem;
+            gap: 1.5rem;
             align-items: center;
             flex-wrap: wrap;
         }
 
         .portal-nav a {
-            color: #333;
+            color: white;
             text-decoration: none;
             font-weight: 500;
-            transition: color 0.3s;
+            transition: all 0.3s;
             padding: 0.5rem 1rem;
             border-radius: 5px;
         }
 
         .portal-nav a:hover {
-            color: #799972;
-            background: #f0f0f0;
+            background: rgba(255, 255, 255, 0.2);
         }
 
         .portal-nav a.active {
-            color: #799972;
-            background: #e8f5e9;
+            background: rgba(255, 255, 255, 0.3);
             font-weight: 600;
+        }
+
+        .sign-out-link {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
+            padding: 0.4rem 0.8rem;
+        }
+
+        .sign-out-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.9);
         }
 
         .container {
@@ -439,6 +449,13 @@
                 font-size: 0.85rem;
             }
 
+            .sign-out-link {
+                font-size: 0.75rem;
+                padding: 0.3rem 0.6rem;
+                opacity: 0.6;
+                margin-left: 1rem;
+            }
+
             .page-header h1 {
                 font-size: 2rem;
             }
@@ -503,7 +520,7 @@
                 <a href="portal-forms.html">Forms & Documents</a>
                 <a href="portal-schedule.html" class="active">Daily Schedule</a>
                 <a href="portal-goals.html">Goals</a>
-                <a href="#" onclick="signOut(); return false;">Sign Out</a>
+                <a href="#" class="sign-out-link" onclick="signOut(); return false;">Sign Out</a>
             </nav>
         </div>
     </header>
