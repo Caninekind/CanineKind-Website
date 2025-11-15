@@ -247,15 +247,16 @@
 
         /* Alert Banner for Unsigned Documents */
         .alert-banner {
-            background: linear-gradient(135deg, #ffa726 0%, #fb8c00 100%);
-            color: white;
-            padding: 20px 30px;
-            border-radius: 10px;
+            background: #fefce8;
+            border-left: 4px solid #eab308;
+            color: #713f12;
+            padding: 12px 20px;
+            border-radius: 8px;
             margin: 20px 0;
-            box-shadow: 0 4px 15px rgba(255, 167, 38, 0.3);
+            box-shadow: 0 2px 8px rgba(234, 179, 8, 0.15);
             display: none;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
         }
 
         .alert-banner.show {
@@ -263,8 +264,9 @@
         }
 
         .alert-icon {
-            font-size: 3em;
+            font-size: 1.8em;
             flex-shrink: 0;
+            color: #ca8a04;
         }
 
         .alert-content {
@@ -272,24 +274,27 @@
         }
 
         .alert-content h3 {
-            font-size: 1.4em;
-            margin-bottom: 8px;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+            color: #854d0e;
+            font-weight: 600;
         }
 
         .alert-content p {
-            opacity: 0.95;
-            margin-bottom: 15px;
-            line-height: 1.6;
+            color: #a16207;
+            margin-bottom: 10px;
+            line-height: 1.5;
+            font-size: 0.95em;
         }
 
         .alert-btn {
-            background: white;
-            color: #fb8c00;
+            background: #eab308;
+            color: white;
             border: none;
-            padding: 12px 30px;
+            padding: 8px 20px;
             border-radius: 5px;
             font-weight: 600;
-            font-size: 1em;
+            font-size: 0.95em;
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
@@ -297,8 +302,9 @@
         }
 
         .alert-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            background: #ca8a04;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(202, 138, 4, 0.3);
         }
 
         /* Footer Styles */
