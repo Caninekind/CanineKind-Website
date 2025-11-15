@@ -57,6 +57,7 @@
             display: flex;
             gap: 2rem;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .portal-nav a {
@@ -64,15 +65,19 @@
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
         }
 
         .portal-nav a:hover {
             color: #799972;
+            background: #f0f0f0;
         }
 
         .portal-nav a.active {
             color: #799972;
-            border-bottom: 2px solid #799972;
+            background: #e8f5e9;
+            font-weight: 600;
         }
 
         .container {
@@ -161,7 +166,8 @@
         .goal-crate-barking { background: linear-gradient(135deg, #fddb92 0%, #d1fdff 100%); }
         .goal-potty { background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); }
         .goal-recall { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
-        .goal-sit-stay { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .goal-sit { background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%); }
+        .goal-stay { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
         .goal-down { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
         .goal-heel { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
         .goal-socialization { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
@@ -407,15 +413,33 @@
         }
 
         @media (max-width: 768px) {
-            .available-goals {
-                grid-template-columns: 1fr;
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
             }
 
             .portal-nav {
-                margin-top: 1rem;
-                width: 100%;
+                gap: 0.5rem;
+                font-size: 0.9rem;
                 justify-content: center;
-                gap: 1rem;
+                flex-wrap: wrap;
+            }
+
+            .portal-nav a {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.85rem;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .page-header p {
+                font-size: 1rem;
+            }
+
+            .available-goals {
+                grid-template-columns: 1fr;
             }
 
             .my-goal-item {
@@ -426,6 +450,10 @@
             .request-item {
                 flex-direction: column;
                 align-items: flex-start;
+            }
+
+            .goal-card {
+                padding: 1.25rem;
             }
         }
     </style>
@@ -539,10 +567,17 @@
                 emoji: '📣'
             },
             {
-                id: 'sit-stay',
-                title: 'Sit & Stay',
-                description: 'Master the fundamental sit and stay commands',
-                class: 'goal-sit-stay',
+                id: 'sit',
+                title: 'Sit Command',
+                description: 'Master the fundamental sit command',
+                class: 'goal-sit',
+                emoji: '🪑'
+            },
+            {
+                id: 'stay',
+                title: 'Stay Command',
+                description: 'Train your dog to stay in place on command',
+                class: 'goal-stay',
                 emoji: '✋'
             },
             {
