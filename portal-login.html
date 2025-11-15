@@ -491,14 +491,8 @@
                 return;
             }
 
-            // Check if user is already signed in
-            auth.onAuthStateChanged((user) => {
-                if (user) {
-                    // User is already signed in, redirect to dashboard
-                    console.log('User already signed in:', user.email);
-                    window.location.href = 'portal-dashboard.html';
-                }
-            });
+            // NOTE: Removed onAuthStateChanged auto-redirect that was causing race condition
+            // The sign-in button handler below properly checks approval before redirecting
         });
 
         // Handle Google Sign-In button click
