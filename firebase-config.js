@@ -272,21 +272,10 @@ async function isUserAdmin() {
 async function getAllUsers() {
     console.log('🔵 [ADMIN] getAllUsers() called');
     try {
-        // Try to get users ordered by creation date
-        let usersSnapshot;
-        try {
-            console.log('🔵 [ADMIN] Attempting to fetch users with orderBy...');
-            usersSnapshot = await db.collection('users')
-                .orderBy('createdAt', 'desc')
-                .get();
-            console.log('✅ [ADMIN] Successfully fetched with orderBy');
-        } catch (indexError) {
-            // If ordering fails (no index), just get all users unordered
-            console.log('⚠️ [ADMIN] Firestore index not available, fetching users without ordering');
-            console.log('⚠️ [ADMIN] Index error:', indexError.message);
-            usersSnapshot = await db.collection('users').get();
-            console.log('✅ [ADMIN] Successfully fetched without orderBy');
-        }
+        // Fetch all users without ordering (orderBy excludes docs without that field!)
+        console.log('🔵 [ADMIN] Fetching all users...');
+        const usersSnapshot = await db.collection('users').get();
+        console.log('✅ [ADMIN] Successfully fetched users');
 
         console.log('🔵 [ADMIN] Processing snapshot...');
         console.log('🔵 [ADMIN] Snapshot size:', usersSnapshot.size);
@@ -305,12 +294,17 @@ async function getAllUsers() {
 
         console.log('🔵 [ADMIN] Total users collected:', users.length);
 
-        // Sort manually if we couldn't use orderBy
+        // Sort by createdAt if it exists, otherwise by email
         users.sort((a, b) => {
+            // If both have createdAt, sort by that (newest first)
             if (a.createdAt && b.createdAt) {
                 return b.createdAt.toMillis() - a.createdAt.toMillis();
             }
-            return 0;
+            // If only one has createdAt, put that one first
+            if (a.createdAt) return -1;
+            if (b.createdAt) return 1;
+            // If neither has createdAt, sort alphabetically by email
+            return a.email.localeCompare(b.email);
         });
 
         console.log(`✅ [ADMIN] Found ${users.length} users in database`);
