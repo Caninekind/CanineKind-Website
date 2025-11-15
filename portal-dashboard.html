@@ -434,14 +434,25 @@
             }
 
             // Protect this page - redirect to login if not authenticated
-            auth.onAuthStateChanged((user) => {
+            auth.onAuthStateChanged(async (user) => {
                 if (!user) {
                     // User is not signed in, redirect to login
                     console.log('User not authenticated, redirecting to login...');
                     window.location.href = 'portal-login.html';
                 } else {
-                    // User is signed in, display their information
-                    displayUserInfo(user);
+                    // User is signed in, check if approved
+                    console.log('User authenticated, checking approval status...');
+                    const approval = await checkUserApproval(user.email);
+
+                    if (!approval.approved) {
+                        // User is not approved, redirect to pending page
+                        console.log('User not approved, redirecting to pending page...');
+                        window.location.href = 'portal-pending.html';
+                    } else {
+                        // User is approved, display their information
+                        console.log('User approved, displaying dashboard...');
+                        displayUserInfo(user);
+                    }
                 }
             });
         });
