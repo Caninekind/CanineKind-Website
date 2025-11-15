@@ -270,26 +270,40 @@ async function isUserAdmin() {
 
 // Get all users (admin only)
 async function getAllUsers() {
+    console.log('🔵 [ADMIN] getAllUsers() called');
     try {
         // Try to get users ordered by creation date
         let usersSnapshot;
         try {
+            console.log('🔵 [ADMIN] Attempting to fetch users with orderBy...');
             usersSnapshot = await db.collection('users')
                 .orderBy('createdAt', 'desc')
                 .get();
+            console.log('✅ [ADMIN] Successfully fetched with orderBy');
         } catch (indexError) {
             // If ordering fails (no index), just get all users unordered
-            console.log('Firestore index not available, fetching users without ordering');
+            console.log('⚠️ [ADMIN] Firestore index not available, fetching users without ordering');
+            console.log('⚠️ [ADMIN] Index error:', indexError.message);
             usersSnapshot = await db.collection('users').get();
+            console.log('✅ [ADMIN] Successfully fetched without orderBy');
         }
+
+        console.log('🔵 [ADMIN] Processing snapshot...');
+        console.log('🔵 [ADMIN] Snapshot size:', usersSnapshot.size);
+        console.log('🔵 [ADMIN] Snapshot empty?', usersSnapshot.empty);
 
         const users = [];
         usersSnapshot.forEach(doc => {
+            console.log('🔵 [ADMIN] Processing document:', doc.id);
+            const userData = doc.data();
+            console.log('🔵 [ADMIN] Document data:', userData);
             users.push({
                 email: doc.id,
-                ...doc.data()
+                ...userData
             });
         });
+
+        console.log('🔵 [ADMIN] Total users collected:', users.length);
 
         // Sort manually if we couldn't use orderBy
         users.sort((a, b) => {
@@ -299,10 +313,14 @@ async function getAllUsers() {
             return 0;
         });
 
-        console.log(`Found ${users.length} users in database`);
+        console.log(`✅ [ADMIN] Found ${users.length} users in database`);
+        console.log('✅ [ADMIN] Users:', users);
         return users;
     } catch (error) {
-        console.error('Error getting all users:', error);
+        console.error('❌ [ADMIN] Error getting all users:', error);
+        console.error('❌ [ADMIN] Error code:', error.code);
+        console.error('❌ [ADMIN] Error message:', error.message);
+        console.error('❌ [ADMIN] Full error:', error);
         return [];
     }
 }
