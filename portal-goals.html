@@ -575,7 +575,26 @@
             }
         ];
 
+        // Wait for Firebase to load
+        function waitForFirebase() {
+            return new Promise((resolve) => {
+                if (typeof firebase !== 'undefined') {
+                    resolve();
+                } else {
+                    const checkInterval = setInterval(() => {
+                        if (typeof firebase !== 'undefined') {
+                            clearInterval(checkInterval);
+                            resolve();
+                        }
+                    }, 100);
+                }
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', async () => {
+            // Wait for Firebase SDK to load
+            await waitForFirebase();
+
             const initialized = initializeFirebase();
             if (!initialized) {
                 window.location.href = 'portal-login.html';
