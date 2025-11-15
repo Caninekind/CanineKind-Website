@@ -30,8 +30,10 @@ function initializeFirebase() {
         // Initialize Firestore Database
         db = firebase.firestore();
 
-        // Initialize Firebase Storage
-        storage = firebase.storage();
+        // Initialize Firebase Storage (only if SDK is loaded)
+        if (typeof firebase.storage === 'function') {
+            storage = firebase.storage();
+        }
 
         // Initialize Google Auth Provider
         provider = new firebase.auth.GoogleAuthProvider();
