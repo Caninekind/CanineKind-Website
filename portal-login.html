@@ -512,41 +512,70 @@
             loadingDiv.style.display = 'block';
             signInBtn.disabled = true;
 
+            console.log('🔵 [LOGIN] Starting Google sign-in process...');
+
             try {
+                console.log('🔵 [LOGIN] Calling signInWithGoogle()...');
                 const result = await signInWithGoogle();
+                console.log('🔵 [LOGIN] signInWithGoogle() result:', result);
 
                 if (result.success) {
                     const user = result.user;
-                    console.log('Google sign-in successful, checking authorization...');
+                    console.log('✅ [LOGIN] Google sign-in successful!');
+                    console.log('🔵 [LOGIN] User email:', user.email);
+                    console.log('🔵 [LOGIN] User UID:', user.uid);
 
                     // Check if user exists and is approved
+                    console.log('🔵 [LOGIN] Calling checkUserApproval()...');
                     const approval = await checkUserApproval(user.email);
+                    console.log('🔵 [LOGIN] checkUserApproval() result:', approval);
 
                     if (!approval.exists) {
                         // New user - create user record (unapproved by default)
-                        await createOrUpdateUser(user, false, 'client');
-                        console.log('New user created, pending approval');
+                        console.log('🔵 [LOGIN] User does not exist - creating new user...');
+                        console.log('🔵 [LOGIN] Calling createOrUpdateUser() with approved=false, role=client');
+
+                        const createResult = await createOrUpdateUser(user, false, 'client');
+                        console.log('🔵 [LOGIN] createOrUpdateUser() result:', createResult);
+
+                        if (createResult.success) {
+                            console.log('✅ [LOGIN] New user created successfully!');
+                        } else {
+                            console.error('❌ [LOGIN] Failed to create user:', createResult.error);
+                            showError('Failed to create user account: ' + createResult.error);
+                            loadingDiv.style.display = 'none';
+                            signInBtn.disabled = false;
+                            return;
+                        }
+
+                        console.log('🔵 [LOGIN] Redirecting to portal-pending.html...');
                         window.location.href = 'portal-pending.html';
                     } else if (!approval.approved) {
                         // Existing user but not approved
-                        await createOrUpdateUser(user);
-                        console.log('User exists but not approved');
+                        console.log('🔵 [LOGIN] User exists but not approved - updating last login...');
+                        const updateResult = await createOrUpdateUser(user);
+                        console.log('🔵 [LOGIN] createOrUpdateUser() result:', updateResult);
+                        console.log('🔵 [LOGIN] Redirecting to portal-pending.html...');
                         window.location.href = 'portal-pending.html';
                     } else {
                         // User is approved, update last login and redirect to dashboard
-                        await createOrUpdateUser(user);
-                        console.log('User approved, redirecting to dashboard...');
+                        console.log('✅ [LOGIN] User is approved! Updating last login...');
+                        const updateResult = await createOrUpdateUser(user);
+                        console.log('🔵 [LOGIN] createOrUpdateUser() result:', updateResult);
+                        console.log('🔵 [LOGIN] Redirecting to dashboard...');
                         window.location.href = 'portal-dashboard.html';
                     }
                 } else {
                     // Show error
+                    console.error('❌ [LOGIN] Google sign-in failed:', result.error);
                     showError(result.error || 'Failed to sign in. Please try again.');
                     loadingDiv.style.display = 'none';
                     signInBtn.disabled = false;
                 }
             } catch (error) {
-                console.error('Sign-in error:', error);
-                showError('An unexpected error occurred. Please try again.');
+                console.error('❌ [LOGIN] Unexpected error during sign-in:', error);
+                console.error('❌ [LOGIN] Error stack:', error.stack);
+                showError('An unexpected error occurred: ' + error.message);
                 loadingDiv.style.display = 'none';
                 signInBtn.disabled = false;
             }
