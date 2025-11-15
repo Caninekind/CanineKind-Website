@@ -370,6 +370,13 @@
                 <p>Manage your profile information and preferences.</p>
                 <button class="card-btn secondary">Settings <span class="coming-soon">Coming Soon</span></button>
             </div>
+
+            <!-- Admin Panel Card (visible only to admins) -->
+            <div class="dashboard-card" id="adminCard" style="display: none;">
+                <h2><span class="card-icon">👑</span>Admin Panel</h2>
+                <p>Manage user access, approve new clients, and control portal settings.</p>
+                <a href="portal-admin.html" class="card-btn" style="background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);">Manage Users</a>
+            </div>
         </div>
 
         <!-- Quick Links Section -->
@@ -409,6 +416,7 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
     <!-- Firebase Config -->
     <script src="firebase-config.js"></script>
@@ -439,7 +447,7 @@
         });
 
         // Display user information
-        function displayUserInfo(user) {
+        async function displayUserInfo(user) {
             const userNameElement = document.getElementById('userName');
             const userEmailElement = document.getElementById('userEmail');
             const userPhotoElement = document.getElementById('userPhoto');
@@ -455,6 +463,12 @@
             if (user.photoURL) {
                 userPhotoElement.src = user.photoURL;
                 userPhotoElement.style.display = 'block';
+            }
+
+            // Check if user is admin and show admin card
+            const isAdmin = await isUserAdmin();
+            if (isAdmin) {
+                document.getElementById('adminCard').style.display = 'block';
             }
         }
 

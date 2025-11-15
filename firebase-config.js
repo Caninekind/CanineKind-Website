@@ -16,6 +16,7 @@ const firebaseConfig = {
 let app;
 let auth;
 let provider;
+let db;
 
 function initializeFirebase() {
     try {
@@ -24,6 +25,9 @@ function initializeFirebase() {
 
         // Initialize Firebase Authentication
         auth = firebase.auth();
+
+        // Initialize Firestore Database
+        db = firebase.firestore();
 
         // Initialize Google Auth Provider
         provider = new firebase.auth.GoogleAuthProvider();
@@ -135,4 +139,177 @@ function protectPage(redirectUrl = 'portal-login.html') {
             window.location.href = redirectUrl;
         }
     });
+}
+
+// ==========================================
+// FIRESTORE USER MANAGEMENT FUNCTIONS
+// ==========================================
+
+// Check if user exists and is approved in Firestore
+async function checkUserApproval(email) {
+    try {
+        const userDoc = await db.collection('users').doc(email).get();
+
+        if (!userDoc.exists) {
+            // User doesn't exist in database
+            return {
+                exists: false,
+                approved: false,
+                role: null
+            };
+        }
+
+        const userData = userDoc.data();
+        return {
+            exists: true,
+            approved: userData.approved || false,
+            role: userData.role || 'client'
+        };
+    } catch (error) {
+        console.error('Error checking user approval:', error);
+        return {
+            exists: false,
+            approved: false,
+            role: null,
+            error: error.message
+        };
+    }
+}
+
+// Create or update user in Firestore after Google sign-in
+async function createOrUpdateUser(user, approved = false, role = 'client') {
+    try {
+        const userRef = db.collection('users').doc(user.email);
+        const userDoc = await userRef.get();
+
+        if (!userDoc.exists) {
+            // Create new user record
+            await userRef.set({
+                email: user.email,
+                displayName: user.displayName,
+                photoURL: user.photoURL,
+                uid: user.uid,
+                approved: approved,
+                role: role,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            console.log('New user created in database');
+        } else {
+            // Update last login
+            await userRef.update({
+                lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
+                displayName: user.displayName,
+                photoURL: user.photoURL
+            });
+            console.log('User last login updated');
+        }
+
+        return { success: true };
+    } catch (error) {
+        console.error('Error creating/updating user:', error);
+        return { success: false, error: error.message };
+    }
+}
+
+// Get user data from Firestore
+async function getUserData(email) {
+    try {
+        const userDoc = await db.collection('users').doc(email).get();
+
+        if (!userDoc.exists) {
+            return null;
+        }
+
+        return userDoc.data();
+    } catch (error) {
+        console.error('Error getting user data:', error);
+        return null;
+    }
+}
+
+// Check if current user is admin
+async function isUserAdmin() {
+    const user = auth.currentUser;
+    if (!user) return false;
+
+    const userData = await getUserData(user.email);
+    return userData && userData.role === 'admin';
+}
+
+// Get all users (admin only)
+async function getAllUsers() {
+    try {
+        const usersSnapshot = await db.collection('users')
+            .orderBy('createdAt', 'desc')
+            .get();
+
+        const users = [];
+        usersSnapshot.forEach(doc => {
+            users.push({
+                email: doc.id,
+                ...doc.data()
+            });
+        });
+
+        return users;
+    } catch (error) {
+        console.error('Error getting all users:', error);
+        return [];
+    }
+}
+
+// Approve a user (admin only)
+async function approveUser(email) {
+    try {
+        await db.collection('users').doc(email).update({
+            approved: true,
+            approvedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        console.log('User approved:', email);
+        return { success: true };
+    } catch (error) {
+        console.error('Error approving user:', error);
+        return { success: false, error: error.message };
+    }
+}
+
+// Deny/remove user approval (admin only)
+async function denyUser(email) {
+    try {
+        await db.collection('users').doc(email).update({
+            approved: false
+        });
+        console.log('User denied:', email);
+        return { success: true };
+    } catch (error) {
+        console.error('Error denying user:', error);
+        return { success: false, error: error.message };
+    }
+}
+
+// Update user role (admin only)
+async function updateUserRole(email, role) {
+    try {
+        await db.collection('users').doc(email).update({
+            role: role
+        });
+        console.log('User role updated:', email, role);
+        return { success: true };
+    } catch (error) {
+        console.error('Error updating user role:', error);
+        return { success: false, error: error.message };
+    }
+}
+
+// Delete user from database (admin only)
+async function deleteUser(email) {
+    try {
+        await db.collection('users').doc(email).delete();
+        console.log('User deleted:', email);
+        return { success: true };
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        return { success: false, error: error.message };
+    }
 }

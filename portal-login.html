@@ -459,6 +459,7 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
     <!-- Firebase Config -->
     <script src="firebase-config.js"></script>
@@ -515,9 +516,28 @@
                 const result = await signInWithGoogle();
 
                 if (result.success) {
-                    // Successful sign-in, redirect to dashboard
-                    console.log('Sign-in successful, redirecting...');
-                    window.location.href = 'portal-dashboard.html';
+                    const user = result.user;
+                    console.log('Google sign-in successful, checking authorization...');
+
+                    // Check if user exists and is approved
+                    const approval = await checkUserApproval(user.email);
+
+                    if (!approval.exists) {
+                        // New user - create user record (unapproved by default)
+                        await createOrUpdateUser(user, false, 'client');
+                        console.log('New user created, pending approval');
+                        window.location.href = 'portal-pending.html';
+                    } else if (!approval.approved) {
+                        // Existing user but not approved
+                        await createOrUpdateUser(user);
+                        console.log('User exists but not approved');
+                        window.location.href = 'portal-pending.html';
+                    } else {
+                        // User is approved, update last login and redirect to dashboard
+                        await createOrUpdateUser(user);
+                        console.log('User approved, redirecting to dashboard...');
+                        window.location.href = 'portal-dashboard.html';
+                    }
                 } else {
                     // Show error
                     showError(result.error || 'Failed to sign in. Please try again.');
