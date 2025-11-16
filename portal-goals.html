@@ -91,7 +91,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 2rem auto;
             padding: 0 2rem;
         }
@@ -112,56 +112,129 @@
             font-size: 1.1rem;
         }
 
-        .admin-notice {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 1rem;
-            border-radius: 15px;
-            text-align: center;
-            margin-bottom: 2rem;
-            font-weight: 500;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        .goals-section {
-            display: grid;
-            gap: 2rem;
-        }
-
-        .section-card {
+        /* Progress Overview */
+        .progress-overview {
             background: white;
             border-radius: 15px;
             padding: 2rem;
+            margin-bottom: 2rem;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
-        .section-card h2 {
+        .progress-overview h2 {
             color: #333;
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
 
-        .available-goals {
+        .progress-stats {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Level Section */
+        .level-section {
+            margin-bottom: 3rem;
+        }
+
+        .level-header {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
             gap: 1rem;
         }
 
-        .goal-card {
-            padding: 1.5rem;
+        .level-header.locked {
+            background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
+            opacity: 0.7;
+        }
+
+        .level-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .level-badge {
+            background: #799972;
+            color: white;
+            padding: 0.5rem 1rem;
             border-radius: 20px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .level-badge.locked {
+            background: #9e9e9e;
+        }
+
+        .level-header h2 {
+            color: #333;
+            font-size: 1.8rem;
+        }
+
+        .lock-icon {
+            font-size: 2rem;
+            color: #9e9e9e;
+        }
+
+        .unlock-message {
+            background: #fff3cd;
+            color: #856404;
+            padding: 0.75rem 1.25rem;
+            border-radius: 10px;
+            font-weight: 500;
+        }
+
+        /* Goals Grid */
+        .goals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .goal-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             cursor: pointer;
             transition: all 0.3s;
             border: 3px solid transparent;
             position: relative;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
         }
 
         .goal-card:hover {
-            transform: translateY(-5px) scale(1.02);
+            transform: translateY(-5px);
             box-shadow: 0 6px 20px rgba(0,0,0,0.15);
         }
 
@@ -170,144 +243,161 @@
             box-shadow: 0 6px 20px rgba(121, 153, 114, 0.4);
         }
 
-        /* Goal colors - bubbly gradients */
-        .goal-leash { background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); }
-        .goal-barking { background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%); }
-        .goal-crate-barking { background: linear-gradient(135deg, #fddb92 0%, #d1fdff 100%); }
-        .goal-potty { background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); }
-        .goal-recall { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
-        .goal-sit { background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%); }
-        .goal-stay { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
-        .goal-down { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
-        .goal-heel { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
-        .goal-socialization { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
-        .goal-separation { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); color: white; }
-
-        .goal-card h3 {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-            color: #1a1a1a;
+        .goal-card.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
         }
 
-        .goal-card.goal-separation h3,
-        .goal-card.goal-separation p {
+        .goal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .goal-icon {
+            font-size: 2.5rem;
+        }
+
+        .select-badge {
+            background: #799972;
             color: white;
-        }
-
-        .goal-card p {
-            font-size: 0.9rem;
-            color: #333;
-            line-height: 1.5;
-        }
-
-        .goal-card .check-icon {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 1.5rem;
+            padding: 0.4rem 1rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
             display: none;
         }
 
-        .goal-card.selected .check-icon {
+        .goal-card.selected .select-badge {
             display: block;
         }
 
-        .request-btn {
+        .goal-card h3 {
+            font-size: 1.4rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .goal-card p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .goal-progress {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .progress-bar-container {
+            background: #e0e0e0;
+            height: 8px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar-fill {
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            height: 100%;
+            transition: width 0.3s;
+            border-radius: 10px;
+        }
+
+        .progress-text {
+            font-size: 0.85rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        /* Task Panel */
+        .task-panel {
+            display: none;
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
             margin-top: 1.5rem;
-            padding: 1rem 2rem;
-            background: #799972;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(121, 153, 114, 0.3);
-            width: 100%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-left: 5px solid #799972;
         }
 
-        .request-btn:hover {
-            background: #6a8862;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(121, 153, 114, 0.4);
+        .task-panel.active {
+            display: block;
+            animation: slideDown 0.3s ease-out;
         }
 
-        .request-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .my-goals-list {
+        .task-panel h3 {
+            color: #799972;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .task-list {
             display: flex;
             flex-direction: column;
             gap: 1rem;
         }
 
-        .my-goal-item {
-            padding: 1.5rem;
-            border-radius: 15px;
-            background: white;
-            border: 2px solid #e0e0e0;
+        .task-item {
+            background: #f8f9fa;
+            padding: 1.25rem;
+            border-radius: 10px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 1rem;
             transition: all 0.3s;
+            border: 2px solid transparent;
         }
 
-        .my-goal-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        .goal-info {
-            flex: 1;
-        }
-
-        .goal-info h3 {
-            color: #333;
-            font-size: 1.2rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .goal-info p {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .goal-status {
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            white-space: nowrap;
-        }
-
-        .status-pending {
-            background: #fff4e6;
-            color: #e65100;
-        }
-
-        .status-approved {
+        .task-item:hover {
             background: #e8f5e9;
-            color: #2e7d32;
+            border-color: #799972;
         }
 
-        .status-active {
-            background: #e3f2fd;
-            color: #1565c0;
+        .task-item.completed {
+            background: #e8f5e9;
+            border-color: #799972;
         }
 
-        .empty-state {
-            text-align: center;
-            padding: 3rem;
+        .task-checkbox {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            accent-color: #799972;
+        }
+
+        .task-description {
+            flex: 1;
+            font-size: 1.05rem;
+            color: #333;
+        }
+
+        .task-item.completed .task-description {
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        .task-date {
+            font-size: 0.85rem;
             color: #999;
-        }
-
-        .empty-state-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
         }
 
         .loading-overlay {
@@ -341,87 +431,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        .admin-panel {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 2rem;
-            border-radius: 15px;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        .admin-panel h2 {
-            color: white;
-            margin-bottom: 1.5rem;
-        }
-
-        .pending-requests {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .request-item {
-            background: white;
-            color: #333;
-            padding: 1.5rem;
-            border-radius: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .request-info {
-            flex: 1;
-        }
-
-        .request-info .client-email {
-            font-weight: 600;
-            color: #799972;
-            margin-bottom: 0.3rem;
-        }
-
-        .request-info .goal-title {
-            font-size: 1.1rem;
-            font-weight: 500;
-        }
-
-        .request-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .approve-btn, .deny-btn {
-            padding: 0.5rem 1.5rem;
-            border: none;
-            border-radius: 20px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .approve-btn {
-            background: #51cf66;
-            color: white;
-        }
-
-        .approve-btn:hover {
-            background: #40c057;
-            transform: translateY(-2px);
-        }
-
-        .deny-btn {
-            background: #ff6b6b;
-            color: white;
-        }
-
-        .deny-btn:hover {
-            background: #fa5252;
-            transform: translateY(-2px);
-        }
-
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
@@ -451,26 +460,12 @@
                 font-size: 2rem;
             }
 
-            .page-header p {
-                font-size: 1rem;
-            }
-
-            .available-goals {
+            .goals-grid {
                 grid-template-columns: 1fr;
             }
 
-            .my-goal-item {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .request-item {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .goal-card {
-                padding: 1.25rem;
+            .progress-stats {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -500,38 +495,30 @@
     <div class="container">
         <div class="page-header">
             <h1>🎯 Training Goals</h1>
-            <p>Select goals for your dog's training journey</p>
+            <p>Select goals and track your dog's training progress through each level</p>
         </div>
 
-        <div class="admin-notice">
-            ℹ️ Goals require admin approval before they become active
-        </div>
-
-        <!-- Admin Panel (only visible to admins) -->
-        <div id="adminPanel" style="display: none;"></div>
-
-        <div class="goals-section">
-            <!-- My Active Goals -->
-            <div class="section-card">
-                <h2>📋 My Goals</h2>
-                <div class="my-goals-list" id="myGoalsList">
-                    <div class="empty-state">
-                        <div class="empty-state-icon">🎯</div>
-                        <p>No goals added yet. Select from available goals below!</p>
-                    </div>
+        <!-- Progress Overview -->
+        <div class="progress-overview">
+            <h2>📊 Your Progress</h2>
+            <div class="progress-stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="selectedGoalsCount">0</div>
+                    <div class="stat-label">Goals Selected</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="completedTasksCount">0</div>
+                    <div class="stat-label">Tasks Completed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="overallProgress">0%</div>
+                    <div class="stat-label">Overall Progress</div>
                 </div>
             </div>
-
-            <!-- Available Goals to Request -->
-            <div class="section-card">
-                <h2>🌟 Available Goals</h2>
-                <p style="margin-bottom: 1.5rem; color: #666;">Click on a goal to select it, then request approval from your trainer.</p>
-                <div class="available-goals" id="availableGoals"></div>
-                <button class="request-btn" id="requestBtn" onclick="requestGoals()" disabled>
-                    Request Selected Goals
-                </button>
-            </div>
         </div>
+
+        <!-- Levels Container -->
+        <div id="levelsContainer"></div>
     </div>
 
     <!-- Firebase SDK -->
@@ -543,89 +530,192 @@
     <script src="firebase-config.js"></script>
     <script>
         let currentUser = null;
-        let isAdmin = false;
-        let selectedGoals = [];
-        let myGoals = [];
+        let userAccess = { levels: [], individualGoals: [] };
+        let selectedGoals = {};
 
-        const availableGoalsList = [
-            {
-                id: 'loose-leash',
-                title: 'Loose Leash Walking',
-                description: 'Train your dog to walk calmly on a leash without pulling',
-                class: 'goal-leash',
-                emoji: '🦮'
-            },
-            {
-                id: 'door-barking',
-                title: 'Address Door/Window Barking',
-                description: 'Reduce excessive barking at doors and windows',
-                class: 'goal-barking',
-                emoji: '🔕'
-            },
-            {
-                id: 'crate-barking',
-                title: 'Crate Barking',
-                description: 'Help your dog stay calm and quiet in their crate',
-                class: 'goal-crate-barking',
-                emoji: '🏠'
-            },
-            {
-                id: 'crate-potty',
-                title: 'Crate Potty Training',
-                description: 'Establish proper potty habits with crate training',
-                class: 'goal-potty',
-                emoji: '🚽'
-            },
-            {
-                id: 'recall',
-                title: 'Reliable Recall',
-                description: 'Train your dog to come when called every time',
-                class: 'goal-recall',
-                emoji: '📣'
-            },
-            {
-                id: 'sit',
-                title: 'Sit Command',
-                description: 'Master the fundamental sit command',
-                class: 'goal-sit',
-                emoji: '🪑'
-            },
-            {
-                id: 'stay',
-                title: 'Stay Command',
-                description: 'Train your dog to stay in place on command',
-                class: 'goal-stay',
-                emoji: '✋'
-            },
-            {
-                id: 'down',
-                title: 'Down Command',
-                description: 'Teach your dog to lie down on command',
-                class: 'goal-down',
-                emoji: '⬇️'
-            },
-            {
-                id: 'heel',
-                title: 'Heel Command',
-                description: 'Train your dog to walk closely by your side',
-                class: 'goal-heel',
-                emoji: '👟'
-            },
-            {
-                id: 'socialization',
-                title: 'Dog Socialization',
-                description: 'Improve interactions with other dogs',
-                class: 'goal-socialization',
-                emoji: '🐕'
-            },
-            {
-                id: 'separation',
-                title: 'Separation Anxiety',
-                description: 'Help your dog feel comfortable when alone',
-                class: 'goal-separation',
-                emoji: '💙'
-            }
-        ];
+        // Define all goals with their levels and tasks
+        const GOALS_STRUCTURE = {
+            1: [
+                {
+                    id: 'sit',
+                    title: 'Sit',
+                    emoji: '🪑',
+                    description: 'Master the fundamental sit command',
+                    tasks: [
+                        'Dog can sit on command with hand signal',
+                        'Dog can sit for 10 seconds before release',
+                        'Dog can sit with distractions present'
+                    ]
+                },
+                {
+                    id: 'down',
+                    title: 'Down',
+                    emoji: '⬇️',
+                    description: 'Teach your dog to lie down on command',
+                    tasks: [
+                        'Dog can lie down on command with hand signal',
+                        'Dog can hold down position for 10 seconds',
+                        'Dog can lie down from a sitting or standing position'
+                    ]
+                },
+                {
+                    id: 'recall',
+                    title: 'Recall',
+                    emoji: '📣',
+                    description: 'Train your dog to come when called',
+                    tasks: [
+                        'Dog comes when called in a quiet environment',
+                        'Dog comes when called with mild distractions',
+                        'Dog consistently responds to recall command'
+                    ]
+                },
+                {
+                    id: 'markers-release',
+                    title: 'Markers & Release Words',
+                    emoji: '🔔',
+                    description: 'Establish clear communication markers',
+                    tasks: [
+                        'Dog understands "Yes" marker for correct behavior',
+                        'Dog responds to release word (e.g., "Free" or "Okay")',
+                        'Dog waits for release word before breaking position'
+                    ]
+                },
+                {
+                    id: 'place',
+                    title: 'Place',
+                    emoji: '📍',
+                    description: 'Teach your dog to go to their designated spot',
+                    tasks: [
+                        'Dog goes to place on command',
+                        'Dog stays on place for 30 seconds',
+                        'Dog can hold place with distractions'
+                    ]
+                },
+                {
+                    id: 'crate-manners',
+                    title: 'Crate Manners',
+                    emoji: '🏠',
+                    description: 'Develop good crate behavior and manners',
+                    tasks: [
+                        'Dog enters crate willingly on command',
+                        'Dog remains calm and quiet in crate for 10 minutes',
+                        'Dog waits for release before exiting crate'
+                    ]
+                }
+            ],
+            2: [
+                {
+                    id: 'stay',
+                    title: 'Stay',
+                    emoji: '✋',
+                    description: 'Train your dog to stay in place on command',
+                    tasks: [
+                        'Dog can stay for 30 seconds',
+                        'Dog can stay while you move around',
+                        'Dog can stay with distractions'
+                    ]
+                },
+                {
+                    id: 'heel',
+                    title: 'Heel',
+                    emoji: '👟',
+                    description: 'Train your dog to walk closely by your side',
+                    tasks: [
+                        'Dog walks at your side without pulling',
+                        'Dog maintains heel position through turns',
+                        'Dog can heel in various environments'
+                    ]
+                },
+                {
+                    id: 'leave-it',
+                    title: 'Leave It',
+                    emoji: '🚫',
+                    description: 'Teach your dog to ignore items on command',
+                    tasks: [
+                        'Dog can ignore treats on the ground',
+                        'Dog can walk past distractions',
+                        'Dog reliably responds to "leave it" command'
+                    ]
+                },
+                {
+                    id: 'drop-it',
+                    title: 'Drop It',
+                    emoji: '⬇️',
+                    description: 'Train your dog to release items from mouth',
+                    tasks: [
+                        'Dog drops toys on command',
+                        'Dog releases items without resource guarding',
+                        'Dog trades items willingly'
+                    ]
+                }
+            ],
+            3: [
+                {
+                    id: 'distance-commands',
+                    title: 'Distance Commands',
+                    emoji: '📏',
+                    description: 'Work on commands from a distance',
+                    tasks: [
+                        'Dog responds to commands from 10 feet away',
+                        'Dog can perform commands from across the room',
+                        'Dog maintains focus at increasing distances'
+                    ]
+                },
+                {
+                    id: 'duration-work',
+                    title: 'Duration Work',
+                    emoji: '⏱️',
+                    description: 'Build duration for commands and positions',
+                    tasks: [
+                        'Dog can hold positions for 2 minutes',
+                        'Dog maintains focus during extended sessions',
+                        'Dog shows improved impulse control'
+                    ]
+                },
+                {
+                    id: 'distractions',
+                    title: 'Working with Distractions',
+                    emoji: '🎯',
+                    description: 'Maintain training in distracting environments',
+                    tasks: [
+                        'Dog responds to commands with other dogs present',
+                        'Dog maintains focus in public settings',
+                        'Dog can work through high-value distractions'
+                    ]
+                }
+            ],
+            4: [
+                {
+                    id: 'off-leash',
+                    title: 'Off-Leash Reliability',
+                    emoji: '🔓',
+                    description: 'Work toward reliable off-leash control',
+                    tasks: [
+                        'Dog responds to commands off-leash in secure area',
+                        'Dog has reliable recall off-leash',
+                        'Dog demonstrates consistent off-leash obedience'
+                    ]
+                },
+                {
+                    id: 'advanced-behaviors',
+                    title: 'Advanced Behaviors',
+                    emoji: '⭐',
+                    description: 'Master specialized and advanced skills',
+                    tasks: [
+                        'Dog performs complex command sequences',
+                        'Dog demonstrates advanced impulse control',
+                        'Dog excels in specialized training areas'
+                    ]
+                }
+            ]
+        };
+
+        const LEVEL_DESCRIPTIONS = {
+            1: 'Basic/Beginner Commands',
+            2: 'Intermediate Commands',
+            3: 'Advanced Commands',
+            4: 'Expert/Specialized'
+        };
 
         // Wait for Firebase to load
         function waitForFirebase() {
@@ -644,7 +734,6 @@
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
-            // Wait for Firebase SDK to load
             await waitForFirebase();
 
             const initialized = initializeFirebase();
@@ -662,233 +751,274 @@
                         window.location.href = 'portal-pending.html';
                     } else {
                         currentUser = user;
-                        isAdmin = approval.role === 'admin';
-                        await loadGoals();
-                        renderAvailableGoals();
-                        if (isAdmin) {
-                            await loadAdminPanel();
-                        }
+                        await loadUserData();
+                        renderLevels();
                     }
                 }
             });
         });
 
-        function renderAvailableGoals() {
-            const container = document.getElementById('availableGoals');
-            container.innerHTML = availableGoalsList.map(goal => `
-                <div class="goal-card ${goal.class}" onclick="toggleGoal('${goal.id}')">
-                    <span class="check-icon">✅</span>
-                    <h3>${goal.emoji} ${goal.title}</h3>
-                    <p>${goal.description}</p>
-                </div>
-            `).join('');
-        }
-
-        function toggleGoal(goalId) {
-            const goalCard = event.currentTarget;
-            const isSelected = goalCard.classList.contains('selected');
-
-            if (isSelected) {
-                goalCard.classList.remove('selected');
-                selectedGoals = selectedGoals.filter(id => id !== goalId);
-            } else {
-                goalCard.classList.add('selected');
-                selectedGoals.push(goalId);
-            }
-
-            document.getElementById('requestBtn').disabled = selectedGoals.length === 0;
-        }
-
-        async function loadGoals() {
+        async function loadUserData() {
             showLoading(true);
             try {
+                // Load access settings
+                const accessDoc = await db.collection('users')
+                    .doc(currentUser.email)
+                    .collection('goalAccess')
+                    .doc('settings')
+                    .get();
+
+                if (accessDoc.exists) {
+                    userAccess = accessDoc.data();
+                }
+
+                // Load selected goals
                 const goalsSnapshot = await db.collection('users')
                     .doc(currentUser.email)
-                    .collection('goals')
+                    .collection('selectedGoals')
                     .get();
 
-                myGoals = goalsSnapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }));
-
-                renderMyGoals();
-            } catch (error) {
-                console.error('Error loading goals:', error);
-                alert('Error loading goals');
-            } finally {
-                showLoading(false);
-            }
-        }
-
-        function renderMyGoals() {
-            const container = document.getElementById('myGoalsList');
-
-            if (myGoals.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">🎯</div>
-                        <p>No goals added yet. Select from available goals below!</p>
-                    </div>
-                `;
-                return;
-            }
-
-            container.innerHTML = myGoals.map(goal => {
-                const goalData = availableGoalsList.find(g => g.id === goal.goalId);
-                const statusClass = goal.status === 'approved' ? 'status-approved' : 'status-pending';
-                const statusText = goal.status === 'approved' ? '✅ Active' : '⏳ Pending Approval';
-
-                return `
-                    <div class="my-goal-item">
-                        <div class="goal-info">
-                            <h3>${goalData?.emoji || '🎯'} ${goal.title}</h3>
-                            <p>Requested: ${new Date(goal.requestedAt?.toDate()).toLocaleDateString()}</p>
-                        </div>
-                        <div class="goal-status ${statusClass}">
-                            ${statusText}
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        async function requestGoals() {
-            if (selectedGoals.length === 0) return;
-
-            showLoading(true);
-            try {
-                const batch = db.batch();
-
-                for (const goalId of selectedGoals) {
-                    const goalData = availableGoalsList.find(g => g.id === goalId);
-                    const goalRef = db.collection('users')
-                        .doc(currentUser.email)
-                        .collection('goals')
-                        .doc();
-
-                    batch.set(goalRef, {
-                        goalId: goalId,
-                        title: goalData.title,
-                        description: goalData.description,
-                        status: 'pending',
-                        requestedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                        clientEmail: currentUser.email,
-                        clientName: currentUser.displayName || currentUser.email
-                    });
-                }
-
-                await batch.commit();
-
-                alert(`Successfully requested ${selectedGoals.length} goal(s)! Your trainer will review and approve them. ✅`);
-
-                selectedGoals = [];
-                document.querySelectorAll('.goal-card.selected').forEach(card => {
-                    card.classList.remove('selected');
+                selectedGoals = {};
+                goalsSnapshot.docs.forEach(doc => {
+                    selectedGoals[doc.id] = {
+                        id: doc.id,
+                        ...doc.data()
+                    };
                 });
-                document.getElementById('requestBtn').disabled = true;
 
-                await loadGoals();
-                if (isAdmin) {
-                    await loadAdminPanel();
-                }
+                updateProgressStats();
             } catch (error) {
-                console.error('Error requesting goals:', error);
-                alert('Error requesting goals. Please try again.');
+                console.error('Error loading user data:', error);
+                alert('Error loading goals data');
             } finally {
                 showLoading(false);
             }
         }
 
-        async function loadAdminPanel() {
-            try {
-                const pendingGoalsSnapshot = await db.collectionGroup('goals')
-                    .where('status', '==', 'pending')
-                    .get();
+        function hasAccessToGoal(goalId, level) {
+            // Check if user has level access
+            if (userAccess.levels && userAccess.levels.includes(level)) {
+                return true;
+            }
+            // Check if user has individual goal access
+            if (userAccess.individualGoals && userAccess.individualGoals.includes(goalId)) {
+                return true;
+            }
+            return false;
+        }
 
-                const pendingGoals = pendingGoalsSnapshot.docs.map(doc => ({
-                    id: doc.id,
-                    userEmail: doc.ref.parent.parent.id,
-                    ...doc.data()
-                }));
+        function renderLevels() {
+            const container = document.getElementById('levelsContainer');
+            let html = '';
 
-                if (pendingGoals.length > 0) {
-                    const adminPanel = document.getElementById('adminPanel');
-                    adminPanel.style.display = 'block';
-                    adminPanel.innerHTML = `
-                        <div class="admin-panel">
-                            <h2>👨‍💼 Admin: Pending Goal Approvals</h2>
-                            <div class="pending-requests">
-                                ${pendingGoals.map(goal => `
-                                    <div class="request-item">
-                                        <div class="request-info">
-                                            <div class="client-email">${goal.clientName || goal.clientEmail}</div>
-                                            <div class="goal-title">${goal.title}</div>
-                                            <div style="font-size: 0.85rem; color: #666; margin-top: 0.3rem;">
-                                                Requested: ${goal.requestedAt ? new Date(goal.requestedAt.toDate()).toLocaleDateString() : 'Just now'}
-                                            </div>
-                                        </div>
-                                        <div class="request-actions">
-                                            <button class="approve-btn" onclick="approveGoal('${goal.userEmail}', '${goal.id}')">
-                                                ✅ Approve
-                                            </button>
-                                            <button class="deny-btn" onclick="denyGoal('${goal.userEmail}', '${goal.id}')">
-                                                ❌ Deny
-                                            </button>
-                                        </div>
-                                    </div>
-                                `).join('')}
+            for (let level = 1; level <= 4; level++) {
+                const hasLevelAccess = userAccess.levels && userAccess.levels.includes(level);
+                const goals = GOALS_STRUCTURE[level];
+                const isLocked = !hasLevelAccess && !goals.some(g => hasAccessToGoal(g.id, level));
+
+                html += `
+                    <div class="level-section">
+                        <div class="level-header ${isLocked ? 'locked' : ''}">
+                            <div class="level-title">
+                                <span class="level-badge ${isLocked ? 'locked' : ''}">Level ${level}</span>
+                                <h2>${LEVEL_DESCRIPTIONS[level]}</h2>
                             </div>
+                            ${isLocked ? `
+                                <div class="lock-icon">🔒</div>
+                            ` : ''}
                         </div>
-                    `;
+                        ${isLocked ? `
+                            <div class="unlock-message">
+                                🔒 This level will be unlocked by your trainer after completing earlier levels
+                            </div>
+                        ` : `
+                            <div class="goals-grid">
+                                ${goals.map(goal => renderGoalCard(goal, level)).join('')}
+                            </div>
+                        `}
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+        }
+
+        function renderGoalCard(goal, level) {
+            const hasAccess = hasAccessToGoal(goal.id, level);
+            const isSelected = selectedGoals.hasOwnProperty(goal.id);
+            const progress = isSelected ? calculateGoalProgress(goal.id) : 0;
+
+            return `
+                <div class="goal-card ${!hasAccess ? 'locked' : ''} ${isSelected ? 'selected' : ''}"
+                     onclick="${hasAccess ? `toggleGoal('${goal.id}', ${level})` : ''}">
+                    <div class="goal-header">
+                        <div class="goal-icon">${goal.emoji}</div>
+                        <span class="select-badge">✅ Active</span>
+                    </div>
+                    <h3>${goal.title}</h3>
+                    <p>${goal.description}</p>
+                    ${isSelected ? `
+                        <div class="goal-progress">
+                            <div class="progress-bar-container">
+                                <div class="progress-bar-fill" style="width: ${progress}%"></div>
+                            </div>
+                            <div class="progress-text">${progress}% Complete</div>
+                        </div>
+                    ` : ''}
+                </div>
+                ${isSelected ? `
+                    <div class="task-panel active" id="tasks-${goal.id}">
+                        <h3>📝 ${goal.title} Tasks</h3>
+                        <div class="task-list">
+                            ${goal.tasks.map((task, index) => renderTaskItem(goal.id, task, index)).join('')}
+                        </div>
+                    </div>
+                ` : ''}
+            `;
+        }
+
+        function renderTaskItem(goalId, taskDescription, index) {
+            const goalData = selectedGoals[goalId];
+            const task = goalData && goalData.tasks ? goalData.tasks[index] : null;
+            const isCompleted = task && task.completed;
+            const completedDate = task && task.completedAt ? new Date(task.completedAt.toDate()).toLocaleDateString() : '';
+
+            return `
+                <div class="task-item ${isCompleted ? 'completed' : ''}">
+                    <input type="checkbox"
+                           class="task-checkbox"
+                           ${isCompleted ? 'checked' : ''}
+                           onchange="toggleTask('${goalId}', ${index})">
+                    <div class="task-description">${taskDescription}</div>
+                    ${isCompleted ? `<div class="task-date">✅ ${completedDate}</div>` : ''}
+                </div>
+            `;
+        }
+
+        async function toggleGoal(goalId, level) {
+            const goal = GOALS_STRUCTURE[level].find(g => g.id === goalId);
+            if (!goal) return;
+
+            if (selectedGoals.hasOwnProperty(goalId)) {
+                // Deselect goal
+                if (confirm('Are you sure you want to remove this goal? Your progress will be saved.')) {
+                    try {
+                        showLoading(true);
+                        await db.collection('users')
+                            .doc(currentUser.email)
+                            .collection('selectedGoals')
+                            .doc(goalId)
+                            .delete();
+
+                        delete selectedGoals[goalId];
+                        renderLevels();
+                        updateProgressStats();
+                    } catch (error) {
+                        console.error('Error removing goal:', error);
+                        alert('Error removing goal');
+                    } finally {
+                        showLoading(false);
+                    }
                 }
-            } catch (error) {
-                console.error('Error loading admin panel:', error);
+            } else {
+                // Select goal
+                try {
+                    showLoading(true);
+                    const tasks = goal.tasks.map(desc => ({
+                        description: desc,
+                        completed: false
+                    }));
+
+                    await db.collection('users')
+                        .doc(currentUser.email)
+                        .collection('selectedGoals')
+                        .doc(goalId)
+                        .set({
+                            level: level,
+                            title: goal.title,
+                            emoji: goal.emoji,
+                            description: goal.description,
+                            tasks: tasks,
+                            selectedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            progress: 0
+                        });
+
+                    selectedGoals[goalId] = {
+                        id: goalId,
+                        level,
+                        title: goal.title,
+                        emoji: goal.emoji,
+                        description: goal.description,
+                        tasks,
+                        progress: 0
+                    };
+
+                    renderLevels();
+                    updateProgressStats();
+                } catch (error) {
+                    console.error('Error selecting goal:', error);
+                    alert('Error selecting goal');
+                } finally {
+                    showLoading(false);
+                }
             }
         }
 
-        async function approveGoal(userEmail, goalId) {
-            showLoading(true);
+        async function toggleTask(goalId, taskIndex) {
+            if (!selectedGoals[goalId]) return;
+
             try {
+                const goalData = selectedGoals[goalId];
+                const task = goalData.tasks[taskIndex];
+                task.completed = !task.completed;
+                task.completedAt = task.completed ? firebase.firestore.Timestamp.now() : null;
+
+                // Calculate new progress
+                const progress = calculateGoalProgress(goalId);
+
                 await db.collection('users')
-                    .doc(userEmail)
-                    .collection('goals')
+                    .doc(currentUser.email)
+                    .collection('selectedGoals')
                     .doc(goalId)
                     .update({
-                        status: 'approved',
-                        approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                        approvedBy: currentUser.email
+                        tasks: goalData.tasks,
+                        progress: progress
                     });
 
-                alert('Goal approved! ✅');
-                await loadGoals();
-                await loadAdminPanel();
+                renderLevels();
+                updateProgressStats();
             } catch (error) {
-                console.error('Error approving goal:', error);
-                alert('Error approving goal. Please try again.');
-            } finally {
-                showLoading(false);
+                console.error('Error toggling task:', error);
+                alert('Error updating task');
             }
         }
 
-        async function denyGoal(userEmail, goalId) {
-            showLoading(true);
-            try {
-                await db.collection('users')
-                    .doc(userEmail)
-                    .collection('goals')
-                    .doc(goalId)
-                    .delete();
+        function calculateGoalProgress(goalId) {
+            const goalData = selectedGoals[goalId];
+            if (!goalData || !goalData.tasks) return 0;
 
-                alert('Goal request denied and removed. ❌');
-                await loadGoals();
-                await loadAdminPanel();
-            } catch (error) {
-                console.error('Error denying goal:', error);
-                alert('Error denying goal. Please try again.');
-            } finally {
-                showLoading(false);
-            }
+            const completedTasks = goalData.tasks.filter(t => t.completed).length;
+            const totalTasks = goalData.tasks.length;
+            return Math.round((completedTasks / totalTasks) * 100);
+        }
+
+        function updateProgressStats() {
+            const selectedCount = Object.keys(selectedGoals).length;
+            let totalTasks = 0;
+            let completedTasks = 0;
+
+            Object.values(selectedGoals).forEach(goal => {
+                if (goal.tasks) {
+                    totalTasks += goal.tasks.length;
+                    completedTasks += goal.tasks.filter(t => t.completed).length;
+                }
+            });
+
+            const overallProgress = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+            document.getElementById('selectedGoalsCount').textContent = selectedCount;
+            document.getElementById('completedTasksCount').textContent = completedTasks;
+            document.getElementById('overallProgress').textContent = overallProgress + '%';
         }
 
         function showLoading(show) {
