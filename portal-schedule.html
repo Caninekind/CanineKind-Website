@@ -401,6 +401,147 @@
             font-style: italic;
         }
 
+        /* Goals Table Section */
+        .goals-table-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .table-header {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .table-header h3 {
+            color: #799972;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .table-header p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .goals-table-container {
+            overflow-x: auto;
+        }
+
+        .goals-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .goals-table thead {
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            color: white;
+        }
+
+        .goals-table th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .goals-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .goals-table tbody tr {
+            transition: background 0.2s;
+        }
+
+        .goals-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .goal-name-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .goal-emoji {
+            font-size: 1.5rem;
+        }
+
+        .level-badge-table {
+            display: inline-block;
+            background: #799972;
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .task-count {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .progress-cell {
+            min-width: 150px;
+        }
+
+        .table-progress-bar {
+            background: #e0e0e0;
+            height: 10px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 0.4rem;
+        }
+
+        .table-progress-fill {
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            height: 100%;
+            transition: width 0.3s;
+            border-radius: 10px;
+        }
+
+        .progress-percentage {
+            font-size: 0.85rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-in-progress {
+            background: #fff4e6;
+            color: #e65100;
+        }
+
+        .status-completed {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-not-started {
+            background: #f5f5f5;
+            color: #757575;
+        }
+
+        .empty-goals-table {
+            text-align: center;
+            padding: 2rem;
+            color: #999;
+        }
+
         .loading-overlay {
             display: none;
             position: fixed;
@@ -500,6 +641,23 @@
             .active-goals {
                 grid-template-columns: 1fr;
             }
+
+            .goals-table-section {
+                padding: 1.5rem;
+            }
+
+            .goals-table-container {
+                overflow-x: scroll;
+            }
+
+            .goals-table {
+                font-size: 0.85rem;
+            }
+
+            .goals-table th,
+            .goals-table td {
+                padding: 0.75rem 0.5rem;
+            }
         }
     </style>
 </head>
@@ -534,6 +692,30 @@
         <div id="goalsIndicator" class="goals-indicator" style="display: none;">
             <h4>🎯 Active Goals:</h4>
             <div class="active-goals" id="activeGoalsList"></div>
+        </div>
+
+        <!-- Active Goals Table -->
+        <div id="goalsTable" class="goals-table-section" style="display: none;">
+            <div class="table-header">
+                <h3>📋 Active Training Goals & Progress</h3>
+                <p>Track your selected goals and task completion</p>
+            </div>
+            <div class="goals-table-container">
+                <table class="goals-table">
+                    <thead>
+                        <tr>
+                            <th>Goal</th>
+                            <th>Level</th>
+                            <th>Tasks Completed</th>
+                            <th>Progress</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="goalsTableBody">
+                        <!-- Will be populated dynamically -->
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <div class="schedule-controls">
@@ -656,19 +838,19 @@
         async function loadUserData() {
             showLoading(true);
             try {
-                // Load active goals
-                const goalsSnapshot = await db.collection('users')
+                // Load selected goals (new system)
+                const selectedGoalsSnapshot = await db.collection('users')
                     .doc(currentUser.email)
-                    .collection('goals')
-                    .where('status', '==', 'approved')
+                    .collection('selectedGoals')
                     .get();
 
-                activeGoals = goalsSnapshot.docs.map(doc => ({
+                activeGoals = selectedGoalsSnapshot.docs.map(doc => ({
                     id: doc.id,
                     ...doc.data()
                 }));
 
                 displayActiveGoals();
+                displayGoalsTable();
 
                 // Load schedule data
                 const scheduleDoc = await db.collection('users')
@@ -697,11 +879,64 @@
             if (activeGoals.length > 0) {
                 goalsIndicator.style.display = 'block';
                 goalsList.innerHTML = activeGoals.map(goal =>
-                    `<div class="goal-badge">🎯 ${goal.title}</div>`
+                    `<div class="goal-badge">${goal.emoji || '🎯'} ${goal.title}</div>`
                 ).join('');
             } else {
                 goalsIndicator.style.display = 'block';
                 goalsList.innerHTML = '<div class="no-goals-message">No active goals yet. Visit the Goals page to add training goals!</div>';
+            }
+        }
+
+        function displayGoalsTable() {
+            const goalsTable = document.getElementById('goalsTable');
+            const tableBody = document.getElementById('goalsTableBody');
+
+            if (activeGoals.length > 0) {
+                goalsTable.style.display = 'block';
+
+                tableBody.innerHTML = activeGoals.map(goal => {
+                    const completedTasks = goal.tasks ? goal.tasks.filter(t => t.completed).length : 0;
+                    const totalTasks = goal.tasks ? goal.tasks.length : 0;
+                    const progress = goal.progress || 0;
+
+                    let status = 'Not Started';
+                    let statusClass = 'status-not-started';
+                    if (progress === 100) {
+                        status = '✅ Completed';
+                        statusClass = 'status-completed';
+                    } else if (progress > 0) {
+                        status = '🔄 In Progress';
+                        statusClass = 'status-in-progress';
+                    }
+
+                    return `
+                        <tr>
+                            <td>
+                                <div class="goal-name-cell">
+                                    <span class="goal-emoji">${goal.emoji || '🎯'}</span>
+                                    <span>${goal.title}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="level-badge-table">Level ${goal.level || 1}</span>
+                            </td>
+                            <td>
+                                <span class="task-count">${completedTasks} / ${totalTasks} tasks</span>
+                            </td>
+                            <td class="progress-cell">
+                                <div class="table-progress-bar">
+                                    <div class="table-progress-fill" style="width: ${progress}%"></div>
+                                </div>
+                                <div class="progress-percentage">${progress}%</div>
+                            </td>
+                            <td>
+                                <span class="status-badge ${statusClass}">${status}</span>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            } else {
+                goalsTable.style.display = 'none';
             }
         }
 
