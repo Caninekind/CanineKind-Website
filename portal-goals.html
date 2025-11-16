@@ -796,6 +796,9 @@
         }
 
         function hasAccessToGoal(goalId, level) {
+            // TEMPORARY: Unlock all goals for testing (remove when Firebase functions are implemented)
+            return true;
+
             // Check if user has level access
             if (userAccess.levels && userAccess.levels.includes(level)) {
                 return true;
