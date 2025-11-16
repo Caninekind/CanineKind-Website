@@ -105,6 +105,7 @@
             color: #333;
             font-size: 2.5rem;
             margin-bottom: 0.5rem;
+            font-weight: 700;
         }
 
         .page-header p {
@@ -417,9 +418,11 @@
         }
 
         .table-header h3 {
-            color: #799972;
+            color: #2c3e50;
             font-size: 1.5rem;
+            font-weight: 700;
             margin-bottom: 0.5rem;
+            line-height: 1.4;
         }
 
         .table-header p {
@@ -643,20 +646,59 @@
             }
 
             .goals-table-section {
-                padding: 1.5rem;
+                padding: 1.5rem 1rem;
+            }
+
+            .table-header h3 {
+                font-size: 1.2rem;
+                line-height: 1.3;
+            }
+
+            .table-header p {
+                font-size: 0.9rem;
             }
 
             .goals-table-container {
-                overflow-x: scroll;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
             }
 
             .goals-table {
-                font-size: 0.85rem;
+                font-size: 1rem;
+                min-width: 100%;
             }
 
             .goals-table th,
             .goals-table td {
-                padding: 0.75rem 0.5rem;
+                padding: 1rem 0.75rem;
+                font-size: 1rem;
+            }
+
+            .goals-table th {
+                font-size: 1.05rem;
+            }
+
+            .goal-name-cell {
+                font-size: 1.05rem;
+                min-width: 150px;
+            }
+
+            .level-badge-table {
+                font-size: 0.9rem;
+                white-space: nowrap;
+            }
+
+            .task-count {
+                font-size: 1rem;
+                display: block;
+            }
+
+            .progress-cell {
+                min-width: 120px;
+            }
+
+            .progress-percentage {
+                font-size: 0.95rem;
             }
         }
     </style>
@@ -685,20 +727,15 @@
 
     <div class="container">
         <div class="page-header">
-            <h1>🐕 Daily Schedule</h1>
+            <h1>Daily Schedule</h1>
             <p>Drag and drop activities to create your dog's daily routine</p>
         </div>
 
-        <div id="goalsIndicator" class="goals-indicator" style="display: none;">
-            <h4>🎯 Active Goals:</h4>
-            <div class="active-goals" id="activeGoalsList"></div>
-        </div>
-
-        <!-- Active Goals Table -->
-        <div id="goalsTable" class="goals-table-section" style="display: none;">
+        <!-- Combined Active Goals & Training Progress -->
+        <div id="combinedGoalsSection" class="goals-table-section" style="display: none;">
             <div class="table-header">
-                <h3>📋 Active Training Goals & Progress</h3>
-                <p>Track your selected goals and task completion</p>
+                <h3 id="workingTowardsText">You're currently working towards level 1...</h3>
+                <p id="progressSummary">Track your milestones and progress</p>
             </div>
             <div class="goals-table-container">
                 <table class="goals-table">
@@ -706,9 +743,9 @@
                         <tr>
                             <th>Goal</th>
                             <th>Level</th>
-                            <th>Tasks Completed</th>
+                            <th>Milestones</th>
                             <th>Progress</th>
-                            <th>Status</th>
+                            <th>Current Milestone</th>
                         </tr>
                     </thead>
                     <tbody id="goalsTableBody">
@@ -851,7 +888,6 @@
                     }))
                     .filter(goal => goal.level !== 0); // Exclude Level 0 goals from schedule
 
-                displayActiveGoals();
                 displayGoalsTable();
 
                 // Load schedule data
@@ -874,72 +910,76 @@
             }
         }
 
-        function displayActiveGoals() {
-            const goalsIndicator = document.getElementById('goalsIndicator');
-            const goalsList = document.getElementById('activeGoalsList');
-
-            if (activeGoals.length > 0) {
-                goalsIndicator.style.display = 'block';
-                goalsList.innerHTML = activeGoals.map(goal =>
-                    `<div class="goal-badge">${goal.emoji || '🎯'} ${goal.title}</div>`
-                ).join('');
-            } else {
-                goalsIndicator.style.display = 'block';
-                goalsList.innerHTML = '<div class="no-goals-message">No active goals yet. Visit the Goals page to add training goals!</div>';
-            }
-        }
-
         function displayGoalsTable() {
-            const goalsTable = document.getElementById('goalsTable');
+            const goalsSection = document.getElementById('combinedGoalsSection');
+            const workingTowardsText = document.getElementById('workingTowardsText');
             const tableBody = document.getElementById('goalsTableBody');
 
-            if (activeGoals.length > 0) {
-                goalsTable.style.display = 'block';
-
-                tableBody.innerHTML = activeGoals.map(goal => {
-                    const completedTasks = goal.tasks ? goal.tasks.filter(t => t.completed).length : 0;
-                    const totalTasks = goal.tasks ? goal.tasks.length : 0;
-                    const progress = goal.progress || 0;
-
-                    let status = 'Not Started';
-                    let statusClass = 'status-not-started';
-                    if (progress === 100) {
-                        status = '✅ Completed';
-                        statusClass = 'status-completed';
-                    } else if (progress > 0) {
-                        status = '🔄 In Progress';
-                        statusClass = 'status-in-progress';
-                    }
-
-                    return `
-                        <tr>
-                            <td>
-                                <div class="goal-name-cell">
-                                    <span class="goal-emoji">${goal.emoji || '🎯'}</span>
-                                    <span>${goal.title}</span>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="level-badge-table">Level ${goal.level || 1}</span>
-                            </td>
-                            <td>
-                                <span class="task-count">${completedTasks} / ${totalTasks} tasks</span>
-                            </td>
-                            <td class="progress-cell">
-                                <div class="table-progress-bar">
-                                    <div class="table-progress-fill" style="width: ${progress}%"></div>
-                                </div>
-                                <div class="progress-percentage">${progress}%</div>
-                            </td>
-                            <td>
-                                <span class="status-badge ${statusClass}">${status}</span>
-                            </td>
-                        </tr>
-                    `;
-                }).join('');
-            } else {
-                goalsTable.style.display = 'none';
+            if (activeGoals.length === 0) {
+                goalsSection.style.display = 'none';
+                return;
             }
+
+            goalsSection.style.display = 'block';
+
+            // Determine current level
+            const currentLevel = activeGoals.length > 0 ? Math.min(...activeGoals.map(g => g.level || 1)) : 1;
+
+            // Check for mastery programs (goals with category/mastery in the ID)
+            const masteryGoals = activeGoals.filter(g => g.id && (g.id.includes('loose-leash') || g.id.includes('mastery')));
+            const hasMastery = masteryGoals.length > 0;
+
+            // Generate dynamic "working towards" text
+            let dynamicText = `You're currently working towards level ${currentLevel}`;
+            if (hasMastery) {
+                const masteryTypes = masteryGoals.map(g => {
+                    if (g.id.includes('loose-leash')) return 'loose leash walking';
+                    return 'mastery training';
+                });
+                const uniqueMasteryTypes = [...new Set(masteryTypes)];
+                dynamicText += ` with a focus on mastery in ${uniqueMasteryTypes.join(' and ')}`;
+            }
+            workingTowardsText.textContent = dynamicText;
+
+            // Generate table rows
+            tableBody.innerHTML = activeGoals.map(goal => {
+                const completedMilestones = goal.tasks ? goal.tasks.filter(t => t.completed).length : 0;
+                const totalMilestones = goal.tasks ? goal.tasks.length : 0;
+                const progress = goal.progress || 0;
+
+                // Find the next incomplete milestone
+                const nextMilestone = goal.tasks ? goal.tasks.find(t => !t.completed) : null;
+                const milestoneText = nextMilestone
+                    ? `Work towards: ${nextMilestone.description}`
+                    : (progress === 100 ? '✅ All milestones complete!' : 'No milestones set');
+
+                return `
+                    <tr>
+                        <td>
+                            <div class="goal-name-cell">
+                                <span>${goal.title}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="level-badge-table">Level ${goal.level || 1}</span>
+                        </td>
+                        <td>
+                            <span class="task-count">${completedMilestones} / ${totalMilestones} milestones completed</span>
+                        </td>
+                        <td class="progress-cell">
+                            <div class="table-progress-bar">
+                                <div class="table-progress-fill" style="width: ${progress}%"></div>
+                            </div>
+                            <div class="progress-percentage">${progress}%</div>
+                        </td>
+                        <td style="max-width: 300px;">
+                            <div style="font-size: 0.9rem; color: #666; font-style: italic;">
+                                ${milestoneText}
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
         }
 
         function initializeSchedule() {
