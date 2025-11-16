@@ -13,7 +13,7 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #D1E5F4 0%, #E8F4F8 100%);
             min-height: 100vh;
             padding-bottom: 40px;
@@ -115,44 +115,70 @@
         /* Progress Overview */
         .progress-overview {
             background: white;
-            border-radius: 15px;
-            padding: 2rem;
+            border-radius: 10px;
+            padding: 2.5rem;
             margin-bottom: 2rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-left: 5px solid #799972;
         }
 
         .progress-overview h2 {
-            color: #333;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .progress-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
-            color: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 700;
-            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .stat-label {
-            font-size: 0.9rem;
-            opacity: 0.9;
+        .current-level-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .level-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #799972;
+            text-transform: uppercase;
+        }
+
+        .level-progress-bar {
+            flex: 1;
+            margin: 0 2rem;
+        }
+
+        .progress-bar-label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .progress-bar-outer {
+            background: #e0e0e0;
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .progress-bar-inner {
+            background: linear-gradient(90deg, #799972 0%, #8aaa83 100%);
+            height: 100%;
+            transition: width 0.4s ease;
+        }
+
+        .level-completion {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #2c3e50;
         }
 
         /* Level Section */
@@ -224,23 +250,24 @@
 
         .goal-card {
             background: white;
-            border-radius: 15px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            padding: 2rem 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             cursor: pointer;
-            transition: all 0.3s;
-            border: 3px solid transparent;
+            transition: all 0.2s;
+            border: 2px solid #e0e0e0;
             position: relative;
         }
 
         .goal-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            border-color: #799972;
+            box-shadow: 0 4px 12px rgba(121, 153, 114, 0.15);
         }
 
         .goal-card.selected {
             border-color: #799972;
-            box-shadow: 0 6px 20px rgba(121, 153, 114, 0.4);
+            background: #f8fdf8;
+            box-shadow: 0 4px 12px rgba(121, 153, 114, 0.2);
         }
 
         .goal-card.locked {
@@ -256,17 +283,15 @@
             margin-bottom: 1rem;
         }
 
-        .goal-icon {
-            font-size: 2.5rem;
-        }
-
         .select-badge {
             background: #799972;
             color: white;
             padding: 0.4rem 1rem;
-            border-radius: 15px;
-            font-size: 0.85rem;
-            font-weight: 600;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             display: none;
         }
 
@@ -275,16 +300,43 @@
         }
 
         .goal-card h3 {
-            font-size: 1.4rem;
-            color: #333;
-            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+            color: #2c3e50;
+            margin-bottom: 0.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
         }
 
         .goal-card p {
-            color: #666;
-            font-size: 0.95rem;
-            line-height: 1.5;
+            color: #555;
+            font-size: 0.9rem;
+            line-height: 1.6;
             margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .goal-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            color: #555;
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+
+        .goal-card ul li {
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .goal-card ul li:before {
+            content: "•";
+            position: absolute;
+            left: 0.5rem;
+            color: #799972;
+            font-weight: bold;
         }
 
         .goal-progress {
@@ -314,40 +366,51 @@
             font-weight: 500;
         }
 
-        /* Task Panel */
-        .task-panel {
-            display: none;
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            margin-top: 1.5rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border-left: 5px solid #799972;
+        /* Task Dropdown */
+        .task-dropdown {
+            margin-top: 1rem;
+            border-top: 2px solid #e0e0e0;
+            padding-top: 1rem;
         }
 
-        .task-panel.active {
-            display: block;
-            animation: slideDown 0.3s ease-out;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .task-panel h3 {
-            color: #799972;
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
+        .task-dropdown-header {
+            cursor: pointer;
+            padding: 0.75rem 1rem;
+            background: #f8f9fa;
+            border-radius: 6px;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 0.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
+        }
+
+        .task-dropdown-header:hover {
+            background: #e9ecef;
+        }
+
+        .dropdown-arrow {
+            transition: transform 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .task-dropdown.open .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        .task-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .task-dropdown.open .task-content {
+            max-height: 1000px;
+            margin-top: 1rem;
         }
 
         .task-list {
@@ -398,6 +461,94 @@
         .task-date {
             font-size: 0.85rem;
             color: #999;
+        }
+
+        .coming-soon {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: #999;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Congratulations Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .congrats-modal {
+            background: white;
+            border-radius: 12px;
+            padding: 3rem 2.5rem;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .congrats-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .congrats-modal h2 {
+            color: #799972;
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .congrats-modal p {
+            color: #555;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .modal-btn {
+            padding: 1rem 2.5rem;
+            background: #799972;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .modal-btn:hover {
+            background: #6a8862;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(121, 153, 114, 0.4);
         }
 
         .loading-overlay {
@@ -500,25 +651,31 @@
 
         <!-- Progress Overview -->
         <div class="progress-overview">
-            <h2>📊 Your Progress</h2>
-            <div class="progress-stats">
-                <div class="stat-card">
-                    <div class="stat-number" id="selectedGoalsCount">0</div>
-                    <div class="stat-label">Goals Selected</div>
+            <h2>Training Progress</h2>
+            <div class="current-level-info">
+                <div class="level-name" id="currentLevelName">Level 0: Get Ready to Train!</div>
+                <div class="level-progress-bar">
+                    <div class="progress-bar-label">Level Completion</div>
+                    <div class="progress-bar-outer">
+                        <div class="progress-bar-inner" id="levelProgressBar" style="width: 0%"></div>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="completedTasksCount">0</div>
-                    <div class="stat-label">Tasks Completed</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="overallProgress">0%</div>
-                    <div class="stat-label">Overall Progress</div>
-                </div>
+                <div class="level-completion" id="levelCompletionPercent">0%</div>
             </div>
         </div>
 
         <!-- Levels Container -->
         <div id="levelsContainer"></div>
+    </div>
+
+    <!-- Congratulations Modal -->
+    <div class="modal-overlay" id="congratsModal">
+        <div class="congrats-modal">
+            <div class="congrats-icon">🎉</div>
+            <h2>Congratulations!</h2>
+            <p id="congratsMessage">You've completed all goals in this level! Your completion has been sent to your trainer for approval.</p>
+            <button class="modal-btn" onclick="closeCongratsModal()">Continue Training</button>
+        </div>
     </div>
 
     <!-- Firebase SDK -->
@@ -532,15 +689,44 @@
         let currentUser = null;
         let userAccess = { levels: [], individualGoals: [] };
         let selectedGoals = {};
+        let currentLevel = 0;
 
         // Define all goals with their levels and tasks
         const GOALS_STRUCTURE = {
+            0: [
+                {
+                    id: 'training-gear',
+                    title: 'Training Gear Checklist',
+                    description: 'Make sure you have your training gear for your first in-person session',
+                    type: 'checklist',
+                    items: [
+                        '6ft leash',
+                        'High value treats',
+                        'The tools you currently use for your dog (slip lead, prong collar, harness, etc...)',
+                        'Toy or ball if applicable'
+                    ]
+                },
+                {
+                    id: 'legal-forms',
+                    title: 'Sign Legal/Training Forms',
+                    description: 'Complete all required legal and training documentation',
+                    type: 'single',
+                    tasks: ['Forms completed and signed']
+                },
+                {
+                    id: 'review-instructions',
+                    title: 'Review Email Instructions',
+                    description: 'Review email instructions and guidance prior to meeting with your trainer to ensure your dog is set-up for success!',
+                    type: 'single',
+                    tasks: ['Email instructions reviewed']
+                }
+            ],
             1: [
                 {
                     id: 'sit',
                     title: 'Sit',
-                    emoji: '🪑',
                     description: 'Master the fundamental sit command',
+                    type: 'tasks',
                     tasks: [
                         'Dog can sit on command with hand signal',
                         'Dog can sit for 10 seconds before release',
@@ -550,8 +736,8 @@
                 {
                     id: 'down',
                     title: 'Down',
-                    emoji: '⬇️',
                     description: 'Teach your dog to lie down on command',
+                    type: 'tasks',
                     tasks: [
                         'Dog can lie down on command with hand signal',
                         'Dog can hold down position for 10 seconds',
@@ -561,8 +747,8 @@
                 {
                     id: 'recall',
                     title: 'Recall',
-                    emoji: '📣',
                     description: 'Train your dog to come when called',
+                    type: 'tasks',
                     tasks: [
                         'Dog comes when called in a quiet environment',
                         'Dog comes when called with mild distractions',
@@ -572,8 +758,8 @@
                 {
                     id: 'markers-release',
                     title: 'Markers & Release Words',
-                    emoji: '🔔',
                     description: 'Establish clear communication markers',
+                    type: 'tasks',
                     tasks: [
                         'Dog understands "Yes" marker for correct behavior',
                         'Dog responds to release word (e.g., "Free" or "Okay")',
@@ -583,8 +769,8 @@
                 {
                     id: 'place',
                     title: 'Place',
-                    emoji: '📍',
                     description: 'Teach your dog to go to their designated spot',
+                    type: 'tasks',
                     tasks: [
                         'Dog goes to place on command',
                         'Dog stays on place for 30 seconds',
@@ -594,8 +780,8 @@
                 {
                     id: 'crate-manners',
                     title: 'Crate Manners',
-                    emoji: '🏠',
                     description: 'Develop good crate behavior and manners',
+                    type: 'tasks',
                     tasks: [
                         'Dog enters crate willingly on command',
                         'Dog remains calm and quiet in crate for 10 minutes',
@@ -603,114 +789,13 @@
                     ]
                 }
             ],
-            2: [
-                {
-                    id: 'stay',
-                    title: 'Stay',
-                    emoji: '✋',
-                    description: 'Train your dog to stay in place on command',
-                    tasks: [
-                        'Dog can stay for 30 seconds',
-                        'Dog can stay while you move around',
-                        'Dog can stay with distractions'
-                    ]
-                },
-                {
-                    id: 'heel',
-                    title: 'Heel',
-                    emoji: '👟',
-                    description: 'Train your dog to walk closely by your side',
-                    tasks: [
-                        'Dog walks at your side without pulling',
-                        'Dog maintains heel position through turns',
-                        'Dog can heel in various environments'
-                    ]
-                },
-                {
-                    id: 'leave-it',
-                    title: 'Leave It',
-                    emoji: '🚫',
-                    description: 'Teach your dog to ignore items on command',
-                    tasks: [
-                        'Dog can ignore treats on the ground',
-                        'Dog can walk past distractions',
-                        'Dog reliably responds to "leave it" command'
-                    ]
-                },
-                {
-                    id: 'drop-it',
-                    title: 'Drop It',
-                    emoji: '⬇️',
-                    description: 'Train your dog to release items from mouth',
-                    tasks: [
-                        'Dog drops toys on command',
-                        'Dog releases items without resource guarding',
-                        'Dog trades items willingly'
-                    ]
-                }
-            ],
-            3: [
-                {
-                    id: 'distance-commands',
-                    title: 'Distance Commands',
-                    emoji: '📏',
-                    description: 'Work on commands from a distance',
-                    tasks: [
-                        'Dog responds to commands from 10 feet away',
-                        'Dog can perform commands from across the room',
-                        'Dog maintains focus at increasing distances'
-                    ]
-                },
-                {
-                    id: 'duration-work',
-                    title: 'Duration Work',
-                    emoji: '⏱️',
-                    description: 'Build duration for commands and positions',
-                    tasks: [
-                        'Dog can hold positions for 2 minutes',
-                        'Dog maintains focus during extended sessions',
-                        'Dog shows improved impulse control'
-                    ]
-                },
-                {
-                    id: 'distractions',
-                    title: 'Working with Distractions',
-                    emoji: '🎯',
-                    description: 'Maintain training in distracting environments',
-                    tasks: [
-                        'Dog responds to commands with other dogs present',
-                        'Dog maintains focus in public settings',
-                        'Dog can work through high-value distractions'
-                    ]
-                }
-            ],
-            4: [
-                {
-                    id: 'off-leash',
-                    title: 'Off-Leash Reliability',
-                    emoji: '🔓',
-                    description: 'Work toward reliable off-leash control',
-                    tasks: [
-                        'Dog responds to commands off-leash in secure area',
-                        'Dog has reliable recall off-leash',
-                        'Dog demonstrates consistent off-leash obedience'
-                    ]
-                },
-                {
-                    id: 'advanced-behaviors',
-                    title: 'Advanced Behaviors',
-                    emoji: '⭐',
-                    description: 'Master specialized and advanced skills',
-                    tasks: [
-                        'Dog performs complex command sequences',
-                        'Dog demonstrates advanced impulse control',
-                        'Dog excels in specialized training areas'
-                    ]
-                }
-            ]
+            2: [],
+            3: [],
+            4: []
         };
 
         const LEVEL_DESCRIPTIONS = {
+            0: 'Get Ready to Train!',
             1: 'Basic/Beginner Commands',
             2: 'Intermediate Commands',
             3: 'Advanced Commands',
@@ -786,7 +871,7 @@
                     };
                 });
 
-                updateProgressStats();
+                updateLevelProgress();
             } catch (error) {
                 console.error('Error loading user data:', error);
                 alert('Error loading goals data');
@@ -796,6 +881,9 @@
         }
 
         function hasAccessToGoal(goalId, level) {
+            // Level 0 is always accessible
+            if (level === 0) return true;
+
             // TEMPORARY: Unlock all goals for testing (remove when Firebase functions are implemented)
             return true;
 
@@ -810,14 +898,71 @@
             return false;
         }
 
+        function determineCurrentLevel() {
+            // Find the first level with selected but incomplete goals
+            for (let level = 0; level <= 4; level++) {
+                const levelGoals = GOALS_STRUCTURE[level];
+                if (!levelGoals || levelGoals.length === 0) continue;
+
+                const selectedInLevel = Object.values(selectedGoals).filter(g => g.level === level);
+                if (selectedInLevel.length > 0) {
+                    // Check if all are complete
+                    const allComplete = selectedInLevel.every(g => g.progress === 100);
+                    if (!allComplete) {
+                        return level;
+                    }
+                }
+            }
+            // Default to Level 0
+            return 0;
+        }
+
+        function updateLevelProgress() {
+            currentLevel = determineCurrentLevel();
+            const levelName = document.getElementById('currentLevelName');
+            const progressBar = document.getElementById('levelProgressBar');
+            const progressPercent = document.getElementById('levelCompletionPercent');
+
+            levelName.textContent = `Level ${currentLevel}: ${LEVEL_DESCRIPTIONS[currentLevel]}`;
+
+            const levelGoals = GOALS_STRUCTURE[currentLevel];
+            if (!levelGoals || levelGoals.length === 0) {
+                progressBar.style.width = '0%';
+                progressPercent.textContent = '0%';
+                return;
+            }
+
+            const selectedInLevel = Object.values(selectedGoals).filter(g => g.level === currentLevel);
+            if (selectedInLevel.length === 0) {
+                progressBar.style.width = '0%';
+                progressPercent.textContent = '0%';
+                return;
+            }
+
+            let totalTasks = 0;
+            let completedTasks = 0;
+
+            selectedInLevel.forEach(goal => {
+                if (goal.tasks) {
+                    totalTasks += goal.tasks.length;
+                    completedTasks += goal.tasks.filter(t => t.completed).length;
+                }
+            });
+
+            const progress = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+            progressBar.style.width = progress + '%';
+            progressPercent.textContent = progress + '%';
+        }
+
         function renderLevels() {
             const container = document.getElementById('levelsContainer');
             let html = '';
 
-            for (let level = 1; level <= 4; level++) {
-                const hasLevelAccess = userAccess.levels && userAccess.levels.includes(level);
+            for (let level = 0; level <= 4; level++) {
                 const goals = GOALS_STRUCTURE[level];
+                const hasLevelAccess = level === 0 || userAccess.levels?.includes(level);
                 const isLocked = !hasLevelAccess && !goals.some(g => hasAccessToGoal(g.id, level));
+                const isComingSoon = level >= 2 && goals.length === 0;
 
                 html += `
                     <div class="level-section">
@@ -826,14 +971,14 @@
                                 <span class="level-badge ${isLocked ? 'locked' : ''}">Level ${level}</span>
                                 <h2>${LEVEL_DESCRIPTIONS[level]}</h2>
                             </div>
-                            ${isLocked ? `
-                                <div class="lock-icon">🔒</div>
-                            ` : ''}
+                            ${isLocked ? `<div class="lock-icon">🔒</div>` : ''}
                         </div>
                         ${isLocked ? `
                             <div class="unlock-message">
                                 🔒 This level will be unlocked by your trainer after completing earlier levels
                             </div>
+                        ` : isComingSoon ? `
+                            <div class="coming-soon">Coming Soon</div>
                         ` : `
                             <div class="goals-grid">
                                 ${goals.map(goal => renderGoalCard(goal, level)).join('')}
@@ -844,6 +989,7 @@
             }
 
             container.innerHTML = html;
+            attachDropdownListeners();
         }
 
         function renderGoalCard(goal, level) {
@@ -851,51 +997,93 @@
             const isSelected = selectedGoals.hasOwnProperty(goal.id);
             const progress = isSelected ? calculateGoalProgress(goal.id) : 0;
 
+            let cardContent = '';
+
+            // For Level 0 checklist items, show them in the card
+            if (goal.type === 'checklist') {
+                cardContent = `
+                    <h3>${goal.title}</h3>
+                    <p>${goal.description}</p>
+                    <ul>
+                        ${goal.items.map(item => `<li>${item}</li>`).join('')}
+                    </ul>
+                `;
+            } else {
+                cardContent = `
+                    <h3>${goal.title}</h3>
+                    <p>${goal.description}</p>
+                `;
+            }
+
             return `
                 <div class="goal-card ${!hasAccess ? 'locked' : ''} ${isSelected ? 'selected' : ''}"
                      onclick="${hasAccess ? `toggleGoal('${goal.id}', ${level})` : ''}">
                     <div class="goal-header">
-                        <div class="goal-icon">${goal.emoji}</div>
-                        <span class="select-badge">✅ Active</span>
+                        <span class="select-badge">Active</span>
                     </div>
-                    <h3>${goal.title}</h3>
-                    <p>${goal.description}</p>
-                    ${isSelected ? `
+                    ${cardContent}
+                    ${isSelected && goal.type !== 'checklist' ? `
                         <div class="goal-progress">
                             <div class="progress-bar-container">
                                 <div class="progress-bar-fill" style="width: ${progress}%"></div>
                             </div>
                             <div class="progress-text">${progress}% Complete</div>
                         </div>
+                        <div class="task-dropdown" id="dropdown-${goal.id}">
+                            <div class="task-dropdown-header" onclick="event.stopPropagation(); toggleTaskDropdown('${goal.id}')">
+                                <span>View Tasks</span>
+                                <span class="dropdown-arrow">▼</span>
+                            </div>
+                            <div class="task-content">
+                                <div class="task-list">
+                                    ${renderTasksForGoal(goal.id, goal)}
+                                </div>
+                            </div>
+                        </div>
+                    ` : isSelected && goal.type === 'checklist' ? `
+                        <div class="task-dropdown open" id="dropdown-${goal.id}">
+                            <div class="task-content">
+                                <div class="task-list">
+                                    ${renderTasksForGoal(goal.id, goal)}
+                                </div>
+                            </div>
+                        </div>
                     ` : ''}
                 </div>
-                ${isSelected ? `
-                    <div class="task-panel active" id="tasks-${goal.id}">
-                        <h3>📝 ${goal.title} Tasks</h3>
-                        <div class="task-list">
-                            ${goal.tasks.map((task, index) => renderTaskItem(goal.id, task, index)).join('')}
-                        </div>
-                    </div>
-                ` : ''}
             `;
         }
 
-        function renderTaskItem(goalId, taskDescription, index) {
+        function renderTasksForGoal(goalId, goal) {
             const goalData = selectedGoals[goalId];
-            const task = goalData && goalData.tasks ? goalData.tasks[index] : null;
-            const isCompleted = task && task.completed;
-            const completedDate = task && task.completedAt ? new Date(task.completedAt.toDate()).toLocaleDateString() : '';
+            if (!goalData || !goalData.tasks) return '';
 
-            return `
-                <div class="task-item ${isCompleted ? 'completed' : ''}">
-                    <input type="checkbox"
-                           class="task-checkbox"
-                           ${isCompleted ? 'checked' : ''}
-                           onchange="toggleTask('${goalId}', ${index})">
-                    <div class="task-description">${taskDescription}</div>
-                    ${isCompleted ? `<div class="task-date">✅ ${completedDate}</div>` : ''}
-                </div>
-            `;
+            return goalData.tasks.map((task, index) => {
+                const isCompleted = task.completed;
+                const completedDate = task.completedAt ? new Date(task.completedAt.toDate()).toLocaleDateString() : '';
+
+                return `
+                    <div class="task-item ${isCompleted ? 'completed' : ''}">
+                        <input type="checkbox"
+                               class="task-checkbox"
+                               ${isCompleted ? 'checked' : ''}
+                               onclick="event.stopPropagation()"
+                               onchange="toggleTask('${goalId}', ${index})">
+                        <div class="task-description">${task.description}</div>
+                        ${isCompleted ? `<div class="task-date">✅ ${completedDate}</div>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleTaskDropdown(goalId) {
+            const dropdown = document.getElementById(`dropdown-${goalId}`);
+            if (dropdown) {
+                dropdown.classList.toggle('open');
+            }
+        }
+
+        function attachDropdownListeners() {
+            // Dropdowns are now handled inline with onclick
         }
 
         async function toggleGoal(goalId, level) {
@@ -915,7 +1103,7 @@
 
                         delete selectedGoals[goalId];
                         renderLevels();
-                        updateProgressStats();
+                        updateLevelProgress();
                     } catch (error) {
                         console.error('Error removing goal:', error);
                         alert('Error removing goal');
@@ -927,10 +1115,20 @@
                 // Select goal
                 try {
                     showLoading(true);
-                    const tasks = goal.tasks.map(desc => ({
-                        description: desc,
-                        completed: false
-                    }));
+
+                    // Prepare tasks based on goal type
+                    let tasks = [];
+                    if (goal.type === 'checklist' && goal.items) {
+                        tasks = goal.items.map(item => ({
+                            description: item,
+                            completed: false
+                        }));
+                    } else if (goal.tasks) {
+                        tasks = goal.tasks.map(desc => ({
+                            description: desc,
+                            completed: false
+                        }));
+                    }
 
                     await db.collection('users')
                         .doc(currentUser.email)
@@ -939,8 +1137,8 @@
                         .set({
                             level: level,
                             title: goal.title,
-                            emoji: goal.emoji,
                             description: goal.description,
+                            type: goal.type,
                             tasks: tasks,
                             selectedAt: firebase.firestore.FieldValue.serverTimestamp(),
                             progress: 0
@@ -950,14 +1148,14 @@
                         id: goalId,
                         level,
                         title: goal.title,
-                        emoji: goal.emoji,
                         description: goal.description,
+                        type: goal.type,
                         tasks,
                         progress: 0
                     };
 
                     renderLevels();
-                    updateProgressStats();
+                    updateLevelProgress();
                 } catch (error) {
                     console.error('Error selecting goal:', error);
                     alert('Error selecting goal');
@@ -988,12 +1186,71 @@
                         progress: progress
                     });
 
+                selectedGoals[goalId].progress = progress;
+
                 renderLevels();
-                updateProgressStats();
+                updateLevelProgress();
+
+                // Check if level is complete
+                await checkLevelCompletion(goalData.level);
             } catch (error) {
                 console.error('Error toggling task:', error);
                 alert('Error updating task');
             }
+        }
+
+        async function checkLevelCompletion(level) {
+            const levelGoals = GOALS_STRUCTURE[level];
+            if (!levelGoals || levelGoals.length === 0) return;
+
+            const selectedInLevel = Object.values(selectedGoals).filter(g => g.level === level);
+
+            // Check if all goals in level are selected and completed
+            if (selectedInLevel.length !== levelGoals.length) return;
+
+            const allComplete = selectedInLevel.every(g => g.progress === 100);
+            if (!allComplete) return;
+
+            // Check if already sent for approval
+            const approvalDoc = await db.collection('users')
+                .doc(currentUser.email)
+                .collection('levelCompletions')
+                .doc(`level-${level}`)
+                .get();
+
+            if (approvalDoc.exists && approvalDoc.data().status === 'pending') {
+                // Already sent for approval
+                return;
+            }
+
+            // Send for admin approval
+            await db.collection('users')
+                .doc(currentUser.email)
+                .collection('levelCompletions')
+                .doc(`level-${level}`)
+                .set({
+                    level: level,
+                    levelName: LEVEL_DESCRIPTIONS[level],
+                    completedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    status: 'pending',
+                    clientEmail: currentUser.email,
+                    clientName: currentUser.displayName || currentUser.email
+                });
+
+            // Show congratulations modal
+            showCongratsModal(level);
+        }
+
+        function showCongratsModal(level) {
+            const modal = document.getElementById('congratsModal');
+            const message = document.getElementById('congratsMessage');
+            message.textContent = `You've completed all goals in ${LEVEL_DESCRIPTIONS[level]}! Your completion has been sent to your trainer for approval.`;
+            modal.classList.add('active');
+        }
+
+        function closeCongratsModal() {
+            const modal = document.getElementById('congratsModal');
+            modal.classList.remove('active');
         }
 
         function calculateGoalProgress(goalId) {
@@ -1003,25 +1260,6 @@
             const completedTasks = goalData.tasks.filter(t => t.completed).length;
             const totalTasks = goalData.tasks.length;
             return Math.round((completedTasks / totalTasks) * 100);
-        }
-
-        function updateProgressStats() {
-            const selectedCount = Object.keys(selectedGoals).length;
-            let totalTasks = 0;
-            let completedTasks = 0;
-
-            Object.values(selectedGoals).forEach(goal => {
-                if (goal.tasks) {
-                    totalTasks += goal.tasks.length;
-                    completedTasks += goal.tasks.filter(t => t.completed).length;
-                }
-            });
-
-            const overallProgress = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
-
-            document.getElementById('selectedGoalsCount').textContent = selectedCount;
-            document.getElementById('completedTasksCount').textContent = completedTasks;
-            document.getElementById('overallProgress').textContent = overallProgress + '%';
         }
 
         function showLoading(show) {
