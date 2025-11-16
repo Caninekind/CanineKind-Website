@@ -110,6 +110,17 @@ service cloud.firestore {
         // Allow admins to read/write ALL schedules
         allow read, write: if isAdmin();
       }
+
+      // ========================================
+      // LEVEL COMPLETIONS (NEW - Client level completion tracking)
+      // ========================================
+      match /levelCompletions/{levelId} {
+        // Allow users to read/write their own level completions
+        allow read, write: if request.auth != null && request.auth.token.email == email;
+
+        // Allow admins to read/write ALL level completions (for approval)
+        allow read, write: if isAdmin();
+      }
     }
 
     // ========================================
@@ -209,6 +220,25 @@ service cloud.firestore {
 **Purpose:** Stores client's weekly training schedule
 **Who can write:** Client (their own) + Admins (all)
 **Who can read:** Client (their own) + Admins (all)
+
+### 4. `users/{email}/levelCompletions/{levelId}`
+**Purpose:** Tracks level completion requests and admin approvals
+**Who can write:** Client (creates) + Admins (approves)
+**Who can read:** Client (their own) + Admins (all)
+
+**Example data:**
+```json
+{
+  "level": 0,
+  "levelName": "Get Ready to Train!",
+  "completedAt": "2025-01-16T14:00:00Z",
+  "status": "pending",
+  "clientEmail": "client@example.com",
+  "clientName": "John Doe",
+  "approvedAt": "2025-01-16T15:00:00Z",
+  "approvedBy": "admin@caninekind.com"
+}
+```
 
 ---
 
