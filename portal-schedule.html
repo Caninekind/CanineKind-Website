@@ -115,41 +115,85 @@
 
         .schedule-controls {
             background: white;
-            padding: 1.5rem;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .view-mode-selector {
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            background: #f5f5f5;
+            padding: 0.5rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .view-mode-btn {
+            padding: 0.5rem 1.5rem;
+            border: none;
+            background: transparent;
+            color: #666;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 6px;
+        }
+
+        .view-mode-btn:hover {
+            background: rgba(121, 153, 114, 0.1);
+        }
+
+        .view-mode-btn.active {
+            background: white;
+            color: #799972;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
         .day-selector {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: 1rem;
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0;
+            border-bottom: 2px solid #e0e0e0;
         }
 
         .day-btn {
-            padding: 0.75rem 1.5rem;
-            border: 2px solid #799972;
-            background: white;
-            color: #799972;
-            border-radius: 25px;
+            padding: 1.2rem 1rem;
+            border: none;
+            border-right: 1px solid #e0e0e0;
+            background: #fafafa;
+            color: #666;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .day-btn:last-child {
+            border-right: none;
         }
 
         .day-btn:hover {
             background: #f0f0f0;
-            transform: translateY(-2px);
         }
 
         .day-btn.active {
+            background: white;
+            color: #799972;
+            border-bottom: 3px solid #799972;
+        }
+
+        .day-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 3px;
             background: #799972;
-            color: white;
-            box-shadow: 0 4px 10px rgba(121, 153, 114, 0.3);
         }
 
         .schedule-layout {
