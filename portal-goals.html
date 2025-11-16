@@ -253,7 +253,6 @@
             border-radius: 8px;
             padding: 2rem 1.5rem;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            cursor: pointer;
             transition: all 0.2s;
             border: 2px solid #e0e0e0;
             position: relative;
@@ -297,6 +296,41 @@
 
         .goal-card.selected .select-badge {
             display: block;
+        }
+
+        .goal-toggle-btn {
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+            background: #799972;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .goal-toggle-btn:hover {
+            background: #6a8862;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(121, 153, 114, 0.4);
+        }
+
+        .goal-toggle-btn.remove {
+            background: #dc3545;
+        }
+
+        .goal-toggle-btn.remove:hover {
+            background: #c82333;
+        }
+
+        .goal-toggle-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
         }
 
         .goal-card h3 {
@@ -366,14 +400,14 @@
             font-weight: 500;
         }
 
-        /* Task Dropdown */
-        .task-dropdown {
+        /* Milestone Dropdown */
+        .milestone-dropdown {
             margin-top: 1rem;
             border-top: 2px solid #e0e0e0;
             padding-top: 1rem;
         }
 
-        .task-dropdown-header {
+        .milestone-dropdown-header {
             cursor: pointer;
             padding: 0.75rem 1rem;
             background: #f8f9fa;
@@ -389,7 +423,7 @@
             transition: all 0.2s;
         }
 
-        .task-dropdown-header:hover {
+        .milestone-dropdown-header:hover {
             background: #e9ecef;
         }
 
@@ -398,28 +432,28 @@
             font-size: 0.9rem;
         }
 
-        .task-dropdown.open .dropdown-arrow {
+        .milestone-dropdown.open .dropdown-arrow {
             transform: rotate(180deg);
         }
 
-        .task-content {
+        .milestone-content {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease;
         }
 
-        .task-dropdown.open .task-content {
+        .milestone-dropdown.open .milestone-content {
             max-height: 1000px;
             margin-top: 1rem;
         }
 
-        .task-list {
+        .milestone-list {
             display: flex;
             flex-direction: column;
             gap: 1rem;
         }
 
-        .task-item {
+        .milestone-item {
             background: #f8f9fa;
             padding: 1.25rem;
             border-radius: 10px;
@@ -430,35 +464,35 @@
             border: 2px solid transparent;
         }
 
-        .task-item:hover {
+        .milestone-item:hover {
             background: #e8f5e9;
             border-color: #799972;
         }
 
-        .task-item.completed {
+        .milestone-item.completed {
             background: #e8f5e9;
             border-color: #799972;
         }
 
-        .task-checkbox {
+        .milestone-checkbox {
             width: 24px;
             height: 24px;
             cursor: pointer;
             accent-color: #799972;
         }
 
-        .task-description {
+        .milestone-description {
             flex: 1;
             font-size: 1.05rem;
             color: #333;
         }
 
-        .task-item.completed .task-description {
+        .milestone-item.completed .milestone-description {
             text-decoration: line-through;
             opacity: 0.7;
         }
 
-        .task-date {
+        .milestone-date {
             font-size: 0.85rem;
             color: #999;
         }
@@ -551,6 +585,118 @@
             box-shadow: 0 4px 12px rgba(121, 153, 114, 0.4);
         }
 
+        .modal-btn.secondary {
+            background: #6c757d;
+            margin-right: 1rem;
+        }
+
+        .modal-btn.secondary:hover {
+            background: #5a6268;
+        }
+
+        /* Date Entry Modal */
+        .date-modal {
+            background: white;
+            border-radius: 12px;
+            padding: 2.5rem 2rem;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        .date-modal h3 {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .date-input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .date-input-group label {
+            display: block;
+            color: #555;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .date-input-group input[type="date"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .date-input-group input[type="date"]:focus {
+            outline: none;
+            border-color: #799972;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        /* Notes Modal */
+        .notes-modal {
+            background: white;
+            border-radius: 12px;
+            padding: 2.5rem 2rem;
+            max-width: 550px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        .notes-modal h3 {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .notes-modal p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        .notes-input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .notes-input-group label {
+            display: block;
+            color: #555;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .notes-input-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: inherit;
+            min-height: 120px;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        .notes-input-group textarea:focus {
+            outline: none;
+            border-color: #799972;
+        }
+
         .loading-overlay {
             display: none;
             position: fixed;
@@ -618,6 +764,48 @@
             .progress-stats {
                 grid-template-columns: 1fr;
             }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .progress-overview {
+                padding: 1.5rem 1rem;
+            }
+
+            .current-level-info {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+
+            .level-name {
+                font-size: 1rem;
+                text-align: center;
+            }
+
+            .level-progress-bar {
+                margin: 0;
+                width: 100%;
+            }
+
+            .level-completion {
+                text-align: center;
+                font-size: 1.3rem;
+            }
+
+            .level-header {
+                padding: 1rem 1.5rem;
+            }
+
+            .level-header h2 {
+                font-size: 1.3rem;
+            }
+
+            .level-badge {
+                font-size: 0.9rem;
+                padding: 0.4rem 0.8rem;
+            }
         }
     </style>
 </head>
@@ -678,6 +866,37 @@
         </div>
     </div>
 
+    <!-- Date Entry Modal -->
+    <div class="modal-overlay" id="dateModal">
+        <div class="date-modal">
+            <h3>Milestone Completed!</h3>
+            <div class="date-input-group">
+                <label for="completionDate">When was this milestone completed?</label>
+                <input type="date" id="completionDate" max="">
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn secondary" onclick="closeDateModal()">Cancel</button>
+                <button class="modal-btn" onclick="saveMilestoneDate()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Client Notes Modal -->
+    <div class="modal-overlay" id="notesModal">
+        <div class="notes-modal">
+            <h3>Goal Completed!</h3>
+            <p>Before submitting for trainer review, would you like to add any notes or comments?</p>
+            <div class="notes-input-group">
+                <label for="clientNotes">Notes for your trainer (optional)</label>
+                <textarea id="clientNotes" placeholder="Share any challenges, successes, or questions about this goal..."></textarea>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn secondary" onclick="skipNotes()">Skip</button>
+                <button class="modal-btn" onclick="submitWithNotes()">Submit for Review</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
@@ -690,6 +909,8 @@
         let userAccess = { levels: [], individualGoals: [] };
         let selectedGoals = {};
         let currentLevel = 0;
+        let pendingMilestone = null; // Track milestone being edited
+        let completedGoalData = null; // Track goal completion for notes
 
         // Define all goals with their levels and tasks
         const GOALS_STRUCTURE = {
@@ -796,10 +1017,34 @@
 
         const LEVEL_DESCRIPTIONS = {
             0: 'Get Ready to Train!',
-            1: 'Basic/Beginner Commands',
-            2: 'Intermediate Commands',
-            3: 'Advanced Commands',
-            4: 'Expert/Specialized'
+            1: 'Beginner Goals',
+            2: 'Intermediate Goals',
+            3: 'Advanced Goals',
+            4: 'Master Goals'
+        };
+
+        // Goal Mastery Categories (non-level based)
+        const MASTERY_CATEGORIES = {
+            'loose-leash': {
+                id: 'loose-leash',
+                title: 'Goal Mastery: Loose Leash Walking',
+                goals: []
+            },
+            'dogs': {
+                id: 'dogs',
+                title: 'Goal Mastery: Dogs',
+                goals: []
+            },
+            'humans': {
+                id: 'humans',
+                title: 'Goal Mastery: Humans',
+                goals: []
+            },
+            'competitive-obedience': {
+                id: 'competitive-obedience',
+                title: 'Goal Mastery: Competitive Obedience',
+                goals: []
+            }
         };
 
         // Wait for Firebase to load
@@ -958,6 +1203,7 @@
             const container = document.getElementById('levelsContainer');
             let html = '';
 
+            // Render regular levels
             for (let level = 0; level <= 4; level++) {
                 const goals = GOALS_STRUCTURE[level];
                 const hasLevelAccess = level === 0 || userAccess.levels?.includes(level);
@@ -988,12 +1234,42 @@
                 `;
             }
 
+            // Render mastery categories
+            for (const categoryId in MASTERY_CATEGORIES) {
+                const category = MASTERY_CATEGORIES[categoryId];
+                const hasAccess = userAccess.masteryCategories?.includes(categoryId) || false;
+                const goals = category.goals;
+
+                html += `
+                    <div class="level-section">
+                        <div class="level-header ${!hasAccess ? 'locked' : ''}">
+                            <div class="level-title">
+                                <span class="level-badge ${!hasAccess ? 'locked' : ''}">🏆</span>
+                                <h2>${category.title}</h2>
+                            </div>
+                            ${!hasAccess ? `<div class="lock-icon">🔒</div>` : ''}
+                        </div>
+                        ${!hasAccess ? `
+                            <div class="unlock-message">
+                                🔒 This category will be unlocked by your trainer when you're ready
+                            </div>
+                        ` : goals.length === 0 ? `
+                            <div class="coming-soon">Your trainer will add goals to this category</div>
+                        ` : `
+                            <div class="goals-grid">
+                                ${goals.map(goal => renderGoalCard(goal, categoryId, true)).join('')}
+                            </div>
+                        `}
+                    </div>
+                `;
+            }
+
             container.innerHTML = html;
             attachDropdownListeners();
         }
 
-        function renderGoalCard(goal, level) {
-            const hasAccess = hasAccessToGoal(goal.id, level);
+        function renderGoalCard(goal, level, isMastery = false) {
+            const hasAccess = isMastery ? true : hasAccessToGoal(goal.id, level);
             const isSelected = selectedGoals.hasOwnProperty(goal.id);
             const progress = isSelected ? calculateGoalProgress(goal.id) : 0;
 
@@ -1016,8 +1292,7 @@
             }
 
             return `
-                <div class="goal-card ${!hasAccess ? 'locked' : ''} ${isSelected ? 'selected' : ''}"
-                     onclick="${hasAccess ? `toggleGoal('${goal.id}', ${level})` : ''}">
+                <div class="goal-card ${!hasAccess ? 'locked' : ''} ${isSelected ? 'selected' : ''}">
                     <div class="goal-header">
                         <span class="select-badge">Active</span>
                     </div>
@@ -1029,31 +1304,37 @@
                             </div>
                             <div class="progress-text">${progress}% Complete</div>
                         </div>
-                        <div class="task-dropdown" id="dropdown-${goal.id}">
-                            <div class="task-dropdown-header" onclick="event.stopPropagation(); toggleTaskDropdown('${goal.id}')">
-                                <span>View Tasks</span>
+                        <div class="milestone-dropdown" id="dropdown-${goal.id}">
+                            <div class="milestone-dropdown-header" onclick="toggleMilestoneDropdown('${goal.id}')">
+                                <span>View Milestones</span>
                                 <span class="dropdown-arrow">▼</span>
                             </div>
-                            <div class="task-content">
-                                <div class="task-list">
-                                    ${renderTasksForGoal(goal.id, goal)}
+                            <div class="milestone-content">
+                                <div class="milestone-list">
+                                    ${renderMilestonesForGoal(goal.id, goal)}
                                 </div>
                             </div>
                         </div>
                     ` : isSelected && goal.type === 'checklist' ? `
-                        <div class="task-dropdown open" id="dropdown-${goal.id}">
-                            <div class="task-content">
-                                <div class="task-list">
-                                    ${renderTasksForGoal(goal.id, goal)}
+                        <div class="milestone-dropdown open" id="dropdown-${goal.id}">
+                            <div class="milestone-content">
+                                <div class="milestone-list">
+                                    ${renderMilestonesForGoal(goal.id, goal)}
                                 </div>
                             </div>
                         </div>
+                    ` : ''}
+                    ${hasAccess ? `
+                        <button class="goal-toggle-btn ${isSelected ? 'remove' : ''}"
+                                onclick="toggleGoal('${goal.id}', ${level})">
+                            ${isSelected ? 'Remove Goal' : 'Add Goal'}
+                        </button>
                     ` : ''}
                 </div>
             `;
         }
 
-        function renderTasksForGoal(goalId, goal) {
+        function renderMilestonesForGoal(goalId, goal) {
             const goalData = selectedGoals[goalId];
             if (!goalData || !goalData.tasks) return '';
 
@@ -1062,20 +1343,19 @@
                 const completedDate = task.completedAt ? new Date(task.completedAt.toDate()).toLocaleDateString() : '';
 
                 return `
-                    <div class="task-item ${isCompleted ? 'completed' : ''}">
+                    <div class="milestone-item ${isCompleted ? 'completed' : ''}">
                         <input type="checkbox"
-                               class="task-checkbox"
+                               class="milestone-checkbox"
                                ${isCompleted ? 'checked' : ''}
-                               onclick="event.stopPropagation()"
-                               onchange="toggleTask('${goalId}', ${index})">
-                        <div class="task-description">${task.description}</div>
-                        ${isCompleted ? `<div class="task-date">✅ ${completedDate}</div>` : ''}
+                               onchange="toggleMilestone('${goalId}', ${index})">
+                        <div class="milestone-description">${task.description}</div>
+                        ${isCompleted ? `<div class="milestone-date">✅ ${completedDate}</div>` : ''}
                     </div>
                 `;
             }).join('');
         }
 
-        function toggleTaskDropdown(goalId) {
+        function toggleMilestoneDropdown(goalId) {
             const dropdown = document.getElementById(`dropdown-${goalId}`);
             if (dropdown) {
                 dropdown.classList.toggle('open');
@@ -1165,16 +1445,85 @@
             }
         }
 
-        async function toggleTask(goalId, taskIndex) {
+        async function toggleMilestone(goalId, milestoneIndex) {
             if (!selectedGoals[goalId]) return;
 
-            try {
-                const goalData = selectedGoals[goalId];
-                const task = goalData.tasks[taskIndex];
-                task.completed = !task.completed;
-                task.completedAt = task.completed ? firebase.firestore.Timestamp.now() : null;
+            const goalData = selectedGoals[goalId];
+            const milestone = goalData.tasks[milestoneIndex];
 
-                // Calculate new progress
+            // If checking the milestone, show date picker
+            if (!milestone.completed) {
+                pendingMilestone = { goalId, milestoneIndex };
+                showDateModal();
+            } else {
+                // If unchecking, just uncheck it
+                try {
+                    milestone.completed = false;
+                    milestone.completedAt = null;
+
+                    const progress = calculateGoalProgress(goalId);
+
+                    await db.collection('users')
+                        .doc(currentUser.email)
+                        .collection('selectedGoals')
+                        .doc(goalId)
+                        .update({
+                            tasks: goalData.tasks,
+                            progress: progress
+                        });
+
+                    selectedGoals[goalId].progress = progress;
+                    renderLevels();
+                    updateLevelProgress();
+                } catch (error) {
+                    console.error('Error toggling milestone:', error);
+                    alert('Error updating milestone');
+                }
+            }
+        }
+
+        function showDateModal() {
+            const modal = document.getElementById('dateModal');
+            const dateInput = document.getElementById('completionDate');
+
+            // Set max date to today
+            const today = new Date().toISOString().split('T')[0];
+            dateInput.max = today;
+            dateInput.value = today;
+
+            modal.classList.add('active');
+        }
+
+        function closeDateModal() {
+            const modal = document.getElementById('dateModal');
+            modal.classList.remove('active');
+            pendingMilestone = null;
+
+            // Uncheck the checkbox since they cancelled
+            renderLevels();
+        }
+
+        async function saveMilestoneDate() {
+            if (!pendingMilestone) return;
+
+            const dateInput = document.getElementById('completionDate');
+            const selectedDate = dateInput.value;
+
+            if (!selectedDate) {
+                alert('Please select a date');
+                return;
+            }
+
+            try {
+                const { goalId, milestoneIndex } = pendingMilestone;
+                const goalData = selectedGoals[goalId];
+                const milestone = goalData.tasks[milestoneIndex];
+
+                // Convert selected date to Firebase timestamp
+                const dateObj = new Date(selectedDate + 'T12:00:00');
+                milestone.completed = true;
+                milestone.completedAt = firebase.firestore.Timestamp.fromDate(dateObj);
+
                 const progress = calculateGoalProgress(goalId);
 
                 await db.collection('users')
@@ -1188,14 +1537,15 @@
 
                 selectedGoals[goalId].progress = progress;
 
+                closeDateModal();
                 renderLevels();
                 updateLevelProgress();
 
                 // Check if level is complete
                 await checkLevelCompletion(goalData.level);
             } catch (error) {
-                console.error('Error toggling task:', error);
-                alert('Error updating task');
+                console.error('Error saving milestone date:', error);
+                alert('Error updating milestone');
             }
         }
 
@@ -1223,22 +1573,73 @@
                 return;
             }
 
-            // Send for admin approval
-            await db.collection('users')
-                .doc(currentUser.email)
-                .collection('levelCompletions')
-                .doc(`level-${level}`)
-                .set({
+            // For Level 1+, show notes modal before submitting
+            if (level >= 1) {
+                completedGoalData = { level };
+                showNotesModal();
+            } else {
+                // Level 0 - submit directly without notes
+                await submitLevelCompletion(level, null);
+            }
+        }
+
+        function showNotesModal() {
+            const modal = document.getElementById('notesModal');
+            const notesTextarea = document.getElementById('clientNotes');
+            notesTextarea.value = '';
+            modal.classList.add('active');
+        }
+
+        function closeNotesModal() {
+            const modal = document.getElementById('notesModal');
+            modal.classList.remove('active');
+            completedGoalData = null;
+        }
+
+        async function skipNotes() {
+            if (!completedGoalData) return;
+            await submitLevelCompletion(completedGoalData.level, null);
+            closeNotesModal();
+        }
+
+        async function submitWithNotes() {
+            if (!completedGoalData) return;
+
+            const notesTextarea = document.getElementById('clientNotes');
+            const notes = notesTextarea.value.trim();
+
+            await submitLevelCompletion(completedGoalData.level, notes || null);
+            closeNotesModal();
+        }
+
+        async function submitLevelCompletion(level, clientNotes) {
+            try {
+                // Send for admin approval
+                const completionData = {
                     level: level,
                     levelName: LEVEL_DESCRIPTIONS[level],
                     completedAt: firebase.firestore.FieldValue.serverTimestamp(),
                     status: 'pending',
                     clientEmail: currentUser.email,
                     clientName: currentUser.displayName || currentUser.email
-                });
+                };
 
-            // Show congratulations modal
-            showCongratsModal(level);
+                if (clientNotes) {
+                    completionData.clientNotes = clientNotes;
+                }
+
+                await db.collection('users')
+                    .doc(currentUser.email)
+                    .collection('levelCompletions')
+                    .doc(`level-${level}`)
+                    .set(completionData);
+
+                // Show congratulations modal
+                showCongratsModal(level);
+            } catch (error) {
+                console.error('Error submitting level completion:', error);
+                alert('Error submitting for review');
+            }
         }
 
         function showCongratsModal(level) {
