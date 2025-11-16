@@ -156,17 +156,33 @@ service cloud.firestore {
 
 ### For Clients:
 - ✅ Select and track training goals
-- ✅ Complete tasks within goals
+- ✅ Complete milestones within goals with manual date entry
+- ✅ Add optional notes when completing Level 1+ goals
 - ✅ View progress statistics
-- ✅ Manage their weekly schedule
+- ✅ Manage their weekly schedule (excludes Level 0 goals)
 - ✅ View their own sessions
 
 ### For Admins:
-- ✅ Grant level access (Level 1, 2, 3, 4) to clients
+- ✅ Grant level access (Level 0-4) to clients
 - ✅ Grant individual goal access to clients
+- ✅ Grant access to Goal Mastery categories
 - ✅ View all client goals and progress
 - ✅ Manage all client data
 - ✅ Create and manage training sessions
+- ✅ Approve client level completions
+
+### Goal Levels:
+- **Level 0:** Get Ready to Train!
+- **Level 1:** Beginner Goals
+- **Level 2:** Intermediate Goals
+- **Level 3:** Advanced Goals
+- **Level 4:** Master Goals
+
+### Mastery Categories (Non-Level):
+- Goal Mastery: Loose Leash Walking
+- Goal Mastery: Dogs
+- Goal Mastery: Humans
+- Goal Mastery: Competitive Obedience
 
 ---
 
@@ -182,13 +198,20 @@ service cloud.firestore {
 {
   "levels": [1, 2],
   "individualGoals": ["sit", "down"],
+  "masteryCategories": ["loose-leash", "dogs"],
   "updatedAt": "2025-01-16T10:00:00Z",
   "updatedBy": "admin@caninekind.com"
 }
 ```
 
+**Available Mastery Categories:**
+- `loose-leash` - Goal Mastery: Loose Leash Walking
+- `dogs` - Goal Mastery: Dogs
+- `humans` - Goal Mastery: Humans
+- `competitive-obedience` - Goal Mastery: Competitive Obedience
+
 ### 2. `users/{email}/selectedGoals/{goalId}`
-**Purpose:** Stores client's active goals with task progress
+**Purpose:** Stores client's active goals with milestone progress
 **Who can write:** Client (their own) + Admins (all)
 **Who can read:** Client (their own) + Admins (all)
 
@@ -216,6 +239,8 @@ service cloud.firestore {
 }
 ```
 
+**Note:** The `tasks` field stores milestone data. In the UI, these are labeled as "milestones" for better user experience, but the database field name remains "tasks" for backward compatibility. Clients manually enter completion dates when checking off milestones.
+
 ### 3. `users/{email}/schedules/weekly`
 **Purpose:** Stores client's weekly training schedule
 **Who can write:** Client (their own) + Admins (all)
@@ -229,16 +254,19 @@ service cloud.firestore {
 **Example data:**
 ```json
 {
-  "level": 0,
-  "levelName": "Get Ready to Train!",
+  "level": 1,
+  "levelName": "Beginner Goals",
   "completedAt": "2025-01-16T14:00:00Z",
   "status": "pending",
   "clientEmail": "client@example.com",
   "clientName": "John Doe",
+  "clientNotes": "My dog did great with sit and down! Still working on consistency with recall in distracting environments.",
   "approvedAt": "2025-01-16T15:00:00Z",
   "approvedBy": "admin@caninekind.com"
 }
 ```
+
+**Note:** `clientNotes` field is optional and only available for Level 1+ completions. Level 0 submissions do not include notes.
 
 ---
 
