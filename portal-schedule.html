@@ -844,10 +844,12 @@
                     .collection('selectedGoals')
                     .get();
 
-                activeGoals = selectedGoalsSnapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }));
+                activeGoals = selectedGoalsSnapshot.docs
+                    .map(doc => ({
+                        id: doc.id,
+                        ...doc.data()
+                    }))
+                    .filter(goal => goal.level !== 0); // Exclude Level 0 goals from schedule
 
                 displayActiveGoals();
                 displayGoalsTable();
