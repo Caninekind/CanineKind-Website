@@ -113,14 +113,15 @@
         }
 
         .welcome-section h1 {
-            color: #799972;
-            font-size: 36px;
+            color: #333;
+            font-size: 2.5rem;
+            font-weight: 700;
             margin-bottom: 15px;
         }
 
         .welcome-section p {
-            color: #555;
-            font-size: 18px;
+            color: #666;
+            font-size: 1.1rem;
             line-height: 1.8;
         }
 
@@ -146,22 +147,16 @@
         }
 
         .dashboard-card h2 {
-            color: #799972;
-            font-size: 24px;
+            color: #2c3e50;
+            font-size: 1.5rem;
+            font-weight: 700;
             margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
         .dashboard-card p {
             color: #666;
             font-size: 16px;
             margin-bottom: 20px;
-        }
-
-        .card-icon {
-            font-size: 32px;
         }
 
         .card-btn {
@@ -213,8 +208,9 @@
         }
 
         .quick-links h2 {
-            color: #799972;
-            font-size: 28px;
+            color: #2c3e50;
+            font-size: 1.75rem;
+            font-weight: 700;
             margin-bottom: 20px;
         }
 
@@ -239,10 +235,6 @@
         .quick-link-item:hover {
             background-color: #D1E5F4;
             transform: translateX(5px);
-        }
-
-        .quick-link-icon {
-            font-size: 24px;
         }
 
         /* Alert Banner for Unsigned Documents */
@@ -403,42 +395,42 @@
         <div class="dashboard-grid">
             <!-- Training Sessions Card -->
             <div class="dashboard-card">
-                <h2><span class="card-icon">📅</span>Training Sessions</h2>
+                <h2>Training Sessions</h2>
                 <p>View your upcoming and past training sessions, notes, and homework.</p>
                 <a href="portal-sessions.html" class="card-btn">View Sessions</a>
             </div>
 
             <!-- Forms & Documents Card -->
             <div class="dashboard-card">
-                <h2><span class="card-icon">📄</span>Forms & Documents</h2>
+                <h2>Forms & Documents</h2>
                 <p>View and sign required legal documents and training agreements.</p>
                 <a href="portal-forms.html" class="card-btn">View Documents</a>
             </div>
 
             <!-- Daily Schedule Card -->
             <div class="dashboard-card">
-                <h2><span class="card-icon">🐕</span>Daily Schedule</h2>
+                <h2>Daily Schedule</h2>
                 <p>Create and manage your dog's daily activity schedule with drag-and-drop.</p>
                 <a href="portal-schedule.html" class="card-btn">Manage Schedule</a>
             </div>
 
             <!-- Training Goals Card -->
             <div class="dashboard-card">
-                <h2><span class="card-icon">🎯</span>Training Goals</h2>
+                <h2>Training Goals</h2>
                 <p>Set and track training goals for your dog with your trainer.</p>
                 <a href="portal-goals.html" class="card-btn">View Goals</a>
             </div>
 
             <!-- Account Settings Card -->
             <div class="dashboard-card">
-                <h2><span class="card-icon">⚙️</span>Account Settings</h2>
+                <h2>Account Settings</h2>
                 <p>Manage your profile information and preferences.</p>
                 <button class="card-btn secondary">Settings <span class="coming-soon">Coming Soon</span></button>
             </div>
 
-            <!-- Admin Panel Card (visible only to admins) -->
+            <!-- Admin-User Interface Card (visible only to admins) -->
             <div class="dashboard-card" id="adminCard" style="display: none;">
-                <h2><span class="card-icon">👑</span>Admin Panel</h2>
+                <h2>Admin-User Interface</h2>
                 <p>Manage user access, approve new clients, and control portal settings.</p>
                 <a href="portal-admin.html" class="card-btn" style="background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);">Manage Users</a>
             </div>
