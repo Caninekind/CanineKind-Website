@@ -843,6 +843,22 @@
             color: #999;
         }
 
+        .level-header-row {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .level-header-row:hover {
+            opacity: 0.9;
+        }
+
+        .collapse-icon {
+            display: inline-block;
+            font-size: 0.9rem;
+            margin-right: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
         .loading-overlay {
             display: none;
             position: fixed;
@@ -1496,45 +1512,89 @@
             }
             workingTowardsText.textContent = dynamicText;
 
-            // Generate table rows
-            tableBody.innerHTML = activeGoals.map(goal => {
-                const completedMilestones = goal.tasks ? goal.tasks.filter(t => t.completed).length : 0;
-                const totalMilestones = goal.tasks ? goal.tasks.length : 0;
-                const progress = goal.progress || 0;
+            // Group goals by level
+            const goalsByLevel = {};
+            activeGoals.forEach(goal => {
+                const level = goal.level || 1;
+                if (!goalsByLevel[level]) {
+                    goalsByLevel[level] = [];
+                }
+                goalsByLevel[level].push(goal);
+            });
 
-                // Find the next incomplete milestone
-                const nextMilestone = goal.tasks ? goal.tasks.find(t => !t.completed) : null;
-                const milestoneText = nextMilestone
-                    ? `Work towards: ${nextMilestone.description}`
-                    : (progress === 100 ? '✅ All milestones complete!' : 'No milestones set');
+            // Sort levels
+            const sortedLevels = Object.keys(goalsByLevel).sort((a, b) => Number(a) - Number(b));
 
-                return `
-                    <tr>
-                        <td data-label="Goal">
-                            <div class="goal-name-cell">
-                                <span>${goal.title}</span>
-                            </div>
-                        </td>
-                        <td data-label="Level">
-                            <span class="level-badge-table">Level ${goal.level || 1}</span>
-                        </td>
-                        <td data-label="Milestones">
-                            <span class="task-count">${completedMilestones} / ${totalMilestones} milestones completed</span>
-                        </td>
-                        <td data-label="Progress" class="progress-cell">
-                            <div class="table-progress-bar">
-                                <div class="table-progress-fill" style="width: ${progress}%"></div>
-                            </div>
-                            <div class="progress-percentage">${progress}%</div>
-                        </td>
-                        <td data-label="Current Milestone" style="max-width: 300px;">
-                            <div style="font-size: 0.9rem; color: #666; font-style: italic;">
-                                ${milestoneText}
-                            </div>
+            // Generate table rows organized by level with collapsible sections
+            let tableHTML = '';
+            sortedLevels.forEach(level => {
+                const levelGoals = goalsByLevel[level];
+                const levelName = level == 0 ? 'Preparation' : `Level ${level}`;
+
+                tableHTML += `
+                    <tr class="level-header-row" onclick="toggleLevelSection('level-${level}')">
+                        <td colspan="5" style="background: linear-gradient(135deg, #799972 0%, #8aaa83 100%); color: white; font-weight: 700; font-size: 1.1rem; padding: 1rem; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;">
+                            <span class="collapse-icon" id="collapse-icon-level-${level}">▼</span> ${levelName}
                         </td>
                     </tr>
                 `;
-            }).join('');
+
+                levelGoals.forEach(goal => {
+                    const completedMilestones = goal.tasks ? goal.tasks.filter(t => t.completed).length : 0;
+                    const totalMilestones = goal.tasks ? goal.tasks.length : 0;
+                    const progress = goal.progress || 0;
+
+                    // Find the next incomplete milestone
+                    const nextMilestone = goal.tasks ? goal.tasks.find(t => !t.completed) : null;
+                    const milestoneText = nextMilestone
+                        ? `Work towards: ${nextMilestone.description}`
+                        : (progress === 100 ? 'All milestones complete!' : 'No milestones set');
+
+                    tableHTML += `
+                        <tr class="level-${level}-row">
+                            <td data-label="Goal">
+                                <div class="goal-name-cell">
+                                    <span>${goal.title}</span>
+                                </div>
+                            </td>
+                            <td data-label="Level" style="display: none;">
+                                <span class="level-badge-table">Level ${goal.level || 1}</span>
+                            </td>
+                            <td data-label="Milestones">
+                                <span class="task-count">${completedMilestones} / ${totalMilestones} milestones completed</span>
+                            </td>
+                            <td data-label="Progress" class="progress-cell">
+                                <div class="table-progress-bar">
+                                    <div class="table-progress-fill" style="width: ${progress}%"></div>
+                                </div>
+                                <div class="progress-percentage">${progress}%</div>
+                            </td>
+                            <td data-label="Current Milestone" style="max-width: 300px;">
+                                <div style="font-size: 0.9rem; color: #666; font-style: italic;">
+                                    ${milestoneText}
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+            });
+
+            tableBody.innerHTML = tableHTML;
+        }
+
+        function toggleLevelSection(levelId) {
+            const rows = document.querySelectorAll(`.${levelId}-row`);
+            const icon = document.getElementById(`collapse-icon-${levelId}`);
+
+            rows.forEach(row => {
+                if (row.style.display === 'none') {
+                    row.style.display = '';
+                    icon.textContent = '▼';
+                } else {
+                    row.style.display = 'none';
+                    icon.textContent = '▶';
+                }
+            });
         }
 
         function initializeSchedule() {
@@ -1669,6 +1729,51 @@
             return mapping[activity] || '🐕';
         }
 
+        // Check if a goal is compatible with an activity
+        function isGoalCompatibleWithActivity(goalTitle, activityName) {
+            const incompatibilities = {
+                // Kennel/Crate Time restrictions
+                'Kennel/Crate Time': {
+                    incompatibleGoals: ['Sit', 'Down', 'Recall', 'Heel', 'Place', 'Stay', 'Leave It', 'Drop It'],
+                    compatibleGoals: ['Crate Manners'],
+                    message: 'This goal cannot be practiced in a kennel/crate. Only "Crate Manners" goal is compatible with Kennel/Crate Time.'
+                },
+                // Quick Potty Break restrictions
+                'Quick Potty Break': {
+                    incompatibleGoals: ['Sit', 'Down', 'Place', 'Stay'],
+                    message: 'Quick potty breaks are too brief to practice stationary commands like Sit, Down, Place, or Stay.'
+                },
+                // Sleeping/Nap time restrictions
+                'Sleeping/Nap time': {
+                    incompatibleGoals: ['Sit', 'Down', 'Recall', 'Heel', 'Place', 'Stay', 'Leave It', 'Drop It', 'Crate Manners'],
+                    message: 'Training goals cannot be practiced during nap/sleep time. This is your dog\'s rest period.'
+                },
+                // Professional grooming restrictions
+                'Professional grooming': {
+                    incompatibleGoals: ['Sit', 'Down', 'Recall', 'Heel', 'Place', 'Stay'],
+                    message: 'Professional grooming appointments are not ideal for practicing these training goals.'
+                }
+            };
+
+            // Check if activity has restrictions
+            const activityRestrictions = incompatibilities[activityName];
+            if (activityRestrictions) {
+                // If there are compatible goals specified, only allow those
+                if (activityRestrictions.compatibleGoals) {
+                    if (!activityRestrictions.compatibleGoals.includes(goalTitle)) {
+                        return { compatible: false, message: activityRestrictions.message };
+                    }
+                }
+
+                // Check if goal is in incompatible list
+                if (activityRestrictions.incompatibleGoals && activityRestrictions.incompatibleGoals.includes(goalTitle)) {
+                    return { compatible: false, message: activityRestrictions.message };
+                }
+            }
+
+            return { compatible: true };
+        }
+
         function setupDragAndDrop() {
             // Make activity bank items and goal items draggable
             document.addEventListener('dragstart', (e) => {
@@ -1738,16 +1843,23 @@
                         const existingActivities = scheduleData[currentDay][time];
 
                         if (existingActivities.length === 1) {
-                            // Exactly one activity - auto-associate without prompt
+                            // Exactly one activity - check compatibility first
                             const existingActivity = existingActivities[0];
                             const activityName = typeof existingActivity === 'string' ? existingActivity : existingActivity.activity;
+
+                            // Check compatibility
+                            const compatibility = isGoalCompatibleWithActivity(goalTitle, activityName);
+                            if (!compatibility.compatible) {
+                                alert(`Incompatible Pairing\n\n${compatibility.message}`);
+                                return;
+                            }
 
                             // Clear and re-add with goal association
                             scheduleData[currentDay][time] = [];
                             addActivityToSlot(time, activityName, goalId);
                         } else if (existingActivities.length > 1) {
-                            // Multiple activities - let user choose
-                            associateGoalWithMultipleActivities(time, goalId, existingActivities);
+                            // Multiple activities - let user choose (compatibility will be checked there)
+                            associateGoalWithMultipleActivities(time, goalId, goalTitle, existingActivities);
                         } else {
                             // No existing activity - prompt for which activity to add with the goal
                             promptActivityForGoal(time, goalId, goalTitle);
@@ -1761,7 +1873,7 @@
         }
 
         // Associate goal with one of multiple activities
-        function associateGoalWithMultipleActivities(time, goalId, existingActivities) {
+        function associateGoalWithMultipleActivities(time, goalId, goalTitle, existingActivities) {
             const activityOptions = existingActivities.map((act, idx) => {
                 const name = typeof act === 'string' ? act : act.activity;
                 return `${idx + 1}. ${name}`;
@@ -1775,6 +1887,13 @@
                     const selectedActivity = existingActivities[index];
                     const activityName = typeof selectedActivity === 'string' ? selectedActivity : selectedActivity.activity;
 
+                    // Check compatibility
+                    const compatibility = isGoalCompatibleWithActivity(goalTitle, activityName);
+                    if (!compatibility.compatible) {
+                        alert(`Incompatible Pairing\n\n${compatibility.message}`);
+                        return;
+                    }
+
                     // Remove and re-add with goal association
                     scheduleData[currentDay][time].splice(index, 1);
                     addActivityToSlot(time, activityName, goalId);
@@ -1787,6 +1906,13 @@
             const activity = prompt(`You're adding "${goalTitle}" to ${time}.\n\nWhat activity do you want to associate it with?\n\nExamples: Neighborhood Walk, At Home Training Slot, CanineKind Training Session, or enter a custom activity:`);
 
             if (activity) {
+                // Check compatibility
+                const compatibility = isGoalCompatibleWithActivity(goalTitle, activity);
+                if (!compatibility.compatible) {
+                    alert(`Incompatible Pairing\n\n${compatibility.message}\n\nPlease choose a different activity.`);
+                    return;
+                }
+
                 addActivityToSlot(time, activity, goalId);
             }
         }
