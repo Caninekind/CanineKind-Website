@@ -104,25 +104,33 @@
         }
 
         .welcome-section {
-            background: white;
-            border-radius: 15px;
-            padding: 40px;
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            border-radius: 20px;
+            padding: 50px 40px;
             margin-bottom: 30px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 25px rgba(121, 153, 114, 0.3);
             text-align: center;
+            border: 3px solid rgba(255, 255, 255, 0.2);
         }
 
         .welcome-section h1 {
-            color: #333;
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 15px;
+            color: white;
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .welcome-section p {
-            color: #666;
-            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1.2rem;
             line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto;
+            font-weight: 500;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
         }
 
         /* Dashboard Grid */
@@ -262,13 +270,13 @@
             background: #fefce8;
             border-left: 4px solid #eab308;
             color: #713f12;
-            padding: 12px 20px;
+            padding: 8px 15px;
             border-radius: 8px;
-            margin: 20px 0;
+            margin: 12px 0;
             box-shadow: 0 2px 8px rgba(234, 179, 8, 0.15);
             display: none;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
 
         .alert-banner.show {
@@ -276,7 +284,7 @@
         }
 
         .alert-icon {
-            font-size: 1.8em;
+            font-size: 1.4em;
             flex-shrink: 0;
             color: #ca8a04;
         }
@@ -286,27 +294,27 @@
         }
 
         .alert-content h3 {
-            font-size: 1.1em;
-            margin-bottom: 5px;
+            font-size: 0.95em;
+            margin-bottom: 3px;
             color: #854d0e;
             font-weight: 600;
         }
 
         .alert-content p {
             color: #a16207;
-            margin-bottom: 10px;
-            line-height: 1.5;
-            font-size: 0.95em;
+            margin-bottom: 6px;
+            line-height: 1.4;
+            font-size: 0.85em;
         }
 
         .alert-btn {
             background: #eab308;
             color: white;
             border: none;
-            padding: 8px 20px;
+            padding: 6px 16px;
             border-radius: 5px;
             font-weight: 600;
-            font-size: 0.95em;
+            font-size: 0.85em;
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
@@ -397,8 +405,8 @@
     <div class="container">
         <!-- Welcome Section -->
         <div class="welcome-section">
-            <h1>Welcome to Your Client Portal!</h1>
-            <p>Track your training progress, manage appointments, and access exclusive resources all in one place.</p>
+            <h1>Welcome to the CanineKind Training Portal</h1>
+            <p>Review your appointment details and notes, get training help & reminders at home and track your success!</p>
         </div>
 
         <!-- Alert Banner for Unsigned Documents -->
@@ -435,7 +443,7 @@
         <div class="dashboard-grid">
             <!-- Training Sessions Card -->
             <div class="dashboard-card">
-                <h2>Training Sessions</h2>
+                <h2 id="sessionsTitle">Training Sessions</h2>
                 <p>View your upcoming and past training sessions, notes, and homework.</p>
                 <a href="portal-sessions.html" class="card-btn">View Sessions</a>
             </div>
@@ -447,16 +455,16 @@
                 <a href="portal-forms.html" class="card-btn">View Documents</a>
             </div>
 
-            <!-- Daily Schedule Card -->
+            <!-- Weekly Schedule Card -->
             <div class="dashboard-card">
-                <h2>Daily Schedule</h2>
-                <p>Create and manage your dog's daily activity schedule with drag-and-drop.</p>
+                <h2 id="scheduleTitle">Weekly Schedule</h2>
+                <p>Create and manage your dog's weekly activity schedule with drag-and-drop.</p>
                 <a href="portal-schedule.html" class="card-btn">Manage Schedule</a>
             </div>
 
             <!-- Training Goals Card -->
             <div class="dashboard-card">
-                <h2>Training Goals</h2>
+                <h2 id="goalsTitle">Training Goals</h2>
                 <p>Set and track training goals for your dog with your trainer.</p>
                 <a href="portal-goals.html" class="card-btn">View Goals</a>
             </div>
@@ -536,6 +544,9 @@
                         // Check if settings and dog profile are complete
                         checkAndShowSettingsAlert(user.email);
                         checkAndShowDogProfileAlert(user.email);
+
+                        // Update page titles with dog's name
+                        updatePageTitlesWithDogName(user.email);
                     }
                 }
             });
@@ -664,6 +675,37 @@
                     alertBanner.classList.add('show');
                     console.log('⚠️ [DOG PROFILE ALERT] SHOWING - Error occurred, showing by default');
                 }
+            }
+        }
+
+        // Update page titles with dog's name
+        async function updatePageTitlesWithDogName(email) {
+            try {
+                const settingsDoc = await db.collection('users')
+                    .doc(email)
+                    .collection('settings')
+                    .doc('profile')
+                    .get();
+
+                if (settingsDoc.exists) {
+                    const data = settingsDoc.data();
+                    const dogName = data.dogName;
+
+                    if (dogName && dogName.trim()) {
+                        // Update card titles with dog's name
+                        const dogNameUpper = dogName.trim().toUpperCase();
+                        document.getElementById('sessionsTitle').textContent = `${dogNameUpper}'S TRAINING SESSIONS`;
+                        document.getElementById('scheduleTitle').textContent = `${dogNameUpper}'S WEEKLY SCHEDULE`;
+                        document.getElementById('goalsTitle').textContent = `${dogNameUpper}'S TRAINING GOALS`;
+                        console.log(`✅ Updated page titles with dog name: ${dogName}`);
+                    } else {
+                        console.log('ℹ️ No dog name found in settings');
+                    }
+                } else {
+                    console.log('ℹ️ Settings document does not exist yet');
+                }
+            } catch (error) {
+                console.error('Error updating page titles with dog name:', error);
             }
         }
 
