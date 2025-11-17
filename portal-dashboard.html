@@ -383,7 +383,7 @@
 
         <!-- Alert Banner for Unsigned Documents -->
         <div class="alert-banner" id="documentsAlert">
-            <div class="alert-icon">⚠️</div>
+            <div class="alert-icon">!</div>
             <div class="alert-content">
                 <h3>Action Required: Sign Legal Documents</h3>
                 <p>Before you can fully access the portal, please review and sign our legal agreement and consent forms. This only takes a few minutes and ensures we have all necessary authorizations for your training services.</p>
@@ -525,9 +525,9 @@
                     // Show alert banner if documents not complete
                     const alertBanner = document.getElementById('documentsAlert');
                     alertBanner.classList.add('show');
-                    console.log('⚠️ User has not completed legal documents');
+                    console.log('User has not completed legal documents');
                 } else {
-                    console.log('✅ User has completed legal documents');
+                    console.log('User has completed legal documents');
                 }
             } catch (error) {
                 console.error('Error checking document status:', error);

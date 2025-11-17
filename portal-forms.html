@@ -397,14 +397,12 @@
 
                 const statusHTML = isCompleted
                     ? `<div class="document-status completed">
-                        <span>✅</span>
                         <span>Signed & Completed</span>
                        </div>
                        <div class="document-date">
                         Signed on ${new Date(signedDoc.signedAt.toDate()).toLocaleDateString()}
                        </div>`
                     : `<div class="document-status needs-signature">
-                        <span>⚠️</span>
                         <span>Signature Required</span>
                        </div>
                        <div class="document-date">

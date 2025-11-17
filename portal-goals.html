@@ -856,7 +856,7 @@
 
     <div class="container">
         <div class="page-header">
-            <h1>🎯 Training Goals</h1>
+            <h1>Training Goals</h1>
             <p>Select goals and track your dog's training progress through each level</p>
         </div>
 
@@ -882,7 +882,7 @@
     <!-- Congratulations Modal -->
     <div class="modal-overlay" id="congratsModal">
         <div class="congrats-modal">
-            <div class="congrats-icon">🎉</div>
+            <div class="congrats-icon">★</div>
             <h2>Congratulations!</h2>
             <p id="congratsMessage">You've completed all goals in this level! Your completion has been sent to your trainer for approval.</p>
             <button class="modal-btn" onclick="closeCongratsModal()">Continue Training</button>
@@ -1270,14 +1270,14 @@
                         <div class="level-container">
                             <div class="level-header ${!hasAccess ? 'locked' : ''}">
                                 <div class="level-title">
-                                    <span class="level-badge ${!hasAccess ? 'locked' : ''}">🏆</span>
+                                    <span class="level-badge ${!hasAccess ? 'locked' : ''}">MASTERY</span>
                                     <h2>${category.title}</h2>
                                 </div>
-                                ${!hasAccess ? `<div class="lock-icon">🔒</div>` : ''}
+                                ${!hasAccess ? `<div class="lock-icon">LOCKED</div>` : ''}
                             </div>
                             ${!hasAccess ? `
                                 <div class="unlock-message">
-                                    🔒 This category will be unlocked by your trainer when you're ready
+                                    This category will be unlocked by your trainer when you're ready
                                 </div>
                             ` : goals.length === 0 ? `
                                 <div class="coming-soon">Your trainer will add goals to this category</div>
@@ -1376,7 +1376,7 @@
                                ${isCompleted ? 'checked' : ''}
                                onchange="toggleMilestone('${goalId}', ${index})">
                         <div class="milestone-description">${task.description}</div>
-                        ${isCompleted ? `<div class="milestone-date">✅ ${completedDate}</div>` : ''}
+                        ${isCompleted ? `<div class="milestone-date">${completedDate}</div>` : ''}
                     </div>
                 `;
             }).join('');

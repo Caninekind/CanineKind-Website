@@ -106,6 +106,7 @@
             font-size: 2.5rem;
             margin-bottom: 0.5rem;
             font-weight: 700;
+            text-align: center;
         }
 
         .page-header p {
@@ -218,10 +219,12 @@
         }
 
         .activity-bank h3 {
-            color: #333;
+            color: #2c3e50;
             margin-bottom: 1rem;
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             position: sticky;
             top: 0;
             background: white;
@@ -235,16 +238,17 @@
             padding: 1.5rem;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border: 2px solid #667eea;
             max-height: calc(100vh - 300px);
             overflow-y: auto;
         }
 
         .goals-bank h3 {
-            color: #667eea;
-            margin-bottom: 0.5rem;
-            font-size: 1.3rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
             font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             position: sticky;
             top: 0;
             background: white;
@@ -365,9 +369,11 @@
         }
 
         .calendar-header h2 {
-            color: #3c4043;
-            font-size: 1.4rem;
-            font-weight: 500;
+            color: #2c3e50;
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .save-btn {
@@ -486,26 +492,6 @@
             background: linear-gradient(to right, rgba(102, 126, 234, 0.15) 0%, transparent 100%);
             box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3), 0 1px 3px rgba(0,0,0,0.12);
             position: relative;
-        }
-
-        .scheduled-activity.has-goal::before {
-            content: '🎯';
-            position: absolute;
-            top: 4px;
-            right: 4px;
-            font-size: 1rem;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-                opacity: 0.8;
-            }
-            50% {
-                transform: scale(1.1);
-                opacity: 1;
-            }
         }
 
         .scheduled-activity.has-goal:hover {
@@ -711,8 +697,10 @@
 
         .table-header h3 {
             color: #2c3e50;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             margin-bottom: 0.5rem;
             line-height: 1.4;
         }
@@ -1159,7 +1147,7 @@
             <div class="view-mode-selector">
                 <button class="view-mode-btn active" data-mode="24hour" onclick="switchViewMode('24hour')">24-Hour View</button>
                 <button class="view-mode-btn" data-mode="periods" onclick="switchViewMode('periods')">Morning/Afternoon/Night</button>
-                <button class="view-mode-btn" onclick="openTimeSettings()">⚙️ Customize Times</button>
+                <button class="view-mode-btn" onclick="openTimeSettings()">Customize Times</button>
             </div>
             <div class="day-selector">
                 <button class="day-btn active" data-day="Monday">Monday</button>
@@ -1178,52 +1166,52 @@
                     <h3>Activity Bank</h3>
                     <div class="activity-list">
                     <div class="activity-item activity-meal" draggable="true" data-activity="Meal Time">
-                        🍖 Meal Time
+                        Meal Time
                     </div>
                     <div class="activity-item activity-yard" draggable="true" data-activity="Yard Time">
-                        🏡 Yard Time
+                        Yard Time
                     </div>
                     <div class="activity-item activity-kennel" draggable="true" data-activity="Kennel/Crate Rest">
-                        🏠 Kennel/Crate Rest
+                        Kennel/Crate Rest
                     </div>
                     <div class="activity-item activity-enrichment" draggable="true" data-activity="Food Enrichment Treat">
-                        🦴 Food Enrichment Treat
+                        Food Enrichment Treat
                     </div>
                     <div class="activity-item activity-home-training" draggable="true" data-activity="At Home Training Slot">
-                        🎓 At Home Training Slot
+                        At Home Training Slot
                     </div>
                     <div class="activity-item activity-caninekind-training" draggable="true" data-activity="CanineKind Training Session">
-                        ⭐ CanineKind Training Session
+                        CanineKind Training Session
                     </div>
                     <div class="activity-item activity-neighborhood-walk" draggable="true" data-activity="Neighborhood Walk">
-                        🚶 Neighborhood Walk
+                        Neighborhood Walk
                     </div>
                     <div class="activity-item activity-park-walk" draggable="true" data-activity="Park/Field Walk">
-                        🌳 Park/Field Walk
+                        Park/Field Walk
                     </div>
                     <div class="activity-item activity-forest-hike" draggable="true" data-activity="Forest Hike">
-                        🥾 Forest Hike
+                        Forest Hike
                     </div>
                     <div class="activity-item activity-sleep" draggable="true" data-activity="Sleeping/Nap time">
-                        😴 Sleeping/Nap time
+                        Sleeping/Nap time
                     </div>
                     <div class="activity-item activity-potty" draggable="true" data-activity="Quick Potty Break">
-                        🚽 Quick Potty Break
+                        Quick Potty Break
                     </div>
                     <div class="activity-item activity-place" draggable="true" data-activity="Place Time">
-                        🛋️ Place Time
+                        Place Time
                     </div>
                     <div class="activity-item activity-medication" draggable="true" data-activity="Administer Medication">
-                        💊 Administer Medication
+                        Administer Medication
                     </div>
                     <div class="activity-item activity-home-groom" draggable="true" data-activity="At-home grooming">
-                        ✂️ At-home grooming
+                        At-home grooming
                     </div>
                     <div class="activity-item activity-pro-groom" draggable="true" data-activity="Professional grooming">
-                        💇 Professional grooming
+                        Professional grooming
                     </div>
                     <div class="activity-item activity-get-ready" draggable="true" data-activity="Get ready to train!">
-                        🔔 Get ready to train!
+                        Get ready to train!
                     </div>
                 </div>
                 </div>
@@ -1231,7 +1219,7 @@
                 <!-- Goals Bank -->
                 <div class="goals-bank" id="goalsBank">
                     <h3>Training Goals</h3>
-                    <p class="goals-bank-hint">Drag goals to schedule</p>
+                    <p class="goals-bank-hint">Drag goals to pair with activities</p>
                     <div class="goals-list" id="goalsList">
                         <!-- Goals will be populated here -->
                     </div>
@@ -1241,7 +1229,7 @@
             <div class="calendar-grid">
                 <div class="calendar-header">
                     <h2 id="currentDayDisplay">Monday Schedule</h2>
-                    <button class="save-btn" onclick="saveSchedule()">💾 Save Schedule</button>
+                    <button class="save-btn" onclick="saveSchedule()">Save Schedule</button>
                 </div>
                 <div class="time-slots" id="timeSlots"></div>
             </div>
@@ -1593,7 +1581,7 @@
                      draggable="true"
                      data-activity="${activity}"
                      ${goalId ? `data-goal-id="${goalId}"` : ''}>
-                    ${getActivityEmoji(activity)} ${activity}
+                    ${activity}
                     <span class="remove-activity" onclick="removeActivity(this)">✕</span>
                 </div>
             `;
@@ -1821,7 +1809,7 @@
                     .doc('weekly')
                     .set(scheduleData);
 
-                alert('Schedule saved successfully! ✅');
+                alert('Schedule saved successfully!');
             } catch (error) {
                 console.error('Error saving schedule:', error);
                 alert('Error saving schedule. Please try again.');
