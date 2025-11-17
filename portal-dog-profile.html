@@ -439,27 +439,14 @@
         <button class="save-button" id="saveButton">Save Dog Profile</button>
     </div>
 
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyDSIFYt2Me4w7LbnFl_eMs24p7Y9LWOkW4",
-            authDomain: "caninekind-38fd7.firebaseapp.com",
-            projectId: "caninekind-38fd7",
-            storageBucket: "caninekind-38fd7.firebasestorage.app",
-            messagingSenderId: "287563616430",
-            appId: "1:287563616430:web:3ce001b36e793c7cf43fee",
-            measurementId: "G-4NBQBSN81Q"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
+    <!-- Firebase Config -->
+    <script src="firebase-config.js"></script>
+    <script>
         let currentUserEmail = null;
 
         // Get DOM elements
@@ -485,23 +472,35 @@
         const successMessage = document.getElementById('successMessage');
         const errorMessage = document.getElementById('errorMessage');
 
-        // Auth state observer
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                currentUserEmail = user.email;
-                await loadDogProfile();
-            } else {
+        // Wait for Firebase to initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            const initialized = initializeFirebase();
+            if (!initialized) {
                 window.location.href = 'portal-login.html';
+                return;
             }
+
+            // Auth state observer
+            auth.onAuthStateChanged(async (user) => {
+                if (user) {
+                    currentUserEmail = user.email;
+                    await loadDogProfile();
+                } else {
+                    window.location.href = 'portal-login.html';
+                }
+            });
         });
 
         // Load dog profile from Firestore
         async function loadDogProfile() {
             try {
-                const profileRef = doc(db, 'users', currentUserEmail, 'dogProfile', 'info');
-                const profileDoc = await getDoc(profileRef);
+                const profileDoc = await db.collection('users')
+                    .doc(currentUserEmail)
+                    .collection('dogProfile')
+                    .doc('info')
+                    .get();
 
-                if (profileDoc.exists()) {
+                if (profileDoc.exists) {
                     const data = profileDoc.data();
 
                     // Basic information
@@ -578,8 +577,11 @@
                     lastUpdated: new Date().toISOString()
                 };
 
-                const profileRef = doc(db, 'users', currentUserEmail, 'dogProfile', 'info');
-                await setDoc(profileRef, profileData);
+                await db.collection('users')
+                    .doc(currentUserEmail)
+                    .collection('dogProfile')
+                    .doc('info')
+                    .set(profileData);
 
                 showSuccess();
             } catch (error) {
