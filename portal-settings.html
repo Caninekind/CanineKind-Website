@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Settings - CanineKind Training Portal</title>
+    <link rel="stylesheet" href="portal-styles.css">
+    <style>
+        .settings-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header p {
+            color: #666;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .settings-card {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem 2.5rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            border: 2px solid transparent;
+            background: linear-gradient(white, white) padding-box,
+                        linear-gradient(135deg, #D1E5F4 0%, #E8F4F8 100%) border-box;
+            margin-bottom: 2rem;
+        }
+
+        .settings-card h2 {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #E8F4F8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-group {
+            margin-bottom: 1.75rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="tel"],
+        .form-group textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #E8F4F8;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #799972;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(121, 153, 114, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: #f8fafb;
+            border-radius: 10px;
+            border: 2px solid #E8F4F8;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-group:hover {
+            background: white;
+            border-color: #D1E5F4;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #799972;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            cursor: pointer;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .save-button {
+            width: 100%;
+            padding: 1.25rem;
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(121, 153, 114, 0.3);
+        }
+
+        .save-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(121, 153, 114, 0.4);
+        }
+
+        .save-button:active {
+            transform: translateY(0);
+        }
+
+        .save-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 1rem 1.25rem;
+            border-radius: 10px;
+            border-left: 4px solid #28a745;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 1rem 1.25rem;
+            border-radius: 10px;
+            border-left: 4px solid #dc3545;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: #799972;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #8aaa83;
+            transform: translateX(-5px);
+        }
+
+        @media (max-width: 768px) {
+            .settings-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .settings-container {
+                padding: 1rem 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="settings-container">
+        <a href="portal-dashboard.html" class="back-link">← Back to Dashboard</a>
+
+        <div class="page-header">
+            <h1>User Settings</h1>
+            <p>Update your profile information and preferences</p>
+        </div>
+
+        <div id="successMessage" class="success-message">
+            Settings saved successfully!
+        </div>
+
+        <div id="errorMessage" class="error-message">
+            Error saving settings. Please try again.
+        </div>
+
+        <div class="settings-card">
+            <h2>Personal Information</h2>
+
+            <div class="form-group">
+                <label for="ownerName">Owner's Name *</label>
+                <input type="text" id="ownerName" placeholder="Enter your full name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="dogName">Dog's Name *</label>
+                <input type="text" id="dogName" placeholder="Enter your dog's name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Contact Email *</label>
+                <input type="email" id="email" placeholder="your.email@example.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number *</label>
+                <input type="tel" id="phone" placeholder="(555) 123-4567" required>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Address</label>
+                <textarea id="address" placeholder="Enter your full address (optional)"></textarea>
+            </div>
+        </div>
+
+        <div class="settings-card">
+            <h2>Preferences</h2>
+
+            <div class="form-group">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="calendarReminders">
+                    <label for="calendarReminders">Send me calendar reminders for training sessions and scheduled activities</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="trainingReminders">
+                    <label for="trainingReminders">Send me training reminder modules when practicing goals</label>
+                </div>
+            </div>
+        </div>
+
+        <button class="save-button" id="saveButton">Save Settings</button>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDSIFYt2Me4w7LbnFl_eMs24p7Y9LWOkW4",
+            authDomain: "caninekind-38fd7.firebaseapp.com",
+            projectId: "caninekind-38fd7",
+            storageBucket: "caninekind-38fd7.firebasestorage.app",
+            messagingSenderId: "287563616430",
+            appId: "1:287563616430:web:3ce001b36e793c7cf43fee",
+            measurementId: "G-4NBQBSN81Q"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUserEmail = null;
+
+        // Get DOM elements
+        const ownerNameInput = document.getElementById('ownerName');
+        const dogNameInput = document.getElementById('dogName');
+        const emailInput = document.getElementById('email');
+        const phoneInput = document.getElementById('phone');
+        const addressInput = document.getElementById('address');
+        const calendarRemindersCheckbox = document.getElementById('calendarReminders');
+        const trainingRemindersCheckbox = document.getElementById('trainingReminders');
+        const saveButton = document.getElementById('saveButton');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // Auth state observer
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUserEmail = user.email;
+                emailInput.value = user.email;
+                await loadSettings();
+            } else {
+                window.location.href = 'portal-login.html';
+            }
+        });
+
+        // Load settings from Firestore
+        async function loadSettings() {
+            try {
+                const settingsRef = doc(db, 'users', currentUserEmail, 'settings', 'profile');
+                const settingsDoc = await getDoc(settingsRef);
+
+                if (settingsDoc.exists()) {
+                    const data = settingsDoc.data();
+                    ownerNameInput.value = data.ownerName || '';
+                    dogNameInput.value = data.dogName || '';
+                    phoneInput.value = data.phone || '';
+                    addressInput.value = data.address || '';
+                    calendarRemindersCheckbox.checked = data.calendarReminders || false;
+                    trainingRemindersCheckbox.checked = data.trainingReminders || false;
+                }
+            } catch (error) {
+                console.error('Error loading settings:', error);
+            }
+        }
+
+        // Save settings to Firestore
+        async function saveSettings() {
+            // Validate required fields
+            if (!ownerNameInput.value.trim() || !dogNameInput.value.trim() ||
+                !emailInput.value.trim() || !phoneInput.value.trim()) {
+                showError('Please fill in all required fields');
+                return;
+            }
+
+            saveButton.disabled = true;
+            saveButton.textContent = 'Saving...';
+            hideMessages();
+
+            try {
+                const settingsData = {
+                    ownerName: ownerNameInput.value.trim(),
+                    dogName: dogNameInput.value.trim(),
+                    email: emailInput.value.trim(),
+                    phone: phoneInput.value.trim(),
+                    address: addressInput.value.trim(),
+                    calendarReminders: calendarRemindersCheckbox.checked,
+                    trainingReminders: trainingRemindersCheckbox.checked,
+                    lastUpdated: new Date().toISOString()
+                };
+
+                const settingsRef = doc(db, 'users', currentUserEmail, 'settings', 'profile');
+                await setDoc(settingsRef, settingsData);
+
+                showSuccess();
+            } catch (error) {
+                console.error('Error saving settings:', error);
+                showError('Error saving settings. Please try again.');
+            } finally {
+                saveButton.disabled = false;
+                saveButton.textContent = 'Save Settings';
+            }
+        }
+
+        // Show success message
+        function showSuccess() {
+            successMessage.classList.add('show');
+            setTimeout(() => {
+                successMessage.classList.remove('show');
+            }, 4000);
+        }
+
+        // Show error message
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.classList.add('show');
+            setTimeout(() => {
+                errorMessage.classList.remove('show');
+            }, 4000);
+        }
+
+        // Hide all messages
+        function hideMessages() {
+            successMessage.classList.remove('show');
+            errorMessage.classList.remove('show');
+        }
+
+        // Event listeners
+        saveButton.addEventListener('click', saveSettings);
+
+        // Auto-format phone number
+        phoneInput.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 10) value = value.substr(0, 10);
+
+            if (value.length >= 6) {
+                value = `(${value.substr(0, 3)}) ${value.substr(3, 3)}-${value.substr(6)}`;
+            } else if (value.length >= 3) {
+                value = `(${value.substr(0, 3)}) ${value.substr(3)}`;
+            }
+
+            e.target.value = value;
+        });
+    </script>
+</body>
+</html>

@@ -211,6 +211,31 @@
             flex-wrap: wrap;
             gap: 1rem;
             border-left: 6px solid #6a8862;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .level-header:hover {
+            box-shadow: 0 6px 25px rgba(121, 153, 114, 0.4);
+        }
+
+        .level-collapse-icon {
+            font-size: 1.5rem;
+            color: white;
+            transition: transform 0.3s ease;
+            margin-left: 1rem;
+        }
+
+        .level-content {
+            max-height: 5000px;
+            overflow: hidden;
+            transition: max-height 0.4s ease, opacity 0.3s ease;
+            opacity: 1;
+        }
+
+        .level-content.collapsed {
+            max-height: 0;
+            opacity: 0;
         }
 
         .level-header.locked {
@@ -1231,24 +1256,29 @@
                 html += `
                     <div class="level-section">
                         <div class="level-container">
-                            <div class="level-header ${isLocked ? 'locked' : ''}">
+                            <div class="level-header ${isLocked ? 'locked' : ''}" onclick="toggleLevelContainer(${level})">
                                 <div class="level-title">
                                     <span class="level-badge ${isLocked ? 'locked' : ''}">Level ${level}</span>
                                     <h2>${LEVEL_DESCRIPTIONS[level]}</h2>
                                 </div>
-                                ${isLocked ? `<div class="lock-icon">🔒</div>` : ''}
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    ${isLocked ? `<div class="lock-icon">🔒</div>` : ''}
+                                    <span class="level-collapse-icon" id="collapse-icon-level-${level}">▼</span>
+                                </div>
                             </div>
-                            ${isLocked ? `
-                                <div class="unlock-message">
-                                    🔒 This level will be unlocked by your trainer after completing earlier levels
-                                </div>
-                            ` : isComingSoon ? `
-                                <div class="coming-soon">Coming Soon</div>
-                            ` : `
-                                <div class="goals-grid">
-                                    ${goals.map(goal => renderGoalCard(goal, level)).join('')}
-                                </div>
-                            `}
+                            <div class="level-content" id="level-content-${level}">
+                                ${isLocked ? `
+                                    <div class="unlock-message">
+                                        🔒 This level will be unlocked by your trainer after completing earlier levels
+                                    </div>
+                                ` : isComingSoon ? `
+                                    <div class="coming-soon">Coming Soon</div>
+                                ` : `
+                                    <div class="goals-grid">
+                                        ${goals.map(goal => renderGoalCard(goal, level)).join('')}
+                                    </div>
+                                `}
+                            </div>
                         </div>
                     </div>
                 `;
@@ -1263,24 +1293,29 @@
                 html += `
                     <div class="level-section">
                         <div class="level-container">
-                            <div class="level-header ${!hasAccess ? 'locked' : ''}">
+                            <div class="level-header ${!hasAccess ? 'locked' : ''}" onclick="toggleLevelContainer('${categoryId}')">
                                 <div class="level-title">
                                     <span class="level-badge ${!hasAccess ? 'locked' : ''}">MASTERY</span>
                                     <h2>${category.title}</h2>
                                 </div>
-                                ${!hasAccess ? `<div class="lock-icon">LOCKED</div>` : ''}
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    ${!hasAccess ? `<div class="lock-icon">LOCKED</div>` : ''}
+                                    <span class="level-collapse-icon" id="collapse-icon-level-${categoryId}">▼</span>
+                                </div>
                             </div>
-                            ${!hasAccess ? `
-                                <div class="unlock-message">
-                                    This category will be unlocked by your trainer when you're ready
-                                </div>
-                            ` : goals.length === 0 ? `
-                                <div class="coming-soon">Your trainer will add goals to this category</div>
-                            ` : `
-                                <div class="goals-grid">
-                                    ${goals.map(goal => renderGoalCard(goal, categoryId, true)).join('')}
-                                </div>
-                            `}
+                            <div class="level-content" id="level-content-${categoryId}">
+                                ${!hasAccess ? `
+                                    <div class="unlock-message">
+                                        This category will be unlocked by your trainer when you're ready
+                                    </div>
+                                ` : goals.length === 0 ? `
+                                    <div class="coming-soon">Your trainer will add goals to this category</div>
+                                ` : `
+                                    <div class="goals-grid">
+                                        ${goals.map(goal => renderGoalCard(goal, categoryId, true)).join('')}
+                                    </div>
+                                `}
+                            </div>
                         </div>
                     </div>
                 `;
@@ -1691,6 +1726,21 @@
                 overlay.classList.add('active');
             } else {
                 overlay.classList.remove('active');
+            }
+        }
+
+        function toggleLevelContainer(levelId) {
+            const content = document.getElementById(`level-content-${levelId}`);
+            const icon = document.getElementById(`collapse-icon-level-${levelId}`);
+
+            if (!content || !icon) return;
+
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                icon.textContent = '▼';
+            } else {
+                content.classList.add('collapsed');
+                icon.textContent = '▶';
             }
         }
 
