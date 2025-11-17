@@ -529,7 +529,7 @@
         <!-- Admin Goal Access Control Panel -->
         <div class="admin-panel" id="adminPanel" style="display: none;">
             <div class="panel-header">
-                <h3>🎯 Goal Access Management</h3>
+                <h3>Goal Access Management</h3>
                 <p>Grant clients access to training goal levels or specific goals</p>
             </div>
 
@@ -544,7 +544,7 @@
                 <div class="access-sections">
                     <!-- Level Access Section -->
                     <div class="access-section">
-                        <h4>📊 Level Access</h4>
+                        <h4>Level Access</h4>
                         <p class="section-description">Grant access to all goals in a level</p>
                         <div class="level-checkboxes" id="levelCheckboxes">
                             <label class="checkbox-label">
@@ -568,7 +568,7 @@
 
                     <!-- Individual Goal Access Section -->
                     <div class="access-section">
-                        <h4>🎯 Individual Goal Access</h4>
+                        <h4>Individual Goal Access</h4>
                         <p class="section-description">Grant access to specific goals (overrides level settings)</p>
                         <div class="goal-checkboxes" id="goalCheckboxes">
                             <!-- Will be populated dynamically -->
@@ -577,15 +577,15 @@
                 </div>
 
                 <div class="form-actions">
-                    <button class="btn-save" onclick="saveGoalAccess()">💾 Save Access Settings</button>
-                    <button class="btn-secondary" onclick="loadClientAccess()">🔄 Refresh</button>
+                    <button class="btn-save" onclick="saveGoalAccess()">Save Access Settings</button>
+                    <button class="btn-secondary" onclick="loadClientAccess()">Refresh</button>
                 </div>
             </div>
         </div>
 
         <!-- Upcoming Sessions Section -->
         <div class="section-header">
-            <h3>📅 Upcoming Sessions</h3>
+            <h3>Upcoming Sessions</h3>
             <p>Your scheduled training appointments</p>
         </div>
 
@@ -605,7 +605,7 @@
 
         <!-- Empty State -->
         <div class="empty-state" id="emptyState" style="display: none;">
-            <div class="empty-state-icon">📅</div>
+            <div class="empty-state-icon"></div>
             <h3>No Sessions Scheduled</h3>
             <p>You don't have any training sessions scheduled yet.</p>
             <a href="https://book.squareup.com/appointments/yxzgsmqobnwc1j/location/L8H5N5KVRNVAH/services" target="_blank" class="btn-primary">Book Your First Session</a>
@@ -629,27 +629,27 @@
         // Define all goals with their levels
         const GOALS_STRUCTURE = {
             1: [
-                { id: 'sit', title: 'Sit', emoji: '🪑' },
-                { id: 'down', title: 'Down', emoji: '⬇️' },
-                { id: 'recall', title: 'Recall', emoji: '📣' },
-                { id: 'markers-release', title: 'Markers & Release Words', emoji: '🔔' },
-                { id: 'place', title: 'Place', emoji: '📍' },
-                { id: 'crate-manners', title: 'Crate Manners', emoji: '🏠' }
+                { id: 'sit', title: 'Sit' },
+                { id: 'down', title: 'Down' },
+                { id: 'recall', title: 'Recall' },
+                { id: 'markers-release', title: 'Markers & Release Words' },
+                { id: 'place', title: 'Place' },
+                { id: 'crate-manners', title: 'Crate Manners' }
             ],
             2: [
-                { id: 'stay', title: 'Stay', emoji: '✋' },
-                { id: 'heel', title: 'Heel', emoji: '👟' },
-                { id: 'leave-it', title: 'Leave It', emoji: '🚫' },
-                { id: 'drop-it', title: 'Drop It', emoji: '⬇️' }
+                { id: 'stay', title: 'Stay' },
+                { id: 'heel', title: 'Heel' },
+                { id: 'leave-it', title: 'Leave It' },
+                { id: 'drop-it', title: 'Drop It' }
             ],
             3: [
-                { id: 'distance-commands', title: 'Distance Commands', emoji: '📏' },
-                { id: 'duration-work', title: 'Duration Work', emoji: '⏱️' },
-                { id: 'distractions', title: 'Working with Distractions', emoji: '🎯' }
+                { id: 'distance-commands', title: 'Distance Commands' },
+                { id: 'duration-work', title: 'Duration Work' },
+                { id: 'distractions', title: 'Working with Distractions' }
             ],
             4: [
-                { id: 'off-leash', title: 'Off-Leash Reliability', emoji: '🔓' },
-                { id: 'advanced-behaviors', title: 'Advanced Behaviors', emoji: '⭐' }
+                { id: 'off-leash', title: 'Off-Leash Reliability' },
+                { id: 'advanced-behaviors', title: 'Advanced Behaviors' }
             ]
         };
 
@@ -811,7 +811,7 @@
                         updatedBy: currentUser.email
                     });
 
-                alert('✅ Goal access settings saved successfully!');
+                alert('Goal access settings saved successfully!');
 
             } catch (error) {
                 console.error('Error saving goal access:', error);
@@ -918,12 +918,11 @@
                 minute: '2-digit'
             });
 
-            const icon = status === 'upcoming' ? '📅' : '✅';
             const statusText = status === 'upcoming' ? 'Scheduled' : 'Completed';
 
             return `
                 <div class="session-card ${status}" onclick="viewSession('${session.id}')">
-                    <div class="session-icon">${icon}</div>
+                    <div class="session-status-badge">${statusText}</div>
                     <div class="session-date">${dateStr}</div>
                     <div class="session-time">${timeStr}</div>
                     <div class="session-type">${session.type || 'Training Session'}</div>
