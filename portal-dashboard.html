@@ -588,6 +588,9 @@
         // Check and show settings alert if profile not complete
         async function checkAndShowSettingsAlert(email) {
             try {
+                const alertBanner = document.getElementById('settingsAlert');
+                console.log('🔍 [SETTINGS ALERT] Element found:', alertBanner);
+
                 const settingsDoc = await db.collection('users')
                     .doc(email)
                     .collection('settings')
@@ -596,31 +599,39 @@
 
                 if (!settingsDoc.exists) {
                     // Show alert banner if settings not saved
-                    const alertBanner = document.getElementById('settingsAlert');
                     alertBanner.classList.add('show');
-                    console.log('User has not completed settings');
+                    console.log('⚠️ [SETTINGS ALERT] SHOWING - User has not completed settings');
+                    console.log('⚠️ [SETTINGS ALERT] Classes:', alertBanner.className);
+                    console.log('⚠️ [SETTINGS ALERT] Display style:', window.getComputedStyle(alertBanner).display);
                 } else {
                     const data = settingsDoc.data();
                     // Check if all required fields are filled
                     if (!data.ownerName || !data.dogName || !data.phone) {
-                        const alertBanner = document.getElementById('settingsAlert');
                         alertBanner.classList.add('show');
-                        console.log('User settings incomplete');
+                        console.log('⚠️ [SETTINGS ALERT] SHOWING - User settings incomplete');
+                        console.log('⚠️ [SETTINGS ALERT] Classes:', alertBanner.className);
+                        console.log('⚠️ [SETTINGS ALERT] Display style:', window.getComputedStyle(alertBanner).display);
                     } else {
-                        console.log('User has completed settings');
+                        console.log('✅ [SETTINGS ALERT] Hidden - User has completed settings');
                     }
                 }
             } catch (error) {
                 console.error('Error checking settings status:', error);
                 // Show alert by default if there's an error
                 const alertBanner = document.getElementById('settingsAlert');
-                alertBanner.classList.add('show');
+                if (alertBanner) {
+                    alertBanner.classList.add('show');
+                    console.log('⚠️ [SETTINGS ALERT] SHOWING - Error occurred, showing by default');
+                }
             }
         }
 
         // Check and show dog profile alert if profile not complete
         async function checkAndShowDogProfileAlert(email) {
             try {
+                const alertBanner = document.getElementById('dogProfileAlert');
+                console.log('🔍 [DOG PROFILE ALERT] Element found:', alertBanner);
+
                 const profileDoc = await db.collection('users')
                     .doc(email)
                     .collection('dogProfile')
@@ -629,25 +640,30 @@
 
                 if (!profileDoc.exists) {
                     // Show alert banner if dog profile not saved
-                    const alertBanner = document.getElementById('dogProfileAlert');
                     alertBanner.classList.add('show');
-                    console.log('User has not completed dog profile');
+                    console.log('⚠️ [DOG PROFILE ALERT] SHOWING - User has not completed dog profile');
+                    console.log('⚠️ [DOG PROFILE ALERT] Classes:', alertBanner.className);
+                    console.log('⚠️ [DOG PROFILE ALERT] Display style:', window.getComputedStyle(alertBanner).display);
                 } else {
                     const data = profileDoc.data();
                     // Check if dog name is filled (minimum requirement)
                     if (!data.dogName) {
-                        const alertBanner = document.getElementById('dogProfileAlert');
                         alertBanner.classList.add('show');
-                        console.log('Dog profile incomplete');
+                        console.log('⚠️ [DOG PROFILE ALERT] SHOWING - Dog profile incomplete');
+                        console.log('⚠️ [DOG PROFILE ALERT] Classes:', alertBanner.className);
+                        console.log('⚠️ [DOG PROFILE ALERT] Display style:', window.getComputedStyle(alertBanner).display);
                     } else {
-                        console.log('User has completed dog profile');
+                        console.log('✅ [DOG PROFILE ALERT] Hidden - User has completed dog profile');
                     }
                 }
             } catch (error) {
                 console.error('Error checking dog profile status:', error);
                 // Show alert by default if there's an error
                 const alertBanner = document.getElementById('dogProfileAlert');
-                alertBanner.classList.add('show');
+                if (alertBanner) {
+                    alertBanner.classList.add('show');
+                    console.log('⚠️ [DOG PROFILE ALERT] SHOWING - Error occurred, showing by default');
+                }
             }
         }
 
