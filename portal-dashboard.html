@@ -135,55 +135,75 @@
 
         .dashboard-card {
             background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+            border: 2px solid transparent;
+            background: linear-gradient(white, white) padding-box,
+                        linear-gradient(135deg, #D1E5F4 0%, #E8F4F8 100%) border-box;
         }
 
         .dashboard-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.18);
+            border-color: #799972;
         }
 
         .dashboard-card h2 {
             color: #2c3e50;
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 15px;
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 18px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .dashboard-card p {
             color: #666;
             font-size: 16px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            line-height: 1.6;
         }
 
         .card-btn {
             display: inline-block;
-            background-color: #799972;
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
             color: white;
-            padding: 12px 25px;
-            border-radius: 8px;
+            padding: 15px 35px;
+            border-radius: 30px;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             transition: all 0.3s ease;
             border: none;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 14px;
+            box-shadow: 0 4px 15px rgba(121, 153, 114, 0.3);
         }
 
         .card-btn:hover {
-            background-color: #5a7a4f;
+            background: linear-gradient(135deg, #6a8862 0%, #799972 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(121, 153, 114, 0.4);
         }
 
         .card-btn.secondary {
-            background-color: #D1E5F4;
+            background: linear-gradient(135deg, #D1E5F4 0%, #E8F4F8 100%);
             color: #799972;
+            box-shadow: 0 4px 15px rgba(209, 229, 244, 0.4);
         }
 
         .card-btn.secondary:hover {
-            background-color: #b8d4e8;
+            background: linear-gradient(135deg, #b8d4e8 0%, #D1E5F4 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(184, 212, 232, 0.5);
         }
 
         /* Coming Soon Badge */
@@ -391,6 +411,26 @@
             </div>
         </div>
 
+        <!-- Alert Banner for User Settings -->
+        <div class="alert-banner" id="settingsAlert" style="background: #eff6ff; border-left-color: #3b82f6;">
+            <div class="alert-icon" style="color: #2563eb;">ℹ</div>
+            <div class="alert-content">
+                <h3>Complete Your Profile Information</h3>
+                <p>Please fill out your profile settings to help us serve you better. Add your contact information and preferences.</p>
+                <a href="portal-settings.html" class="alert-btn">Update Settings →</a>
+            </div>
+        </div>
+
+        <!-- Alert Banner for Dog Profile -->
+        <div class="alert-banner" id="dogProfileAlert" style="background: #f0fdf4; border-left-color: #22c55e;">
+            <div class="alert-icon" style="color: #16a34a;">★</div>
+            <div class="alert-content">
+                <h3>Complete Your Dog's Profile</h3>
+                <p>Fill out your dog's profile information prior to your first session. This helps your trainer prepare personalized training plans.</p>
+                <a href="portal-dog-profile.html" class="alert-btn">Complete Dog Profile →</a>
+            </div>
+        </div>
+
         <!-- Dashboard Grid -->
         <div class="dashboard-grid">
             <!-- Training Sessions Card -->
@@ -425,12 +465,19 @@
             <div class="dashboard-card">
                 <h2>Account Settings</h2>
                 <p>Manage your profile information and preferences.</p>
-                <button class="card-btn secondary">Settings <span class="coming-soon">Coming Soon</span></button>
+                <a href="portal-settings.html" class="card-btn">Manage Settings</a>
             </div>
 
-            <!-- Admin-User Interface Card (visible only to admins) -->
+            <!-- My Dog's Profile Card -->
+            <div class="dashboard-card">
+                <h2>My Dog's Profile</h2>
+                <p>Update your dog's information, training history, and behavioral notes.</p>
+                <a href="portal-dog-profile.html" class="card-btn">View Profile</a>
+            </div>
+
+            <!-- User Approval Card (visible only to admins) -->
             <div class="dashboard-card" id="adminCard" style="display: none;">
-                <h2>Admin-User Interface</h2>
+                <h2>User Approval</h2>
                 <p>Manage user access, approve new clients, and control portal settings.</p>
                 <a href="portal-admin.html" class="card-btn" style="background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);">Manage Users</a>
             </div>
