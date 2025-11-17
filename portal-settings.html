@@ -322,19 +322,44 @@
 
         // Wait for Firebase to initialize
         document.addEventListener('DOMContentLoaded', async () => {
+            console.log('🔵 [SETTINGS] Page loaded, initializing Firebase...');
+
+            // Check if firebase-config.js loaded
+            if (typeof initializeFirebase === 'undefined') {
+                console.error('❌ [SETTINGS] firebase-config.js not loaded!');
+                alert('Error: Firebase configuration not loaded. Please refresh the page.');
+                return;
+            }
+
             const initialized = initializeFirebase();
+            console.log('🔵 [SETTINGS] Firebase initialized:', initialized);
+
             if (!initialized) {
+                console.error('❌ [SETTINGS] Failed to initialize Firebase');
                 window.location.href = 'portal-login.html';
                 return;
             }
 
+            // Verify auth and db are available
+            if (typeof auth === 'undefined' || typeof db === 'undefined') {
+                console.error('❌ [SETTINGS] Auth or DB not available');
+                alert('Error: Firebase services not available. Please refresh the page.');
+                return;
+            }
+
+            console.log('🔵 [SETTINGS] Setting up auth state observer...');
+
             // Auth state observer
             auth.onAuthStateChanged(async (user) => {
+                console.log('🔵 [SETTINGS] Auth state changed. User:', user ? user.email : 'null');
+
                 if (user) {
                     currentUserEmail = user.email;
                     emailInput.value = user.email;
+                    console.log('🔵 [SETTINGS] Loading settings for:', currentUserEmail);
                     await loadSettings();
                 } else {
+                    console.log('❌ [SETTINGS] No user authenticated, redirecting to login');
                     window.location.href = 'portal-login.html';
                 }
             });
