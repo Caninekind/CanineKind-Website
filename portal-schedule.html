@@ -198,13 +198,13 @@
 
         .schedule-layout {
             display: grid;
-            grid-template-columns: 280px 1fr;
+            grid-template-columns: 1fr 2fr;
             gap: 2rem;
         }
 
         .sidebar {
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 1.5rem;
         }
 
@@ -213,6 +213,8 @@
             padding: 1.5rem;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-height: calc(100vh - 300px);
+            overflow-y: auto;
         }
 
         .activity-bank h3 {
@@ -220,6 +222,11 @@
             margin-bottom: 1rem;
             font-size: 1.3rem;
             font-weight: 700;
+            position: sticky;
+            top: 0;
+            background: white;
+            padding-bottom: 0.5rem;
+            z-index: 1;
         }
 
         /* Goals Bank */
@@ -229,6 +236,8 @@
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             border: 2px solid #667eea;
+            max-height: calc(100vh - 300px);
+            overflow-y: auto;
         }
 
         .goals-bank h3 {
@@ -236,6 +245,11 @@
             margin-bottom: 0.5rem;
             font-size: 1.3rem;
             font-weight: 700;
+            position: sticky;
+            top: 0;
+            background: white;
+            padding-bottom: 0.5rem;
+            z-index: 1;
         }
 
         .goals-bank-hint {
@@ -928,16 +942,27 @@
 
             .schedule-layout {
                 grid-template-columns: 1fr;
-                gap: 1rem;
+                gap: 1.5rem;
             }
 
             .sidebar {
-                order: 2;
+                order: 1;
+                grid-template-columns: 1fr;
                 gap: 1rem;
             }
 
+            .activity-bank {
+                max-height: 300px;
+                overflow-y: auto;
+            }
+
+            .goals-bank {
+                max-height: 300px;
+                overflow-y: auto;
+            }
+
             .calendar-grid {
-                order: 1;
+                order: 2;
             }
 
             .time-slot {
@@ -1675,12 +1700,28 @@
                         const goalId = e.dataTransfer.getData('goal-id');
                         const goalTitle = e.dataTransfer.getData('goal-title');
 
-                        // Check if there are existing activities in this time slot
-                        const existingActivities = scheduleData[currentDay]?.[time] || [];
+                        // Ensure scheduleData structure exists
+                        if (!scheduleData[currentDay]) {
+                            scheduleData[currentDay] = {};
+                        }
+                        if (!scheduleData[currentDay][time]) {
+                            scheduleData[currentDay][time] = [];
+                        }
 
-                        if (existingActivities.length > 0) {
-                            // If there's already an activity, associate the goal with it
-                            associateGoalWithExistingActivity(time, goalId, existingActivities);
+                        // Check if there are existing activities in this time slot
+                        const existingActivities = scheduleData[currentDay][time];
+
+                        if (existingActivities.length === 1) {
+                            // Exactly one activity - auto-associate without prompt
+                            const existingActivity = existingActivities[0];
+                            const activityName = typeof existingActivity === 'string' ? existingActivity : existingActivity.activity;
+
+                            // Clear and re-add with goal association
+                            scheduleData[currentDay][time] = [];
+                            addActivityToSlot(time, activityName, goalId);
+                        } else if (existingActivities.length > 1) {
+                            // Multiple activities - let user choose
+                            associateGoalWithMultipleActivities(time, goalId, existingActivities);
                         } else {
                             // No existing activity - prompt for which activity to add with the goal
                             promptActivityForGoal(time, goalId, goalTitle);
@@ -1693,37 +1734,24 @@
             });
         }
 
-        // Associate goal with existing activity
-        function associateGoalWithExistingActivity(time, goalId, existingActivities) {
-            if (existingActivities.length === 1) {
-                // Only one activity - automatically associate with it
-                const existingActivity = existingActivities[0];
-                const activityName = typeof existingActivity === 'string' ? existingActivity : existingActivity.activity;
+        // Associate goal with one of multiple activities
+        function associateGoalWithMultipleActivities(time, goalId, existingActivities) {
+            const activityOptions = existingActivities.map((act, idx) => {
+                const name = typeof act === 'string' ? act : act.activity;
+                return `${idx + 1}. ${name}`;
+            }).join('\n');
 
-                // Remove the existing activity
-                scheduleData[currentDay][time] = [];
+            const choice = prompt(`This time slot has multiple activities:\n\n${activityOptions}\n\nEnter the number of the activity to associate with this goal:`);
 
-                // Add it back with the goal association
-                addActivityToSlot(time, activityName, goalId);
-            } else {
-                // Multiple activities - let user choose which one
-                const activityOptions = existingActivities.map((act, idx) => {
-                    const name = typeof act === 'string' ? act : act.activity;
-                    return `${idx + 1}. ${name}`;
-                }).join('\n');
+            if (choice) {
+                const index = parseInt(choice) - 1;
+                if (index >= 0 && index < existingActivities.length) {
+                    const selectedActivity = existingActivities[index];
+                    const activityName = typeof selectedActivity === 'string' ? selectedActivity : selectedActivity.activity;
 
-                const choice = prompt(`This time slot has multiple activities:\n\n${activityOptions}\n\nEnter the number of the activity to associate with this goal:`);
-
-                if (choice) {
-                    const index = parseInt(choice) - 1;
-                    if (index >= 0 && index < existingActivities.length) {
-                        const selectedActivity = existingActivities[index];
-                        const activityName = typeof selectedActivity === 'string' ? selectedActivity : selectedActivity.activity;
-
-                        // Remove and re-add with goal association
-                        scheduleData[currentDay][time].splice(index, 1);
-                        addActivityToSlot(time, activityName, goalId);
-                    }
+                    // Remove and re-add with goal association
+                    scheduleData[currentDay][time].splice(index, 1);
+                    addActivityToSlot(time, activityName, goalId);
                 }
             }
         }
