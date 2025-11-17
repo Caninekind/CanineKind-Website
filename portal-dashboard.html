@@ -412,33 +412,13 @@
             <p>Review your appointment details and notes, get training help & reminders at home and track your success!</p>
         </div>
 
-        <!-- Alert Banner for Unsigned Documents -->
-        <div class="alert-banner" id="documentsAlert">
+        <!-- Alert Banner for Forms & Documents -->
+        <div class="alert-banner" id="formsAlert">
             <div class="alert-icon">!</div>
             <div class="alert-content">
-                <h3>Action Required: Sign Legal Documents</h3>
-                <p>Before you can fully access the portal, please review and sign our legal agreement and consent forms. This only takes a few minutes and ensures we have all necessary authorizations for your training services.</p>
-                <a href="portal-forms.html" class="alert-btn">Complete Forms Now →</a>
-            </div>
-        </div>
-
-        <!-- Alert Banner for User Settings -->
-        <div class="alert-banner" id="settingsAlert">
-            <div class="alert-icon">ℹ</div>
-            <div class="alert-content">
-                <h3>Complete Your Profile Information</h3>
-                <p>Please fill out your profile settings to help us serve you better. Add your contact information and preferences.</p>
-                <a href="portal-settings.html" class="alert-btn">Update Settings →</a>
-            </div>
-        </div>
-
-        <!-- Alert Banner for Dog Profile -->
-        <div class="alert-banner" id="dogProfileAlert">
-            <div class="alert-icon">★</div>
-            <div class="alert-content">
-                <h3>Complete Your Dog's Profile</h3>
-                <p>Fill out your dog's profile information prior to your first session. This helps your trainer prepare personalized training plans.</p>
-                <a href="portal-dog-profile.html" class="alert-btn">Complete Dog Profile →</a>
+                <h3>Action Required: Complete Forms & Documents</h3>
+                <p>Please complete all required forms and documents including legal agreements, intake questionnaire, and profile information. This ensures we have everything needed to provide the best training experience.</p>
+                <a href="portal-forms.html" class="alert-btn">Complete Forms & Documents →</a>
             </div>
         </div>
 
@@ -446,7 +426,7 @@
         <div class="dashboard-grid">
             <!-- Training Sessions Card -->
             <div class="dashboard-card">
-                <h2 id="sessionsTitle">Training Sessions</h2>
+                <h2>Training Sessions</h2>
                 <p>View your upcoming and past training sessions, notes, and homework.</p>
                 <a href="portal-sessions.html" class="card-btn">View Sessions</a>
             </div>
@@ -460,14 +440,14 @@
 
             <!-- Weekly Schedule Card -->
             <div class="dashboard-card">
-                <h2 id="scheduleTitle">Weekly Schedule</h2>
+                <h2>Weekly Schedule</h2>
                 <p>Create and manage your dog's weekly activity schedule with drag-and-drop.</p>
                 <a href="portal-schedule.html" class="card-btn">Manage Schedule</a>
             </div>
 
             <!-- Training Goals Card -->
             <div class="dashboard-card">
-                <h2 id="goalsTitle">Training Goals</h2>
+                <h2>Training Goals</h2>
                 <p>Set and track training goals for your dog with your trainer.</p>
                 <a href="portal-goals.html" class="card-btn">View Goals</a>
             </div>
@@ -477,13 +457,6 @@
                 <h2>Account Settings</h2>
                 <p>Manage your profile information and preferences.</p>
                 <a href="portal-settings.html" class="card-btn">Manage Settings</a>
-            </div>
-
-            <!-- My Dog's Profile Card -->
-            <div class="dashboard-card">
-                <h2>My Dog's Profile</h2>
-                <p>Update your dog's information, training history, and behavioral notes.</p>
-                <a href="portal-dog-profile.html" class="card-btn">View Profile</a>
             </div>
 
             <!-- User Approval Card (visible only to admins) -->
@@ -540,16 +513,6 @@
                         // User is approved, display their information
                         console.log('User approved, displaying dashboard...');
                         displayUserInfo(user);
-
-                        // Check if documents are complete
-                        checkAndShowDocumentAlert(user.email);
-
-                        // Check if settings and dog profile are complete
-                        checkAndShowSettingsAlert(user.email);
-                        checkAndShowDogProfileAlert(user.email);
-
-                        // Update page titles with dog's name
-                        updatePageTitlesWithDogName(user.email);
                     }
                 }
             });
@@ -581,136 +544,6 @@
             }
         }
 
-        // Check and show document alert if documents not complete
-        async function checkAndShowDocumentAlert(email) {
-            try {
-                const documentsComplete = await checkDocumentsComplete(email);
-
-                if (!documentsComplete) {
-                    // Show alert banner if documents not complete
-                    const alertBanner = document.getElementById('documentsAlert');
-                    alertBanner.classList.add('show');
-                    console.log('User has not completed legal documents');
-                } else {
-                    console.log('User has completed legal documents');
-                }
-            } catch (error) {
-                console.error('Error checking document status:', error);
-            }
-        }
-
-        // Check and show settings alert if profile not complete
-        async function checkAndShowSettingsAlert(email) {
-            try {
-                const alertBanner = document.getElementById('settingsAlert');
-                console.log('🔍 [SETTINGS ALERT] Element found:', alertBanner);
-
-                const settingsDoc = await db.collection('users')
-                    .doc(email)
-                    .collection('settings')
-                    .doc('profile')
-                    .get();
-
-                if (!settingsDoc.exists) {
-                    // Show alert banner if settings not saved
-                    alertBanner.classList.add('show');
-                    console.log('⚠️ [SETTINGS ALERT] SHOWING - User has not completed settings');
-                    console.log('⚠️ [SETTINGS ALERT] Classes:', alertBanner.className);
-                    console.log('⚠️ [SETTINGS ALERT] Display style:', window.getComputedStyle(alertBanner).display);
-                } else {
-                    const data = settingsDoc.data();
-                    // Check if all required fields are filled
-                    if (!data.ownerName || !data.dogName || !data.phone) {
-                        alertBanner.classList.add('show');
-                        console.log('⚠️ [SETTINGS ALERT] SHOWING - User settings incomplete');
-                        console.log('⚠️ [SETTINGS ALERT] Classes:', alertBanner.className);
-                        console.log('⚠️ [SETTINGS ALERT] Display style:', window.getComputedStyle(alertBanner).display);
-                    } else {
-                        console.log('✅ [SETTINGS ALERT] Hidden - User has completed settings');
-                    }
-                }
-            } catch (error) {
-                console.error('Error checking settings status:', error);
-                // Show alert by default if there's an error
-                const alertBanner = document.getElementById('settingsAlert');
-                if (alertBanner) {
-                    alertBanner.classList.add('show');
-                    console.log('⚠️ [SETTINGS ALERT] SHOWING - Error occurred, showing by default');
-                }
-            }
-        }
-
-        // Check and show dog profile alert if profile not complete
-        async function checkAndShowDogProfileAlert(email) {
-            try {
-                const alertBanner = document.getElementById('dogProfileAlert');
-                console.log('🔍 [DOG PROFILE ALERT] Element found:', alertBanner);
-
-                const profileDoc = await db.collection('users')
-                    .doc(email)
-                    .collection('dogProfile')
-                    .doc('info')
-                    .get();
-
-                if (!profileDoc.exists) {
-                    // Show alert banner if dog profile not saved
-                    alertBanner.classList.add('show');
-                    console.log('⚠️ [DOG PROFILE ALERT] SHOWING - User has not completed dog profile');
-                    console.log('⚠️ [DOG PROFILE ALERT] Classes:', alertBanner.className);
-                    console.log('⚠️ [DOG PROFILE ALERT] Display style:', window.getComputedStyle(alertBanner).display);
-                } else {
-                    const data = profileDoc.data();
-                    // Check if dog name is filled (minimum requirement)
-                    if (!data.dogName) {
-                        alertBanner.classList.add('show');
-                        console.log('⚠️ [DOG PROFILE ALERT] SHOWING - Dog profile incomplete');
-                        console.log('⚠️ [DOG PROFILE ALERT] Classes:', alertBanner.className);
-                        console.log('⚠️ [DOG PROFILE ALERT] Display style:', window.getComputedStyle(alertBanner).display);
-                    } else {
-                        console.log('✅ [DOG PROFILE ALERT] Hidden - User has completed dog profile');
-                    }
-                }
-            } catch (error) {
-                console.error('Error checking dog profile status:', error);
-                // Show alert by default if there's an error
-                const alertBanner = document.getElementById('dogProfileAlert');
-                if (alertBanner) {
-                    alertBanner.classList.add('show');
-                    console.log('⚠️ [DOG PROFILE ALERT] SHOWING - Error occurred, showing by default');
-                }
-            }
-        }
-
-        // Update page titles with dog's name
-        async function updatePageTitlesWithDogName(email) {
-            try {
-                const settingsDoc = await db.collection('users')
-                    .doc(email)
-                    .collection('settings')
-                    .doc('profile')
-                    .get();
-
-                if (settingsDoc.exists) {
-                    const data = settingsDoc.data();
-                    const dogName = data.dogName;
-
-                    if (dogName && dogName.trim()) {
-                        // Update card titles with dog's name
-                        const dogNameUpper = dogName.trim().toUpperCase();
-                        document.getElementById('sessionsTitle').textContent = `${dogNameUpper}'S TRAINING SESSIONS`;
-                        document.getElementById('scheduleTitle').textContent = `${dogNameUpper}'S WEEKLY SCHEDULE`;
-                        document.getElementById('goalsTitle').textContent = `${dogNameUpper}'S TRAINING GOALS`;
-                        console.log(`✅ Updated page titles with dog name: ${dogName}`);
-                    } else {
-                        console.log('ℹ️ No dog name found in settings');
-                    }
-                } else {
-                    console.log('ℹ️ Settings document does not exist yet');
-                }
-            } catch (error) {
-                console.error('Error updating page titles with dog name:', error);
-            }
-        }
 
         // Handle Sign Out
         document.getElementById('signOutBtn').addEventListener('click', async () => {

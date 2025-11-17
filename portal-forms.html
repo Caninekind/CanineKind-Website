@@ -386,34 +386,57 @@
                     title: 'Legal Agreement & Consent Forms',
                     description: 'Comprehensive agreement covering training services, liability, privacy policy, and cancellation terms.',
                     icon: '📋'
+                },
+                {
+                    id: 'intake-questionnaire',
+                    title: 'Client Intake Questionnaire',
+                    description: 'Detailed questionnaire about you, your dog, training goals, and behavioral information. This helps us provide personalized training services.',
+                    icon: '📝'
                 }
             ];
 
             // Check status of each document
             const documentsHTML = [];
             for (const doc of availableDocuments) {
-                const signedDoc = await getSignedDocument(currentUser.email, doc.id);
-                const isCompleted = signedDoc !== null;
+                let statusHTML, actionsHTML, cardClass;
 
-                const statusHTML = isCompleted
-                    ? `<div class="document-status completed">
-                        <span>Signed & Completed</span>
+                // Handle different document types
+                if (doc.id === 'intake-questionnaire') {
+                    // For intake questionnaire - UI only for now
+                    statusHTML = `<div class="document-status needs-signature">
+                        <span>Action Required</span>
                        </div>
                        <div class="document-date">
-                        Signed on ${new Date(signedDoc.signedAt.toDate()).toLocaleDateString()}
-                       </div>`
-                    : `<div class="document-status needs-signature">
-                        <span>Signature Required</span>
-                       </div>
-                       <div class="document-date">
-                        Please review and sign this document
+                        Please complete this questionnaire
                        </div>`;
 
-                const actionsHTML = isCompleted
-                    ? `<a href="${signedDoc.pdfURL}" target="_blank" class="btn btn-view">View Signed PDF</a>`
-                    : `<a href="portal-sign-document.html?doc=${doc.id}" class="btn btn-primary">Review & Sign</a>`;
+                    actionsHTML = `<a href="portal-intake-form.html" class="btn btn-primary">Complete Questionnaire</a>`;
+                    cardClass = 'needs-signature';
+                } else {
+                    // For legal agreement and other signable documents
+                    const signedDoc = await getSignedDocument(currentUser.email, doc.id);
+                    const isCompleted = signedDoc !== null;
 
-                const cardClass = isCompleted ? 'completed' : 'needs-signature';
+                    statusHTML = isCompleted
+                        ? `<div class="document-status completed">
+                            <span>Signed & Completed</span>
+                           </div>
+                           <div class="document-date">
+                            Signed on ${new Date(signedDoc.signedAt.toDate()).toLocaleDateString()}
+                           </div>`
+                        : `<div class="document-status needs-signature">
+                            <span>Signature Required</span>
+                           </div>
+                           <div class="document-date">
+                            Please review and sign this document
+                           </div>`;
+
+                    actionsHTML = isCompleted
+                        ? `<a href="${signedDoc.pdfURL}" target="_blank" class="btn btn-view">View Signed PDF</a>`
+                        : `<a href="portal-sign-document.html?doc=${doc.id}" class="btn btn-primary">Review & Sign</a>`;
+
+                    cardClass = isCompleted ? 'completed' : 'needs-signature';
+                }
 
                 documentsHTML.push(`
                     <div class="document-card ${cardClass}">
