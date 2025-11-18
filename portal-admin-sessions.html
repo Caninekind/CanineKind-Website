@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin: Sessions Management - CanineKind Client Portal</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #D1E5F4 0%, #E8F4F8 100%);
+            min-height: 100vh;
+            padding-bottom: 40px;
+        }
+
+        .portal-header {
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .portal-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .portal-logo img {
+            height: 50px;
+            width: auto;
+        }
+
+        .portal-logo h1 {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .admin-badge {
+            background: #ffd700;
+            color: #333;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .portal-nav {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .portal-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        .portal-nav a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .portal-nav a.active {
+            background: rgba(255, 255, 255, 0.3);
+            font-weight: 600;
+        }
+
+        .sign-out-link {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Controls */
+        .controls {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            display: flex;
+            gap: 1rem;
+            align-items: end;
+            flex-wrap: wrap;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #555;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #799972;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: #799972;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #6a8862;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(121, 153, 114, 0.4);
+        }
+
+        .btn-add {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-add:hover {
+            background: #059669;
+        }
+
+        /* Session Cards */
+        .sessions-container {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .session-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-left: 4px solid #799972;
+            transition: all 0.3s;
+        }
+
+        .session-card:hover {
+            box-shadow: 0 4px 16px rgba(121, 153, 114, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .session-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .session-title {
+            flex: 1;
+        }
+
+        .session-title h3 {
+            color: #2c3e50;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .session-client {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .session-date {
+            background: #f8f9fa;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .session-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-box {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 6px;
+            border-left: 3px solid #799972;
+        }
+
+        .detail-label {
+            color: #666;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 0.25rem;
+        }
+
+        .detail-value {
+            color: #2c3e50;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .session-notes {
+            background: #fffbeb;
+            border: 2px solid #fbbf24;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .session-notes h4 {
+            color: #92400e;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+        }
+
+        .session-notes p {
+            color: #78350f;
+            line-height: 1.6;
+        }
+
+        .homework-section {
+            background: #ecfdf5;
+            border: 2px solid #10b981;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .homework-section h4 {
+            color: #065f46;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+        }
+
+        .homework-section p {
+            color: #064e3b;
+            line-height: 1.6;
+        }
+
+        .session-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-edit {
+            background: #3b82f6;
+            color: white;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+        }
+
+        .btn-edit:hover {
+            background: #2563eb;
+        }
+
+        .btn-delete {
+            background: #ef4444;
+            color: white;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+        }
+
+        .btn-delete:hover {
+            background: #dc2626;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h2 {
+            color: #2c3e50;
+            font-size: 1.5rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #799972;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 1.5rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #999;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #799972;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .session-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="portal-header">
+        <div class="header-content">
+            <div class="portal-logo">
+                <img src="https://i.imgur.com/OXiQWa3.jpeg" alt="CanineKind Logo">
+                <h1>Admin Portal</h1>
+                <span class="admin-badge">Admin</span>
+            </div>
+            <nav class="portal-nav">
+                <a href="portal-dashboard.html">Dashboard</a>
+                <a href="portal-admin.html">User Management</a>
+                <a href="portal-admin-goals.html">Goals Management</a>
+                <a href="portal-admin-sessions.html" class="active">Sessions Management</a>
+                <a href="#" class="sign-out-link" onclick="signOut(); return false;">Sign Out</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Sessions Management</h1>
+            <p>View all client sessions, add notes, and manage training schedules</p>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <div class="form-group">
+                <label>Filter by Client</label>
+                <select id="filterClient">
+                    <option value="">All Clients</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Session Type</label>
+                <select id="filterType">
+                    <option value="">All Types</option>
+                    <option value="upcoming">Upcoming Only</option>
+                    <option value="past">Past Only</option>
+                </select>
+            </div>
+            <button class="btn btn-add" onclick="openAddSessionModal()">+ Add New Session</button>
+        </div>
+
+        <!-- Sessions List -->
+        <div class="sessions-container" id="sessionsContainer">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Loading sessions...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Session Modal -->
+    <div class="modal" id="sessionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add New Session</h2>
+                <button class="close-btn" onclick="closeSessionModal()">×</button>
+            </div>
+            <div class="form-group">
+                <label>Client Email</label>
+                <select id="sessionClient">
+                    <option value="">Select client...</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Session Date</label>
+                <input type="date" id="sessionDate">
+            </div>
+            <div class="form-group">
+                <label>Session Time</label>
+                <input type="time" id="sessionTime">
+            </div>
+            <div class="form-group">
+                <label>Duration (minutes)</label>
+                <input type="number" id="sessionDuration" value="60">
+            </div>
+            <div class="form-group">
+                <label>Trainer Notes</label>
+                <textarea id="sessionNotes" placeholder="Notes about this session..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Homework Assignment</label>
+                <textarea id="sessionHomework" placeholder="Homework for client..."></textarea>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="closeSessionModal()">Cancel</button>
+                <button class="btn btn-add" onclick="saveSession()">Save Session</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <!-- Firebase Config -->
+    <script src="firebase-config.js"></script>
+
+    <script>
+        let currentUser = null;
+        let allSessions = [];
+        let editingSessionId = null;
+        let editingSessionClient = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const initialized = initializeFirebase();
+            if (!initialized) {
+                alert('Failed to initialize Firebase');
+                window.location.href = 'portal-login.html';
+                return;
+            }
+
+            auth.onAuthStateChanged(async (user) => {
+                if (!user) {
+                    window.location.href = 'portal-login.html';
+                } else {
+                    const isAdmin = await isUserAdmin();
+                    if (!isAdmin) {
+                        alert('Access denied. Admin privileges required.');
+                        window.location.href = 'portal-dashboard.html';
+                        return;
+                    }
+
+                    currentUser = user;
+                    await loadInitialData();
+                }
+            });
+        });
+
+        async function loadInitialData() {
+            await Promise.all([
+                loadAllSessions(),
+                loadClientsForDropdowns()
+            ]);
+
+            // Set up filters
+            document.getElementById('filterClient').addEventListener('change', filterSessions);
+            document.getElementById('filterType').addEventListener('change', filterSessions);
+        }
+
+        async function loadAllSessions() {
+            const container = document.getElementById('sessionsContainer');
+            allSessions = [];
+
+            try {
+                const usersSnapshot = await db.collection('users').get();
+
+                for (const userDoc of usersSnapshot.docs) {
+                    const email = userDoc.id;
+                    const sessionsSnapshot = await db.collection('users')
+                        .doc(email)
+                        .collection('sessions')
+                        .orderBy('sessionDate', 'desc')
+                        .get();
+
+                    sessionsSnapshot.docs.forEach(doc => {
+                        allSessions.push({
+                            id: doc.id,
+                            clientEmail: email,
+                            ...doc.data()
+                        });
+                    });
+                }
+
+                renderSessions(allSessions);
+
+            } catch (error) {
+                console.error('Error loading sessions:', error);
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">⚠️</div>
+                        <h3>Error Loading Sessions</h3>
+                        <p>Please refresh the page to try again.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function renderSessions(sessions) {
+            const container = document.getElementById('sessionsContainer');
+
+            if (sessions.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📅</div>
+                        <h3>No Sessions Found</h3>
+                        <p>No training sessions have been scheduled yet.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Sort by date (most recent first)
+            sessions.sort((a, b) => {
+                const dateA = a.sessionDate ? a.sessionDate.toDate() : new Date(0);
+                const dateB = b.sessionDate ? b.sessionDate.toDate() : new Date(0);
+                return dateB - dateA;
+            });
+
+            let html = '';
+            sessions.forEach(session => {
+                const sessionDate = session.sessionDate ?
+                    new Date(session.sessionDate.toDate()).toLocaleDateString() :
+                    'Not scheduled';
+
+                const sessionTime = session.sessionTime || 'Not set';
+                const duration = session.duration || '60';
+                const isPast = session.sessionDate ?
+                    new Date(session.sessionDate.toDate()) < new Date() :
+                    false;
+
+                html += `
+                    <div class="session-card">
+                        <div class="session-header">
+                            <div class="session-title">
+                                <h3>Training Session</h3>
+                                <p class="session-client">${session.clientEmail}</p>
+                            </div>
+                            <div class="session-date">${sessionDate}</div>
+                        </div>
+
+                        <div class="session-details">
+                            <div class="detail-box">
+                                <div class="detail-label">Time</div>
+                                <div class="detail-value">${sessionTime}</div>
+                            </div>
+                            <div class="detail-box">
+                                <div class="detail-label">Duration</div>
+                                <div class="detail-value">${duration} min</div>
+                            </div>
+                            <div class="detail-box">
+                                <div class="detail-label">Status</div>
+                                <div class="detail-value">${isPast ? 'Completed' : 'Upcoming'}</div>
+                            </div>
+                        </div>
+
+                        ${session.notes ? `
+                            <div class="session-notes">
+                                <h4>Trainer Notes</h4>
+                                <p>${session.notes}</p>
+                            </div>
+                        ` : ''}
+
+                        ${session.homework ? `
+                            <div class="homework-section">
+                                <h4>Homework Assignment</h4>
+                                <p>${session.homework}</p>
+                            </div>
+                        ` : ''}
+
+                        <div class="session-actions">
+                            <button class="btn btn-edit" onclick="editSession('${session.clientEmail}', '${session.id}')">
+                                Edit Session
+                            </button>
+                            <button class="btn btn-delete" onclick="deleteSession('${session.clientEmail}', '${session.id}')">
+                                Delete Session
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        async function loadClientsForDropdowns() {
+            try {
+                const usersSnapshot = await db.collection('users').get();
+                const emails = usersSnapshot.docs.map(doc => doc.id);
+
+                const filterSelect = document.getElementById('filterClient');
+                const modalSelect = document.getElementById('sessionClient');
+
+                let filterOptions = '<option value="">All Clients</option>';
+                let modalOptions = '<option value="">Select client...</option>';
+
+                emails.forEach(email => {
+                    filterOptions += `<option value="${email}">${email}</option>`;
+                    modalOptions += `<option value="${email}">${email}</option>`;
+                });
+
+                filterSelect.innerHTML = filterOptions;
+                modalSelect.innerHTML = modalOptions;
+
+            } catch (error) {
+                console.error('Error loading clients:', error);
+            }
+        }
+
+        function filterSessions() {
+            const clientFilter = document.getElementById('filterClient').value;
+            const typeFilter = document.getElementById('filterType').value;
+
+            let filtered = allSessions;
+
+            if (clientFilter) {
+                filtered = filtered.filter(s => s.clientEmail === clientFilter);
+            }
+
+            if (typeFilter === 'upcoming') {
+                filtered = filtered.filter(s => {
+                    if (!s.sessionDate) return false;
+                    return new Date(s.sessionDate.toDate()) >= new Date();
+                });
+            } else if (typeFilter === 'past') {
+                filtered = filtered.filter(s => {
+                    if (!s.sessionDate) return false;
+                    return new Date(s.sessionDate.toDate()) < new Date();
+                });
+            }
+
+            renderSessions(filtered);
+        }
+
+        function openAddSessionModal() {
+            editingSessionId = null;
+            editingSessionClient = null;
+            document.getElementById('modalTitle').textContent = 'Add New Session';
+            document.getElementById('sessionClient').value = '';
+            document.getElementById('sessionDate').value = '';
+            document.getElementById('sessionTime').value = '';
+            document.getElementById('sessionDuration').value = '60';
+            document.getElementById('sessionNotes').value = '';
+            document.getElementById('sessionHomework').value = '';
+            document.getElementById('sessionModal').classList.add('active');
+        }
+
+        async function editSession(clientEmail, sessionId) {
+            editingSessionId = sessionId;
+            editingSessionClient = clientEmail;
+
+            try {
+                const sessionDoc = await db.collection('users')
+                    .doc(clientEmail)
+                    .collection('sessions')
+                    .doc(sessionId)
+                    .get();
+
+                if (!sessionDoc.exists) {
+                    alert('Session not found');
+                    return;
+                }
+
+                const session = sessionDoc.data();
+                document.getElementById('modalTitle').textContent = 'Edit Session';
+                document.getElementById('sessionClient').value = clientEmail;
+
+                if (session.sessionDate) {
+                    const date = new Date(session.sessionDate.toDate());
+                    document.getElementById('sessionDate').value = date.toISOString().split('T')[0];
+                }
+
+                document.getElementById('sessionTime').value = session.sessionTime || '';
+                document.getElementById('sessionDuration').value = session.duration || '60';
+                document.getElementById('sessionNotes').value = session.notes || '';
+                document.getElementById('sessionHomework').value = session.homework || '';
+                document.getElementById('sessionModal').classList.add('active');
+
+            } catch (error) {
+                console.error('Error loading session:', error);
+                alert('Error loading session');
+            }
+        }
+
+        async function saveSession() {
+            const clientEmail = document.getElementById('sessionClient').value;
+            const dateStr = document.getElementById('sessionDate').value;
+            const time = document.getElementById('sessionTime').value;
+            const duration = document.getElementById('sessionDuration').value;
+            const notes = document.getElementById('sessionNotes').value;
+            const homework = document.getElementById('sessionHomework').value;
+
+            if (!clientEmail || !dateStr) {
+                alert('Please select a client and date');
+                return;
+            }
+
+            try {
+                const sessionData = {
+                    sessionDate: firebase.firestore.Timestamp.fromDate(new Date(dateStr)),
+                    sessionTime: time,
+                    duration: parseInt(duration),
+                    notes: notes,
+                    homework: homework,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedBy: currentUser.email
+                };
+
+                if (editingSessionId && editingSessionClient) {
+                    // Update existing session
+                    await db.collection('users')
+                        .doc(editingSessionClient)
+                        .collection('sessions')
+                        .doc(editingSessionId)
+                        .update(sessionData);
+                    alert('Session updated successfully!');
+                } else {
+                    // Create new session
+                    sessionData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                    sessionData.createdBy = currentUser.email;
+
+                    await db.collection('users')
+                        .doc(clientEmail)
+                        .collection('sessions')
+                        .add(sessionData);
+                    alert('Session created successfully!');
+                }
+
+                closeSessionModal();
+                await loadAllSessions();
+
+            } catch (error) {
+                console.error('Error saving session:', error);
+                alert('Error saving session. Please try again.');
+            }
+        }
+
+        async function deleteSession(clientEmail, sessionId) {
+            if (!confirm('Are you sure you want to delete this session?')) {
+                return;
+            }
+
+            try {
+                await db.collection('users')
+                    .doc(clientEmail)
+                    .collection('sessions')
+                    .doc(sessionId)
+                    .delete();
+
+                alert('Session deleted successfully!');
+                await loadAllSessions();
+
+            } catch (error) {
+                console.error('Error deleting session:', error);
+                alert('Error deleting session. Please try again.');
+            }
+        }
+
+        function closeSessionModal() {
+            document.getElementById('sessionModal').classList.remove('active');
+        }
+
+        function signOut() {
+            auth.signOut().then(() => {
+                window.location.href = 'portal-login.html';
+            });
+        }
+    </script>
+</body>
+</html>
