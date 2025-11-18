@@ -607,9 +607,31 @@
             }
         }
 
+        // Helper function to check if user is admin
+        async function checkIfUserIsAdmin(email) {
+            try {
+                const userDoc = await db.collection('users').doc(email).get();
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    return userData.admin === true || userData.isAdmin === true || userData.role === 'admin';
+                }
+                return false;
+            } catch (error) {
+                console.error('Error checking admin status:', error);
+                return false;
+            }
+        }
+
         // Check and show forms alert if documents not complete
         async function checkAndShowFormsAlert(email) {
             try {
+                // Don't show banners for admin users
+                const isAdmin = await checkIfUserIsAdmin(email);
+                if (isAdmin) {
+                    console.log('User is admin - skipping forms alert');
+                    return;
+                }
+
                 const documentsComplete = await checkDocumentsComplete(email);
 
                 if (!documentsComplete) {
@@ -628,6 +650,13 @@
         // Check and show settings alert if profile not complete
         async function checkAndShowSettingsAlert(email) {
             try {
+                // Don't show banners for admin users
+                const isAdmin = await checkIfUserIsAdmin(email);
+                if (isAdmin) {
+                    console.log('User is admin - skipping settings alert');
+                    return;
+                }
+
                 const alertBanner = document.getElementById('settingsAlert');
                 console.log('🔍 [SETTINGS ALERT] Element found:', alertBanner);
 
