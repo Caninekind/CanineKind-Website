@@ -600,6 +600,16 @@
         // Check if user is admin
         async function isUserAdmin(email) {
             try {
+                // First check users collection (primary method)
+                const userDoc = await db.collection('users').doc(email).get();
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    if (userData.admin === true || userData.isAdmin === true) {
+                        return true;
+                    }
+                }
+
+                // Fallback: check admins collection
                 const adminDoc = await db.collection('admins').doc(email).get();
                 return adminDoc.exists && adminDoc.data().isAdmin === true;
             } catch (error) {

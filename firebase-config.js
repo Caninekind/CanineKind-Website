@@ -271,7 +271,12 @@ async function isUserAdmin() {
     if (!user) return false;
 
     const userData = await getUserData(user.email);
-    return userData && userData.role === 'admin';
+    // Check multiple possible admin indicators
+    return userData && (
+        userData.role === 'admin' ||
+        userData.admin === true ||
+        userData.isAdmin === true
+    );
 }
 
 // Get all users (admin only)
