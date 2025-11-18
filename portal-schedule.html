@@ -630,7 +630,8 @@
         .activity-forest-hike,
         .activity-park-walk,
         .activity-city-walk,
-        .activity-outdoor-training {
+        .activity-outdoor-training,
+        .activity-doggy-playdate {
             background: linear-gradient(135deg, rgba(102, 126, 234, 0.18) 0%, rgba(118, 75, 162, 0.10) 100%);
             color: #4a3a72;
             border-left: 3px solid #667eea;
@@ -1654,7 +1655,6 @@
                             <div class="activity-item activity-enrichment" draggable="true" data-activity="Enrichment toy/puzzle">🧩 Enrichment toy/puzzle</div>
                             <div class="activity-item activity-get-ready" draggable="true" data-activity="Getting ready to leave">🔔 Getting ready to leave</div>
                             <div class="activity-item activity-play" draggable="true" data-activity="Play session">🎾 Play session</div>
-                            <div class="activity-item activity-caninekind-training" draggable="true" data-activity="Private Lesson with CanineKind Trainer">⭐ Private Lesson with CanineKind Trainer</div>
                         </div>
                     </div>
 
@@ -1671,6 +1671,7 @@
                             <div class="activity-item activity-park-walk" draggable="true" data-activity="Open Field Walk">🌳 Open Field Walk</div>
                             <div class="activity-item activity-city-walk" draggable="true" data-activity="Downtown/City Walk">🏙️ Downtown/City Walk</div>
                             <div class="activity-item activity-outdoor-training" draggable="true" data-activity="General Outdoor Training">🎯 General Outdoor Training</div>
+                            <div class="activity-item activity-doggy-playdate" draggable="true" data-activity="Doggy Playdate">🐕‍🦺 Doggy Playdate</div>
                         </div>
                     </div>
 
@@ -1690,6 +1691,17 @@
                             <div class="activity-item activity-hotel" draggable="true" data-activity="Hotel">🏨 Hotel</div>
                             <div class="activity-item activity-office" draggable="true" data-activity="Office">💼 Office</div>
                             <div class="activity-item activity-garden" draggable="true" data-activity="Public garden">🌸 Public garden</div>
+                        </div>
+                    </div>
+
+                    <!-- Category: Private Training Session -->
+                    <div class="activity-category category-premium">
+                        <div class="category-header" onclick="toggleCategory(this)">
+                            <span class="category-icon">▼</span>
+                            <span class="category-title">⭐ Private Training Session</span>
+                        </div>
+                        <div class="category-content">
+                            <div class="activity-item activity-caninekind-training" draggable="true" data-activity="Private Lesson with CanineKind Trainer">⭐ Private Lesson with CanineKind Trainer</div>
                         </div>
                     </div>
                 </div>
@@ -2135,6 +2147,7 @@
                 'Open Field Walk': 'activity-park-walk',
                 'Downtown/City Walk': 'activity-city-walk',
                 'General Outdoor Training': 'activity-outdoor-training',
+                'Doggy Playdate': 'activity-doggy-playdate',
                 // Urban Environments
                 'Store trip': 'activity-store',
                 'Vet visit': 'activity-vet',
@@ -2177,6 +2190,7 @@
                 'Open Field Walk': '🌳',
                 'Downtown/City Walk': '🏙️',
                 'General Outdoor Training': '🎯',
+                'Doggy Playdate': '🐕‍🦺',
                 // Urban Environments
                 'Store trip': '🛒',
                 'Vet visit': '🏥',
