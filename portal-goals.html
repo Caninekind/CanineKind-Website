@@ -779,124 +779,154 @@
         }
 
         /* Training Reminders Styles */
-        .training-reminders-card {
-            background: linear-gradient(135deg, #fff9e6 0%, #fffbf0 100%);
-            border-radius: 20px;
-            padding: 2.5rem;
-            margin-bottom: 3rem;
-            box-shadow: 0 6px 25px rgba(245, 158, 11, 0.2);
-            border-left: 5px solid #f59e0b;
+        .reminder-level-group {
+            margin-bottom: 1.5rem;
         }
 
-        .training-reminders-card h2 {
-            color: #92400e;
-            font-size: 1.75rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
+        .reminder-level-header {
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            color: white;
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
         }
 
-        .reminders-intro {
-            color: #78350f;
-            font-size: 1.05rem;
-            margin-bottom: 2rem;
-            line-height: 1.6;
+        .reminder-level-header:hover {
+            box-shadow: 0 4px 12px rgba(121, 153, 114, 0.3);
+        }
+
+        .reminder-collapse-icon {
+            font-size: 0.9rem;
+            transition: transform 0.3s ease;
+        }
+
+        .reminder-level-group.collapsed .reminder-collapse-icon {
+            transform: rotate(-90deg);
+        }
+
+        .reminder-level-content {
+            max-height: 5000px;
+            overflow: hidden;
+            transition: max-height 0.4s ease, opacity 0.3s ease;
+            opacity: 1;
+        }
+
+        .reminder-level-group.collapsed .reminder-level-content {
+            max-height: 0;
+            opacity: 0;
         }
 
         .reminder-card {
             background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-            border: 2px solid #fbbf24;
-            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.15);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid #799972;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             transition: all 0.3s ease;
         }
 
         .reminder-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.25);
+            box-shadow: 0 4px 12px rgba(121, 153, 114, 0.15);
+            transform: translateX(4px);
+        }
+
+        .reminder-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            cursor: pointer;
         }
 
         .reminder-card h3 {
-            color: #92400e;
-            font-size: 1.4rem;
-            font-weight: 800;
-            margin-bottom: 0.75rem;
+            color: #2c3e50;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .reminder-card-icon {
+            font-size: 0.9rem;
+            color: #799972;
+            transition: transform 0.3s ease;
+        }
+
+        .reminder-card.collapsed .reminder-card-icon {
+            transform: rotate(-90deg);
+        }
+
+        .reminder-card-content {
+            max-height: 2000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            opacity: 1;
+        }
+
+        .reminder-card.collapsed .reminder-card-content {
+            max-height: 0;
+            opacity: 0;
+        }
+
+        .reminder-info {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .reminder-detail {
+            background: #fef3c7;
+            padding: 0.6rem 1rem;
+            border-radius: 6px;
+            border-left: 3px solid #f59e0b;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
 
-        .reminder-subtitle {
-            color: #666;
-            font-size: 1rem;
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        .reminder-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin: 1.5rem 0;
-        }
-
-        .reminder-detail {
-            background: #fef3c7;
-            padding: 1rem;
-            border-radius: 10px;
-            border-left: 4px solid #f59e0b;
-        }
-
         .reminder-detail strong {
-            display: block;
             color: #92400e;
             font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.5rem;
             font-weight: 700;
         }
 
-        .reminder-detail p {
+        .reminder-detail span {
             color: #451a03;
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             font-weight: 600;
-            margin: 0;
         }
 
         .prep-instructions {
-            background: #ecfdf5;
-            border: 2px solid #10b981;
-            border-radius: 10px;
-            padding: 1.5rem;
+            background: #f8f9fa;
+            border-left: 3px solid #799972;
+            border-radius: 6px;
+            padding: 1rem;
             margin-top: 1rem;
         }
 
         .prep-instructions strong {
             display: block;
-            color: #065f46;
-            font-size: 1rem;
+            color: #2c3e50;
+            font-size: 0.9rem;
             font-weight: 700;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.5rem;
         }
 
         .prep-instructions p {
-            color: #064e3b;
-            line-height: 1.6;
+            color: #555;
+            line-height: 1.5;
             margin: 0;
-        }
-
-        .reminder-notification {
-            background: #dbeafe;
-            border-left: 4px solid #3b82f6;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-top: 1rem;
             font-size: 0.95rem;
-            color: #1e3a8a;
         }
 
         .no-reminders {
@@ -1017,7 +1047,7 @@
                 <a href="portal-dashboard.html">Dashboard</a>
                 <a href="portal-sessions.html">Sessions</a>
                 <a href="portal-forms.html">Forms & Documents</a>
-                <a href="portal-schedule.html">Daily Schedule</a>
+                <a href="portal-schedule.html">Weekly Schedule</a>
                 <a href="portal-goals.html" class="active">Goals</a>
                 <a href="#" class="sign-out-link" onclick="signOut(); return false;">Sign Out</a>
             </nav>
@@ -1043,13 +1073,11 @@
                 </div>
                 <div class="level-completion" id="levelCompletionPercent">0%</div>
             </div>
-        </div>
 
-        <!-- Training Reminders Section -->
-        <div id="trainingRemindersSection" style="display: none;">
-            <div class="training-reminders-card">
-                <h2>🎯 Upcoming Training Sessions</h2>
-                <p class="reminders-intro">You have scheduled training sessions! Here's what you need to know:</p>
+            <!-- Training Reminders Section -->
+            <div id="trainingRemindersSection" style="display: none; margin-top: 2rem; padding-top: 2rem; border-top: 2px solid #e0e0e0;">
+                <h2 style="color: #2c3e50; font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px;">You have plans to work on your training goals!</h2>
+                <p style="color: #666; font-size: 1rem; margin-bottom: 1.5rem;">Here's your at-home plan for the week</p>
                 <div id="reminderCards"></div>
             </div>
         </div>
@@ -2066,42 +2094,65 @@
             const section = document.getElementById('trainingRemindersSection');
             const container = document.getElementById('reminderCards');
 
+            // Group reminders by level
+            const remindersByLevel = {};
+            reminders.forEach(reminder => {
+                const levelKey = reminder.level;
+                if (!remindersByLevel[levelKey]) {
+                    remindersByLevel[levelKey] = [];
+                }
+                remindersByLevel[levelKey].push(reminder);
+            });
+
             let html = '';
 
-            reminders.forEach(reminder => {
-                const levelName = reminder.level === 0 ? 'Preparation' : `Level ${reminder.level}`;
+            // Sort levels (0 first, then 1, 2, 3, 4)
+            const sortedLevels = Object.keys(remindersByLevel).sort((a, b) => parseInt(a) - parseInt(b));
+
+            sortedLevels.forEach(levelKey => {
+                const level = parseInt(levelKey);
+                const levelReminders = remindersByLevel[levelKey];
+                const levelName = level === 0 ? 'Preparation' : `Level ${level}`;
 
                 html += `
-                    <div class="reminder-card">
-                        <h3>🎯 ${reminder.goalTitle}</h3>
-                        <p class="reminder-subtitle">
-                            You have plans to work on your dog's ${reminder.goalTitle.toLowerCase()}!
-                        </p>
+                    <div class="reminder-level-group" id="reminder-level-${level}">
+                        <div class="reminder-level-header" onclick="toggleReminderLevel(${level})">
+                            <span>${levelName} (${levelReminders.length} goal${levelReminders.length !== 1 ? 's' : ''})</span>
+                            <span class="reminder-collapse-icon">▼</span>
+                        </div>
+                        <div class="reminder-level-content">
+                `;
 
-                        <div class="reminder-info">
-                            <div class="reminder-detail">
-                                <strong>📅 When</strong>
-                                <p>${reminder.day}, ${reminder.time}</p>
+                levelReminders.forEach((reminder, index) => {
+                    const cardId = `reminder-card-${level}-${index}`;
+                    html += `
+                        <div class="reminder-card" id="${cardId}">
+                            <div class="reminder-card-header" onclick="toggleReminderCard('${cardId}')">
+                                <h3>${reminder.goalTitle}</h3>
+                                <span class="reminder-card-icon">▼</span>
                             </div>
+                            <div class="reminder-card-content">
+                                <div class="reminder-info">
+                                    <div class="reminder-detail">
+                                        <strong>📅 When:</strong>
+                                        <span>${reminder.day}, ${reminder.time}</span>
+                                    </div>
+                                    <div class="reminder-detail">
+                                        <strong>📍 Where:</strong>
+                                        <span>${reminder.activity}</span>
+                                    </div>
+                                </div>
 
-                            <div class="reminder-detail">
-                                <strong>📍 Where</strong>
-                                <p>${reminder.activity}</p>
-                            </div>
-
-                            <div class="reminder-detail">
-                                <strong>📊 Level</strong>
-                                <p>${levelName}</p>
+                                <div class="prep-instructions">
+                                    <strong>✅ How to Prep:</strong>
+                                    <p>${reminder.prepInstructions}</p>
+                                </div>
                             </div>
                         </div>
+                    `;
+                });
 
-                        <div class="prep-instructions">
-                            <strong>✅ How to Prep:</strong>
-                            <p>${reminder.prepInstructions}</p>
-                        </div>
-
-                        <div class="reminder-notification">
-                            💬 You will receive your first training reminder via text/email one hour before your session.
+                html += `
                         </div>
                     </div>
                 `;
@@ -2109,6 +2160,20 @@
 
             container.innerHTML = html;
             section.style.display = 'block';
+        }
+
+        function toggleReminderLevel(level) {
+            const group = document.getElementById(`reminder-level-${level}`);
+            if (group) {
+                group.classList.toggle('collapsed');
+            }
+        }
+
+        function toggleReminderCard(cardId) {
+            const card = document.getElementById(cardId);
+            if (card) {
+                card.classList.toggle('collapsed');
+            }
         }
 
         function displayNoReminders() {
