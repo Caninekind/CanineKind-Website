@@ -205,6 +205,13 @@
             min-height: 600px;
         }
 
+        @media (min-width: 1200px) {
+            .schedule-layout {
+                height: calc(100vh - 300px);
+                padding-right: 0;
+            }
+        }
+
         /* Slide-out drawer from bottom */
         .activity-drawer {
             position: fixed;
@@ -219,8 +226,29 @@
             z-index: 1000;
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             transform: translateY(calc(100% - 60px));
-            max-height: 70vh;
+            max-height: 50vh;
             overflow: hidden;
+        }
+
+        /* Desktop: smaller drawer, positioned on right side */
+        @media (min-width: 1200px) {
+            .activity-drawer {
+                left: auto;
+                right: 20px;
+                bottom: 20px;
+                width: 400px;
+                max-height: 60vh;
+                border-radius: 20px;
+                transform: translateY(calc(100% - 60px));
+            }
+
+            .activity-drawer.open {
+                transform: translateY(0);
+            }
+
+            .drawer-handle {
+                border-radius: 20px 20px 0 0;
+            }
         }
 
         .activity-drawer.open {
@@ -276,16 +304,56 @@
         }
 
         .drawer-content {
-            height: calc(70vh - 60px);
+            height: calc(50vh - 120px);
             overflow-y: auto;
-            padding: 2rem;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
+            padding: 0;
         }
 
-        .sidebar {
-            display: contents;
+        @media (min-width: 1200px) {
+            .drawer-content {
+                height: calc(60vh - 120px);
+            }
+        }
+
+        /* Tab System */
+        .drawer-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e8ebf0;
+        }
+
+        .drawer-tab {
+            flex: 1;
+            padding: 16px;
+            background: transparent;
+            border: none;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+            position: relative;
+        }
+
+        .drawer-tab:hover {
+            background: rgba(121, 153, 114, 0.05);
+            color: #799972;
+        }
+
+        .drawer-tab.active {
+            color: #799972;
+            background: white;
+            border-bottom-color: #799972;
+        }
+
+        .drawer-tab-content {
+            display: none;
+            padding: 2rem;
+        }
+
+        .drawer-tab-content.active {
+            display: block;
         }
 
         .activity-bank {
@@ -417,27 +485,16 @@
             box-shadow: none;
         }
 
-        .goals-bank h3 {
-            color: #2c3e50;
-            margin-bottom: 1.5rem;
-            font-size: 1.3rem;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .goals-bank h3::before {
-            content: '🏆';
-            font-size: 1.5rem;
-        }
-
         .goals-bank-hint {
-            color: #999;
-            font-size: 0.85rem;
-            margin-bottom: 1rem;
-            font-style: italic;
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            text-align: center;
+            padding: 1rem;
+            background: linear-gradient(135deg, #fafbfc 0%, #f8f9fa 100%);
+            border-radius: 12px;
+            border: 2px solid #e8ebf0;
         }
 
         .goals-list {
@@ -1221,14 +1278,17 @@
                 border-radius: 15px;
             }
 
-            .drawer-content {
-                grid-template-columns: 1fr;
+            .drawer-tab-content {
                 padding: 1.5rem;
-                gap: 2rem;
             }
 
             .activity-drawer {
-                max-height: 80vh;
+                max-height: 85vh;
+            }
+
+            .drawer-tab {
+                font-size: 0.95rem;
+                padding: 14px;
             }
 
             .header-content {
@@ -1528,21 +1588,16 @@
                     <span class="drawer-arrow">▲</span>
                 </div>
             </div>
+
+            <!-- Drawer Tabs -->
+            <div class="drawer-tabs">
+                <button class="drawer-tab active" onclick="switchDrawerTab('activities')">🎯 Activities</button>
+                <button class="drawer-tab" onclick="switchDrawerTab('goals')">🏆 Goals</button>
+            </div>
+
             <div class="drawer-content">
-                <div class="activity-bank">
-                    <h3>Activity Bank</h3>
-
-                    <!-- Category: Premium - Private Session -->
-                    <div class="activity-category category-premium">
-                        <div class="category-header" onclick="toggleCategory(this)">
-                            <span class="category-icon">▼</span>
-                            <span class="category-title">⭐ Private Training Session</span>
-                        </div>
-                        <div class="category-content">
-                            <div class="activity-item activity-caninekind-training" draggable="true" data-activity="Private Lesson with CanineKind Trainer">⭐ Private Lesson with CanineKind Trainer</div>
-                        </div>
-                    </div>
-
+                <!-- Activities Tab -->
+                <div class="drawer-tab-content active" id="activitiesTab">
                     <!-- Category: In the Home -->
                     <div class="activity-category category-home">
                         <div class="category-header" onclick="toggleCategory(this)">
@@ -1564,6 +1619,7 @@
                             <div class="activity-item activity-enrichment" draggable="true" data-activity="Enrichment toy/puzzle">🧩 Enrichment toy/puzzle</div>
                             <div class="activity-item activity-get-ready" draggable="true" data-activity="Getting ready to leave">🔔 Getting ready to leave</div>
                             <div class="activity-item activity-play" draggable="true" data-activity="Play session">🎾 Play session</div>
+                            <div class="activity-item activity-caninekind-training" draggable="true" data-activity="Private Lesson with CanineKind Trainer">⭐ Private Lesson with CanineKind Trainer</div>
                         </div>
                     </div>
 
@@ -1603,12 +1659,13 @@
                     </div>
                 </div>
 
-                <!-- Goals Bank -->
-                <div class="goals-bank" id="goalsBank">
-                    <h3>Training Goals</h3>
-                    <p class="goals-bank-hint">Drag goals to pair with activities</p>
-                    <div class="goals-list" id="goalsList">
-                        <!-- Goals will be populated here -->
+                <!-- Goals Tab -->
+                <div class="drawer-tab-content" id="goalsTab">
+                    <div class="goals-bank" id="goalsBank">
+                        <p class="goals-bank-hint">Drag goals to pair with activities</p>
+                        <div class="goals-list" id="goalsList">
+                            <!-- Goals will be populated here -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2157,6 +2214,12 @@
                     e.target.classList.add('dragging');
                     e.dataTransfer.effectAllowed = 'copy';
 
+                    // Auto-close drawer when dragging from activity/goal bank to reveal calendar
+                    const drawer = document.getElementById('activityDrawer');
+                    if (drawer && drawer.classList.contains('open')) {
+                        drawer.classList.remove('open');
+                    }
+
                     // Store different data based on what's being dragged
                     if (e.target.classList.contains('goal-item')) {
                         e.dataTransfer.setData('goal-id', e.target.dataset.goalId);
@@ -2368,6 +2431,26 @@
         function toggleDrawer() {
             const drawer = document.getElementById('activityDrawer');
             drawer.classList.toggle('open');
+        }
+
+        // Switch between Activities and Goals tabs
+        function switchDrawerTab(tabName) {
+            // Remove active class from all tabs and tab contents
+            document.querySelectorAll('.drawer-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.drawer-tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Add active class to selected tab and content
+            if (tabName === 'activities') {
+                document.querySelector('.drawer-tab:first-child').classList.add('active');
+                document.getElementById('activitiesTab').classList.add('active');
+            } else if (tabName === 'goals') {
+                document.querySelector('.drawer-tab:last-child').classList.add('active');
+                document.getElementById('goalsTab').classList.add('active');
+            }
         }
 
         // Toggle activity category
