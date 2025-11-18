@@ -231,17 +231,78 @@
                 { id: 'review-instructions', title: 'Review Email Instructions', description: 'Review pre-session guidance', tasks: ['Instructions reviewed'] }
             ],
             1: [
-                { id: 'sit', title: 'Sit', description: 'Master sit command', tasks: ['Sit with hand signal', 'Sit for 10 seconds', 'Sit with distractions'] },
-                { id: 'down', title: 'Down', description: 'Lie down on command', tasks: ['Down with signal', 'Hold 10 seconds', 'Down from any position'] },
-                { id: 'recall', title: 'Recall', description: 'Come when called', tasks: ['Come in quiet area', 'Come with distractions', 'Consistent recall'] },
-                { id: 'place', title: 'Place', description: 'Go to designated spot', tasks: ['Go to place', 'Stay 30 seconds', 'Place with distractions'] },
-                { id: 'leave-it', title: 'Leave It', description: 'Ignore objects on command', tasks: ['Leave treat in hand', 'Leave treat on floor', 'Walk past distractions'] },
-                { id: 'basic-engagement', title: 'Basic Engagement', description: 'Build focus', tasks: ['Eye contact on name', 'Focus 5 seconds', 'Check in on walks'] }
+                { id: 'crate-manners-1', title: 'Crate Manners', description: 'Basic crate training and comfort', tasks: ['Enter crate willingly', 'Calm in crate for 10 minutes', 'No whining or barking'] },
+                { id: 'boundaries-thresholds-1', title: 'Boundaries and Thresholds', description: 'Wait at doors and boundaries', tasks: ['Wait at front door', 'Wait at gate/threshold', 'Release on command'] },
+                { id: 'sit-1', title: 'Sit', description: 'Master sit command', tasks: ['Sit with hand signal', 'Sit for 10 seconds', 'Sit with mild distractions'] },
+                { id: 'down-1', title: 'Down', description: 'Lie down on command', tasks: ['Down with signal', 'Hold down 10 seconds', 'Down from any position'] },
+                { id: 'markers-release-1', title: 'Markers & Release', description: 'Understand marker words and release cues', tasks: ['Respond to "Yes" marker', 'Understand "Break" release', 'Wait for release from commands'] },
+                { id: 'leave-it-1', title: 'Leave It', description: 'Ignore objects on command', tasks: ['Leave treat in hand', 'Leave treat on floor', 'Walk past distractions'] },
+                { id: 'place-1', title: 'Place', description: 'Go to designated spot', tasks: ['Go to place', 'Stay on place 30 seconds', 'Place with mild distractions'] }
             ],
-            2: [], 3: [], 4: []
+            2: [
+                { id: 'crate-manners-2', title: 'Crate Manners', description: 'Extended crate training with distractions', tasks: ['Calm in crate for 30 minutes', 'No reactivity to household movement', 'Settle quickly when crated'] },
+                { id: 'boundaries-thresholds-2', title: 'Boundaries and Thresholds', description: 'Wait at all doorways with distractions', tasks: ['Wait at all doors consistently', 'Wait with people passing by', 'Hold position until released'] },
+                { id: 'sit-2', title: 'Sit', description: 'Reliable sit with distractions', tasks: ['Sit with moderate distractions', 'Sit from distance (10 feet)', 'Sit duration 30 seconds'] },
+                { id: 'down-2', title: 'Down', description: 'Reliable down with distractions', tasks: ['Down with moderate distractions', 'Down from distance (10 feet)', 'Hold down 30 seconds'] },
+                { id: 'markers-release-2', title: 'Markers & Release', description: 'Advanced marker understanding', tasks: ['Multiple markers in sequence', 'Maintain position until release', 'Generalize to different environments'] },
+                { id: 'leave-it-2', title: 'Leave It', description: 'Advanced leave it command', tasks: ['Leave food on ground while walking', 'Leave people/dogs approaching', 'Leave it at distance'] },
+                { id: 'place-2', title: 'Place', description: 'Extended place command', tasks: ['Place for 2 minutes', 'Place with household distractions', 'Send to place from distance'] },
+                { id: 'toy-ball-out-2', title: 'Toy-Ball Out', description: 'Drop and release toys on command', tasks: ['Drop toy in hand', 'Out command with ball', 'Release without hesitation'] }
+            ],
+            3: [
+                { id: 'crate-manners-3', title: 'Crate Manners', description: 'Master level crate behavior', tasks: ['Calm in crate 1+ hour', 'Settle immediately when crated', 'No reactivity to any distractions'] },
+                { id: 'boundaries-thresholds-3', title: 'Boundaries and Thresholds', description: 'Automatic wait at all boundaries', tasks: ['Auto-sit at all thresholds', 'Wait with high distractions', 'Generalize to new locations'] },
+                { id: 'sit-3', title: 'Sit', description: 'Master sit under all conditions', tasks: ['Sit with high distractions', 'Distance sit (20+ feet)', 'Duration sit 1+ minute'] },
+                { id: 'down-3', title: 'Down', description: 'Master down under all conditions', tasks: ['Down with high distractions', 'Distance down (20+ feet)', 'Hold down 1+ minute'] },
+                { id: 'markers-release-3', title: 'Markers & Release', description: 'Master marker system', tasks: ['Complex marker sequences', 'Multiple behaviors before release', 'Works in all environments'] },
+                { id: 'leave-it-3', title: 'Leave It', description: 'Master level leave it', tasks: ['Leave high-value items', 'Leave it off-leash', 'Auto leave-it (no command needed)'] },
+                { id: 'place-3', title: 'Place', description: 'Master place command', tasks: ['Place for 5+ minutes', 'Place in public settings', 'Remote send to place'] },
+                { id: 'toy-ball-out-3', title: 'Toy-Ball Out', description: 'Immediate release of any item', tasks: ['Out with high-value items', 'Out during play excitement', 'Out at distance'] }
+            ],
+            4: [
+                { id: 'crate-manners-4', title: 'Crate Manners', description: 'Expert crate behavior in all situations', tasks: ['Extended duration (2+ hours)', 'Calm in unfamiliar crates', 'Competition-level crate manners'] },
+                { id: 'boundaries-thresholds-4', title: 'Boundaries and Thresholds', description: 'Perfect threshold control', tasks: ['Auto-wait in all scenarios', 'Wait with extreme distractions', 'Maintain in novel environments'] },
+                { id: 'sit-4', title: 'Sit', description: 'Competition level sit', tasks: ['Immediate sit response', 'Distance sit (50+ feet)', 'Duration sit 2+ minutes'] },
+                { id: 'down-4', title: 'Down', description: 'Competition level down', tasks: ['Immediate down response', 'Distance down (50+ feet)', 'Duration down 2+ minutes'] },
+                { id: 'markers-release-4', title: 'Markers & Release', description: 'Expert marker system', tasks: ['Perfect timing recognition', 'Chain multiple behaviors', 'Works in competition settings'] },
+                { id: 'leave-it-4', title: 'Leave It', description: 'Expert leave it command', tasks: ['Leave it in extreme scenarios', 'Generalized auto leave-it', 'Competition-level reliability'] },
+                { id: 'place-4', title: 'Place', description: 'Expert place command', tasks: ['Extended place (10+ minutes)', 'Place in competition settings', 'Multiple place positions'] },
+                { id: 'toy-ball-out-4', title: 'Toy-Ball Out', description: 'Expert release command', tasks: ['Instant out response', 'Out in any scenario', 'Competition-level reliability'] },
+                { id: 'long-distance-4', title: 'Long Distance Commands', description: 'Commands at extreme distance', tasks: ['Commands at 100+ feet', 'Visual signals only', 'Reliable in all environments'] }
+            ],
+            5: [
+                { id: 'dog-neutrality-1', title: 'Dog Neutrality Level 1', description: 'Basic calm behavior around dogs', tasks: ['Notice dog without reacting', 'Walk past dog at 20 feet', 'Maintain focus on handler'] },
+                { id: 'dog-neutrality-2', title: 'Dog Neutrality Level 2', description: 'Improved calm behavior around dogs', tasks: ['Walk past dog at 10 feet', 'Hold sit-stay with dog nearby', 'Respond to commands near dogs'] },
+                { id: 'dog-neutrality-3', title: 'Dog Neutrality Level 3', description: 'Expert neutrality around dogs', tasks: ['Walk past dog at 5 feet or less', 'Ignore off-leash dogs', 'Maintain neutrality with barking dogs'] }
+            ],
+            6: [
+                { id: 'human-neutrality-1', title: 'Human Neutrality Level 1', description: 'Basic calm behavior around people', tasks: ['Walk past stranger at 10 feet', 'No jumping on people', 'Maintain loose leash near people'] },
+                { id: 'human-neutrality-2', title: 'Human Neutrality Level 2', description: 'Improved calm behavior around people', tasks: ['Ignore people approaching', 'Calm when people pet/touch', 'Maintain focus in crowds'] },
+                { id: 'human-neutrality-3', title: 'Human Neutrality Level 3', description: 'Expert neutrality around people', tasks: ['Perfect manners with children', 'Ignore running/playing people', 'Calm in very crowded areas'] }
+            ],
+            7: [
+                { id: 'trigger-neutrality-1', title: 'General Trigger Neutrality Level 1', description: 'Basic desensitization to common triggers', tasks: ['Calm with basic sounds (doorbell, etc)', 'Ignore moving objects (bikes, etc)', 'Settle during household activity'] },
+                { id: 'trigger-neutrality-2', title: 'General Trigger Neutrality Level 2', description: 'Improved trigger management', tasks: ['Calm with loud noises', 'Ignore fast-moving triggers', 'Maintain training near triggers'] },
+                { id: 'trigger-neutrality-3', title: 'General Trigger Neutrality Level 3', description: 'Expert trigger neutrality', tasks: ['No reaction to any common trigger', 'Generalized neutrality', 'Proactive calming behavior'] }
+            ],
+            8: [
+                { id: 'loose-leash-1', title: 'Loose Leash Walking Level 1', description: 'Foundation leash walking skills', tasks: ['Walk without pulling (short distances)', 'Respond to direction changes', 'Check in with handler'] },
+                { id: 'loose-leash-2', title: 'Loose Leash Walking Level 2', description: 'Reliable loose leash walking', tasks: ['Walk without pulling (medium distances)', 'Loose leash with mild distractions', 'Heel position awareness'] },
+                { id: 'loose-leash-3', title: 'Loose Leash Walking Level 3', description: 'Master loose leash walking', tasks: ['Perfect loose leash in all environments', 'Heel position on command', 'No pulling with any distractions'] }
+            ]
         };
 
-        const LEVEL_DESCRIPTIONS = { 0: 'Onboarding', 1: 'Beginner', 2: 'Intermediate', 3: 'Advanced', 4: 'Master' };
+        const LEVEL_DESCRIPTIONS = {
+            0: 'Onboarding',
+            1: 'Basic Obedience',
+            2: 'Intermediate Obedience',
+            3: 'Advanced Obedience',
+            4: 'Master Obedience',
+            5: 'Dog Neutrality',
+            6: 'Human Neutrality',
+            7: 'General Trigger Neutrality',
+            8: 'Loose Leash Walking'
+        };
 
         document.addEventListener('DOMContentLoaded', async () => {
             const initialized = initializeFirebase();
