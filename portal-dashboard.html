@@ -664,33 +664,45 @@
 
         // Check if user is admin and show admin portal button
         async function checkAndShowAdminButton(email) {
+            console.log('🔍 [ADMIN CHECK] Starting admin check for:', email);
             try {
                 const userDoc = await db.collection('users').doc(email).get();
+
+                console.log('🔍 [ADMIN CHECK] User document exists?:', userDoc.exists);
 
                 if (userDoc.exists) {
                     const userData = userDoc.data();
 
-                    console.log('🔍 Checking admin status for:', email);
-                    console.log('🔍 User data:', userData);
+                    console.log('🔍 [ADMIN CHECK] Full user data:', JSON.stringify(userData, null, 2));
+                    console.log('🔍 [ADMIN CHECK] userData.role:', userData.role);
+                    console.log('🔍 [ADMIN CHECK] userData.admin:', userData.admin);
+                    console.log('🔍 [ADMIN CHECK] userData.isAdmin:', userData.isAdmin);
 
                     // Check if user has admin flag set to true (check all variations)
-                    if (userData.admin === true || userData.isAdmin === true || userData.role === 'admin') {
+                    const isAdmin = userData.admin === true || userData.isAdmin === true || userData.role === 'admin';
+                    console.log('🔍 [ADMIN CHECK] Is user admin?:', isAdmin);
+
+                    if (isAdmin) {
                         const adminBtn = document.getElementById('adminPortalBtn');
-                        console.log('🔍 Admin button element:', adminBtn);
+                        console.log('🔍 [ADMIN CHECK] Admin button element:', adminBtn);
                         if (adminBtn) {
                             adminBtn.style.display = 'inline-flex';
-                            console.log('✅ Admin button shown for user:', email);
+                            console.log('✅ [ADMIN CHECK] Admin button shown for user:', email);
                         } else {
-                            console.error('❌ Admin button element not found!');
+                            console.error('❌ [ADMIN CHECK] Admin button element not found in DOM!');
                         }
                     } else {
-                        console.log('❌ User is not admin. userData.admin:', userData.admin, 'userData.isAdmin:', userData.isAdmin, 'userData.role:', userData.role);
+                        console.log('❌ [ADMIN CHECK] User is NOT admin');
+                        console.log('   - userData.admin:', userData.admin);
+                        console.log('   - userData.isAdmin:', userData.isAdmin);
+                        console.log('   - userData.role:', userData.role);
                     }
                 } else {
-                    console.error('❌ User document does not exist for:', email);
+                    console.error('❌ [ADMIN CHECK] User document does not exist for:', email);
                 }
             } catch (error) {
-                console.error('Error checking admin status:', error);
+                console.error('❌ [ADMIN CHECK] Error checking admin status:', error);
+                console.error('   Error details:', error.message);
             }
         }
 
