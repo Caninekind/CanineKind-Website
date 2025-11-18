@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule Activity - CanineKind Admin</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #D1E5F4 0%, #E8F4F8 100%);
+            min-height: 100vh;
+            padding-bottom: 40px;
+        }
+        .portal-header {
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .portal-logo { display: flex; align-items: center; gap: 1rem; }
+        .portal-logo img { height: 50px; }
+        .portal-logo h1 { color: white; font-size: 1.5rem; font-weight: 600; }
+        .admin-badge {
+            background: rgba(255, 193, 7, 0.95);
+            color: #333;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-left: 12px;
+        }
+        .portal-nav { display: flex; gap: 1.5rem; align-items: center; }
+        .portal-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        .portal-nav a:hover { background: rgba(255, 255, 255, 0.2); }
+        .portal-nav a.active { background: rgba(255, 255, 255, 0.3); font-weight: 600; }
+        .sign-out-link { color: rgba(255, 255, 255, 0.7); font-size: 0.85rem; }
+        .container { max-width: 1200px; margin: 2rem auto; padding: 0 2rem; }
+        .page-header { text-align: center; margin-bottom: 2rem; }
+        .page-header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+        .page-header h1::before { content: '📅'; margin-right: 15px; }
+        .page-header p { color: #666; font-size: 1.1rem; }
+        .filter-bar {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: end;
+        }
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+        select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+        }
+        .activity-feed {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        .activity-item {
+            padding: 1.5rem;
+            border-left: 4px solid #799972;
+            margin-bottom: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        .activity-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 0.75rem;
+        }
+        .activity-client {
+            font-weight: 700;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+        .activity-time {
+            color: #999;
+            font-size: 0.85rem;
+        }
+        .activity-action {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+        .activity-details {
+            color: #799972;
+            font-weight: 600;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <header class="portal-header">
+        <div class="header-content">
+            <div class="portal-logo">
+                <img src="https://i.imgur.com/OXiQWa3.jpeg" alt="CanineKind Logo">
+                <h1>Admin Portal<span class="admin-badge">ADMIN</span></h1>
+            </div>
+            <nav class="portal-nav">
+                <a href="portal-admin-dashboard.html">Dashboard</a>
+                <a href="portal-admin-user-approval.html">User Approval</a>
+                <a href="portal-admin-sessions.html">Sessions</a>
+                <a href="portal-admin-goals.html">Goals</a>
+                <a href="portal-admin-settings.html">Settings</a>
+                <a href="portal-admin-forms.html">Forms</a>
+                <a href="portal-admin-schedule.html" class="active">Schedule Activity</a>
+                <a href="portal-dashboard.html" style="background: rgba(255, 193, 7, 0.25); border: 2px solid rgba(255, 193, 7, 0.6); border-radius: 8px; font-weight: 600;">👁️ View as Client</a>
+                <a href="#" class="sign-out-link" onclick="signOut(); return false;">Sign Out</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Schedule Activity Feed</h1>
+            <p>Monitor client training schedule updates in real-time</p>
+        </div>
+
+        <div class="filter-bar">
+            <div class="form-group">
+                <label>Filter by Client</label>
+                <select id="clientFilter" onchange="loadActivity()">
+                    <option value="">All Clients</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Time Period</label>
+                <select id="timeFilter" onchange="loadActivity()">
+                    <option value="today">Today</option>
+                    <option value="week" selected>This Week</option>
+                    <option value="month">This Month</option>
+                    <option value="all">All Time</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="activity-feed" id="activityFeed">
+            <div class="empty-state">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">📊</div>
+                <p>Client schedule activity will appear here when clients update their training schedules</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script>
+        let currentUser = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const initialized = initializeFirebase();
+            if (!initialized) {
+                alert('Failed to initialize Firebase');
+                window.location.href = 'portal-login.html';
+                return;
+            }
+
+            auth.onAuthStateChanged(async (user) => {
+                if (!user) {
+                    window.location.href = 'portal-login.html';
+                } else {
+                    const isAdmin = await isUserAdmin();
+                    if (!isAdmin) {
+                        alert('Access denied');
+                        window.location.href = 'portal-dashboard.html';
+                        return;
+                    }
+                    currentUser = user;
+                    await loadClients();
+                    await loadActivity();
+                }
+            });
+        });
+
+        async function isUserAdmin() {
+            try {
+                const userDoc = await db.collection('users').doc(auth.currentUser.email).get();
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    return userData.admin === true || userData.isAdmin === true || userData.role === 'admin';
+                }
+                return false;
+            } catch (error) {
+                return false;
+            }
+        }
+
+        async function loadClients() {
+            try {
+                const usersSnapshot = await db.collection('users').where('approved', '==', true).get();
+                const select = document.getElementById('clientFilter');
+                let options = '<option value="">All Clients</option>';
+                usersSnapshot.docs.forEach(doc => {
+                    const userData = doc.data();
+                    const displayName = userData.displayName || userData.name || doc.id;
+                    options += '<option value="' + doc.id + '">' + displayName + '</option>';
+                });
+                select.innerHTML = options;
+            } catch (error) {
+                console.error('Error loading clients:', error);
+            }
+        }
+
+        async function loadActivity() {
+            const feed = document.getElementById('activityFeed');
+            const clientFilter = document.getElementById('clientFilter').value;
+            const timeFilter = document.getElementById('timeFilter').value;
+
+            try {
+                // Calculate time range
+                const now = new Date();
+                let startDate;
+                if (timeFilter === 'today') {
+                    startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                } else if (timeFilter === 'week') {
+                    startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                } else if (timeFilter === 'month') {
+                    startDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+                } else {
+                    startDate = new Date(0);
+                }
+
+                // Query schedule activity logs
+                // Note: This would need activity logging implemented in the schedule page
+                // For now, showing placeholder message
+
+                feed.innerHTML = `
+                    <div class="empty-state">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">📊</div>
+                        <p>Client schedule activity will appear here when clients update their training schedules</p>
+                        <p style="margin-top: 1rem; font-size: 0.9rem;">Activity logging can be implemented by adding update events to the schedule save functions</p>
+                    </div>
+                `;
+
+                // Example of what activity items would look like:
+                // <div class="activity-item">
+                //     <div class="activity-header">
+                //         <span class="activity-client">John Doe</span>
+                //         <span class="activity-time">2 hours ago</span>
+                //     </div>
+                //     <div class="activity-action">Added activity to Monday's schedule</div>
+                //     <div class="activity-details">🏃 Outdoor Play Session at 10:00 AM</div>
+                // </div>
+
+            } catch (error) {
+                console.error('Error loading activity:', error);
+                feed.innerHTML = '<div class="empty-state"><p>Error loading activity feed</p></div>';
+            }
+        }
+
+        function signOut() {
+            auth.signOut().then(() => { window.location.href = 'portal-login.html'; });
+        }
+    </script>
+</body>
+</html>

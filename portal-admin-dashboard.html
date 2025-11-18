@@ -66,6 +66,30 @@
             margin-left: 12px;
         }
 
+        .header-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .view-client-btn {
+            background: rgba(255, 193, 7, 0.25);
+            color: white;
+            border: 2px solid rgba(255, 193, 7, 0.6);
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .view-client-btn:hover {
+            background: rgba(255, 193, 7, 0.35);
+            transform: translateY(-2px);
+        }
+
         .sign-out-btn {
             background: rgba(255, 255, 255, 0.2);
             color: white;
@@ -211,7 +235,10 @@
                 <img src="https://i.imgur.com/OXiQWa3.jpeg" alt="CanineKind Logo">
                 <h1>Admin Portal<span class="admin-badge">ADMIN</span></h1>
             </div>
-            <button class="sign-out-btn" onclick="signOut()">Sign Out</button>
+            <div class="header-buttons">
+                <a href="portal-dashboard.html" class="view-client-btn">👁️ View as Client</a>
+                <button class="sign-out-btn" onclick="signOut()">Sign Out</button>
+            </div>
         </div>
     </header>
 
