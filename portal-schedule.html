@@ -198,98 +198,186 @@
         }
 
         .schedule-layout {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            height: calc(100vh - 400px);
+            min-height: 600px;
+        }
+
+        /* Slide-out drawer from bottom */
+        .activity-drawer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.98), rgba(255,255,255,1));
+            backdrop-filter: blur(20px);
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.15);
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+            z-index: 1000;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(calc(100% - 60px));
+            max-height: 70vh;
+            overflow: hidden;
+        }
+
+        .activity-drawer.open {
+            transform: translateY(0);
+        }
+
+        .drawer-handle {
+            width: 100%;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+            position: relative;
+            user-select: none;
+            transition: all 0.3s ease;
+        }
+
+        .drawer-handle:hover {
+            background: linear-gradient(135deg, #7689eb 0%, #8559ab 100%);
+        }
+
+        .drawer-handle::before {
+            content: '';
+            width: 50px;
+            height: 5px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 10px;
+            position: absolute;
+            top: 15px;
+        }
+
+        .drawer-handle-text {
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .drawer-arrow {
+            font-size: 1.2rem;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .activity-drawer.open .drawer-arrow {
+            transform: rotate(180deg);
+        }
+
+        .drawer-content {
+            height: calc(70vh - 60px);
+            overflow-y: auto;
+            padding: 2rem;
             display: grid;
-            grid-template-columns: 1fr 2fr;
+            grid-template-columns: 1fr 1fr;
             gap: 2rem;
         }
 
         .sidebar {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
+            display: contents;
         }
 
         .activity-bank {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            max-height: calc(100vh - 300px);
-            overflow-y: auto;
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            box-shadow: none;
         }
 
         .activity-bank h3 {
             color: #2c3e50;
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-            font-weight: 700;
-            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            font-weight: 800;
             letter-spacing: 0.5px;
-            position: sticky;
-            top: 0;
-            background: white;
-            padding-bottom: 0.5rem;
-            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        /* Mobile Sidebar Toggle */
-        .sidebar-toggle {
-            display: none;
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            margin-bottom: 20px;
-            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
-            transition: all 0.3s;
-        }
-
-        .sidebar-toggle:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .sidebar-toggle #toggleIcon {
-            display: inline-block;
-            transition: transform 0.3s;
-        }
-
-        .sidebar-toggle.open #toggleIcon {
-            transform: rotate(90deg);
+        .activity-bank h3::before {
+            content: '🎯';
+            font-size: 1.5rem;
         }
 
         /* Activity Categories */
         .activity-category {
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            background: white;
         }
 
         .category-header {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e8ebf0 100%);
-            padding: 12px 15px;
-            border-radius: 8px;
+            padding: 16px 20px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-weight: 600;
-            color: #2c3e50;
-            transition: all 0.2s;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             user-select: none;
+            position: relative;
+            overflow: hidden;
         }
 
-        .category-header:hover {
-            background: linear-gradient(135deg, #e8ebf0 0%, #dde1e8 100%);
-            transform: translateX(3px);
+        .category-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .category-header:hover::after {
+            opacity: 1;
+        }
+
+        /* Category-specific colors */
+        .category-premium .category-header {
+            background: linear-gradient(135deg, #f4ca64 0%, #d4a243 100%);
+            color: #7a5c1e;
+        }
+
+        .category-home .category-header {
+            background: linear-gradient(135deg, rgba(121, 153, 114, 0.25) 0%, rgba(138, 170, 131, 0.15) 100%);
+            color: #4a5f44;
+            border-left: 4px solid #799972;
+        }
+
+        .category-outdoor .category-header {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.20) 0%, rgba(118, 75, 162, 0.15) 100%);
+            color: #4a3a72;
+            border-left: 4px solid #667eea;
+        }
+
+        .category-urban .category-header {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.20) 0%, rgba(0, 242, 254, 0.15) 100%);
+            color: #2a5a7a;
+            border-left: 4px solid #4facfe;
         }
 
         .category-icon {
-            font-size: 0.8rem;
-            transition: transform 0.3s;
+            font-size: 1rem;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0.7;
         }
 
         .category-header.collapsed .category-icon {
@@ -298,17 +386,20 @@
 
         .category-title {
             flex-grow: 1;
-            font-size: 0.9rem;
+            letter-spacing: 0.3px;
         }
 
         .category-content {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
-            padding: 10px 0 10px 25px;
-            max-height: 1000px;
+            gap: 0.75rem;
+            padding: 16px;
+            max-height: 2000px;
             overflow: hidden;
-            transition: max-height 0.3s ease, opacity 0.3s ease;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        padding 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity 0.3s ease;
+            background: #fafbfc;
         }
 
         .category-content.collapsed {
@@ -320,26 +411,26 @@
 
         /* Goals Bank */
         .goals-bank {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            max-height: calc(100vh - 300px);
-            overflow-y: auto;
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            box-shadow: none;
         }
 
         .goals-bank h3 {
             color: #2c3e50;
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-            font-weight: 700;
-            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            font-weight: 800;
             letter-spacing: 0.5px;
-            position: sticky;
-            top: 0;
-            background: white;
-            padding-bottom: 0.5rem;
-            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .goals-bank h3::before {
+            content: '🏆';
+            font-size: 1.5rem;
         }
 
         .goals-bank-hint {
@@ -393,18 +484,35 @@
         }
 
         .activity-item {
-            padding: 1.2rem 1rem;
-            border-radius: 20px;
-            font-weight: 500;
-            font-size: 1rem;
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
             cursor: grab;
-            transition: all 0.2s ease-out;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border: 2px solid transparent;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            gap: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             user-select: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .activity-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .activity-item:hover::before {
+            left: 100%;
         }
 
         .activity-item:active {
@@ -412,99 +520,184 @@
         }
 
         .activity-item:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-            border-color: rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
         }
 
         .activity-item.dragging {
-            opacity: 0.6;
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            opacity: 0.7;
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             z-index: 1000;
         }
 
-        /* Activity colors - bubbly style */
-        .activity-meal { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); color: #8b4513; }
-        .activity-yard { background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); color: #1a5f4a; }
-        .activity-kennel { background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); color: #4a148c; }
-        .activity-enrichment { background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%); color: #4a148c; }
-        .activity-home-training { background: linear-gradient(135deg, #fddb92 0%, #d1fdff 100%); color: #1565c0; }
-        .activity-caninekind-training { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: #1b5e20; }
-        .activity-neighborhood-walk { background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); color: #1a5f4a; }
-        .activity-park-walk { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: #1b5e20; }
-        .activity-forest-hike { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: #01579b; }
-        .activity-sleep { background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%); color: #4a148c; }
-        .activity-potty { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: #880e4f; }
-        .activity-place { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: #b71c1c; }
-        .activity-medication { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); color: white; }
-        .activity-home-groom { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: #01579b; }
-        .activity-pro-groom { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
-        .activity-get-ready { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); color: #8b4513; }
+        /* 4 COLOR CATEGORIES */
 
-        /* Google Calendar Style Grid */
+        /* Category 1: Premium Gold - Private Session */
+        .activity-caninekind-training {
+            background: linear-gradient(135deg, #f4ca64 0%, #d4a243 100%);
+            color: #7a5c1e;
+            border: 2px solid #c9a336;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(212, 162, 67, 0.4);
+        }
+
+        .activity-caninekind-training:hover {
+            box-shadow: 0 6px 25px rgba(212, 162, 67, 0.5);
+            transform: translateY(-3px) scale(1.02);
+        }
+
+        /* Category 2: Muted Green - In the Home */
+        .activity-meal,
+        .activity-yard,
+        .activity-kennel,
+        .activity-sleep,
+        .activity-home-groom,
+        .activity-medication,
+        .activity-home-training,
+        .activity-visitor,
+        .activity-visitor-stranger,
+        .activity-dog-visitor,
+        .activity-place,
+        .activity-enrichment,
+        .activity-get-ready,
+        .activity-play {
+            background: linear-gradient(135deg, rgba(121, 153, 114, 0.20) 0%, rgba(138, 170, 131, 0.10) 100%);
+            color: #4a5f44;
+            border-left: 3px solid #799972;
+        }
+
+        /* Category 3: Muted Purple - Recreational Outdoor */
+        .activity-neighborhood-walk,
+        .activity-outdoor-play,
+        .activity-forest-hike,
+        .activity-park-walk,
+        .activity-city-walk,
+        .activity-outdoor-training {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.18) 0%, rgba(118, 75, 162, 0.10) 100%);
+            color: #4a3a72;
+            border-left: 3px solid #667eea;
+        }
+
+        /* Category 4: Muted Blue - Urban Environments */
+        .activity-store,
+        .activity-vet,
+        .activity-training-facility,
+        .activity-pool,
+        .activity-beach,
+        .activity-playground,
+        .activity-hotel,
+        .activity-office,
+        .activity-garden {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.18) 0%, rgba(0, 242, 254, 0.10) 100%);
+            color: #2a5a7a;
+            border-left: 3px solid #4facfe;
+        }
+
+        /* Modern Calendar Grid */
         .calendar-grid {
             background: white;
-            border-radius: 15px;
+            border-radius: 20px;
             padding: 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            border: 1px solid #dadce0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.06);
             overflow: hidden;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .calendar-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1.5rem;
-            border-bottom: 1px solid #dadce0;
-            background: #f8f9fa;
+            padding: 2rem;
+            border-bottom: 2px solid #f0f0f0;
+            background: linear-gradient(135deg, #fafbfc 0%, #f8f9fa 100%);
         }
 
         .calendar-header h2 {
             color: #2c3e50;
-            font-size: 1.3rem;
-            font-weight: 700;
-            text-transform: uppercase;
+            font-size: 1.5rem;
+            font-weight: 800;
             letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .calendar-header h2::before {
+            content: '📅';
+            font-size: 1.8rem;
         }
 
         .save-btn {
-            padding: 0.75rem 2rem;
-            background: #799972;
+            padding: 12px 32px;
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
             color: white;
             border: none;
-            border-radius: 25px;
+            border-radius: 30px;
             font-size: 1rem;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 3px 10px rgba(121, 153, 114, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(121, 153, 114, 0.35);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .save-btn::before {
+            content: '💾 ';
+            margin-right: 5px;
+        }
+
+        .save-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .save-btn:hover::after {
+            left: 100%;
         }
 
         .save-btn:hover {
-            background: #6a8862;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(121, 153, 114, 0.4);
+            box-shadow: 0 6px 20px rgba(121, 153, 114, 0.45);
+        }
+
+        .save-btn:active {
+            transform: translateY(0);
         }
 
         .time-slots {
             display: flex;
             flex-direction: column;
             gap: 0;
+            overflow-y: auto;
+            flex: 1;
         }
 
         .time-slot {
             display: grid;
-            grid-template-columns: 80px 1fr;
+            grid-template-columns: 90px 1fr;
             gap: 0;
-            border-bottom: 1px solid #dadce0;
-            min-height: 70px;
-            transition: background 0.1s;
+            border-bottom: 1px solid #f0f0f0;
+            min-height: 80px;
+            transition: all 0.2s ease;
         }
 
         .time-slot:hover {
-            background: #f8f9fa;
+            background: linear-gradient(90deg, #fafbfc 0%, #ffffff 100%);
+        }
+
+        .time-slot:last-child {
+            border-bottom: none;
         }
 
         .time-label {
@@ -989,10 +1182,12 @@
             .container {
                 display: flex;
                 flex-direction: column;
+                padding: 0 1rem;
             }
 
             .page-header {
                 order: 1;
+                margin-bottom: 1rem;
             }
 
             #combinedGoalsSection {
@@ -1005,39 +1200,35 @@
 
             .view-mode-selector {
                 order: 3;
-            }
-
-            .sidebar-toggle {
-                display: block;
-                order: 4;
-            }
-
-            .sidebar {
-                order: 5;
-                display: none;
-                grid-template-columns: 1fr;
-            }
-
-            .sidebar.show {
-                display: grid;
+                border-radius: 15px;
+                margin-bottom: 1rem;
             }
 
             .day-selector {
-                order: 6;
-                margin-bottom: 0;
-                border-bottom-left-radius: 0;
-                border-bottom-right-radius: 0;
-                background: white;
-            }
-
-            .calendar-grid {
-                order: 6;
-                border-top-left-radius: 0;
-                border-top-right-radius: 0;
+                order: 4;
+                margin-bottom: 1rem;
+                border-radius: 15px;
             }
 
             .schedule-layout {
-                display: contents;
+                order: 5;
+                height: calc(100vh - 600px);
+                min-height: 500px;
+                margin-bottom: 80px;
+            }
+
+            .calendar-grid {
+                border-radius: 15px;
+            }
+
+            .drawer-content {
+                grid-template-columns: 1fr;
+                padding: 1.5rem;
+                gap: 2rem;
+            }
+
+            .activity-drawer {
+                max-height: 80vh;
             }
 
             .header-content {
@@ -1110,23 +1301,6 @@
             .day-btn::before {
                 font-size: 0.9rem;
                 font-weight: 600;
-            }
-
-            .sidebar {
-                display: flex;
-                flex-direction: column;
-                gap: 1rem;
-                width: 100%;
-            }
-
-            .activity-bank {
-                max-height: 300px;
-                overflow-y: auto;
-            }
-
-            .goals-bank {
-                max-height: 300px;
-                overflow-y: auto;
             }
 
             .time-slot {
@@ -1337,72 +1511,94 @@
         </div>
 
         <div class="schedule-layout">
-            <!-- Mobile Toggle Button -->
-            <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()">
-                <span id="toggleIcon">▶</span> Activity & Goal Bank
-            </button>
+            <div class="calendar-grid">
+                <div class="calendar-header">
+                    <h2 id="currentDayDisplay">Monday Schedule</h2>
+                    <button class="save-btn" onclick="saveSchedule()">Save Schedule</button>
+                </div>
+                <div class="time-slots" id="timeSlots"></div>
+            </div>
+        </div>
 
-            <div class="sidebar" id="sidebar">
+        <!-- Slide-out Activity Drawer -->
+        <div class="activity-drawer" id="activityDrawer">
+            <div class="drawer-handle" onclick="toggleDrawer()">
+                <div class="drawer-handle-text">
+                    <span>Activity & Goal Bank</span>
+                    <span class="drawer-arrow">▲</span>
+                </div>
+            </div>
+            <div class="drawer-content">
                 <div class="activity-bank">
                     <h3>Activity Bank</h3>
 
-                    <!-- Category: In the Home -->
-                    <div class="activity-category">
+                    <!-- Category: Premium - Private Session -->
+                    <div class="activity-category category-premium">
                         <div class="category-header" onclick="toggleCategory(this)">
                             <span class="category-icon">▼</span>
-                            <span class="category-title">In the Home</span>
+                            <span class="category-title">⭐ Private Training Session</span>
                         </div>
                         <div class="category-content">
-                            <div class="activity-item activity-kennel" draggable="true" data-activity="Crate/Kennel Time">Crate/Kennel Time</div>
-                            <div class="activity-item activity-meal" draggable="true" data-activity="Meal Time">Meal Time</div>
-                            <div class="activity-item activity-yard" draggable="true" data-activity="Yard Time">Yard Time</div>
-                            <div class="activity-item activity-sleep" draggable="true" data-activity="Sleeping/Napping">Sleeping/Napping</div>
-                            <div class="activity-item activity-home-groom" draggable="true" data-activity="Grooming">Grooming</div>
-                            <div class="activity-item activity-medication" draggable="true" data-activity="Medication/Cooperative Care">Medication/Cooperative Care</div>
-                            <div class="activity-item activity-home-training" draggable="true" data-activity="Free Training Slot">Free Training Slot</div>
-                            <div class="activity-item activity-caninekind-training" draggable="true" data-activity="Private Lesson with CanineKind Trainer">Private Lesson with CanineKind Trainer</div>
-                            <div class="activity-item activity-visitor" draggable="true" data-activity="Visit from friends">Visit from friends</div>
-                            <div class="activity-item activity-visitor-stranger" draggable="true" data-activity="Visit from stranger">Visit from stranger</div>
-                            <div class="activity-item activity-dog-visitor" draggable="true" data-activity="Visit from another dog">Visit from another dog</div>
-                            <div class="activity-item activity-place" draggable="true" data-activity="Place Time">Place Time</div>
-                            <div class="activity-item activity-enrichment" draggable="true" data-activity="Enrichment toy/puzzle">Enrichment toy/puzzle</div>
-                            <div class="activity-item activity-get-ready" draggable="true" data-activity="Getting ready to leave">Getting ready to leave</div>
-                            <div class="activity-item activity-play" draggable="true" data-activity="Play session">Play session</div>
+                            <div class="activity-item activity-caninekind-training" draggable="true" data-activity="Private Lesson with CanineKind Trainer">⭐ Private Lesson with CanineKind Trainer</div>
+                        </div>
+                    </div>
+
+                    <!-- Category: In the Home -->
+                    <div class="activity-category category-home">
+                        <div class="category-header" onclick="toggleCategory(this)">
+                            <span class="category-icon">▼</span>
+                            <span class="category-title">🏠 In the Home</span>
+                        </div>
+                        <div class="category-content">
+                            <div class="activity-item activity-kennel" draggable="true" data-activity="Crate/Kennel Time">🏠 Crate/Kennel Time</div>
+                            <div class="activity-item activity-meal" draggable="true" data-activity="Meal Time">🍖 Meal Time</div>
+                            <div class="activity-item activity-yard" draggable="true" data-activity="Yard Time">🏡 Yard Time</div>
+                            <div class="activity-item activity-sleep" draggable="true" data-activity="Sleeping/Napping">😴 Sleeping/Napping</div>
+                            <div class="activity-item activity-home-groom" draggable="true" data-activity="Grooming">✂️ Grooming</div>
+                            <div class="activity-item activity-medication" draggable="true" data-activity="Medication/Cooperative Care">💊 Medication/Cooperative Care</div>
+                            <div class="activity-item activity-home-training" draggable="true" data-activity="Free Training Slot">🎓 Free Training Slot</div>
+                            <div class="activity-item activity-visitor" draggable="true" data-activity="Visit from friends">👥 Visit from friends</div>
+                            <div class="activity-item activity-visitor-stranger" draggable="true" data-activity="Visit from stranger">🚪 Visit from stranger</div>
+                            <div class="activity-item activity-dog-visitor" draggable="true" data-activity="Visit from another dog">🐕 Visit from another dog</div>
+                            <div class="activity-item activity-place" draggable="true" data-activity="Place Time">🛋️ Place Time</div>
+                            <div class="activity-item activity-enrichment" draggable="true" data-activity="Enrichment toy/puzzle">🧩 Enrichment toy/puzzle</div>
+                            <div class="activity-item activity-get-ready" draggable="true" data-activity="Getting ready to leave">🔔 Getting ready to leave</div>
+                            <div class="activity-item activity-play" draggable="true" data-activity="Play session">🎾 Play session</div>
                         </div>
                     </div>
 
                     <!-- Category: Recreational - Outdoor -->
-                    <div class="activity-category">
+                    <div class="activity-category category-outdoor">
                         <div class="category-header" onclick="toggleCategory(this)">
                             <span class="category-icon">▼</span>
-                            <span class="category-title">Recreational - Outdoor</span>
+                            <span class="category-title">🌳 Recreational - Outdoor</span>
                         </div>
                         <div class="category-content">
-                            <div class="activity-item activity-neighborhood-walk" draggable="true" data-activity="Neighborhood walk">Neighborhood walk</div>
-                            <div class="activity-item activity-outdoor-play" draggable="true" data-activity="Outdoor Play Session">Outdoor Play Session</div>
-                            <div class="activity-item activity-forest-hike" draggable="true" data-activity="Forest Hike">Forest Hike</div>
-                            <div class="activity-item activity-park-walk" draggable="true" data-activity="Open Field Walk">Open Field Walk</div>
-                            <div class="activity-item activity-city-walk" draggable="true" data-activity="Downtown/City Walk">Downtown/City Walk</div>
-                            <div class="activity-item activity-outdoor-training" draggable="true" data-activity="General Outdoor Training">General Outdoor Training</div>
+                            <div class="activity-item activity-neighborhood-walk" draggable="true" data-activity="Neighborhood walk">🚶 Neighborhood walk</div>
+                            <div class="activity-item activity-outdoor-play" draggable="true" data-activity="Outdoor Play Session">🏃 Outdoor Play Session</div>
+                            <div class="activity-item activity-forest-hike" draggable="true" data-activity="Forest Hike">🥾 Forest Hike</div>
+                            <div class="activity-item activity-park-walk" draggable="true" data-activity="Open Field Walk">🌳 Open Field Walk</div>
+                            <div class="activity-item activity-city-walk" draggable="true" data-activity="Downtown/City Walk">🏙️ Downtown/City Walk</div>
+                            <div class="activity-item activity-outdoor-training" draggable="true" data-activity="General Outdoor Training">🎯 General Outdoor Training</div>
                         </div>
                     </div>
 
                     <!-- Category: Urban Environments -->
-                    <div class="activity-category">
+                    <div class="activity-category category-urban">
                         <div class="category-header" onclick="toggleCategory(this)">
                             <span class="category-icon">▼</span>
-                            <span class="category-title">Urban Environments</span>
+                            <span class="category-title">🏙️ Urban Environments</span>
                         </div>
                         <div class="category-content">
-                            <div class="activity-item activity-store" draggable="true" data-activity="Store trip">Store trip</div>
-                            <div class="activity-item activity-vet" draggable="true" data-activity="Vet visit">Vet visit</div>
-                            <div class="activity-item activity-training-facility" draggable="true" data-activity="Indoor training facility">Indoor training facility</div>
-                            <div class="activity-item activity-pool" draggable="true" data-activity="Pool/swimming area">Pool/swimming area</div>
-                            <div class="activity-item activity-beach" draggable="true" data-activity="Beach">Beach</div>
-                            <div class="activity-item activity-playground" draggable="true" data-activity="Child playground">Child playground</div>
-                            <div class="activity-item activity-hotel" draggable="true" data-activity="Hotel">Hotel</div>
-                            <div class="activity-item activity-office" draggable="true" data-activity="Office">Office</div>
-                            <div class="activity-item activity-garden" draggable="true" data-activity="Public garden">Public garden</div>
+                            <div class="activity-item activity-store" draggable="true" data-activity="Store trip">🛒 Store trip</div>
+                            <div class="activity-item activity-vet" draggable="true" data-activity="Vet visit">🏥 Vet visit</div>
+                            <div class="activity-item activity-training-facility" draggable="true" data-activity="Indoor training facility">🏢 Indoor training facility</div>
+                            <div class="activity-item activity-pool" draggable="true" data-activity="Pool/swimming area">🏊 Pool/swimming area</div>
+                            <div class="activity-item activity-beach" draggable="true" data-activity="Beach">🏖️ Beach</div>
+                            <div class="activity-item activity-playground" draggable="true" data-activity="Child playground">🎠 Child playground</div>
+                            <div class="activity-item activity-hotel" draggable="true" data-activity="Hotel">🏨 Hotel</div>
+                            <div class="activity-item activity-office" draggable="true" data-activity="Office">💼 Office</div>
+                            <div class="activity-item activity-garden" draggable="true" data-activity="Public garden">🌸 Public garden</div>
                         </div>
                     </div>
                 </div>
@@ -1415,14 +1611,6 @@
                         <!-- Goals will be populated here -->
                     </div>
                 </div>
-            </div>
-
-            <div class="calendar-grid">
-                <div class="calendar-header">
-                    <h2 id="currentDayDisplay">Monday Schedule</h2>
-                    <button class="save-btn" onclick="saveSchedule()">Save Schedule</button>
-                </div>
-                <div class="time-slots" id="timeSlots"></div>
             </div>
         </div>
     </div>
@@ -2176,13 +2364,10 @@
             }
         }
 
-        // Toggle sidebar on mobile
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const toggle = document.getElementById('sidebarToggle');
-
-            sidebar.classList.toggle('show');
-            toggle.classList.toggle('open');
+        // Toggle drawer open/close
+        function toggleDrawer() {
+            const drawer = document.getElementById('activityDrawer');
+            drawer.classList.toggle('open');
         }
 
         // Toggle activity category
