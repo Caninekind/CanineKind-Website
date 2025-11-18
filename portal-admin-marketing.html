@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing Tracker - CanineKind Admin Portal</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #D1E5F4 0%, #E8F4F8 100%);
+            min-height: 100vh;
+            padding-bottom: 40px;
+        }
+
+        .portal-header {
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .portal-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .portal-logo img {
+            height: 50px;
+            width: auto;
+        }
+
+        .portal-logo h1 {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .admin-badge {
+            background: rgba(255, 193, 7, 0.95);
+            color: #333;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-left: 12px;
+        }
+
+        .portal-nav {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .portal-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        .portal-nav a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .portal-nav a.active {
+            background: rgba(255, 255, 255, 0.3);
+            font-weight: 600;
+        }
+
+        .sign-out-link {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-left: 4px solid #799972;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #2c3e50;
+        }
+
+        .actions-bar {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e8ebf0;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: #799972;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #6a8a63;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #2c3e50;
+            border: 2px solid #e8ebf0;
+        }
+
+        .btn-secondary:hover {
+            background: #e8ebf0;
+        }
+
+        .towns-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .town-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+        }
+
+        .town-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+
+        .town-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .town-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .town-distance {
+            background: #e8f4f8;
+            color: #2c3e50;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .marketing-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .marketing-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .item-label {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .item-count {
+            background: #799972;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-weight: 700;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .item-count.zero {
+            background: #e8ebf0;
+            color: #999;
+        }
+
+        .town-actions {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid #f8f9fa;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: white;
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .modal-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h2 {
+            color: #2c3e50;
+            font-size: 1.5rem;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .close-modal:hover {
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e8ebf0;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #999;
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .actions-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .towns-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="portal-header">
+        <div class="header-content">
+            <div class="portal-logo">
+                <img src="https://i.imgur.com/OXiQWa3.jpeg" alt="CanineKind Logo">
+                <h1>Admin Portal<span class="admin-badge">ADMIN</span></h1>
+            </div>
+            <nav class="portal-nav">
+                <a href="portal-admin-dashboard.html">Dashboard</a>
+                <a href="portal-admin-user-approval.html">User Approval</a>
+                <a href="portal-admin-sessions.html">Sessions</a>
+                <a href="portal-admin-goals.html">Goals</a>
+                <a href="portal-admin-settings.html">Settings</a>
+                <a href="portal-admin-forms.html">Forms</a>
+                <a href="portal-admin-schedule.html">Schedule Activity</a>
+                <a href="portal-admin-marketing.html" class="active">Marketing</a>
+                <a href="portal-dashboard.html" style="background: rgba(255, 193, 7, 0.25); border: 2px solid rgba(255, 193, 7, 0.6); border-radius: 8px; font-weight: 600;">👁️ View as Client</a>
+                <a href="#" class="sign-out-link" onclick="signOut(); return false;">Sign Out</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>📍 Marketing Tracker</h1>
+            <p>Track boots-on-the-ground marketing efforts within 2 hours of Stoughton, MA</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Total Towns</div>
+                <div class="stat-value" id="totalTowns">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Towns Covered</div>
+                <div class="stat-value" id="townsCovered">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Flyers</div>
+                <div class="stat-value" id="totalFlyers">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Stickers</div>
+                <div class="stat-value" id="totalStickers">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Business Cards</div>
+                <div class="stat-value" id="totalBusinessCards">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Artwork Placed</div>
+                <div class="stat-value" id="totalArtwork">0</div>
+            </div>
+        </div>
+
+        <div class="actions-bar">
+            <div class="search-box">
+                <input type="text" id="searchTowns" placeholder="🔍 Search towns..." onkeyup="filterTowns()">
+            </div>
+            <button class="btn btn-primary" onclick="openAddTownModal()">+ Add New Town</button>
+            <button class="btn btn-secondary" onclick="exportData()">📊 Export Data</button>
+        </div>
+
+        <div id="townsContainer" class="towns-grid">
+            <div class="empty-state">
+                <div class="empty-state-icon">📍</div>
+                <p>Loading towns...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Town Modal -->
+    <div id="townModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeTownModal()">&times;</button>
+            <div class="modal-header">
+                <h2 id="modalTitle">Add New Town</h2>
+            </div>
+            <div class="form-group">
+                <label>Town Name</label>
+                <input type="text" id="townName" placeholder="e.g., Brockton">
+            </div>
+            <div class="form-group">
+                <label>Distance from Stoughton (minutes)</label>
+                <input type="number" id="townDistance" placeholder="e.g., 15" min="0" max="120">
+            </div>
+            <div class="form-group">
+                <label>Notes (Optional)</label>
+                <textarea id="townNotes" placeholder="Any notes about this town..."></textarea>
+            </div>
+            <button class="btn btn-primary" onclick="saveTown()" style="width: 100%;">Save Town</button>
+        </div>
+    </div>
+
+    <!-- Update Marketing Modal -->
+    <div id="marketingModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeMarketingModal()">&times;</button>
+            <div class="modal-header">
+                <h2 id="marketingModalTitle">Update Marketing Efforts</h2>
+            </div>
+            <div class="form-group">
+                <label>Flyers Posted</label>
+                <input type="number" id="marketingFlyers" placeholder="0" min="0">
+            </div>
+            <div class="form-group">
+                <label>Stickers Placed</label>
+                <input type="number" id="marketingStickers" placeholder="0" min="0">
+            </div>
+            <div class="form-group">
+                <label>Business Cards Distributed</label>
+                <input type="number" id="marketingBusinessCards" placeholder="0" min="0">
+            </div>
+            <div class="form-group">
+                <label>Artwork/Signage Placed</label>
+                <input type="number" id="marketingArtwork" placeholder="0" min="0">
+            </div>
+            <div class="form-group">
+                <label>Notes</label>
+                <textarea id="marketingNotes" placeholder="Details about this visit..."></textarea>
+            </div>
+            <button class="btn btn-primary" onclick="saveMarketing()" style="width: 100%;">Save Update</button>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <script>
+        let currentUser = null;
+        let allTowns = [];
+        let editingTownId = null;
+        let editingMarketingTownId = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const initialized = initializeFirebase();
+            if (!initialized) {
+                alert('Failed to initialize Firebase');
+                window.location.href = 'portal-login.html';
+                return;
+            }
+
+            auth.onAuthStateChanged(async (user) => {
+                if (!user) {
+                    window.location.href = 'portal-login.html';
+                } else {
+                    const isAdmin = await isUserAdmin();
+                    if (!isAdmin) {
+                        alert('Access denied. Admin privileges required.');
+                        window.location.href = 'portal-dashboard.html';
+                        return;
+                    }
+
+                    currentUser = user;
+                    await loadTowns();
+                }
+            });
+        });
+
+        async function isUserAdmin() {
+            try {
+                const userDoc = await db.collection('users').doc(auth.currentUser.email).get();
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    return userData.admin === true || userData.isAdmin === true || userData.role === 'admin';
+                }
+                return false;
+            } catch (error) {
+                console.error('Error checking admin status:', error);
+                return false;
+            }
+        }
+
+        async function loadTowns() {
+            try {
+                const townsSnapshot = await db.collection('marketingTowns')
+                    .orderBy('name')
+                    .get();
+
+                allTowns = townsSnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+
+                renderTowns();
+                updateStats();
+            } catch (error) {
+                console.error('Error loading towns:', error);
+                document.getElementById('townsContainer').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">❌</div>
+                        <p>Error loading towns. Please try again.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function renderTowns() {
+            const container = document.getElementById('townsContainer');
+
+            if (allTowns.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📍</div>
+                        <p>No towns added yet. Click "Add New Town" to get started!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            allTowns.forEach(town => {
+                const flyers = town.flyers || 0;
+                const stickers = town.stickers || 0;
+                const businessCards = town.businessCards || 0;
+                const artwork = town.artwork || 0;
+                const totalItems = flyers + stickers + businessCards + artwork;
+
+                html += `
+                    <div class="town-card">
+                        <div class="town-header">
+                            <div class="town-name">${town.name}</div>
+                            <div class="town-distance">${town.distance || 0} min</div>
+                        </div>
+                        <div class="marketing-items">
+                            <div class="marketing-item">
+                                <span class="item-label">📄 Flyers</span>
+                                <span class="item-count ${flyers === 0 ? 'zero' : ''}">${flyers}</span>
+                            </div>
+                            <div class="marketing-item">
+                                <span class="item-label">🏷️ Stickers</span>
+                                <span class="item-count ${stickers === 0 ? 'zero' : ''}">${stickers}</span>
+                            </div>
+                            <div class="marketing-item">
+                                <span class="item-label">💼 Business Cards</span>
+                                <span class="item-count ${businessCards === 0 ? 'zero' : ''}">${businessCards}</span>
+                            </div>
+                            <div class="marketing-item">
+                                <span class="item-label">🎨 Artwork</span>
+                                <span class="item-count ${artwork === 0 ? 'zero' : ''}">${artwork}</span>
+                            </div>
+                        </div>
+                        ${town.notes ? `<p style="margin-top: 1rem; color: #666; font-size: 0.9rem;"><strong>Notes:</strong> ${town.notes}</p>` : ''}
+                        <div class="town-actions">
+                            <button class="btn btn-primary btn-small" onclick="openMarketingModal('${town.id}')">Update Marketing</button>
+                            <button class="btn btn-secondary btn-small" onclick="editTown('${town.id}')">Edit Town</button>
+                            <button class="btn btn-secondary btn-small" onclick="deleteTown('${town.id}', '${town.name}')">Delete</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function updateStats() {
+            document.getElementById('totalTowns').textContent = allTowns.length;
+
+            const townsCovered = allTowns.filter(t =>
+                (t.flyers || 0) > 0 ||
+                (t.stickers || 0) > 0 ||
+                (t.businessCards || 0) > 0 ||
+                (t.artwork || 0) > 0
+            ).length;
+            document.getElementById('townsCovered').textContent = townsCovered;
+
+            const totalFlyers = allTowns.reduce((sum, t) => sum + (t.flyers || 0), 0);
+            const totalStickers = allTowns.reduce((sum, t) => sum + (t.stickers || 0), 0);
+            const totalBusinessCards = allTowns.reduce((sum, t) => sum + (t.businessCards || 0), 0);
+            const totalArtwork = allTowns.reduce((sum, t) => sum + (t.artwork || 0), 0);
+
+            document.getElementById('totalFlyers').textContent = totalFlyers;
+            document.getElementById('totalStickers').textContent = totalStickers;
+            document.getElementById('totalBusinessCards').textContent = totalBusinessCards;
+            document.getElementById('totalArtwork').textContent = totalArtwork;
+        }
+
+        function filterTowns() {
+            const searchTerm = document.getElementById('searchTowns').value.toLowerCase();
+            const filteredTowns = allTowns.filter(town =>
+                town.name.toLowerCase().includes(searchTerm)
+            );
+
+            // Temporarily replace allTowns for rendering
+            const originalTowns = allTowns;
+            allTowns = filteredTowns;
+            renderTowns();
+            allTowns = originalTowns;
+        }
+
+        function openAddTownModal() {
+            editingTownId = null;
+            document.getElementById('modalTitle').textContent = 'Add New Town';
+            document.getElementById('townName').value = '';
+            document.getElementById('townDistance').value = '';
+            document.getElementById('townNotes').value = '';
+            document.getElementById('townModal').style.display = 'block';
+        }
+
+        function closeTownModal() {
+            document.getElementById('townModal').style.display = 'none';
+        }
+
+        function editTown(townId) {
+            const town = allTowns.find(t => t.id === townId);
+            if (!town) return;
+
+            editingTownId = townId;
+            document.getElementById('modalTitle').textContent = 'Edit Town';
+            document.getElementById('townName').value = town.name || '';
+            document.getElementById('townDistance').value = town.distance || '';
+            document.getElementById('townNotes').value = town.notes || '';
+            document.getElementById('townModal').style.display = 'block';
+        }
+
+        async function saveTown() {
+            const name = document.getElementById('townName').value.trim();
+            const distance = parseInt(document.getElementById('townDistance').value) || 0;
+            const notes = document.getElementById('townNotes').value.trim();
+
+            if (!name) {
+                alert('Please enter a town name');
+                return;
+            }
+
+            const townData = {
+                name: name,
+                distance: distance,
+                notes: notes,
+                flyers: 0,
+                stickers: 0,
+                businessCards: 0,
+                artwork: 0,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            try {
+                if (editingTownId) {
+                    // Update existing town
+                    await db.collection('marketingTowns').doc(editingTownId).update(townData);
+                    alert('Town updated successfully!');
+                } else {
+                    // Add new town
+                    townData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                    await db.collection('marketingTowns').add(townData);
+                    alert('Town added successfully!');
+                }
+
+                closeTownModal();
+                await loadTowns();
+            } catch (error) {
+                console.error('Error saving town:', error);
+                alert('Error saving town. Please try again.');
+            }
+        }
+
+        async function deleteTown(townId, townName) {
+            if (!confirm(`Delete ${townName}? This will remove all marketing data for this town.`)) {
+                return;
+            }
+
+            try {
+                await db.collection('marketingTowns').doc(townId).delete();
+                alert('Town deleted successfully!');
+                await loadTowns();
+            } catch (error) {
+                console.error('Error deleting town:', error);
+                alert('Error deleting town. Please try again.');
+            }
+        }
+
+        function openMarketingModal(townId) {
+            const town = allTowns.find(t => t.id === townId);
+            if (!town) return;
+
+            editingMarketingTownId = townId;
+            document.getElementById('marketingModalTitle').textContent = `Update Marketing - ${town.name}`;
+            document.getElementById('marketingFlyers').value = '';
+            document.getElementById('marketingStickers').value = '';
+            document.getElementById('marketingBusinessCards').value = '';
+            document.getElementById('marketingArtwork').value = '';
+            document.getElementById('marketingNotes').value = '';
+            document.getElementById('marketingModal').style.display = 'block';
+        }
+
+        function closeMarketingModal() {
+            document.getElementById('marketingModal').style.display = 'none';
+        }
+
+        async function saveMarketing() {
+            if (!editingMarketingTownId) return;
+
+            const town = allTowns.find(t => t.id === editingMarketingTownId);
+            if (!town) return;
+
+            const flyersToAdd = parseInt(document.getElementById('marketingFlyers').value) || 0;
+            const stickersToAdd = parseInt(document.getElementById('marketingStickers').value) || 0;
+            const businessCardsToAdd = parseInt(document.getElementById('marketingBusinessCards').value) || 0;
+            const artworkToAdd = parseInt(document.getElementById('marketingArtwork').value) || 0;
+            const notes = document.getElementById('marketingNotes').value.trim();
+
+            const updateData = {
+                flyers: (town.flyers || 0) + flyersToAdd,
+                stickers: (town.stickers || 0) + stickersToAdd,
+                businessCards: (town.businessCards || 0) + businessCardsToAdd,
+                artwork: (town.artwork || 0) + artworkToAdd,
+                lastVisit: firebase.firestore.FieldValue.serverTimestamp(),
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            if (notes) {
+                updateData.lastVisitNotes = notes;
+            }
+
+            try {
+                await db.collection('marketingTowns').doc(editingMarketingTownId).update(updateData);
+                alert('Marketing data updated successfully!');
+                closeMarketingModal();
+                await loadTowns();
+            } catch (error) {
+                console.error('Error updating marketing:', error);
+                alert('Error updating marketing data. Please try again.');
+            }
+        }
+
+        function exportData() {
+            let csv = 'Town,Distance (min),Flyers,Stickers,Business Cards,Artwork,Total Items,Notes\n';
+
+            allTowns.forEach(town => {
+                const flyers = town.flyers || 0;
+                const stickers = town.stickers || 0;
+                const businessCards = town.businessCards || 0;
+                const artwork = town.artwork || 0;
+                const total = flyers + stickers + businessCards + artwork;
+                const notes = (town.notes || '').replace(/"/g, '""');
+
+                csv += `"${town.name}",${town.distance || 0},${flyers},${stickers},${businessCards},${artwork},${total},"${notes}"\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('hidden', '');
+            a.setAttribute('href', url);
+            a.setAttribute('download', `marketing-tracker-${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        function signOut() {
+            auth.signOut().then(() => {
+                window.location.href = 'portal-login.html';
+            });
+        }
+    </script>
+</body>
+</html>
