@@ -232,6 +232,92 @@
             z-index: 1;
         }
 
+        /* Mobile Sidebar Toggle */
+        .sidebar-toggle {
+            display: none;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s;
+        }
+
+        .sidebar-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .sidebar-toggle #toggleIcon {
+            display: inline-block;
+            transition: transform 0.3s;
+        }
+
+        .sidebar-toggle.open #toggleIcon {
+            transform: rotate(90deg);
+        }
+
+        /* Activity Categories */
+        .activity-category {
+            margin-bottom: 1rem;
+        }
+
+        .category-header {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8ebf0 100%);
+            padding: 12px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            color: #2c3e50;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .category-header:hover {
+            background: linear-gradient(135deg, #e8ebf0 0%, #dde1e8 100%);
+            transform: translateX(3px);
+        }
+
+        .category-icon {
+            font-size: 0.8rem;
+            transition: transform 0.3s;
+        }
+
+        .category-header.collapsed .category-icon {
+            transform: rotate(-90deg);
+        }
+
+        .category-title {
+            flex-grow: 1;
+            font-size: 0.9rem;
+        }
+
+        .category-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding: 10px 0 10px 25px;
+            max-height: 1000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+        }
+
+        .category-content.collapsed {
+            max-height: 0;
+            opacity: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
         /* Goals Bank */
         .goals-bank {
             background: white;
@@ -921,12 +1007,23 @@
                 order: 3;
             }
 
-            .sidebar {
+            .sidebar-toggle {
+                display: block;
                 order: 4;
             }
 
-            .day-selector {
+            .sidebar {
                 order: 5;
+                display: none;
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar.show {
+                display: grid;
+            }
+
+            .day-selector {
+                order: 6;
                 margin-bottom: 0;
                 border-bottom-left-radius: 0;
                 border-bottom-right-radius: 0;
@@ -1240,59 +1337,74 @@
         </div>
 
         <div class="schedule-layout">
-            <div class="sidebar">
+            <!-- Mobile Toggle Button -->
+            <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()">
+                <span id="toggleIcon">▶</span> Activity & Goal Bank
+            </button>
+
+            <div class="sidebar" id="sidebar">
                 <div class="activity-bank">
                     <h3>Activity Bank</h3>
-                    <div class="activity-list">
-                    <div class="activity-item activity-meal" draggable="true" data-activity="Meal Time">
-                        Meal Time
+
+                    <!-- Category: In the Home -->
+                    <div class="activity-category">
+                        <div class="category-header" onclick="toggleCategory(this)">
+                            <span class="category-icon">▼</span>
+                            <span class="category-title">In the Home</span>
+                        </div>
+                        <div class="category-content">
+                            <div class="activity-item activity-kennel" draggable="true" data-activity="Crate/Kennel Time">Crate/Kennel Time</div>
+                            <div class="activity-item activity-meal" draggable="true" data-activity="Meal Time">Meal Time</div>
+                            <div class="activity-item activity-yard" draggable="true" data-activity="Yard Time">Yard Time</div>
+                            <div class="activity-item activity-sleep" draggable="true" data-activity="Sleeping/Napping">Sleeping/Napping</div>
+                            <div class="activity-item activity-home-groom" draggable="true" data-activity="Grooming">Grooming</div>
+                            <div class="activity-item activity-medication" draggable="true" data-activity="Medication/Cooperative Care">Medication/Cooperative Care</div>
+                            <div class="activity-item activity-home-training" draggable="true" data-activity="Free Training Slot">Free Training Slot</div>
+                            <div class="activity-item activity-caninekind-training" draggable="true" data-activity="Private Lesson with CanineKind Trainer">Private Lesson with CanineKind Trainer</div>
+                            <div class="activity-item activity-visitor" draggable="true" data-activity="Visit from friends">Visit from friends</div>
+                            <div class="activity-item activity-visitor-stranger" draggable="true" data-activity="Visit from stranger">Visit from stranger</div>
+                            <div class="activity-item activity-dog-visitor" draggable="true" data-activity="Visit from another dog">Visit from another dog</div>
+                            <div class="activity-item activity-place" draggable="true" data-activity="Place Time">Place Time</div>
+                            <div class="activity-item activity-enrichment" draggable="true" data-activity="Enrichment toy/puzzle">Enrichment toy/puzzle</div>
+                            <div class="activity-item activity-get-ready" draggable="true" data-activity="Getting ready to leave">Getting ready to leave</div>
+                            <div class="activity-item activity-play" draggable="true" data-activity="Play session">Play session</div>
+                        </div>
                     </div>
-                    <div class="activity-item activity-yard" draggable="true" data-activity="Yard Time">
-                        Yard Time
+
+                    <!-- Category: Recreational - Outdoor -->
+                    <div class="activity-category">
+                        <div class="category-header" onclick="toggleCategory(this)">
+                            <span class="category-icon">▼</span>
+                            <span class="category-title">Recreational - Outdoor</span>
+                        </div>
+                        <div class="category-content">
+                            <div class="activity-item activity-neighborhood-walk" draggable="true" data-activity="Neighborhood walk">Neighborhood walk</div>
+                            <div class="activity-item activity-outdoor-play" draggable="true" data-activity="Outdoor Play Session">Outdoor Play Session</div>
+                            <div class="activity-item activity-forest-hike" draggable="true" data-activity="Forest Hike">Forest Hike</div>
+                            <div class="activity-item activity-park-walk" draggable="true" data-activity="Open Field Walk">Open Field Walk</div>
+                            <div class="activity-item activity-city-walk" draggable="true" data-activity="Downtown/City Walk">Downtown/City Walk</div>
+                            <div class="activity-item activity-outdoor-training" draggable="true" data-activity="General Outdoor Training">General Outdoor Training</div>
+                        </div>
                     </div>
-                    <div class="activity-item activity-kennel" draggable="true" data-activity="Kennel/Crate Time">
-                        Kennel/Crate Time
+
+                    <!-- Category: Urban Environments -->
+                    <div class="activity-category">
+                        <div class="category-header" onclick="toggleCategory(this)">
+                            <span class="category-icon">▼</span>
+                            <span class="category-title">Urban Environments</span>
+                        </div>
+                        <div class="category-content">
+                            <div class="activity-item activity-store" draggable="true" data-activity="Store trip">Store trip</div>
+                            <div class="activity-item activity-vet" draggable="true" data-activity="Vet visit">Vet visit</div>
+                            <div class="activity-item activity-training-facility" draggable="true" data-activity="Indoor training facility">Indoor training facility</div>
+                            <div class="activity-item activity-pool" draggable="true" data-activity="Pool/swimming area">Pool/swimming area</div>
+                            <div class="activity-item activity-beach" draggable="true" data-activity="Beach">Beach</div>
+                            <div class="activity-item activity-playground" draggable="true" data-activity="Child playground">Child playground</div>
+                            <div class="activity-item activity-hotel" draggable="true" data-activity="Hotel">Hotel</div>
+                            <div class="activity-item activity-office" draggable="true" data-activity="Office">Office</div>
+                            <div class="activity-item activity-garden" draggable="true" data-activity="Public garden">Public garden</div>
+                        </div>
                     </div>
-                    <div class="activity-item activity-enrichment" draggable="true" data-activity="Food Enrichment Treat">
-                        Food Enrichment Treat
-                    </div>
-                    <div class="activity-item activity-home-training" draggable="true" data-activity="At Home Training Slot">
-                        At Home Training Slot
-                    </div>
-                    <div class="activity-item activity-caninekind-training" draggable="true" data-activity="CanineKind Training Session">
-                        CanineKind Training Session
-                    </div>
-                    <div class="activity-item activity-neighborhood-walk" draggable="true" data-activity="Neighborhood Walk">
-                        Neighborhood Walk
-                    </div>
-                    <div class="activity-item activity-park-walk" draggable="true" data-activity="Park/Field Walk">
-                        Park/Field Walk
-                    </div>
-                    <div class="activity-item activity-forest-hike" draggable="true" data-activity="Forest Hike">
-                        Forest Hike
-                    </div>
-                    <div class="activity-item activity-sleep" draggable="true" data-activity="Sleeping/Nap time">
-                        Sleeping/Nap time
-                    </div>
-                    <div class="activity-item activity-potty" draggable="true" data-activity="Quick Potty Break">
-                        Quick Potty Break
-                    </div>
-                    <div class="activity-item activity-place" draggable="true" data-activity="Place Time">
-                        Place Time
-                    </div>
-                    <div class="activity-item activity-medication" draggable="true" data-activity="Administer Medication">
-                        Administer Medication
-                    </div>
-                    <div class="activity-item activity-home-groom" draggable="true" data-activity="At-home grooming">
-                        At-home grooming
-                    </div>
-                    <div class="activity-item activity-pro-groom" draggable="true" data-activity="Professional grooming">
-                        Professional grooming
-                    </div>
-                    <div class="activity-item activity-get-ready" draggable="true" data-activity="Get ready to train!">
-                        Get ready to train!
-                    </div>
-                </div>
                 </div>
 
                 <!-- Goals Bank -->
@@ -1404,8 +1516,8 @@
                         window.location.href = 'portal-pending.html';
                     } else {
                         currentUser = user;
-                        await loadUserData();
                         initializeSchedule();
+                        await loadUserData();
                         setupDragAndDrop();
                         setupDaySelector();
                     }
@@ -1720,44 +1832,84 @@
 
         function getActivityClass(activity) {
             const mapping = {
+                // In the Home
+                'Crate/Kennel Time': 'activity-kennel',
                 'Meal Time': 'activity-meal',
                 'Yard Time': 'activity-yard',
-                'Kennel/Crate Time': 'activity-kennel',
-                'Food Enrichment Treat': 'activity-enrichment',
-                'At Home Training Slot': 'activity-home-training',
-                'CanineKind Training Session': 'activity-caninekind-training',
-                'Neighborhood Walk': 'activity-neighborhood-walk',
-                'Park/Field Walk': 'activity-park-walk',
-                'Forest Hike': 'activity-forest-hike',
-                'Sleeping/Nap time': 'activity-sleep',
-                'Quick Potty Break': 'activity-potty',
+                'Sleeping/Napping': 'activity-sleep',
+                'Grooming': 'activity-home-groom',
+                'Medication/Cooperative Care': 'activity-medication',
+                'Free Training Slot': 'activity-home-training',
+                'Private Lesson with CanineKind Trainer': 'activity-caninekind-training',
+                'Visit from friends': 'activity-visitor',
+                'Visit from stranger': 'activity-visitor-stranger',
+                'Visit from another dog': 'activity-dog-visitor',
                 'Place Time': 'activity-place',
-                'Administer Medication': 'activity-medication',
-                'At-home grooming': 'activity-home-groom',
-                'Professional grooming': 'activity-pro-groom',
-                'Get ready to train!': 'activity-get-ready'
+                'Enrichment toy/puzzle': 'activity-enrichment',
+                'Getting ready to leave': 'activity-get-ready',
+                'Play session': 'activity-play',
+                // Recreational - Outdoor
+                'Neighborhood walk': 'activity-neighborhood-walk',
+                'Outdoor Play Session': 'activity-outdoor-play',
+                'Forest Hike': 'activity-forest-hike',
+                'Open Field Walk': 'activity-park-walk',
+                'Downtown/City Walk': 'activity-city-walk',
+                'General Outdoor Training': 'activity-outdoor-training',
+                // Urban Environments
+                'Store trip': 'activity-store',
+                'Vet visit': 'activity-vet',
+                'Indoor training facility': 'activity-training-facility',
+                'Pool/swimming area': 'activity-pool',
+                'Beach': 'activity-beach',
+                'Child playground': 'activity-playground',
+                'Hotel': 'activity-hotel',
+                'Office': 'activity-office',
+                'Public garden': 'activity-garden',
+                // Legacy support
+                'Kennel/Crate Time': 'activity-kennel',
+                'Sleeping/Nap time': 'activity-sleep'
             };
             return mapping[activity] || 'activity-meal';
         }
 
         function getActivityEmoji(activity) {
             const mapping = {
+                // In the Home
+                'Crate/Kennel Time': '🏠',
                 'Meal Time': '🍖',
                 'Yard Time': '🏡',
-                'Kennel/Crate Time': '🏠',
-                'Food Enrichment Treat': '🦴',
-                'At Home Training Slot': '🎓',
-                'CanineKind Training Session': '⭐',
-                'Neighborhood Walk': '🚶',
-                'Park/Field Walk': '🌳',
-                'Forest Hike': '🥾',
-                'Sleeping/Nap time': '😴',
-                'Quick Potty Break': '🚽',
+                'Sleeping/Napping': '😴',
+                'Grooming': '✂️',
+                'Medication/Cooperative Care': '💊',
+                'Free Training Slot': '🎓',
+                'Private Lesson with CanineKind Trainer': '⭐',
+                'Visit from friends': '👥',
+                'Visit from stranger': '🚪',
+                'Visit from another dog': '🐕',
                 'Place Time': '🛋️',
-                'Administer Medication': '💊',
-                'At-home grooming': '✂️',
-                'Professional grooming': '💇',
-                'Get ready to train!': '🔔'
+                'Enrichment toy/puzzle': '🧩',
+                'Getting ready to leave': '🔔',
+                'Play session': '🎾',
+                // Recreational - Outdoor
+                'Neighborhood walk': '🚶',
+                'Outdoor Play Session': '🏃',
+                'Forest Hike': '🥾',
+                'Open Field Walk': '🌳',
+                'Downtown/City Walk': '🏙️',
+                'General Outdoor Training': '🎯',
+                // Urban Environments
+                'Store trip': '🛒',
+                'Vet visit': '🏥',
+                'Indoor training facility': '🏢',
+                'Pool/swimming area': '🏊',
+                'Beach': '🏖️',
+                'Child playground': '🎠',
+                'Hotel': '🏨',
+                'Office': '💼',
+                'Public garden': '🌸',
+                // Legacy support
+                'Kennel/Crate Time': '🏠',
+                'Sleeping/Nap time': '😴'
             };
             return mapping[activity] || '🐕';
         }
@@ -2022,6 +2174,24 @@
             } else {
                 overlay.classList.remove('active');
             }
+        }
+
+        // Toggle sidebar on mobile
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const toggle = document.getElementById('sidebarToggle');
+
+            sidebar.classList.toggle('show');
+            toggle.classList.toggle('open');
+        }
+
+        // Toggle activity category
+        function toggleCategory(headerElement) {
+            const header = headerElement;
+            const content = header.nextElementSibling;
+
+            header.classList.toggle('collapsed');
+            content.classList.toggle('collapsed');
         }
 
         function signOut() {
