@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Approval - CanineKind Admin Portal</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #D1E5F4 0%, #E8F4F8 100%);
+            min-height: 100vh;
+            padding-bottom: 40px;
+        }
+
+        .portal-header {
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .portal-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .portal-logo img {
+            height: 50px;
+            width: auto;
+        }
+
+        .portal-logo h1 {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .admin-badge {
+            background: rgba(255, 193, 7, 0.95);
+            color: #333;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-left: 12px;
+        }
+
+        .portal-nav {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .portal-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        .portal-nav a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .portal-nav a.active {
+            background: rgba(255, 255, 255, 0.3);
+            font-weight: 600;
+        }
+
+        .sign-out-link {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
+            padding: 0.4rem 0.8rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .page-header h1::before {
+            content: '👥';
+            font-size: 2.5rem;
+        }
+
+        .page-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .tab {
+            padding: 1rem 2rem;
+            background: transparent;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab:hover {
+            color: #799972;
+            background: rgba(121, 153, 114, 0.05);
+        }
+
+        .tab.active {
+            color: #799972;
+            border-bottom-color: #799972;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .user-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-left: 4px solid #ffa726;
+            transition: all 0.3s;
+        }
+
+        .user-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+
+        .user-card.approved {
+            border-left-color: #10b981;
+        }
+
+        .user-card.denied {
+            border-left-color: #ef4444;
+        }
+
+        .user-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1.5rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .user-info h3 {
+            color: #2c3e50;
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .user-email {
+            color: #666;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-date {
+            color: #999;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+
+        .status-badge {
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-approved {
+            background: #d1f2eb;
+            color: #0f5132;
+        }
+
+        .status-denied {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .user-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            font-size: 0.8rem;
+            color: #666;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
+        }
+
+        .detail-value {
+            font-size: 1rem;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-approve {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .btn-approve:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-deny {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+        }
+
+        .btn-deny:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-undo {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            color: white;
+        }
+
+        .btn-undo:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(107, 114, 128, 0.4);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #799972;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .tabs {
+                flex-wrap: wrap;
+            }
+
+            .tab {
+                flex: 1;
+                min-width: 120px;
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .user-header {
+                flex-direction: column;
+            }
+
+            .actions {
+                width: 100%;
+            }
+
+            .btn {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="portal-header">
+        <div class="header-content">
+            <div class="portal-logo">
+                <img src="https://i.imgur.com/OXiQWa3.jpeg" alt="CanineKind Logo">
+                <h1>Admin Portal<span class="admin-badge">ADMIN</span></h1>
+            </div>
+            <nav class="portal-nav">
+                <a href="portal-admin-dashboard.html">Dashboard</a>
+                <a href="portal-admin-user-approval.html" class="active">User Approval</a>
+                <a href="portal-admin-sessions.html">Sessions</a>
+                <a href="portal-admin-goals.html">Goals</a>
+                <a href="portal-admin-settings.html">Settings</a>
+                <a href="portal-admin-forms.html">Forms</a>
+                <a href="portal-admin-schedule.html">Schedule Activity</a>
+                <a href="portal-dashboard.html" style="background: rgba(255, 193, 7, 0.25); border: 2px solid rgba(255, 193, 7, 0.6); border-radius: 8px; font-weight: 600;">👁️ View as Client</a>
+                <a href="#" class="sign-out-link" onclick="signOut(); return false;">Sign Out</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>User Approval</h1>
+            <p>Review and manage user registration requests</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('pending')">Pending Requests</button>
+            <button class="tab" onclick="switchTab('approved')">Approved Users</button>
+            <button class="tab" onclick="switchTab('denied')">Denied Requests</button>
+        </div>
+
+        <div class="tab-content active" id="pending-tab">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Loading pending requests...</p>
+            </div>
+        </div>
+
+        <div class="tab-content" id="approved-tab">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Loading approved users...</p>
+            </div>
+        </div>
+
+        <div class="tab-content" id="denied-tab">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Loading denied requests...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <!-- Firebase Config -->
+    <script src="firebase-config.js"></script>
+
+    <script>
+        let currentUser = null;
+        let allUsers = [];
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const initialized = initializeFirebase();
+            if (!initialized) {
+                alert('Failed to initialize Firebase');
+                window.location.href = 'portal-login.html';
+                return;
+            }
+
+            auth.onAuthStateChanged(async (user) => {
+                if (!user) {
+                    window.location.href = 'portal-login.html';
+                } else {
+                    const isAdmin = await isUserAdmin();
+                    if (!isAdmin) {
+                        alert('Access denied. Admin privileges required.');
+                        window.location.href = 'portal-dashboard.html';
+                        return;
+                    }
+
+                    currentUser = user;
+                    await loadUsers();
+                }
+            });
+        });
+
+        async function isUserAdmin() {
+            try {
+                const userDoc = await db.collection('users').doc(auth.currentUser.email).get();
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    return userData.admin === true || userData.isAdmin === true || userData.role === 'admin';
+                }
+                return false;
+            } catch (error) {
+                console.error('Error checking admin status:', error);
+                return false;
+            }
+        }
+
+        async function loadUsers() {
+            try {
+                const usersSnapshot = await db.collection('users').get();
+                allUsers = usersSnapshot.docs.map(doc => ({
+                    email: doc.id,
+                    ...doc.data()
+                }));
+
+                renderUsers();
+            } catch (error) {
+                console.error('Error loading users:', error);
+                showError('pending-tab');
+            }
+        }
+
+        function renderUsers() {
+            const pending = allUsers.filter(u => !u.approved && !u.denied);
+            const approved = allUsers.filter(u => u.approved === true);
+            const denied = allUsers.filter(u => u.denied === true);
+
+            renderUserList('pending-tab', pending, 'pending');
+            renderUserList('approved-tab', approved, 'approved');
+            renderUserList('denied-tab', denied, 'denied');
+        }
+
+        function renderUserList(tabId, users, status) {
+            const tab = document.getElementById(tabId);
+
+            if (users.length === 0) {
+                tab.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">${status === 'pending' ? '✅' : status === 'approved' ? '👥' : '🚫'}</div>
+                        <h3>${status === 'pending' ? 'No Pending Requests' : status === 'approved' ? 'No Approved Users' : 'No Denied Requests'}</h3>
+                        <p>${status === 'pending' ? 'All user requests have been processed.' : status === 'approved' ? 'No users have been approved yet.' : 'No requests have been denied.'}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            tab.innerHTML = users.map(user => createUserCard(user, status)).join('');
+        }
+
+        function createUserCard(user, status) {
+            const createdDate = user.createdAt ? new Date(user.createdAt.toDate()).toLocaleDateString() : 'Unknown';
+            const displayName = user.displayName || user.name || 'No name provided';
+            const dogName = user.dogName || 'Not provided';
+
+            return `
+                <div class="user-card ${status}">
+                    <div class="user-header">
+                        <div class="user-info">
+                            <h3>${displayName}</h3>
+                            <div class="user-email">
+                                <span>📧</span>
+                                <span>${user.email}</span>
+                            </div>
+                            <div class="user-date">Registered: ${createdDate}</div>
+                        </div>
+                        <span class="status-badge status-${status}">${status}</span>
+                    </div>
+
+                    <div class="user-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Dog's Name</span>
+                            <span class="detail-value">${dogName}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Phone</span>
+                            <span class="detail-value">${user.phone || 'Not provided'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Address</span>
+                            <span class="detail-value">${user.address || 'Not provided'}</span>
+                        </div>
+                    </div>
+
+                    <div class="actions">
+                        ${status === 'pending' ? `
+                            <button class="btn btn-approve" onclick="approveUser('${user.email}')">✓ Approve</button>
+                            <button class="btn btn-deny" onclick="denyUser('${user.email}')">✕ Deny</button>
+                        ` : status === 'approved' ? `
+                            <button class="btn btn-deny" onclick="denyUser('${user.email}')">Revoke Access</button>
+                        ` : `
+                            <button class="btn btn-undo" onclick="undoDenial('${user.email}')">↺ Undo Denial</button>
+                        `}
+                    </div>
+                </div>
+            `;
+        }
+
+        async function approveUser(email) {
+            if (!confirm(`Approve ${email}? They will gain access to the client portal.`)) {
+                return;
+            }
+
+            try {
+                await db.collection('users').doc(email).update({
+                    approved: true,
+                    denied: false,
+                    approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    approvedBy: currentUser.email
+                });
+
+                await loadUsers();
+                alert(`${email} has been approved!`);
+            } catch (error) {
+                console.error('Error approving user:', error);
+                alert('Error approving user. Please try again.');
+            }
+        }
+
+        async function denyUser(email) {
+            if (!confirm(`Deny ${email}? They will be unable to access the client portal.`)) {
+                return;
+            }
+
+            try {
+                await db.collection('users').doc(email).update({
+                    approved: false,
+                    denied: true,
+                    deniedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    deniedBy: currentUser.email
+                });
+
+                await loadUsers();
+                alert(`${email} has been denied.`);
+            } catch (error) {
+                console.error('Error denying user:', error);
+                alert('Error denying user. Please try again.');
+            }
+        }
+
+        async function undoDenial(email) {
+            if (!confirm(`Undo denial for ${email}? They will return to pending status.`)) {
+                return;
+            }
+
+            try {
+                await db.collection('users').doc(email).update({
+                    approved: false,
+                    denied: false
+                });
+
+                await loadUsers();
+                alert(`Denial reversed for ${email}.`);
+            } catch (error) {
+                console.error('Error undoing denial:', error);
+                alert('Error undoing denial. Please try again.');
+            }
+        }
+
+        function switchTab(tab) {
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.getElementById(`${tab}-tab`).classList.add('active');
+        }
+
+        function showError(tabId) {
+            const tab = document.getElementById(tabId);
+            tab.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon">⚠️</div>
+                    <h3>Error Loading Data</h3>
+                    <p>Please refresh the page to try again.</p>
+                </div>
+            `;
+        }
+
+        function signOut() {
+            auth.signOut().then(() => {
+                window.location.href = 'portal-login.html';
+            });
+        }
+    </script>
+</body>
+</html>

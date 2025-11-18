@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forms Management - CanineKind Admin</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #D1E5F4 0%, #E8F4F8 100%);
+            min-height: 100vh;
+            padding-bottom: 40px;
+        }
+        .portal-header {
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .portal-logo { display: flex; align-items: center; gap: 1rem; }
+        .portal-logo img { height: 50px; }
+        .portal-logo h1 { color: white; font-size: 1.5rem; font-weight: 600; }
+        .admin-badge {
+            background: rgba(255, 193, 7, 0.95);
+            color: #333;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-left: 12px;
+        }
+        .portal-nav { display: flex; gap: 1.5rem; align-items: center; }
+        .portal-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        .portal-nav a:hover { background: rgba(255, 255, 255, 0.2); }
+        .portal-nav a.active { background: rgba(255, 255, 255, 0.3); font-weight: 600; }
+        .sign-out-link { color: rgba(255, 255, 255, 0.7); font-size: 0.85rem; }
+        .container { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; }
+        .page-header { text-align: center; margin-bottom: 2rem; }
+        .page-header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+        .page-header h1::before { content: '📄'; margin-right: 15px; }
+        .page-header p { color: #666; font-size: 1.1rem; }
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        .tab {
+            padding: 1rem 2rem;
+            background: transparent;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        .tab:hover { color: #799972; background: rgba(121, 153, 114, 0.05); }
+        .tab.active { color: #799972; border-bottom-color: #799972; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .section-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+        .section-header { margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 3px solid #f0f0f0; }
+        .section-header h2 { color: #2c3e50; font-size: 1.4rem; font-weight: 800; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: inherit;
+        }
+        .btn {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(121, 153, 114, 0.4); }
+        .doc-item {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .doc-info h3 { color: #2c3e50; margin-bottom: 0.5rem; }
+        .doc-info p { color: #666; font-size: 0.9rem; }
+        .doc-actions { display: flex; gap: 0.5rem; }
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            border-radius: 6px;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <header class="portal-header">
+        <div class="header-content">
+            <div class="portal-logo">
+                <img src="https://i.imgur.com/OXiQWa3.jpeg" alt="CanineKind Logo">
+                <h1>Admin Portal<span class="admin-badge">ADMIN</span></h1>
+            </div>
+            <nav class="portal-nav">
+                <a href="portal-admin-dashboard.html">Dashboard</a>
+                <a href="portal-admin-user-approval.html">User Approval</a>
+                <a href="portal-admin-sessions.html">Sessions</a>
+                <a href="portal-admin-goals.html">Goals</a>
+                <a href="portal-admin-settings.html">Settings</a>
+                <a href="portal-admin-forms.html" class="active">Forms</a>
+                <a href="portal-admin-schedule.html">Schedule Activity</a>
+                <a href="portal-dashboard.html" style="background: rgba(255, 193, 7, 0.25); border: 2px solid rgba(255, 193, 7, 0.6); border-radius: 8px; font-weight: 600;">👁️ View as Client</a>
+                <a href="#" class="sign-out-link" onclick="signOut(); return false;">Sign Out</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Forms & Documents</h1>
+            <p>Manage forms, view submissions, and assign documents to clients</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('submissions')">Recent Submissions</button>
+            <button class="tab" onclick="switchTab('upload')">Upload New Form</button>
+        </div>
+
+        <div class="tab-content active" id="submissions-tab">
+            <div class="section-card">
+                <div class="section-header">
+                    <h2>Recent Form Submissions</h2>
+                </div>
+                <div id="submissionsList">
+                    <div class="empty-state">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">📋</div>
+                        <p>Form submissions will appear here when clients complete documents</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="upload-tab">
+            <div class="section-card">
+                <div class="section-header">
+                    <h2>Upload Form or Document</h2>
+                </div>
+                <div class="form-group">
+                    <label>Form Title</label>
+                    <input type="text" id="formTitle" placeholder="e.g., Training Agreement">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="formDesc" placeholder="Brief description of this form..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Assign To</label>
+                    <select id="assignTo">
+                        <option value="all">All Clients</option>
+                        <option value="specific">Specific Client</option>
+                    </select>
+                </div>
+                <div class="form-group" id="clientSelectGroup" style="display: none;">
+                    <label>Select Client</label>
+                    <select id="clientSelect"></select>
+                </div>
+                <div class="form-group">
+                    <label>Form URL or Content</label>
+                    <input type="url" id="formUrl" placeholder="https://...">
+                    <p style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">Enter a Google Forms, Typeform, or document link</p>
+                </div>
+                <button class="btn btn-primary" onclick="uploadForm()">Create Form Assignment</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script>
+        let currentUser = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const initialized = initializeFirebase();
+            if (!initialized) {
+                alert('Failed to initialize Firebase');
+                window.location.href = 'portal-login.html';
+                return;
+            }
+
+            auth.onAuthStateChanged(async (user) => {
+                if (!user) {
+                    window.location.href = 'portal-login.html';
+                } else {
+                    const isAdmin = await isUserAdmin();
+                    if (!isAdmin) {
+                        alert('Access denied');
+                        window.location.href = 'portal-dashboard.html';
+                        return;
+                    }
+                    currentUser = user;
+                    loadClients();
+                    loadSubmissions();
+                }
+            });
+        });
+
+        async function isUserAdmin() {
+            try {
+                const userDoc = await db.collection('users').doc(auth.currentUser.email).get();
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    return userData.admin === true || userData.isAdmin === true || userData.role === 'admin';
+                }
+                return false;
+            } catch (error) {
+                return false;
+            }
+        }
+
+        async function loadClients() {
+            try {
+                const usersSnapshot = await db.collection('users').where('approved', '==', true).get();
+                const select = document.getElementById('clientSelect');
+                let options = '<option value="">-- Choose a client --</option>';
+                usersSnapshot.docs.forEach(doc => {
+                    const userData = doc.data();
+                    const displayName = userData.displayName || userData.name || doc.id;
+                    options += '<option value="' + doc.id + '">' + displayName + '</option>';
+                });
+                select.innerHTML = options;
+            } catch (error) {
+                console.error('Error loading clients:', error);
+            }
+        }
+
+        async function loadSubmissions() {
+            // Placeholder for future implementation
+            // This would query form submissions from Firestore
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(tab + '-tab').classList.add('active');
+        }
+
+        document.getElementById('assignTo').addEventListener('change', function() {
+            const clientGroup = document.getElementById('clientSelectGroup');
+            clientGroup.style.display = this.value === 'specific' ? 'block' : 'none';
+        });
+
+        async function uploadForm() {
+            const title = document.getElementById('formTitle').value.trim();
+            const description = document.getElementById('formDesc').value.trim();
+            const url = document.getElementById('formUrl').value.trim();
+            const assignTo = document.getElementById('assignTo').value;
+
+            if (!title || !url) {
+                alert('Please enter a title and URL');
+                return;
+            }
+
+            try {
+                const formData = {
+                    title: title,
+                    description: description,
+                    url: url,
+                    createdBy: currentUser.email,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    assignedTo: assignTo
+                };
+
+                if (assignTo === 'all') {
+                    // Add to global forms collection
+                    await db.collection('forms').add(formData);
+                    alert('Form created and assigned to all clients!');
+                } else {
+                    // Add to specific client
+                    const clientEmail = document.getElementById('clientSelect').value;
+                    if (!clientEmail) {
+                        alert('Please select a client');
+                        return;
+                    }
+                    formData.clientEmail = clientEmail;
+                    await db.collection('users').doc(clientEmail).collection('assignedForms').add(formData);
+                    alert('Form assigned to client!');
+                }
+
+                // Clear form
+                document.getElementById('formTitle').value = '';
+                document.getElementById('formDesc').value = '';
+                document.getElementById('formUrl').value = '';
+            } catch (error) {
+                console.error('Error uploading form:', error);
+                alert('Error creating form assignment');
+            }
+        }
+
+        function signOut() {
+            auth.signOut().then(() => { window.location.href = 'portal-login.html'; });
+        }
+    </script>
+</body>
+</html>

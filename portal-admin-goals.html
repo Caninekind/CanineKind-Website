@@ -3,22 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin: Goals Management - CanineKind Client Portal</title>
+    <title>Goals Management - CanineKind Admin</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #D1E5F4 0%, #E8F4F8 100%);
             min-height: 100vh;
             padding-bottom: 40px;
         }
-
         .portal-header {
             background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
             box-shadow: 0 2px 10px rgba(0,0,0,0.15);
@@ -26,7 +20,6 @@
             top: 0;
             z-index: 100;
         }
-
         .header-content {
             max-width: 1400px;
             margin: 0 auto;
@@ -36,42 +29,20 @@
             align-items: center;
             flex-wrap: wrap;
         }
-
-        .portal-logo {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .portal-logo img {
-            height: 50px;
-            width: auto;
-        }
-
-        .portal-logo h1 {
-            color: white;
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
+        .portal-logo { display: flex; align-items: center; gap: 1rem; }
+        .portal-logo img { height: 50px; width: auto; }
+        .portal-logo h1 { color: white; font-size: 1.5rem; font-weight: 600; }
         .admin-badge {
-            background: #ffd700;
+            background: rgba(255, 193, 7, 0.95);
             color: #333;
-            padding: 0.25rem 0.75rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            margin-left: 12px;
         }
-
-        .portal-nav {
-            display: flex;
-            gap: 1.5rem;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
+        .portal-nav { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
         .portal-nav a {
             color: white;
             text-decoration: none;
@@ -80,378 +51,126 @@
             padding: 0.5rem 1rem;
             border-radius: 5px;
         }
-
-        .portal-nav a:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .portal-nav a.active {
-            background: rgba(255, 255, 255, 0.3);
-            font-weight: 600;
-        }
-
-        .sign-out-link {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.85rem;
-            padding: 0.4rem 0.8rem;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 2rem auto;
-            padding: 0 2rem;
-        }
-
-        .page-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
+        .portal-nav a:hover { background: rgba(255, 255, 255, 0.2); }
+        .portal-nav a.active { background: rgba(255, 255, 255, 0.3); font-weight: 600; }
+        .sign-out-link { color: rgba(255, 255, 255, 0.7); font-size: 0.85rem; }
+        .container { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; }
+        .page-header { text-align: center; margin-bottom: 2rem; }
         .page-header h1 {
-            color: #333;
+            color: #2c3e50;
             font-size: 2.5rem;
+            font-weight: 800;
             margin-bottom: 0.5rem;
         }
-
-        .page-header p {
-            color: #666;
-            font-size: 1.1rem;
-        }
-
-        /* Section Styles */
-        .section {
+        .page-header h1::before { content: '🎯'; margin-right: 15px; }
+        .page-header p { color: #666; font-size: 1.1rem; }
+        .client-selector {
             background: white;
-            border-radius: 10px;
             padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
             margin-bottom: 2rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
-
+        .client-selector label {
+            display: block;
+            color: #2c3e50;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+        .client-selector select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: white;
+            cursor: pointer;
+        }
+        .goals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+        .goals-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
         .section-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
             margin-bottom: 1.5rem;
             padding-bottom: 1rem;
-            border-bottom: 2px solid #e0e0e0;
+            border-bottom: 3px solid #f0f0f0;
         }
-
-        .section-header h2 {
-            color: #2c3e50;
-            font-size: 1.5rem;
+        .section-header h2 { color: #2c3e50; font-size: 1.4rem; font-weight: 800; }
+        .level-section { margin-bottom: 1.5rem; }
+        .level-header {
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
             font-weight: 700;
-        }
-
-        .badge {
-            background: #fbbf24;
-            color: #92400e;
-            padding: 0.25rem 0.75rem;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            font-weight: 700;
-        }
-
-        /* Pending Approvals */
-        .approval-card {
-            background: #fffbeb;
-            border: 2px solid #fbbf24;
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .approval-header {
+            margin-bottom: 0.75rem;
+            cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1rem;
         }
-
-        .approval-header h3 {
-            color: #2c3e50;
-            font-size: 1.2rem;
-            font-weight: 700;
-        }
-
-        .approval-date {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .approval-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .detail-item {
-            background: white;
-            padding: 0.75rem;
-            border-radius: 6px;
-            border-left: 3px solid #799972;
-        }
-
-        .detail-label {
-            color: #666;
-            font-size: 0.85rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.25rem;
-        }
-
-        .detail-value {
-            color: #2c3e50;
-            font-size: 1rem;
-            font-weight: 600;
-        }
-
-        .client-notes {
-            background: white;
+        .level-content { display: none; }
+        .level-content.open { display: block; }
+        .goal-item {
+            background: #f8f9fa;
             padding: 1rem;
-            border-radius: 6px;
-            border-left: 3px solid #3b82f6;
-            margin-bottom: 1rem;
-        }
-
-        .client-notes strong {
-            display: block;
-            color: #2c3e50;
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .client-notes p {
-            color: #555;
-            line-height: 1.6;
-        }
-
-        .approval-actions {
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
             display: flex;
+            justify-content: space-between;
+            align-items: center;
             gap: 1rem;
         }
-
+        .goal-info { flex: 1; }
+        .goal-title { font-weight: 600; color: #2c3e50; margin-bottom: 0.25rem; }
+        .goal-desc { font-size: 0.85rem; color: #666; }
         .btn {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .btn-approve {
-            background: #10b981;
-            color: white;
-        }
-
-        .btn-approve:hover {
-            background: #059669;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
-        }
-
-        .btn-reject {
-            background: #ef4444;
-            color: white;
-        }
-
-        .btn-reject:hover {
-            background: #dc2626;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
-        }
-
-        .btn-secondary {
-            background: #e0e0e0;
-            color: #333;
-        }
-
-        .btn-secondary:hover {
-            background: #d0d0d0;
-        }
-
-        /* Client Progress Table */
-        .table-container {
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th {
-            background: #f8f9fa;
-            color: #2c3e50;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-size: 0.85rem;
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 2px solid #e0e0e0;
-        }
-
-        td {
-            padding: 1rem;
-            border-bottom: 1px solid #e0e0e0;
-            color: #555;
-        }
-
-        tr:hover {
-            background: #f8f9fa;
-        }
-
-        .client-name {
-            color: #2c3e50;
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        .progress-bar {
-            background: #e0e0e0;
-            height: 8px;
-            border-radius: 4px;
-            overflow: hidden;
-            width: 100%;
-        }
-
-        .progress-fill {
-            background: linear-gradient(90deg, #799972 0%, #8aaa83 100%);
-            height: 100%;
-            transition: width 0.3s;
-        }
-
-        .level-badge {
-            background: #799972;
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .unlock-btn {
-            background: #799972;
-            color: white;
             padding: 0.5rem 1rem;
             border: none;
-            border-radius: 4px;
-            font-size: 0.85rem;
+            border-radius: 6px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
+            font-size: 0.85rem;
         }
-
-        .unlock-btn:hover {
-            background: #6a8862;
-            transform: translateY(-1px);
+        .btn-add { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; }
+        .btn-remove { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; }
+        .btn-primary {
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            color: white;
+            padding: 0.75rem 2rem;
+            font-size: 1rem;
         }
-
-        /* Level Unlock Section */
-        .unlock-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-        }
-
-        .unlock-card {
+        .custom-goal-form {
             background: #f8f9fa;
             padding: 1.5rem;
-            border-radius: 8px;
-            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            margin-top: 1rem;
         }
-
-        .unlock-card h3 {
-            color: #2c3e50;
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
+        .form-group { margin-bottom: 1rem; }
         .form-group label {
             display: block;
-            color: #555;
             font-weight: 600;
             margin-bottom: 0.5rem;
-            font-size: 0.9rem;
+            color: #2c3e50;
         }
-
-        select, input {
+        input, textarea {
             width: 100%;
             padding: 0.75rem;
             border: 2px solid #e0e0e0;
-            border-radius: 6px;
-            font-size: 1rem;
+            border-radius: 8px;
             font-family: inherit;
         }
-
-        select:focus, input:focus {
-            outline: none;
-            border-color: #799972;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 3rem;
-            color: #999;
-        }
-
-        .empty-state-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 2rem;
-            color: #666;
-        }
-
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #799972;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 0 1rem;
-            }
-
-            .approval-details {
-                grid-template-columns: 1fr;
-            }
-
-            .approval-actions {
-                flex-direction: column;
-            }
-
-            .table-container {
-                font-size: 0.85rem;
-            }
-
-            th, td {
-                padding: 0.75rem 0.5rem;
-            }
-        }
+        textarea { min-height: 100px; resize: vertical; }
+        .empty-state { text-align: center; padding: 3rem; color: #999; }
+        @media (max-width: 1024px) { .goals-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -459,14 +178,17 @@
         <div class="header-content">
             <div class="portal-logo">
                 <img src="https://i.imgur.com/OXiQWa3.jpeg" alt="CanineKind Logo">
-                <h1>Admin Portal</h1>
-                <span class="admin-badge">Admin</span>
+                <h1>Admin Portal<span class="admin-badge">ADMIN</span></h1>
             </div>
             <nav class="portal-nav">
                 <a href="portal-admin-dashboard.html">Dashboard</a>
-                <a href="portal-admin-goals.html" class="active">Goals Management</a>
+                <a href="portal-admin-user-approval.html">User Approval</a>
                 <a href="portal-admin-sessions.html">Sessions</a>
-                <a href="portal-dashboard.html">Client View</a>
+                <a href="portal-admin-goals.html" class="active">Goals</a>
+                <a href="portal-admin-settings.html">Settings</a>
+                <a href="portal-admin-forms.html">Forms</a>
+                <a href="portal-admin-schedule.html">Schedule Activity</a>
+                <a href="portal-dashboard.html" style="background: rgba(255, 193, 7, 0.25); border: 2px solid rgba(255, 193, 7, 0.6); border-radius: 8px; font-weight: 600;">👁️ View as Client</a>
                 <a href="#" class="sign-out-link" onclick="signOut(); return false;">Sign Out</a>
             </nav>
         </div>
@@ -475,92 +197,52 @@
     <div class="container">
         <div class="page-header">
             <h1>Goals Management</h1>
-            <p>Approve level completions, unlock goals, and monitor client progress</p>
+            <p>Manage client training goals and create custom objectives</p>
         </div>
 
-        <!-- Pending Level Completions -->
-        <div class="section">
-            <div class="section-header">
-                <h2>Pending Level Completions</h2>
-                <span class="badge" id="pendingCount">0</span>
-            </div>
-            <div id="pendingApprovals">
-                <div class="loading">
-                    <div class="spinner"></div>
-                    <p>Loading pending approvals...</p>
-                </div>
-            </div>
+        <div class="client-selector">
+            <label>Select Client to Manage</label>
+            <select id="clientSelect" onchange="loadClientGoals()">
+                <option value="">-- Choose a client --</option>
+            </select>
         </div>
 
-        <!-- Client Goal Progress -->
-        <div class="section">
-            <div class="section-header">
-                <h2>Client Goal Progress</h2>
-            </div>
-            <div id="clientProgress">
-                <div class="loading">
-                    <div class="spinner"></div>
-                    <p>Loading client progress...</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Unlock Levels -->
-        <div class="section">
-            <div class="section-header">
-                <h2>Unlock Levels & Goals</h2>
-            </div>
-            <div class="unlock-section">
-                <div class="unlock-card">
-                    <h3>Unlock Level for Client</h3>
-                    <div class="form-group">
-                        <label>Select Client</label>
-                        <select id="unlockLevelClient">
-                            <option value="">Loading clients...</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Select Level</label>
-                        <select id="unlockLevel">
-                            <option value="1">Level 1: Beginner Goals</option>
-                            <option value="2">Level 2: Intermediate Goals</option>
-                            <option value="3">Level 3: Advanced Goals</option>
-                            <option value="4">Level 4: Master Goals</option>
-                        </select>
-                    </div>
-                    <button class="btn unlock-btn" onclick="unlockLevelForClient()" style="width: 100%;">Unlock Level</button>
-                </div>
-
-                <div class="unlock-card">
-                    <h3>Unlock Individual Goal</h3>
-                    <div class="form-group">
-                        <label>Select Client</label>
-                        <select id="unlockGoalClient">
-                            <option value="">Loading clients...</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Goal ID</label>
-                        <input type="text" id="unlockGoalId" placeholder="e.g., sit, down, recall">
-                    </div>
-                    <button class="btn unlock-btn" onclick="unlockIndividualGoal()" style="width: 100%;">Unlock Goal</button>
-                </div>
+        <div id="goalsContainer">
+            <div class="empty-state">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">👆</div>
+                <p>Select a client above to manage their training goals</p>
             </div>
         </div>
     </div>
 
-    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-
-    <!-- Firebase Config -->
     <script src="firebase-config.js"></script>
-
     <script>
         let currentUser = null;
+        let selectedClientEmail = null;
+        let clientGoals = {};
+        
+        const GOALS_STRUCTURE = {
+            0: [
+                { id: 'training-gear', title: 'Training Gear Checklist', description: 'Get all necessary training equipment', tasks: ['Gear ready'] },
+                { id: 'legal-forms', title: 'Sign Legal Forms', description: 'Complete required documentation', tasks: ['Forms completed'] },
+                { id: 'review-instructions', title: 'Review Email Instructions', description: 'Review pre-session guidance', tasks: ['Instructions reviewed'] }
+            ],
+            1: [
+                { id: 'sit', title: 'Sit', description: 'Master sit command', tasks: ['Sit with hand signal', 'Sit for 10 seconds', 'Sit with distractions'] },
+                { id: 'down', title: 'Down', description: 'Lie down on command', tasks: ['Down with signal', 'Hold 10 seconds', 'Down from any position'] },
+                { id: 'recall', title: 'Recall', description: 'Come when called', tasks: ['Come in quiet area', 'Come with distractions', 'Consistent recall'] },
+                { id: 'place', title: 'Place', description: 'Go to designated spot', tasks: ['Go to place', 'Stay 30 seconds', 'Place with distractions'] },
+                { id: 'leave-it', title: 'Leave It', description: 'Ignore objects on command', tasks: ['Leave treat in hand', 'Leave treat on floor', 'Walk past distractions'] },
+                { id: 'basic-engagement', title: 'Basic Engagement', description: 'Build focus', tasks: ['Eye contact on name', 'Focus 5 seconds', 'Check in on walks'] }
+            ],
+            2: [], 3: [], 4: []
+        };
 
-        // Initialize Firebase and check admin access
+        const LEVEL_DESCRIPTIONS = { 0: 'Onboarding', 1: 'Beginner', 2: 'Intermediate', 3: 'Advanced', 4: 'Master' };
+
         document.addEventListener('DOMContentLoaded', async () => {
             const initialized = initializeFirebase();
             if (!initialized) {
@@ -573,444 +255,244 @@
                 if (!user) {
                     window.location.href = 'portal-login.html';
                 } else {
-                    // Check if user is admin
                     const isAdmin = await isUserAdmin();
                     if (!isAdmin) {
                         alert('Access denied. Admin privileges required.');
                         window.location.href = 'portal-dashboard.html';
                         return;
                     }
-
                     currentUser = user;
-                    await loadAllData();
+                    await loadClients();
                 }
             });
         });
 
-        async function loadAllData() {
-            await Promise.all([
-                loadPendingApprovals(),
-                loadClientProgress(),
-                loadClientsForDropdowns()
-            ]);
-        }
-
-        async function loadPendingApprovals() {
-            const container = document.getElementById('pendingApprovals');
-            const countBadge = document.getElementById('pendingCount');
-
+        async function isUserAdmin() {
             try {
-                // Query all users for pending level completions
-                const usersSnapshot = await db.collection('users').get();
-                const pendingApprovals = [];
-
-                for (const userDoc of usersSnapshot.docs) {
-                    const email = userDoc.id;
-                    const completionsSnapshot = await db.collection('users')
-                        .doc(email)
-                        .collection('levelCompletions')
-                        .where('status', '==', 'pending')
-                        .get();
-
-                    completionsSnapshot.docs.forEach(doc => {
-                        pendingApprovals.push({
-                            id: doc.id,
-                            email: email,
-                            ...doc.data()
-                        });
-                    });
+                const userDoc = await db.collection('users').doc(auth.currentUser.email).get();
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    return userData.admin === true || userData.isAdmin === true || userData.role === 'admin';
                 }
-
-                countBadge.textContent = pendingApprovals.length;
-
-                if (pendingApprovals.length === 0) {
-                    container.innerHTML = `
-                        <div class="empty-state">
-                            <div class="empty-state-icon">✅</div>
-                            <h3>No Pending Approvals</h3>
-                            <p>All level completions have been reviewed!</p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                // Sort by completion date (most recent first)
-                pendingApprovals.sort((a, b) => {
-                    const dateA = a.completedAt ? a.completedAt.toDate() : new Date(0);
-                    const dateB = b.completedAt ? b.completedAt.toDate() : new Date(0);
-                    return dateB - dateA;
-                });
-
-                let html = '';
-                pendingApprovals.forEach(approval => {
-                    const completedDate = approval.completedAt ?
-                        new Date(approval.completedAt.toDate()).toLocaleDateString() :
-                        'Unknown';
-
-                    html += `
-                        <div class="approval-card">
-                            <div class="approval-header">
-                                <h3>${approval.clientName || approval.email}</h3>
-                                <span class="approval-date">${completedDate}</span>
-                            </div>
-                            <div class="approval-details">
-                                <div class="detail-item">
-                                    <div class="detail-label">Level</div>
-                                    <div class="detail-value">${approval.levelName || `Level ${approval.level}`}</div>
-                                </div>
-                                <div class="detail-item">
-                                    <div class="detail-label">Client Email</div>
-                                    <div class="detail-value">${approval.email}</div>
-                                </div>
-                                <div class="detail-item">
-                                    <div class="detail-label">Submitted</div>
-                                    <div class="detail-value">${completedDate}</div>
-                                </div>
-                            </div>
-                            ${approval.clientNotes ? `
-                                <div class="client-notes">
-                                    <strong>Client Notes:</strong>
-                                    <p>${approval.clientNotes}</p>
-                                </div>
-                            ` : ''}
-                            <div class="approval-actions">
-                                <button class="btn btn-approve" onclick="approveLevel('${approval.email}', '${approval.id}', ${approval.level})">
-                                    Approve & Unlock Next Level
-                                </button>
-                                <button class="btn btn-reject" onclick="rejectLevel('${approval.email}', '${approval.id}')">
-                                    Request Revisions
-                                </button>
-                                <button class="btn btn-secondary" onclick="viewClientGoals('${approval.email}')">
-                                    View Client's Goals
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                });
-
-                container.innerHTML = html;
-
+                return false;
             } catch (error) {
-                console.error('Error loading pending approvals:', error);
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">⚠️</div>
-                        <h3>Error Loading Approvals</h3>
-                        <p>Please refresh the page to try again.</p>
-                    </div>
-                `;
+                console.error('Error checking admin status:', error);
+                return false;
             }
         }
 
-        async function loadClientProgress() {
-            const container = document.getElementById('clientProgress');
-
+        async function loadClients() {
             try {
-                const usersSnapshot = await db.collection('users').get();
-                const clientData = [];
-
-                for (const userDoc of usersSnapshot.docs) {
-                    const email = userDoc.id;
-
-                    // Get user's current level and access
-                    const accessDoc = await db.collection('users')
-                        .doc(email)
-                        .collection('goalAccess')
-                        .doc('settings')
-                        .get();
-
-                    const access = accessDoc.exists ? accessDoc.data() : { levels: [] };
-
-                    // Get selected goals
-                    const goalsSnapshot = await db.collection('users')
-                        .doc(email)
-                        .collection('selectedGoals')
-                        .get();
-
-                    const selectedGoals = goalsSnapshot.docs.map(doc => ({
-                        id: doc.id,
-                        ...doc.data()
-                    }));
-
-                    // Calculate overall progress
-                    let totalTasks = 0;
-                    let completedTasks = 0;
-                    selectedGoals.forEach(goal => {
-                        if (goal.tasks) {
-                            totalTasks += goal.tasks.length;
-                            completedTasks += goal.tasks.filter(t => t.completed).length;
-                        }
-                    });
-
-                    const progress = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
-
-                    clientData.push({
-                        email,
-                        unlockedLevels: access.levels || [],
-                        activeGoals: selectedGoals.length,
-                        progress,
-                        currentLevel: access.levels && access.levels.length > 0 ? Math.max(...access.levels) : 0
-                    });
-                }
-
-                if (clientData.length === 0) {
-                    container.innerHTML = `
-                        <div class="empty-state">
-                            <div class="empty-state-icon">👥</div>
-                            <h3>No Clients Found</h3>
-                            <p>No client accounts in the system yet.</p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                let html = `
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Client</th>
-                                    <th>Current Level</th>
-                                    <th>Active Goals</th>
-                                    <th>Progress</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                `;
-
-                clientData.forEach(client => {
-                    const levelName = client.currentLevel === 0 ? 'Level 0' : `Level ${client.currentLevel}`;
-                    html += `
-                        <tr>
-                            <td class="client-name">${client.email}</td>
-                            <td><span class="level-badge">${levelName}</span></td>
-                            <td>${client.activeGoals} goals</td>
-                            <td>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: ${client.progress}%"></div>
-                                </div>
-                                <small style="color: #666; font-size: 0.85rem;">${client.progress}%</small>
-                            </td>
-                            <td>
-                                <button class="unlock-btn" onclick="viewClientGoals('${client.email}')">
-                                    View Details
-                                </button>
-                            </td>
-                        </tr>
-                    `;
+                const usersSnapshot = await db.collection('users').where('approved', '==', true).get();
+                const select = document.getElementById('clientSelect');
+                let options = '<option value="">-- Choose a client --</option>';
+                usersSnapshot.docs.forEach(doc => {
+                    const userData = doc.data();
+                    const displayName = userData.displayName || userData.name || doc.id;
+                    options += '<option value="' + doc.id + '">' + displayName + ' (' + doc.id + ')</option>';
                 });
-
-                html += `
-                            </tbody>
-                        </table>
-                    </div>
-                `;
-
-                container.innerHTML = html;
-
+                select.innerHTML = options;
             } catch (error) {
-                console.error('Error loading client progress:', error);
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">⚠️</div>
-                        <h3>Error Loading Client Progress</h3>
-                        <p>Please refresh the page to try again.</p>
-                    </div>
-                `;
+                console.error('Error loading clients:', error);
             }
         }
 
-        async function loadClientsForDropdowns() {
-            try {
-                const usersSnapshot = await db.collection('users').get();
-                const emails = usersSnapshot.docs.map(doc => doc.id);
-
-                const levelSelect = document.getElementById('unlockLevelClient');
-                const goalSelect = document.getElementById('unlockGoalClient');
-
-                let options = '<option value="">Select a client...</option>';
-                emails.forEach(email => {
-                    options += `<option value="${email}">${email}</option>`;
-                });
-
-                levelSelect.innerHTML = options;
-                goalSelect.innerHTML = options;
-
-            } catch (error) {
-                console.error('Error loading clients for dropdowns:', error);
-            }
-        }
-
-        async function approveLevel(email, completionId, level) {
-            if (!confirm('Approve this level completion and unlock the next level?')) {
+        async function loadClientGoals() {
+            const email = document.getElementById('clientSelect').value;
+            if (!email) {
+                document.getElementById('goalsContainer').innerHTML = '<div class="empty-state"><div style="font-size: 4rem; margin-bottom: 1rem;">👆</div><p>Select a client above</p></div>';
                 return;
             }
 
+            selectedClientEmail = email;
+
             try {
-                // Update completion status to approved
-                await db.collection('users')
-                    .doc(email)
-                    .collection('levelCompletions')
-                    .doc(completionId)
-                    .update({
-                        status: 'approved',
-                        approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                        approvedBy: currentUser.email
-                    });
+                const goalsSnapshot = await db.collection('users').doc(email).collection('selectedGoals').get();
+                clientGoals = {};
+                goalsSnapshot.docs.forEach(doc => {
+                    clientGoals[doc.id] = { id: doc.id, ...doc.data() };
+                });
 
-                // Unlock next level
-                const nextLevel = level + 1;
-                if (nextLevel <= 4) {
-                    const accessDoc = await db.collection('users')
-                        .doc(email)
-                        .collection('goalAccess')
-                        .doc('settings')
-                        .get();
+                const customGoalsSnapshot = await db.collection('users').doc(email).collection('customGoals').get();
+                const customGoals = {};
+                customGoalsSnapshot.docs.forEach(doc => {
+                    customGoals[doc.id] = { id: doc.id, ...doc.data() };
+                });
 
-                    const currentAccess = accessDoc.exists ? accessDoc.data() : { levels: [], individualGoals: [] };
-                    const levels = currentAccess.levels || [];
+                renderGoalsInterface(customGoals);
+            } catch (error) {
+                console.error('Error loading client goals:', error);
+                alert('Error loading goals');
+            }
+        }
 
-                    if (!levels.includes(nextLevel)) {
-                        levels.push(nextLevel);
-                        await db.collection('users')
-                            .doc(email)
-                            .collection('goalAccess')
-                            .doc('settings')
-                            .set({
-                                levels: levels,
-                                individualGoals: currentAccess.individualGoals || []
-                            });
+        function renderGoalsInterface(customGoals) {
+            let html = '<div class="goals-grid">';
+            html += '<div class="goals-section"><div class="section-header"><h2>Available Goals</h2></div>';
+            
+            for (let level = 0; level <= 4; level++) {
+                const goals = GOALS_STRUCTURE[level];
+                if (!goals || goals.length === 0) continue;
+
+                html += '<div class="level-section">';
+                html += '<div class="level-header" onclick="toggleLevel(' + level + ')">';
+                html += '<span>Level ' + level + ': ' + LEVEL_DESCRIPTIONS[level] + '</span>';
+                html += '<span>' + goals.length + ' goals</span></div>';
+                html += '<div class="level-content" id="level-' + level + '">';
+
+                goals.forEach(goal => {
+                    const isAssigned = clientGoals.hasOwnProperty(goal.id);
+                    html += '<div class="goal-item"><div class="goal-info">';
+                    html += '<div class="goal-title">' + goal.title + '</div>';
+                    html += '<div class="goal-desc">' + (goal.description || '') + '</div></div>';
+                    if (isAssigned) {
+                        html += '<button class="btn btn-remove" onclick="removeGoal(\'' + goal.id + '\', ' + level + ')">✕ Remove</button>';
+                    } else {
+                        html += '<button class="btn btn-add" onclick="addGoal(\'' + goal.id + '\', ' + level + ')">+ Add</button>';
                     }
-                }
+                    html += '</div>';
+                });
 
-                alert('Level approved and next level unlocked!');
-                await loadAllData();
+                html += '</div></div>';
+            }
+            html += '</div>';
 
-            } catch (error) {
-                console.error('Error approving level:', error);
-                alert('Error approving level. Please try again.');
+            html += '<div class="goals-section"><div class="section-header"><h2>Client Goals</h2></div>';
+            const assignedGoals = Object.values(clientGoals);
+            if (assignedGoals.length === 0) {
+                html += '<div class="empty-state"><p>No goals assigned</p></div>';
+            } else {
+                assignedGoals.forEach(goal => {
+                    const progress = goal.progress || 0;
+                    html += '<div class="goal-item"><div class="goal-info">';
+                    html += '<div class="goal-title">' + goal.title + '</div>';
+                    html += '<div class="goal-desc">Progress: ' + progress + '%</div></div>';
+                    html += '<button class="btn btn-remove" onclick="removeGoal(\'' + goal.id + '\', ' + (goal.level || 0) + ')">✕</button></div>';
+                });
+            }
+
+            html += '<div class="section-header" style="margin-top: 2rem;"><h2>Custom Goals</h2></div>';
+            const customGoalsList = Object.values(customGoals);
+            if (customGoalsList.length > 0) {
+                customGoalsList.forEach(goal => {
+                    html += '<div class="goal-item"><div class="goal-info">';
+                    html += '<div class="goal-title">' + goal.title + '</div>';
+                    html += '<div class="goal-desc">' + (goal.description || '') + '</div></div>';
+                    html += '<button class="btn btn-remove" onclick="removeCustomGoal(\'' + goal.id + '\')">✕</button></div>';
+                });
+            }
+
+            html += '<div class="custom-goal-form">';
+            html += '<h3 style="margin-bottom: 1rem; color: #2c3e50;">Create Custom Goal</h3>';
+            html += '<div class="form-group"><label>Goal Title</label>';
+            html += '<input type="text" id="customGoalTitle" placeholder="e.g., Fetch Training"></div>';
+            html += '<div class="form-group"><label>Description</label>';
+            html += '<textarea id="customGoalDesc" placeholder="Describe this goal..."></textarea></div>';
+            html += '<div class="form-group"><label>Milestones (one per line)</label>';
+            html += '<textarea id="customGoalTasks" placeholder="Learn to drop ball\nFetch from 10 feet\nFetch and return"></textarea></div>';
+            html += '<button class="btn btn-primary" onclick="createCustomGoal()" style="width: 100%;">+ Create Custom Goal</button>';
+            html += '</div></div></div>';
+
+            document.getElementById('goalsContainer').innerHTML = html;
+        }
+
+        function toggleLevel(level) {
+            const content = document.getElementById('level-' + level);
+            if (content.classList.contains('open')) {
+                content.classList.remove('open');
+            } else {
+                content.classList.add('open');
             }
         }
 
-        async function rejectLevel(email, completionId) {
-            const reason = prompt('Enter reason for requesting revisions:');
-            if (!reason) return;
+        async function addGoal(goalId, level) {
+            if (!selectedClientEmail) return;
+            const goalTemplate = GOALS_STRUCTURE[level].find(g => g.id === goalId);
+            if (!goalTemplate) return;
+
+            const goalData = {
+                ...goalTemplate,
+                level: level,
+                selectedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                progress: 0,
+                tasks: goalTemplate.tasks.map(task => ({ text: task, completed: false }))
+            };
 
             try {
-                await db.collection('users')
-                    .doc(email)
-                    .collection('levelCompletions')
-                    .doc(completionId)
-                    .update({
-                        status: 'revision-requested',
-                        reviewedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                        reviewedBy: currentUser.email,
-                        reviewNotes: reason
-                    });
-
-                alert('Revision request sent to client.');
-                await loadAllData();
-
+                await db.collection('users').doc(selectedClientEmail).collection('selectedGoals').doc(goalId).set(goalData);
+                alert('Goal "' + goalTemplate.title + '" added!');
+                await loadClientGoals();
             } catch (error) {
-                console.error('Error rejecting level:', error);
-                alert('Error sending revision request. Please try again.');
+                console.error('Error adding goal:', error);
+                alert('Error adding goal');
             }
         }
 
-        function viewClientGoals(email) {
-            // Open client's goals page in new tab
-            window.open(`portal-goals.html?viewAs=${email}`, '_blank');
-        }
-
-        async function unlockLevelForClient() {
-            const clientEmail = document.getElementById('unlockLevelClient').value;
-            const level = parseInt(document.getElementById('unlockLevel').value);
-
-            if (!clientEmail) {
-                alert('Please select a client');
-                return;
-            }
+        async function removeGoal(goalId, level) {
+            if (!selectedClientEmail) return;
+            if (!confirm('Remove this goal?')) return;
 
             try {
-                const accessDoc = await db.collection('users')
-                    .doc(clientEmail)
-                    .collection('goalAccess')
-                    .doc('settings')
-                    .get();
-
-                const currentAccess = accessDoc.exists ? accessDoc.data() : { levels: [], individualGoals: [] };
-                const levels = currentAccess.levels || [];
-
-                if (!levels.includes(level)) {
-                    levels.push(level);
-                    await db.collection('users')
-                        .doc(clientEmail)
-                        .collection('goalAccess')
-                        .doc('settings')
-                        .set({
-                            levels: levels,
-                            individualGoals: currentAccess.individualGoals || []
-                        });
-
-                    alert(`Level ${level} unlocked for ${clientEmail}!`);
-                    await loadAllData();
-                } else {
-                    alert(`Client already has access to Level ${level}`);
-                }
-
+                await db.collection('users').doc(selectedClientEmail).collection('selectedGoals').doc(goalId).delete();
+                alert('Goal removed!');
+                await loadClientGoals();
             } catch (error) {
-                console.error('Error unlocking level:', error);
-                alert('Error unlocking level. Please try again.');
+                console.error('Error removing goal:', error);
+                alert('Error removing goal');
             }
         }
 
-        async function unlockIndividualGoal() {
-            const clientEmail = document.getElementById('unlockGoalClient').value;
-            const goalId = document.getElementById('unlockGoalId').value.trim();
+        async function createCustomGoal() {
+            if (!selectedClientEmail) return;
 
-            if (!clientEmail || !goalId) {
-                alert('Please select a client and enter a goal ID');
-                return;
-            }
+            const title = document.getElementById('customGoalTitle').value.trim();
+            const description = document.getElementById('customGoalDesc').value.trim();
+            const tasksText = document.getElementById('customGoalTasks').value.trim();
+
+            if (!title) { alert('Please enter a goal title'); return; }
+
+            const tasks = tasksText.split('\n').filter(t => t.trim()).map(t => t.trim());
+            if (tasks.length === 0) { alert('Please enter at least one milestone'); return; }
+
+            const customGoalData = {
+                title: title,
+                description: description,
+                tasks: tasks.map(task => ({ text: task, completed: false })),
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                createdBy: currentUser.email,
+                progress: 0,
+                isCustom: true
+            };
 
             try {
-                const accessDoc = await db.collection('users')
-                    .doc(clientEmail)
-                    .collection('goalAccess')
-                    .doc('settings')
-                    .get();
-
-                const currentAccess = accessDoc.exists ? accessDoc.data() : { levels: [], individualGoals: [] };
-                const goals = currentAccess.individualGoals || [];
-
-                if (!goals.includes(goalId)) {
-                    goals.push(goalId);
-                    await db.collection('users')
-                        .doc(clientEmail)
-                        .collection('goalAccess')
-                        .doc('settings')
-                        .set({
-                            levels: currentAccess.levels || [],
-                            individualGoals: goals
-                        });
-
-                    alert(`Goal "${goalId}" unlocked for ${clientEmail}!`);
-                    document.getElementById('unlockGoalId').value = '';
-                } else {
-                    alert(`Client already has access to goal "${goalId}"`);
-                }
-
+                await db.collection('users').doc(selectedClientEmail).collection('customGoals').add(customGoalData);
+                alert('Custom goal "' + title + '" created!');
+                document.getElementById('customGoalTitle').value = '';
+                document.getElementById('customGoalDesc').value = '';
+                document.getElementById('customGoalTasks').value = '';
+                await loadClientGoals();
             } catch (error) {
-                console.error('Error unlocking goal:', error);
-                alert('Error unlocking goal. Please try again.');
+                console.error('Error creating custom goal:', error);
+                alert('Error creating custom goal');
+            }
+        }
+
+        async function removeCustomGoal(goalId) {
+            if (!selectedClientEmail) return;
+            if (!confirm('Remove this custom goal?')) return;
+
+            try {
+                await db.collection('users').doc(selectedClientEmail).collection('customGoals').doc(goalId).delete();
+                alert('Custom goal removed!');
+                await loadClientGoals();
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error removing custom goal');
             }
         }
 
         function signOut() {
-            auth.signOut().then(() => {
-                window.location.href = 'portal-login.html';
-            });
+            auth.signOut().then(() => { window.location.href = 'portal-login.html'; });
         }
     </script>
 </body>
