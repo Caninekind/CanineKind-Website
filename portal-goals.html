@@ -1713,30 +1713,6 @@
             8: 'Loose Leash Walking'
         };
 
-        // Goal Mastery Categories (non-level based)
-        const MASTERY_CATEGORIES = {
-            'loose-leash': {
-                id: 'loose-leash',
-                title: 'Goal Mastery: Loose Leash Walking',
-                goals: []
-            },
-            'dogs': {
-                id: 'dogs',
-                title: 'Goal Mastery: Dogs',
-                goals: []
-            },
-            'humans': {
-                id: 'humans',
-                title: 'Goal Mastery: Humans',
-                goals: []
-            },
-            'competitive-obedience': {
-                id: 'competitive-obedience',
-                title: 'Goal Mastery: Competitive Obedience',
-                goals: []
-            }
-        };
-
         // Training Prep Instructions for each goal at each level
         const TRAINING_PREP_INSTRUCTIONS = {
             'sit': {
@@ -2045,43 +2021,6 @@
                                 ` : `
                                     <div class="goals-grid">
                                         ${goals.map(goal => renderGoalCard(goal, level)).join('')}
-                                    </div>
-                                `}
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-
-            // Render mastery categories
-            for (const categoryId in MASTERY_CATEGORIES) {
-                const category = MASTERY_CATEGORIES[categoryId];
-                const hasAccess = userAccess.masteryCategories?.includes(categoryId) || false;
-                const goals = category.goals;
-
-                html += `
-                    <div class="level-section">
-                        <div class="level-container">
-                            <div class="level-header ${!hasAccess ? 'locked' : ''}" onclick="toggleLevelContainer('${categoryId}')">
-                                <div class="level-title">
-                                    <span class="level-badge ${!hasAccess ? 'locked' : ''}">MASTERY</span>
-                                    <h2>${category.title}</h2>
-                                </div>
-                                <div style="display: flex; align-items: center; gap: 1rem;">
-                                    ${!hasAccess ? `<div class="lock-icon">LOCKED</div>` : ''}
-                                    <span class="level-collapse-icon" id="collapse-icon-level-${categoryId}">▼</span>
-                                </div>
-                            </div>
-                            <div class="level-content" id="level-content-${categoryId}">
-                                ${!hasAccess ? `
-                                    <div class="unlock-message">
-                                        This category will be unlocked by your trainer when you're ready
-                                    </div>
-                                ` : goals.length === 0 ? `
-                                    <div class="coming-soon">Your trainer will add goals to this category</div>
-                                ` : `
-                                    <div class="goals-grid">
-                                        ${goals.map(goal => renderGoalCard(goal, categoryId, true)).join('')}
                                     </div>
                                 `}
                             </div>
