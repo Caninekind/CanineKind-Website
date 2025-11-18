@@ -1683,8 +1683,33 @@
                 `;
             }
 
+            // Render custom goals section
+            html += `
+                <div class="level-section">
+                    <div class="level-container">
+                        <div class="level-header locked" onclick="toggleLevelContainer('custom-goals')">
+                            <div class="level-title">
+                                <span class="level-badge locked">CUSTOM</span>
+                                <h2>Your Custom Goals with CanineKind</h2>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div class="lock-icon">🔒</div>
+                                <span class="level-collapse-icon" id="collapse-icon-level-custom-goals">▼</span>
+                            </div>
+                        </div>
+                        <div class="level-content" id="level-content-custom-goals">
+                            <div class="unlock-message">
+                                🎯 Your trainer will create personalized goals specifically for you and your dog's unique needs
+                            </div>
+                            <div class="custom-goals-list" id="customGoalsList"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
             container.innerHTML = html;
             attachDropdownListeners();
+            loadCustomGoals();
         }
 
         function renderGoalCard(goal, level, isMastery = false) {
@@ -2312,6 +2337,139 @@
                     prepInstructions: "Bring small, soft training treats. Practice in a quiet area with minimal distractions. Keep sessions short (5-10 minutes)."
                 }
             ];
+        }
+
+        async function loadCustomGoals() {
+            if (!currentUser) return;
+
+            try {
+                const customGoalsSnapshot = await db.collection('users')
+                    .doc(currentUser.email)
+                    .collection('customGoals')
+                    .orderBy('createdAt', 'desc')
+                    .get();
+
+                const customGoalsList = document.getElementById('customGoalsList');
+                if (!customGoalsList) return;
+
+                if (customGoalsSnapshot.empty) {
+                    customGoalsList.innerHTML = '';
+                    return;
+                }
+
+                let html = '<div class="goals-grid" style="margin-top: 1rem;">';
+                customGoalsSnapshot.docs.forEach(doc => {
+                    const goal = { id: doc.id, ...doc.data() };
+                    const progress = calculateCustomGoalProgress(goal);
+
+                    html += `
+                        <div class="goal-card selected">
+                            <div class="goal-header">
+                                <span class="select-badge">Custom</span>
+                            </div>
+                            <h3>${goal.title}</h3>
+                            <p>${goal.description || ''}</p>
+                            <div class="goal-progress">
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-fill" style="width: ${progress}%"></div>
+                                </div>
+                                <div class="progress-text">${progress}% Complete</div>
+                            </div>
+                            <div class="milestone-dropdown" id="dropdown-custom-${goal.id}">
+                                <div class="milestone-dropdown-header" onclick="toggleCustomMilestoneDropdown('${goal.id}')">
+                                    <span>View Milestones</span>
+                                    <span class="dropdown-arrow">▼</span>
+                                </div>
+                                <div class="milestone-content">
+                                    <div class="milestone-list">
+                                        ${renderCustomMilestones(goal)}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+
+                customGoalsList.innerHTML = html;
+
+                // Unlock the custom goals section if there are goals
+                const customGoalsHeader = document.querySelector('[onclick="toggleLevelContainer(\'custom-goals\')"]');
+                if (customGoalsHeader && customGoalsSnapshot.size > 0) {
+                    customGoalsHeader.classList.remove('locked');
+                    const lockIcon = customGoalsHeader.querySelector('.lock-icon');
+                    if (lockIcon) lockIcon.remove();
+                    const badge = customGoalsHeader.querySelector('.level-badge');
+                    if (badge) badge.classList.remove('locked');
+                    const unlockMsg = document.querySelector('#level-content-custom-goals .unlock-message');
+                    if (unlockMsg) unlockMsg.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Error loading custom goals:', error);
+            }
+        }
+
+        function calculateCustomGoalProgress(goal) {
+            if (!goal.tasks || goal.tasks.length === 0) return 0;
+            const completed = goal.tasks.filter(t => t.completed).length;
+            return Math.round((completed / goal.tasks.length) * 100);
+        }
+
+        function renderCustomMilestones(goal) {
+            if (!goal.tasks || goal.tasks.length === 0) return '<p>No milestones defined</p>';
+
+            return goal.tasks.map((task, index) => {
+                const isCompleted = task.completed;
+                const completedDate = task.completedAt ? new Date(task.completedAt.toDate()).toLocaleDateString() : '';
+
+                return `
+                    <div class="milestone-item ${isCompleted ? 'completed' : ''}">
+                        <input type="checkbox"
+                               class="milestone-checkbox"
+                               ${isCompleted ? 'checked' : ''}
+                               onchange="toggleCustomMilestone('${goal.id}', ${index})">
+                        <div class="milestone-description">${task.text}</div>
+                        ${isCompleted ? `<div class="milestone-date">${completedDate}</div>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleCustomMilestoneDropdown(goalId) {
+            const dropdown = document.getElementById(`dropdown-custom-${goalId}`);
+            if (dropdown) {
+                dropdown.classList.toggle('open');
+            }
+        }
+
+        async function toggleCustomMilestone(goalId, taskIndex) {
+            if (!currentUser) return;
+
+            try {
+                const goalRef = db.collection('users')
+                    .doc(currentUser.email)
+                    .collection('customGoals')
+                    .doc(goalId);
+
+                const goalDoc = await goalRef.get();
+                if (!goalDoc.exists) return;
+
+                const goalData = goalDoc.data();
+                const task = goalData.tasks[taskIndex];
+                task.completed = !task.completed;
+                task.completedAt = task.completed ? firebase.firestore.FieldValue.serverTimestamp() : null;
+
+                await goalRef.update({
+                    tasks: goalData.tasks,
+                    progress: calculateCustomGoalProgress({ tasks: goalData.tasks })
+                });
+
+                // Reload custom goals to refresh UI
+                await loadCustomGoals();
+            } catch (error) {
+                console.error('Error toggling custom milestone:', error);
+                alert('Error updating milestone. Please try again.');
+            }
         }
 
         function signOut() {
