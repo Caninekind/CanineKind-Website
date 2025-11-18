@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - CanineKind Client Portal</title>
+    <title>Admin Portal - CanineKind</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <style>
         * {
             margin: 0;
@@ -13,13 +14,11 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #D1E5F4 0%, #e8f4f8 100%);
-            color: #333;
-            line-height: 1.6;
+            background: linear-gradient(135deg, #D1E5F4 0%, #E8F4F8 100%);
             min-height: 100vh;
+            padding-bottom: 40px;
         }
 
-        /* Portal Header */
         .portal-header {
             background: linear-gradient(135deg, #5a7a52 0%, #6a8a62 100%);
             box-shadow: 0 2px 10px rgba(0,0,0,0.15);
@@ -29,7 +28,7 @@
         }
 
         .header-content {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 1rem 2rem;
             display: flex;
@@ -56,497 +55,226 @@
         }
 
         .admin-badge {
-            background: rgba(255, 193, 7, 0.9);
+            background: rgba(255, 193, 7, 0.95);
             color: #333;
-            padding: 0.3rem 0.8rem;
-            border-radius: 5px;
-            font-size: 0.75rem;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            margin-left: 12px;
         }
 
-        .portal-nav {
-            display: flex;
-            gap: 1.5rem;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .portal-nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-        }
-
-        .portal-nav a:hover {
+        .sign-out-btn {
             background: rgba(255, 255, 255, 0.2);
-        }
-
-        .portal-nav a.active {
-            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
             font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
         }
 
-        .sign-out-link {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.85rem;
-            padding: 0.4rem 0.8rem;
+        .sign-out-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
         }
 
-        /* Page Container */
-        .page-container {
-            max-width: 1400px;
-            margin: 40px auto;
-            padding: 0 20px;
+        .container {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
         }
 
         .page-header {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
+            text-align: center;
+            margin-bottom: 3rem;
         }
 
-        .page-header h2 {
-            color: #5a7a52;
-            font-size: 2.2em;
-            margin-bottom: 10px;
+        .page-header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .page-header h1::before {
+            content: '⚡';
+            font-size: 2.5rem;
         }
 
         .page-header p {
             color: #666;
-            font-size: 1.1em;
+            font-size: 1.1rem;
         }
 
-        /* Stats Grid */
-        .stats-grid {
+        .sections-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
         }
 
-        .stat-card {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            border-left: 5px solid #799972;
-            transition: all 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-        }
-
-        .stat-card.warning {
-            border-left-color: #ffa726;
-        }
-
-        .stat-card.success {
-            border-left-color: #51cf66;
-        }
-
-        .stat-card.info {
-            border-left-color: #4a90e2;
-        }
-
-        .stat-icon {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        .stat-label {
-            color: #666;
-            font-size: 0.9em;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .stat-value {
-            font-size: 2.5em;
-            font-weight: 700;
-            color: #333;
-        }
-
-        .stat-subtext {
-            color: #999;
-            font-size: 0.85em;
-            margin-top: 5px;
-        }
-
-        /* Content Grid */
-        .content-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-
-        /* Section Cards */
         .section-card {
             background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.06);
         }
 
         .section-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #f0f0f0;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid #f0f0f0;
         }
 
-        .section-title {
-            font-size: 1.3em;
-            color: #333;
-            font-weight: 600;
+        .section-icon {
+            font-size: 2rem;
         }
 
-        .section-link {
-            color: #4a90e2;
-            text-decoration: none;
-            font-size: 0.9em;
-            font-weight: 500;
-            transition: all 0.3s;
+        .section-header h2 {
+            color: #2c3e50;
+            font-size: 1.4rem;
+            font-weight: 800;
         }
 
-        .section-link:hover {
-            color: #357abd;
-            text-decoration: underline;
+        .nav-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
-        /* Quick Actions */
-        .quick-actions {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-        }
-
-        .action-btn {
-            padding: 15px 20px;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
+        .nav-btn {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-size: 0.95em;
+            justify-content: space-between;
+            padding: 16px 20px;
+            background: linear-gradient(135deg, #fafbfc 0%, #f8f9fa 100%);
+            border: 2px solid #e8ebf0;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .action-btn.primary {
-            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
-            color: white;
-        }
-
-        .action-btn.primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(121, 153, 114, 0.3);
-        }
-
-        .action-btn.secondary {
+        .nav-btn:hover {
             background: white;
-            color: #799972;
-            border: 2px solid #799972;
+            border-color: #799972;
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(121, 153, 114, 0.2);
         }
 
-        .action-btn.secondary:hover {
-            background: #799972;
-            color: white;
+        .nav-btn-icon {
+            font-size: 1.2rem;
         }
 
-        /* Activity Feed */
-        .activity-item {
-            padding: 15px;
-            border-left: 3px solid #e0e0e0;
-            margin-bottom: 15px;
-            background: #f9f9f9;
-            border-radius: 5px;
-            transition: all 0.3s;
+        .admin-btn {
+            background: linear-gradient(135deg, #fff9e6 0%, #fff4d4 100%);
+            border-color: #ffd700;
         }
 
-        .activity-item:hover {
-            border-left-color: #799972;
-            background: #f5f5f5;
-        }
-
-        .activity-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .activity-time {
-            font-size: 0.85em;
-            color: #999;
-            margin-bottom: 5px;
-        }
-
-        .activity-description {
-            color: #333;
-            font-size: 0.95em;
-        }
-
-        .activity-user {
-            color: #4a90e2;
-            font-weight: 600;
-        }
-
-        /* Pending Items */
-        .pending-item {
-            padding: 15px;
-            background: #fff3cd;
-            border-left: 4px solid #ffa726;
-            margin-bottom: 12px;
-            border-radius: 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .pending-item-info {
-            flex-grow: 1;
-        }
-
-        .pending-item-title {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 3px;
-        }
-
-        .pending-item-detail {
-            font-size: 0.9em;
-            color: #666;
-        }
-
-        .pending-item-action {
-            padding: 8px 16px;
-            background: #ffa726;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-        }
-
-        .pending-item-action:hover {
-            background: #ff9800;
-            transform: translateY(-2px);
-        }
-
-        /* Upcoming Sessions */
-        .session-item {
-            padding: 15px;
-            background: #e3f2fd;
-            border-left: 4px solid #4a90e2;
-            margin-bottom: 12px;
-            border-radius: 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .session-item-info {
-            flex-grow: 1;
-        }
-
-        .session-item-title {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 3px;
-        }
-
-        .session-item-detail {
-            font-size: 0.9em;
-            color: #666;
-        }
-
-        .session-item-time {
-            font-size: 0.85em;
-            color: #4a90e2;
-            font-weight: 600;
-        }
-
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: #999;
-        }
-
-        .empty-state-icon {
-            font-size: 3em;
-            margin-bottom: 15px;
-            opacity: 0.5;
-        }
-
-        .empty-state p {
-            font-size: 0.95em;
-        }
-
-        /* Full Width Section */
-        .full-width-section {
-            grid-column: 1 / -1;
-        }
-
-        /* Mobile Styles */
-        @media (max-width: 992px) {
-            .content-grid {
-                grid-template-columns: 1fr;
-            }
+        .admin-btn:hover {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            border-color: #c9a336;
         }
 
         @media (max-width: 768px) {
-            .stats-grid {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .sections-grid {
                 grid-template-columns: 1fr;
             }
 
-            .header-content {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .portal-nav {
-                gap: 0.5rem;
-                font-size: 0.9rem;
-                justify-content: center;
-            }
-
-            .portal-nav a {
-                padding: 0.4rem 0.8rem;
-                font-size: 0.85rem;
-            }
-
-            .page-header h2 {
-                font-size: 1.8em;
+            .page-header h1 {
+                font-size: 2rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Portal Header -->
     <header class="portal-header">
         <div class="header-content">
             <div class="portal-logo">
                 <img src="https://i.imgur.com/OXiQWa3.jpeg" alt="CanineKind Logo">
-                <h1>Admin Portal</h1>
-                <span class="admin-badge">Admin</span>
+                <h1>Admin Portal<span class="admin-badge">ADMIN</span></h1>
             </div>
-            <nav class="portal-nav">
-                <a href="portal-admin-dashboard.html" class="active">Dashboard</a>
-                <a href="portal-admin-goals.html">Goals Management</a>
-                <a href="portal-admin-sessions.html">Sessions</a>
-                <a href="portal-dashboard.html">Client View</a>
-                <a href="#" class="sign-out-link" onclick="signOut(); return false;">Sign Out</a>
-            </nav>
+            <button class="sign-out-btn" onclick="signOut()">Sign Out</button>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <div class="page-container">
-        <!-- Page Header -->
+    <div class="container">
         <div class="page-header">
-            <h2>Admin Dashboard</h2>
-            <p>Overview of all client activities, pending approvals, and upcoming sessions</p>
+            <h1>Admin Dashboard</h1>
+            <p>Manage clients, sessions, and training programs</p>
         </div>
 
-        <!-- Stats Grid -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon">👥</div>
-                <div class="stat-label">Total Clients</div>
-                <div class="stat-value" id="totalClients">0</div>
-                <div class="stat-subtext">Active accounts</div>
-            </div>
-
-            <div class="stat-card warning">
-                <div class="stat-icon">⏳</div>
-                <div class="stat-label">Pending Approvals</div>
-                <div class="stat-value" id="pendingApprovals">0</div>
-                <div class="stat-subtext">Level completions awaiting review</div>
-            </div>
-
-            <div class="stat-card info">
-                <div class="stat-icon">📅</div>
-                <div class="stat-label">Upcoming Sessions</div>
-                <div class="stat-value" id="upcomingSessions">0</div>
-                <div class="stat-subtext">In the next 7 days</div>
-            </div>
-
-            <div class="stat-card success">
-                <div class="stat-icon">✅</div>
-                <div class="stat-label">Completed This Week</div>
-                <div class="stat-value" id="completedThisWeek">0</div>
-                <div class="stat-subtext">Level approvals</div>
-            </div>
-        </div>
-
-        <!-- Quick Actions -->
-        <div class="section-card full-width-section">
-            <div class="section-header">
-                <div class="section-title">Quick Actions</div>
-            </div>
-            <div class="quick-actions">
-                <a href="portal-admin-add-user.html" class="action-btn primary">
-                    <span>➕</span> Add New Client
-                </a>
-                <a href="portal-admin-sessions.html" class="action-btn secondary">
-                    <span>📅</span> Schedule Session
-                </a>
-                <a href="portal-admin-goals.html" class="action-btn secondary">
-                    <span>🎯</span> Unlock Level
-                </a>
-                <a href="portal-admin-goals.html" class="action-btn secondary">
-                    <span>✓</span> Review Approvals
-                </a>
-            </div>
-        </div>
-
-        <!-- Content Grid -->
-        <div class="content-grid">
-            <!-- Pending Level Completions -->
+        <div class="sections-grid">
+            <!-- Admin Management -->
             <div class="section-card">
                 <div class="section-header">
-                    <div class="section-title">Pending Level Completions</div>
-                    <a href="portal-admin-goals.html" class="section-link">View All →</a>
+                    <span class="section-icon">🔧</span>
+                    <h2>Admin Functions</h2>
                 </div>
-                <div id="pendingCompletionsList">
-                    <!-- Pending completions will be loaded here -->
+                <div class="nav-buttons">
+                    <a href="portal-admin-user-approval.html" class="nav-btn admin-btn">
+                        <span>👥 User Approval</span>
+                        <span class="nav-btn-icon">→</span>
+                    </a>
+                    <a href="portal-admin-sessions.html" class="nav-btn admin-btn">
+                        <span>📅 Manage All Sessions</span>
+                        <span class="nav-btn-icon">→</span>
+                    </a>
+                    <a href="portal-admin-goals.html" class="nav-btn admin-btn">
+                        <span>🎯 Manage Client Goals</span>
+                        <span class="nav-btn-icon">→</span>
+                    </a>
+                    <a href="portal-settings.html" class="nav-btn admin-btn">
+                        <span>⚙️ Unlock Client Settings</span>
+                        <span class="nav-btn-icon">→</span>
+                    </a>
                 </div>
             </div>
 
-            <!-- Upcoming Sessions -->
+            <!-- Client View -->
             <div class="section-card">
                 <div class="section-header">
-                    <div class="section-title">Upcoming Sessions</div>
-                    <a href="portal-admin-sessions.html" class="section-link">View All →</a>
+                    <span class="section-icon">👤</span>
+                    <h2>Client View</h2>
                 </div>
-                <div id="upcomingSessionsList">
-                    <!-- Upcoming sessions will be loaded here -->
-                </div>
-            </div>
-
-            <!-- Recent Activity -->
-            <div class="section-card full-width-section">
-                <div class="section-header">
-                    <div class="section-title">Recent Activity</div>
-                </div>
-                <div id="recentActivityList">
-                    <!-- Recent activity will be loaded here -->
+                <div class="nav-buttons">
+                    <a href="portal-dashboard.html" class="nav-btn">
+                        <span>🏠 Dashboard</span>
+                        <span class="nav-btn-icon">→</span>
+                    </a>
+                    <a href="portal-sessions.html" class="nav-btn">
+                        <span>📋 Sessions</span>
+                        <span class="nav-btn-icon">→</span>
+                    </a>
+                    <a href="portal-goals.html" class="nav-btn">
+                        <span>🏆 Goals</span>
+                        <span class="nav-btn-icon">→</span>
+                    </a>
+                    <a href="portal-schedule.html" class="nav-btn">
+                        <span>📅 Weekly Schedule</span>
+                        <span class="nav-btn-icon">→</span>
+                    </a>
+                    <a href="portal-forms.html" class="nav-btn">
+                        <span>📄 Forms & Documents</span>
+                        <span class="nav-btn-icon">→</span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -559,339 +287,38 @@
 
     <!-- Firebase Config -->
     <script src="firebase-config.js"></script>
-
     <script>
-        let currentUser = null;
-        let allUsers = [];
-        let allPendingCompletions = [];
-        let allUpcomingSessions = [];
-        let recentActivity = [];
-
-        // Initialize Firebase and check authentication
+        // Initialize Firebase and check admin access
         document.addEventListener('DOMContentLoaded', async () => {
             const initialized = initializeFirebase();
-
             if (!initialized) {
                 alert('Failed to initialize Firebase');
                 window.location.href = 'portal-login.html';
                 return;
             }
 
-            // Check authentication and admin status
             auth.onAuthStateChanged(async (user) => {
                 if (!user) {
                     window.location.href = 'portal-login.html';
                 } else {
-                    currentUser = user;
-
                     // Check if user is admin
-                    const isAdmin = await isUserAdmin(user.email);
+                    const isAdmin = await isUserAdmin();
                     if (!isAdmin) {
                         alert('Access denied. Admin privileges required.');
                         window.location.href = 'portal-dashboard.html';
                         return;
                     }
 
-                    await loadDashboardData();
+                    console.log('✅ Admin access granted for:', user.email);
                 }
             });
         });
 
-        // Check if user is admin
-        async function isUserAdmin(email) {
-            console.log('🔍 [ADMIN DASHBOARD] Checking admin status for:', email);
-            try {
-                // First check users collection (primary method)
-                const userDoc = await db.collection('users').doc(email).get();
-                console.log('🔍 [ADMIN DASHBOARD] User doc exists:', userDoc.exists);
-
-                if (userDoc.exists) {
-                    const userData = userDoc.data();
-                    console.log('🔍 [ADMIN DASHBOARD] User data:', userData);
-                    console.log('🔍 [ADMIN DASHBOARD] userData.role:', userData.role);
-                    console.log('🔍 [ADMIN DASHBOARD] userData.admin:', userData.admin);
-                    console.log('🔍 [ADMIN DASHBOARD] userData.isAdmin:', userData.isAdmin);
-
-                    if (userData.admin === true || userData.isAdmin === true || userData.role === 'admin') {
-                        console.log('✅ [ADMIN DASHBOARD] User IS admin!');
-                        return true;
-                    }
-                }
-
-                // Fallback: check admins collection
-                console.log('🔍 [ADMIN DASHBOARD] Checking admins collection...');
-                const adminDoc = await db.collection('admins').doc(email).get();
-                const isAdmin = adminDoc.exists && adminDoc.data().isAdmin === true;
-                console.log('🔍 [ADMIN DASHBOARD] Admins collection result:', isAdmin);
-                return isAdmin;
-            } catch (error) {
-                console.error('❌ [ADMIN DASHBOARD] Error checking admin status:', error);
-                return false;
-            }
-        }
-
-        // Load all dashboard data
-        async function loadDashboardData() {
-            try {
-                // Load all users
-                const usersSnapshot = await db.collection('users').get();
-                allUsers = usersSnapshot.docs.map(doc => ({
-                    email: doc.id,
-                    ...doc.data()
-                }));
-
-                // Update total clients stat
-                document.getElementById('totalClients').textContent = allUsers.length;
-
-                // Load pending completions
-                await loadPendingCompletions();
-
-                // Load upcoming sessions
-                await loadUpcomingSessions();
-
-                // Load recent activity
-                await loadRecentActivity();
-
-                // Calculate completed this week
-                calculateCompletedThisWeek();
-
-            } catch (error) {
-                console.error('Error loading dashboard data:', error);
-            }
-        }
-
-        // Load pending level completions
-        async function loadPendingCompletions() {
-            allPendingCompletions = [];
-
-            for (const user of allUsers) {
-                try {
-                    const completionsSnapshot = await db.collection('users')
-                        .doc(user.email)
-                        .collection('levelCompletions')
-                        .where('status', '==', 'pending')
-                        .orderBy('submittedAt', 'desc')
-                        .get();
-
-                    completionsSnapshot.forEach(doc => {
-                        allPendingCompletions.push({
-                            id: doc.id,
-                            userEmail: user.email,
-                            userName: user.name || user.email,
-                            ...doc.data()
-                        });
-                    });
-                } catch (error) {
-                    console.error(`Error loading completions for ${user.email}:`, error);
-                }
-            }
-
-            // Update pending approvals stat
-            document.getElementById('pendingApprovals').textContent = allPendingCompletions.length;
-
-            // Display first 5 pending completions
-            const pendingList = document.getElementById('pendingCompletionsList');
-            if (allPendingCompletions.length === 0) {
-                pendingList.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">✅</div>
-                        <p>No pending approvals</p>
-                    </div>
-                `;
-            } else {
-                const topPending = allPendingCompletions.slice(0, 5);
-                pendingList.innerHTML = topPending.map(completion => `
-                    <div class="pending-item">
-                        <div class="pending-item-info">
-                            <div class="pending-item-title">${completion.userName}</div>
-                            <div class="pending-item-detail">Level ${completion.level} completion</div>
-                        </div>
-                        <a href="portal-admin-goals.html" class="pending-item-action">Review</a>
-                    </div>
-                `).join('');
-            }
-        }
-
-        // Load upcoming sessions
-        async function loadUpcomingSessions() {
-            allUpcomingSessions = [];
-            const now = firebase.firestore.Timestamp.now();
-            const weekFromNow = firebase.firestore.Timestamp.fromDate(
-                new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-            );
-
-            for (const user of allUsers) {
-                try {
-                    const sessionsSnapshot = await db.collection('users')
-                        .doc(user.email)
-                        .collection('sessions')
-                        .where('sessionDate', '>=', now)
-                        .where('sessionDate', '<=', weekFromNow)
-                        .orderBy('sessionDate', 'asc')
-                        .get();
-
-                    sessionsSnapshot.forEach(doc => {
-                        allUpcomingSessions.push({
-                            id: doc.id,
-                            userEmail: user.email,
-                            userName: user.name || user.email,
-                            ...doc.data()
-                        });
-                    });
-                } catch (error) {
-                    console.error(`Error loading sessions for ${user.email}:`, error);
-                }
-            }
-
-            // Sort by date
-            allUpcomingSessions.sort((a, b) => a.sessionDate.toMillis() - b.sessionDate.toMillis());
-
-            // Update upcoming sessions stat
-            document.getElementById('upcomingSessions').textContent = allUpcomingSessions.length;
-
-            // Display first 5 upcoming sessions
-            const sessionsList = document.getElementById('upcomingSessionsList');
-            if (allUpcomingSessions.length === 0) {
-                sessionsList.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📅</div>
-                        <p>No upcoming sessions</p>
-                    </div>
-                `;
-            } else {
-                const topSessions = allUpcomingSessions.slice(0, 5);
-                sessionsList.innerHTML = topSessions.map(session => {
-                    const date = session.sessionDate.toDate();
-                    const dateStr = date.toLocaleDateString('en-US', {
-                        month: 'short',
-                        day: 'numeric',
-                        year: 'numeric'
-                    });
-                    const timeStr = session.sessionTime || '';
-
-                    return `
-                        <div class="session-item">
-                            <div class="session-item-info">
-                                <div class="session-item-title">${session.userName}</div>
-                                <div class="session-item-detail">${dateStr} ${timeStr}</div>
-                            </div>
-                            <div class="session-item-time">${session.duration || 60} min</div>
-                        </div>
-                    `;
-                }).join('');
-            }
-        }
-
-        // Load recent activity
-        async function loadRecentActivity() {
-            recentActivity = [];
-
-            // Collect activity from all users
-            for (const user of allUsers) {
-                try {
-                    // Get recent level completions (last 10 days)
-                    const tenDaysAgo = firebase.firestore.Timestamp.fromDate(
-                        new Date(Date.now() - 10 * 24 * 60 * 60 * 1000)
-                    );
-
-                    const completionsSnapshot = await db.collection('users')
-                        .doc(user.email)
-                        .collection('levelCompletions')
-                        .where('submittedAt', '>=', tenDaysAgo)
-                        .orderBy('submittedAt', 'desc')
-                        .limit(5)
-                        .get();
-
-                    completionsSnapshot.forEach(doc => {
-                        const data = doc.data();
-                        recentActivity.push({
-                            timestamp: data.submittedAt,
-                            type: 'level_completion',
-                            user: user.name || user.email,
-                            description: `submitted Level ${data.level} for approval`,
-                            status: data.status
-                        });
-                    });
-                } catch (error) {
-                    console.error(`Error loading activity for ${user.email}:`, error);
-                }
-            }
-
-            // Sort by timestamp
-            recentActivity.sort((a, b) => b.timestamp.toMillis() - a.timestamp.toMillis());
-
-            // Display recent activity
-            const activityList = document.getElementById('recentActivityList');
-            if (recentActivity.length === 0) {
-                activityList.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📊</div>
-                        <p>No recent activity</p>
-                    </div>
-                `;
-            } else {
-                const topActivity = recentActivity.slice(0, 10);
-                activityList.innerHTML = topActivity.map(activity => {
-                    const timeAgo = getTimeAgo(activity.timestamp.toDate());
-                    const statusBadge = activity.status === 'approved'
-                        ? '<span style="color: #51cf66; font-weight: 600;">✓ Approved</span>'
-                        : activity.status === 'rejected'
-                        ? '<span style="color: #ff6b6b; font-weight: 600;">✗ Rejected</span>'
-                        : '<span style="color: #ffa726; font-weight: 600;">⏳ Pending</span>';
-
-                    return `
-                        <div class="activity-item">
-                            <div class="activity-time">${timeAgo}</div>
-                            <div class="activity-description">
-                                <span class="activity-user">${activity.user}</span> ${activity.description}
-                                ${statusBadge}
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-            }
-        }
-
-        // Calculate completed approvals this week
-        function calculateCompletedThisWeek() {
-            const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-            const completedThisWeek = recentActivity.filter(activity => {
-                return activity.status === 'approved' &&
-                       activity.timestamp.toDate() >= weekAgo;
-            });
-
-            document.getElementById('completedThisWeek').textContent = completedThisWeek.length;
-        }
-
-        // Helper function to get time ago string
-        function getTimeAgo(date) {
-            const seconds = Math.floor((new Date() - date) / 1000);
-
-            let interval = Math.floor(seconds / 31536000);
-            if (interval >= 1) return interval + ' year' + (interval === 1 ? '' : 's') + ' ago';
-
-            interval = Math.floor(seconds / 2592000);
-            if (interval >= 1) return interval + ' month' + (interval === 1 ? '' : 's') + ' ago';
-
-            interval = Math.floor(seconds / 86400);
-            if (interval >= 1) return interval + ' day' + (interval === 1 ? '' : 's') + ' ago';
-
-            interval = Math.floor(seconds / 3600);
-            if (interval >= 1) return interval + ' hour' + (interval === 1 ? '' : 's') + ' ago';
-
-            interval = Math.floor(seconds / 60);
-            if (interval >= 1) return interval + ' minute' + (interval === 1 ? '' : 's') + ' ago';
-
-            return 'Just now';
-        }
-
-        // Sign out function
-        async function signOut() {
-            try {
-                await firebase.auth().signOut();
-                window.location.href = 'portal-login.html';
-            } catch (error) {
-                console.error('Error signing out:', error);
+        function signOut() {
+            if (confirm('Are you sure you want to sign out?')) {
+                auth.signOut().then(() => {
+                    window.location.href = 'portal-login.html';
+                });
             }
         }
     </script>
