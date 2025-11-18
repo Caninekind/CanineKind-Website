@@ -117,6 +117,53 @@
             font-size: 1.1rem;
         }
 
+        /* Metrics Dashboard */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .metric-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            border-left: 4px solid #799972;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 20px rgba(121, 153, 114, 0.15);
+        }
+
+        .metric-card.upcoming {
+            border-left-color: #f59e0b;
+        }
+
+        .metric-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            color: #666;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #2c3e50;
+        }
+
         /* Controls */
         .controls {
             background: white;
@@ -482,6 +529,40 @@
             <p>View all client sessions, add notes, and manage training schedules</p>
         </div>
 
+        <!-- Metrics Dashboard -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-icon">📅</div>
+                <div class="metric-label">Total Sessions</div>
+                <div class="metric-value" id="totalSessions">0</div>
+            </div>
+            <div class="metric-card upcoming">
+                <div class="metric-icon">⏰</div>
+                <div class="metric-label">Upcoming</div>
+                <div class="metric-value" id="upcomingSessions">0</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon">✅</div>
+                <div class="metric-label">Past Sessions</div>
+                <div class="metric-value" id="pastSessions">0</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon">📊</div>
+                <div class="metric-label">This Week</div>
+                <div class="metric-value" id="weekSessions">0</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon">📈</div>
+                <div class="metric-label">This Month</div>
+                <div class="metric-value" id="monthSessions">0</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon">🎯</div>
+                <div class="metric-label">This Year</div>
+                <div class="metric-value" id="yearSessions">0</div>
+            </div>
+        </div>
+
         <!-- Controls -->
         <div class="controls">
             <div class="form-group">
@@ -625,6 +706,7 @@
                 }
 
                 renderSessions(allSessions);
+                updateMetrics(allSessions);
 
             } catch (error) {
                 console.error('Error loading sessions:', error);
@@ -749,6 +831,54 @@
             }
         }
 
+        function updateMetrics(sessions) {
+            const now = new Date();
+            const startOfWeek = new Date(now);
+            startOfWeek.setDate(now.getDate() - now.getDay());
+            startOfWeek.setHours(0, 0, 0, 0);
+
+            const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+            const startOfYear = new Date(now.getFullYear(), 0, 1);
+
+            let totalSessions = sessions.length;
+            let upcomingSessions = 0;
+            let pastSessions = 0;
+            let weekSessions = 0;
+            let monthSessions = 0;
+            let yearSessions = 0;
+
+            sessions.forEach(session => {
+                if (!session.sessionDate) return;
+
+                const sessionDate = session.sessionDate.toDate();
+
+                if (sessionDate >= now) {
+                    upcomingSessions++;
+                } else {
+                    pastSessions++;
+                }
+
+                if (sessionDate >= startOfWeek) {
+                    weekSessions++;
+                }
+
+                if (sessionDate >= startOfMonth) {
+                    monthSessions++;
+                }
+
+                if (sessionDate >= startOfYear) {
+                    yearSessions++;
+                }
+            });
+
+            document.getElementById('totalSessions').textContent = totalSessions;
+            document.getElementById('upcomingSessions').textContent = upcomingSessions;
+            document.getElementById('pastSessions').textContent = pastSessions;
+            document.getElementById('weekSessions').textContent = weekSessions;
+            document.getElementById('monthSessions').textContent = monthSessions;
+            document.getElementById('yearSessions').textContent = yearSessions;
+        }
+
         function filterSessions() {
             const clientFilter = document.getElementById('filterClient').value;
             const typeFilter = document.getElementById('filterType').value;
@@ -772,6 +902,7 @@
             }
 
             renderSessions(filtered);
+            updateMetrics(filtered);
         }
 
         function openAddSessionModal() {
