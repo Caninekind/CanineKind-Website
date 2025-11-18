@@ -3,150 +3,424 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Settings - CanineKind Training Portal</title>
-    <link rel="stylesheet" href="portal-styles.css">
+    <title>Account Settings - CanineKind Client Portal</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <style>
-        .settings-container {
-            max-width: 800px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #D1E5F4 0%, #E8F4F8 100%);
+            min-height: 100vh;
+            padding-bottom: 40px;
+        }
+
+        .portal-header {
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 2rem 1rem;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .portal-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .portal-logo img {
+            height: 50px;
+            width: auto;
+        }
+
+        .portal-logo h1 {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .portal-nav {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .portal-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        .portal-nav a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .portal-nav a.active {
+            background: rgba(255, 255, 255, 0.3);
+            font-weight: 600;
+        }
+
+        .sign-out-link {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
+            padding: 0.4rem 0.8rem;
+        }
+
+        .sign-out-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 2rem;
         }
 
         .page-header {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
         }
 
         .page-header h1 {
             color: #2c3e50;
             font-size: 2.5rem;
             font-weight: 800;
-            margin-bottom: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .page-header h1::before {
+            content: '⚙️';
+            font-size: 2.5rem;
         }
 
         .page-header p {
             color: #666;
             font-size: 1.1rem;
-            max-width: 600px;
-            margin: 0 auto;
         }
 
-        .settings-card {
+        .settings-section {
             background: white;
             border-radius: 20px;
-            padding: 3rem 2.5rem;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
-            border: 2px solid transparent;
-            background: linear-gradient(white, white) padding-box,
-                        linear-gradient(135deg, #D1E5F4 0%, #E8F4F8 100%) border-box;
+            padding: 2.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
             margin-bottom: 2rem;
+            border: 1px solid rgba(0,0,0,0.06);
+            position: relative;
+            overflow: hidden;
         }
 
-        .settings-card h2 {
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 3px solid #f0f0f0;
+        }
+
+        .section-header h2 {
             color: #2c3e50;
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            flex: 1;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
             margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid #E8F4F8;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
         .form-group {
-            margin-bottom: 1.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
         }
 
         .form-group label {
             display: block;
-            font-weight: 600;
+            font-weight: 700;
             color: #2c3e50;
-            margin-bottom: 0.5rem;
-            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+        }
+
+        .form-group label .optional {
+            color: #999;
+            font-weight: 400;
+            font-size: 0.85rem;
         }
 
         .form-group input[type="text"],
         .form-group input[type="email"],
         .form-group input[type="tel"],
-        .form-group textarea {
+        .form-group textarea,
+        .form-group select {
             width: 100%;
-            padding: 0.875rem 1rem;
-            border: 2px solid #E8F4F8;
-            border-radius: 10px;
+            padding: 14px 18px;
+            border: 2px solid #e8ebf0;
+            border-radius: 12px;
             font-size: 1rem;
             font-family: inherit;
-            transition: all 0.3s ease;
-            background: #fafafa;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #fafbfc;
         }
 
         .form-group input:focus,
-        .form-group textarea:focus {
+        .form-group textarea:focus,
+        .form-group select:focus {
             outline: none;
             border-color: #799972;
             background: white;
-            box-shadow: 0 0 0 3px rgba(121, 153, 114, 0.1);
+            box-shadow: 0 0 0 4px rgba(121, 153, 114, 0.1);
         }
 
         .form-group textarea {
-            min-height: 100px;
+            min-height: 120px;
             resize: vertical;
         }
 
-        .checkbox-group {
+        .checkbox-container {
+            background: linear-gradient(135deg, #fafbfc 0%, #f8f9fa 100%);
+            border: 2px solid #e8ebf0;
+            border-radius: 12px;
+            padding: 18px 20px;
+            transition: all 0.3s;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            padding: 1rem;
-            background: #f8fafb;
-            border-radius: 10px;
-            border: 2px solid #E8F4F8;
-            transition: all 0.3s ease;
+            gap: 12px;
         }
 
-        .checkbox-group:hover {
+        .checkbox-container:hover {
             background: white;
-            border-color: #D1E5F4;
+            border-color: #799972;
+            transform: translateX(3px);
         }
 
-        .checkbox-group input[type="checkbox"] {
+        .checkbox-container input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            accent-color: #799972;
+        }
+
+        .checkbox-container label {
+            margin: 0;
+            cursor: pointer;
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 0.95rem;
+            flex: 1;
+        }
+
+        /* Training Tools Checkboxes */
+        .training-tools-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .tool-option {
+            background: linear-gradient(135deg, #fafbfc 0%, #f8f9fa 100%);
+            border: 2px solid #e8ebf0;
+            border-radius: 10px;
+            padding: 12px 16px;
+            transition: all 0.3s;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tool-option:hover {
+            background: white;
+            border-color: #799972;
+        }
+
+        .tool-option input[type="checkbox"] {
             width: 20px;
             height: 20px;
             cursor: pointer;
             accent-color: #799972;
         }
 
-        .checkbox-group label {
+        .tool-option label {
             margin: 0;
             cursor: pointer;
             color: #2c3e50;
             font-weight: 500;
+            font-size: 0.9rem;
+            flex: 1;
+        }
+
+        /* Locked Section */
+        .locked-section {
+            position: relative;
+            filter: blur(3px);
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .unlock-notice {
+            background: linear-gradient(135deg, #fff9e6 0%, #fff4d4 100%);
+            border: 2px solid #ffd700;
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            margin: 2rem 0;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
+        }
+
+        .unlock-notice-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .unlock-notice h3 {
+            color: #7a5c1e;
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .unlock-notice p {
+            color: #8b6b2a;
+            font-size: 1rem;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Pending Approval Badge */
+        .pending-approval-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #fff4e6 0%, #ffe8cc 100%);
+            color: #e65100;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-left: 10px;
+            border: 2px solid #ff9800;
+        }
+
+        /* Drive Rating */
+        .drive-rating {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .drive-option {
+            flex: 1;
+            background: linear-gradient(135deg, #fafbfc 0%, #f8f9fa 100%);
+            border: 2px solid #e8ebf0;
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .drive-option:hover {
+            background: white;
+            border-color: #799972;
+        }
+
+        .drive-option input[type="radio"] {
+            display: none;
+        }
+
+        .drive-option input[type="radio"]:checked + .drive-label {
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            border-color: #799972;
+            color: white;
+        }
+
+        .drive-option.selected {
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            border-color: #799972;
+            color: white;
         }
 
         .save-button {
             width: 100%;
-            padding: 1.25rem;
+            padding: 18px 32px;
             background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: 30px;
             font-size: 1.1rem;
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(121, 153, 114, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(121, 153, 114, 0.35);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .save-button::before {
+            content: '💾 ';
+            margin-right: 8px;
+        }
+
+        .save-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .save-button:hover::after {
+            left: 100%;
         }
 
         .save-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(121, 153, 114, 0.4);
+            box-shadow: 0 6px 20px rgba(121, 153, 114, 0.45);
         }
 
         .save-button:active {
@@ -159,26 +433,37 @@
             transform: none;
         }
 
-        .success-message {
-            background: #d4edda;
-            color: #155724;
-            padding: 1rem 1.25rem;
-            border-radius: 10px;
-            border-left: 4px solid #28a745;
-            margin-bottom: 1.5rem;
+        .success-message,
+        .error-message {
+            padding: 1.25rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
             font-weight: 600;
             display: none;
+            animation: slideIn 0.3s ease;
         }
 
-        .success-message.show {
+        .success-message {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+            border-left: 5px solid #28a745;
+        }
+
+        .error-message {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            color: #721c24;
+            border-left: 5px solid #dc3545;
+        }
+
+        .success-message.show,
+        .error-message.show {
             display: block;
-            animation: slideIn 0.3s ease;
         }
 
         @keyframes slideIn {
             from {
                 opacity: 0;
-                transform: translateY(-10px);
+                transform: translateY(-20px);
             }
             to {
                 opacity: 1;
@@ -186,116 +471,258 @@
             }
         }
 
-        .error-message {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 1rem 1.25rem;
-            border-radius: 10px;
-            border-left: 4px solid #dc3545;
-            margin-bottom: 1.5rem;
-            font-weight: 600;
+        .loading-overlay {
             display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
         }
 
-        .error-message.show {
-            display: block;
-            animation: slideIn 0.3s ease;
+        .loading-overlay.active {
+            display: flex;
         }
 
-        .back-link {
-            display: inline-block;
-            margin-bottom: 2rem;
-            color: #799972;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
+        .spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #799972;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
         }
 
-        .back-link:hover {
-            color: #8aaa83;
-            transform: translateX(-5px);
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         @media (max-width: 768px) {
-            .settings-card {
-                padding: 2rem 1.5rem;
+            .container {
+                padding: 0 1rem;
+            }
+
+            .settings-section {
+                padding: 1.5rem;
+            }
+
+            .form-row,
+            .training-tools-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .drive-rating {
+                flex-direction: column;
             }
 
             .page-header h1 {
                 font-size: 2rem;
             }
 
-            .settings-container {
-                padding: 1rem 0.5rem;
+            .portal-nav {
+                gap: 0.5rem;
+                font-size: 0.9rem;
+            }
+
+            .portal-nav a {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.85rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="settings-container">
-        <a href="portal-dashboard.html" class="back-link">← Back to Dashboard</a>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
 
+    <header class="portal-header">
+        <div class="header-content">
+            <div class="portal-logo">
+                <img src="https://i.imgur.com/OXiQWa3.jpeg" alt="CanineKind Logo">
+                <h1>Client Portal</h1>
+            </div>
+            <nav class="portal-nav">
+                <a href="portal-dashboard.html">Dashboard</a>
+                <a href="portal-sessions.html">Sessions</a>
+                <a href="portal-forms.html">Forms & Documents</a>
+                <a href="portal-schedule.html">Weekly Schedule</a>
+                <a href="portal-goals.html">Goals</a>
+                <a href="portal-settings.html" class="active">Settings</a>
+                <a href="#" class="sign-out-link" onclick="signOut(); return false;">Sign Out</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
         <div class="page-header">
-            <h1>User Settings</h1>
-            <p>Update your profile information and preferences</p>
+            <h1>Account Settings</h1>
+            <p>Manage your profile and training preferences</p>
         </div>
 
         <div id="successMessage" class="success-message">
-            Settings saved successfully!
+            ✓ Settings saved successfully!
         </div>
 
         <div id="errorMessage" class="error-message">
-            Error saving settings. Please try again.
+            ✗ Error saving settings. Please try again.
         </div>
 
-        <div class="settings-card">
-            <h2>Personal Information</h2>
+        <!-- USER INFO Section -->
+        <div class="settings-section">
+            <div class="section-header">
+                <span class="section-icon">👤</span>
+                <h2>User Information</h2>
+            </div>
 
-            <div class="form-group">
-                <label for="ownerName">Owner's Name *</label>
-                <input type="text" id="ownerName" placeholder="Enter your full name" required>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" placeholder="Enter your first name" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" placeholder="Enter your last name" required>
+                </div>
             </div>
 
             <div class="form-group">
-                <label for="dogName">Dog's Name *</label>
-                <input type="text" id="dogName" placeholder="Enter your dog's name" required>
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="your.email@example.com" readonly>
             </div>
 
             <div class="form-group">
-                <label for="email">Contact Email *</label>
-                <input type="email" id="email" placeholder="your.email@example.com" required>
-            </div>
-
-            <div class="form-group">
-                <label for="phone">Phone Number *</label>
+                <label for="phone">Phone Number</label>
                 <input type="tel" id="phone" placeholder="(555) 123-4567" required>
             </div>
 
             <div class="form-group">
-                <label for="address">Address</label>
-                <textarea id="address" placeholder="Enter your full address (optional)"></textarea>
-            </div>
-        </div>
-
-        <div class="settings-card">
-            <h2>Preferences</h2>
-
-            <div class="form-group">
-                <div class="checkbox-group">
-                    <input type="checkbox" id="calendarReminders">
-                    <label for="calendarReminders">Send me calendar reminders for training sessions and scheduled activities</label>
-                </div>
+                <label for="address">Address <span class="optional">(Optional)</span></label>
+                <textarea id="address" placeholder="Enter your full address"></textarea>
             </div>
 
             <div class="form-group">
-                <div class="checkbox-group">
-                    <input type="checkbox" id="trainingReminders">
-                    <label for="trainingReminders">Send me training reminder modules when practicing goals</label>
+                <div class="checkbox-container">
+                    <input type="checkbox" id="notificationsEnabled">
+                    <label for="notificationsEnabled">📧 Enable training notifications and reminders</label>
                 </div>
             </div>
         </div>
 
-        <button class="save-button" id="saveButton">Save Settings</button>
+        <!-- DOG SETTINGS Section -->
+        <div class="settings-section">
+            <div class="section-header">
+                <span class="section-icon">🐕</span>
+                <h2>Dog Settings</h2>
+            </div>
+
+            <div class="form-group">
+                <label for="dogName">Dog's Name</label>
+                <input type="text" id="dogName" placeholder="Enter your dog's name" required>
+            </div>
+
+            <!-- Locked Section Notice -->
+            <div id="lockedNotice" class="unlock-notice">
+                <div class="unlock-notice-icon">🔒</div>
+                <h3>Additional Information Required</h3>
+                <p>
+                    We'll complete the rest of this section together during your first in-person training session.
+                    The information we gather will help us create personalized training goals and send you relevant
+                    notifications based on your dog's specific needs and progress.
+                </p>
+            </div>
+
+            <!-- Advanced Dog Settings (Locked by default) -->
+            <div id="advancedDogSettings" style="display: none;">
+                <div class="form-group">
+                    <label>Training Tools Currently Using <span id="toolsPendingBadge" class="pending-approval-badge" style="display: none;">Pending Approval</span></label>
+                    <div class="training-tools-grid">
+                        <div class="tool-option">
+                            <input type="checkbox" id="tool_slip_lead" value="Slip Lead/Collar">
+                            <label for="tool_slip_lead">Slip Lead/Collar</label>
+                        </div>
+                        <div class="tool-option">
+                            <input type="checkbox" id="tool_flat_collar" value="Flat Collar">
+                            <label for="tool_flat_collar">Flat Collar</label>
+                        </div>
+                        <div class="tool-option">
+                            <input type="checkbox" id="tool_electronic" value="Electronic Collar">
+                            <label for="tool_electronic">Electronic Collar</label>
+                        </div>
+                        <div class="tool-option">
+                            <input type="checkbox" id="tool_prong" value="Prong Collar">
+                            <label for="tool_prong">Prong Collar</label>
+                        </div>
+                        <div class="tool-option">
+                            <input type="checkbox" id="tool_harness" value="Harness">
+                            <label for="tool_harness">Harness</label>
+                        </div>
+                        <div class="tool-option">
+                            <input type="checkbox" id="tool_gentle_leader" value="Gentle Leader">
+                            <label for="tool_gentle_leader">Gentle Leader</label>
+                        </div>
+                        <div class="tool-option">
+                            <input type="checkbox" id="tool_flexi" value="Flexi Lead">
+                            <label for="tool_flexi">Flexi Lead</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="triggersOutside">Triggers Outside the Home <span id="outsidePendingBadge" class="pending-approval-badge" style="display: none;">Pending Approval</span></label>
+                    <textarea id="triggersOutside" placeholder="Describe any triggers your dog has when outside (e.g., other dogs, bikes, loud noises)"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="triggersInside">Triggers Inside the Home <span id="insidePendingBadge" class="pending-approval-badge" style="display: none;">Pending Approval</span></label>
+                    <textarea id="triggersInside" placeholder="Describe any triggers your dog has at home (e.g., doorbell, visitors, other pets)"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="behavioralIssues">Behavioral Issues <span id="behaviorPendingBadge" class="pending-approval-badge" style="display: none;">Pending Approval</span></label>
+                    <textarea id="behavioralIssues" placeholder="Describe any behavioral issues (e.g., jumping, pulling, reactivity)"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Food Drive <span id="foodDrivePendingBadge" class="pending-approval-badge" style="display: none;">Pending Approval</span></label>
+                    <div class="drive-rating">
+                        <div class="drive-option" data-value="low" onclick="selectDrive('food', 'low')">
+                            <span class="drive-label">Low</span>
+                        </div>
+                        <div class="drive-option" data-value="medium" onclick="selectDrive('food', 'medium')">
+                            <span class="drive-label">Medium</span>
+                        </div>
+                        <div class="drive-option" data-value="high" onclick="selectDrive('food', 'high')">
+                            <span class="drive-label">High</span>
+                        </div>
+                    </div>
+                    <input type="hidden" id="foodDrive">
+                </div>
+
+                <div class="form-group">
+                    <label>Play Drive <span id="playDrivePendingBadge" class="pending-approval-badge" style="display: none;">Pending Approval</span></label>
+                    <div class="drive-rating">
+                        <div class="drive-option" data-value="low" onclick="selectDrive('play', 'low')">
+                            <span class="drive-label">Low</span>
+                        </div>
+                        <div class="drive-option" data-value="medium" onclick="selectDrive('play', 'medium')">
+                            <span class="drive-label">Medium</span>
+                        </div>
+                        <div class="drive-option" data-value="high" onclick="selectDrive('play', 'high')">
+                            <span class="drive-label">High</span>
+                        </div>
+                    </div>
+                    <input type="hidden" id="playDrive">
+                </div>
+            </div>
+        </div>
+
+        <button class="save-button" id="saveButton" onclick="saveSettings()">Save Settings</button>
     </div>
 
     <!-- Firebase SDK -->
@@ -306,157 +733,230 @@
     <!-- Firebase Config -->
     <script src="firebase-config.js"></script>
     <script>
-        let currentUserEmail = null;
+        let currentUser = null;
+        let originalSettings = {};
 
-        // Get DOM elements
-        const ownerNameInput = document.getElementById('ownerName');
-        const dogNameInput = document.getElementById('dogName');
-        const emailInput = document.getElementById('email');
-        const phoneInput = document.getElementById('phone');
-        const addressInput = document.getElementById('address');
-        const calendarRemindersCheckbox = document.getElementById('calendarReminders');
-        const trainingRemindersCheckbox = document.getElementById('trainingReminders');
-        const saveButton = document.getElementById('saveButton');
-        const successMessage = document.getElementById('successMessage');
-        const errorMessage = document.getElementById('errorMessage');
-
-        // Wait for Firebase to initialize
+        // Initialize page
         document.addEventListener('DOMContentLoaded', async () => {
-            console.log('🔵 [SETTINGS] Page loaded, initializing Firebase...');
-
-            // Check if firebase-config.js loaded
-            if (typeof initializeFirebase === 'undefined') {
-                console.error('❌ [SETTINGS] firebase-config.js not loaded!');
-                alert('Error: Firebase configuration not loaded. Please refresh the page.');
-                return;
-            }
-
             const initialized = initializeFirebase();
-            console.log('🔵 [SETTINGS] Firebase initialized:', initialized);
-
             if (!initialized) {
-                console.error('❌ [SETTINGS] Failed to initialize Firebase');
                 window.location.href = 'portal-login.html';
                 return;
             }
 
-            // Verify auth and db are available
-            if (typeof auth === 'undefined' || typeof db === 'undefined') {
-                console.error('❌ [SETTINGS] Auth or DB not available');
-                alert('Error: Firebase services not available. Please refresh the page.');
-                return;
-            }
-
-            console.log('🔵 [SETTINGS] Setting up auth state observer...');
-
-            // Auth state observer
             auth.onAuthStateChanged(async (user) => {
-                console.log('🔵 [SETTINGS] Auth state changed. User:', user ? user.email : 'null');
-
-                if (user) {
-                    currentUserEmail = user.email;
-                    emailInput.value = user.email;
-                    console.log('🔵 [SETTINGS] Loading settings for:', currentUserEmail);
-                    await loadSettings();
-                } else {
-                    console.log('❌ [SETTINGS] No user authenticated, redirecting to login');
+                if (!user) {
                     window.location.href = 'portal-login.html';
+                } else {
+                    const approval = await checkUserApproval(user.email);
+                    if (!approval.approved) {
+                        window.location.href = 'portal-pending.html';
+                    } else {
+                        currentUser = user;
+                        document.getElementById('email').value = user.email;
+                        await loadSettings();
+                    }
                 }
             });
         });
 
         // Load settings from Firestore
         async function loadSettings() {
+            showLoading(true);
             try {
                 const settingsDoc = await db.collection('users')
-                    .doc(currentUserEmail)
+                    .doc(currentUser.email)
                     .collection('settings')
                     .doc('profile')
                     .get();
 
                 if (settingsDoc.exists) {
                     const data = settingsDoc.data();
-                    ownerNameInput.value = data.ownerName || '';
-                    dogNameInput.value = data.dogName || '';
-                    phoneInput.value = data.phone || '';
-                    addressInput.value = data.address || '';
-                    calendarRemindersCheckbox.checked = data.calendarReminders || false;
-                    trainingRemindersCheckbox.checked = data.trainingReminders || false;
+                    originalSettings = data;
+
+                    // User Info
+                    document.getElementById('firstName').value = data.firstName || '';
+                    document.getElementById('lastName').value = data.lastName || '';
+                    document.getElementById('phone').value = data.phone || '';
+                    document.getElementById('address').value = data.address || '';
+                    document.getElementById('notificationsEnabled').checked = data.notificationsEnabled || false;
+
+                    // Dog Settings
+                    document.getElementById('dogName').value = data.dogName || '';
+
+                    // Check if advanced dog settings are unlocked
+                    if (data.advancedDogSettingsUnlocked === true) {
+                        unlockAdvancedSettings();
+
+                        // Load advanced settings
+                        if (data.trainingTools) {
+                            data.trainingTools.forEach(tool => {
+                                const checkbox = document.querySelector(`input[value="${tool}"]`);
+                                if (checkbox) checkbox.checked = true;
+                            });
+                        }
+
+                        document.getElementById('triggersOutside').value = data.triggersOutside || '';
+                        document.getElementById('triggersInside').value = data.triggersInside || '';
+                        document.getElementById('behavioralIssues').value = data.behavioralIssues || '';
+
+                        if (data.foodDrive) {
+                            selectDrive('food', data.foodDrive);
+                        }
+                        if (data.playDrive) {
+                            selectDrive('play', data.playDrive);
+                        }
+
+                        // Show pending approval badges if changes are pending
+                        if (data.pendingApproval) {
+                            if (data.pendingApproval.trainingTools) {
+                                document.getElementById('toolsPendingBadge').style.display = 'inline-block';
+                            }
+                            if (data.pendingApproval.triggersOutside) {
+                                document.getElementById('outsidePendingBadge').style.display = 'inline-block';
+                            }
+                            if (data.pendingApproval.triggersInside) {
+                                document.getElementById('insidePendingBadge').style.display = 'inline-block';
+                            }
+                            if (data.pendingApproval.behavioralIssues) {
+                                document.getElementById('behaviorPendingBadge').style.display = 'inline-block';
+                            }
+                            if (data.pendingApproval.foodDrive) {
+                                document.getElementById('foodDrivePendingBadge').style.display = 'inline-block';
+                            }
+                            if (data.pendingApproval.playDrive) {
+                                document.getElementById('playDrivePendingBadge').style.display = 'inline-block';
+                            }
+                        }
+                    }
                 }
             } catch (error) {
                 console.error('Error loading settings:', error);
+                showError('Error loading settings');
+            } finally {
+                showLoading(false);
             }
         }
 
-        // Save settings to Firestore
+        // Unlock advanced settings (called when admin unlocks or already unlocked)
+        function unlockAdvancedSettings() {
+            document.getElementById('lockedNotice').style.display = 'none';
+            document.getElementById('advancedDogSettings').style.display = 'block';
+        }
+
+        // Select drive rating
+        function selectDrive(type, value) {
+            // Get all drive options for this type
+            const container = document.querySelector(`input[id="${type}Drive"]`).closest('.form-group');
+            const options = container.querySelectorAll('.drive-option');
+
+            // Remove selected class from all
+            options.forEach(opt => opt.classList.remove('selected'));
+
+            // Add selected class to clicked option
+            const selectedOption = container.querySelector(`[data-value="${value}"]`);
+            if (selectedOption) {
+                selectedOption.classList.add('selected');
+            }
+
+            // Set hidden input value
+            document.getElementById(`${type}Drive`).value = value;
+        }
+
+        // Save settings
         async function saveSettings() {
             // Validate required fields
-            if (!ownerNameInput.value.trim() || !dogNameInput.value.trim() ||
-                !emailInput.value.trim() || !phoneInput.value.trim()) {
+            if (!document.getElementById('firstName').value.trim() ||
+                !document.getElementById('lastName').value.trim() ||
+                !document.getElementById('phone').value.trim() ||
+                !document.getElementById('dogName').value.trim()) {
                 showError('Please fill in all required fields');
                 return;
             }
 
-            saveButton.disabled = true;
-            saveButton.textContent = 'Saving...';
+            showLoading(true);
             hideMessages();
 
             try {
+                // Collect training tools
+                const trainingTools = [];
+                document.querySelectorAll('.tool-option input[type="checkbox"]:checked').forEach(checkbox => {
+                    trainingTools.push(checkbox.value);
+                });
+
                 const settingsData = {
-                    ownerName: ownerNameInput.value.trim(),
-                    dogName: dogNameInput.value.trim(),
-                    email: emailInput.value.trim(),
-                    phone: phoneInput.value.trim(),
-                    address: addressInput.value.trim(),
-                    calendarReminders: calendarRemindersCheckbox.checked,
-                    trainingReminders: trainingRemindersCheckbox.checked,
-                    lastUpdated: new Date().toISOString()
+                    // User Info
+                    firstName: document.getElementById('firstName').value.trim(),
+                    lastName: document.getElementById('lastName').value.trim(),
+                    email: document.getElementById('email').value.trim(),
+                    phone: document.getElementById('phone').value.trim(),
+                    address: document.getElementById('address').value.trim(),
+                    notificationsEnabled: document.getElementById('notificationsEnabled').checked,
+
+                    // Dog Settings
+                    dogName: document.getElementById('dogName').value.trim(),
+
+                    lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
                 };
 
+                // If advanced settings are unlocked, check for changes and mark for approval
+                if (originalSettings.advancedDogSettingsUnlocked === true) {
+                    const pendingApproval = {};
+
+                    // Check each field for changes
+                    const currentTools = trainingTools.sort().join(',');
+                    const originalTools = (originalSettings.trainingTools || []).sort().join(',');
+                    if (currentTools !== originalTools) {
+                        pendingApproval.trainingTools = trainingTools;
+                    } else {
+                        settingsData.trainingTools = trainingTools;
+                    }
+
+                    const checkField = (fieldId, fieldName) => {
+                        const currentValue = document.getElementById(fieldId).value.trim();
+                        if (currentValue !== (originalSettings[fieldName] || '')) {
+                            pendingApproval[fieldName] = currentValue;
+                        } else {
+                            settingsData[fieldName] = currentValue;
+                        }
+                    };
+
+                    checkField('triggersOutside', 'triggersOutside');
+                    checkField('triggersInside', 'triggersInside');
+                    checkField('behavioralIssues', 'behavioralIssues');
+                    checkField('foodDrive', 'foodDrive');
+                    checkField('playDrive', 'playDrive');
+
+                    if (Object.keys(pendingApproval).length > 0) {
+                        settingsData.pendingApproval = pendingApproval;
+                    }
+
+                    settingsData.advancedDogSettingsUnlocked = true;
+                }
+
                 await db.collection('users')
-                    .doc(currentUserEmail)
+                    .doc(currentUser.email)
                     .collection('settings')
                     .doc('profile')
-                    .set(settingsData);
+                    .set(settingsData, { merge: true });
 
                 showSuccess();
+
+                // Reload settings to get updated state
+                setTimeout(() => {
+                    loadSettings();
+                }, 1000);
+
             } catch (error) {
                 console.error('Error saving settings:', error);
                 showError('Error saving settings. Please try again.');
             } finally {
-                saveButton.disabled = false;
-                saveButton.textContent = 'Save Settings';
+                showLoading(false);
             }
         }
 
-        // Show success message
-        function showSuccess() {
-            successMessage.classList.add('show');
-            setTimeout(() => {
-                successMessage.classList.remove('show');
-            }, 4000);
-        }
-
-        // Show error message
-        function showError(message) {
-            errorMessage.textContent = message;
-            errorMessage.classList.add('show');
-            setTimeout(() => {
-                errorMessage.classList.remove('show');
-            }, 4000);
-        }
-
-        // Hide all messages
-        function hideMessages() {
-            successMessage.classList.remove('show');
-            errorMessage.classList.remove('show');
-        }
-
-        // Event listeners
-        saveButton.addEventListener('click', saveSettings);
-
         // Auto-format phone number
-        phoneInput.addEventListener('input', (e) => {
+        document.getElementById('phone').addEventListener('input', (e) => {
             let value = e.target.value.replace(/\D/g, '');
             if (value.length > 10) value = value.substr(0, 10);
 
@@ -468,6 +968,35 @@
 
             e.target.value = value;
         });
+
+        // Show/hide functions
+        function showLoading(show) {
+            document.getElementById('loadingOverlay').classList.toggle('active', show);
+        }
+
+        function showSuccess() {
+            const msg = document.getElementById('successMessage');
+            msg.classList.add('show');
+            setTimeout(() => msg.classList.remove('show'), 4000);
+        }
+
+        function showError(message) {
+            const msg = document.getElementById('errorMessage');
+            msg.textContent = '✗ ' + message;
+            msg.classList.add('show');
+            setTimeout(() => msg.classList.remove('show'), 5000);
+        }
+
+        function hideMessages() {
+            document.getElementById('successMessage').classList.remove('show');
+            document.getElementById('errorMessage').classList.remove('show');
+        }
+
+        function signOut() {
+            auth.signOut().then(() => {
+                window.location.href = 'portal-login.html';
+            });
+        }
     </script>
 </body>
 </html>
