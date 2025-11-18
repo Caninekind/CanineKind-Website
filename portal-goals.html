@@ -2015,13 +2015,20 @@
                 const isLocked = !hasLevelAccess && !goals.some(g => hasAccessToGoal(g.id, level));
                 const isComingSoon = false; // No longer using coming soon
 
+                // For levels 5-8, these are standalone categories without level numbers
+                const isStandaloneCategory = level >= 5;
+
                 html += `
                     <div class="level-section">
                         <div class="level-container">
                             <div class="level-header ${isLocked ? 'locked' : ''}" onclick="toggleLevelContainer(${level})">
                                 <div class="level-title">
-                                    <span class="level-badge ${isLocked ? 'locked' : ''}">Level ${level}</span>
-                                    <h2>${LEVEL_DESCRIPTIONS[level]}</h2>
+                                    ${isStandaloneCategory ? `
+                                        <h2>${LEVEL_DESCRIPTIONS[level]}</h2>
+                                    ` : `
+                                        <span class="level-badge ${isLocked ? 'locked' : ''}">Level ${level}</span>
+                                        <h2>${LEVEL_DESCRIPTIONS[level]}</h2>
+                                    `}
                                 </div>
                                 <div style="display: flex; align-items: center; gap: 1rem;">
                                     ${isLocked ? `<div class="lock-icon">🔒</div>` : ''}
@@ -2031,7 +2038,7 @@
                             <div class="level-content" id="level-content-${level}">
                                 ${isLocked ? `
                                     <div class="unlock-message">
-                                        🔒 This level will be unlocked by your trainer after completing earlier levels
+                                        🔒 This ${isStandaloneCategory ? 'category' : 'level'} will be unlocked by your trainer
                                     </div>
                                 ` : isComingSoon ? `
                                     <div class="coming-soon">Coming Soon</div>
