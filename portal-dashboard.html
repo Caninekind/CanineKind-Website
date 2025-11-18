@@ -117,6 +117,13 @@
             box-shadow: 0 4px 10px rgba(90, 122, 82, 0.3);
         }
 
+        .button-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
         /* Main Content */
         .container {
             max-width: 1200px;
@@ -383,10 +390,21 @@
             .user-info-bar {
                 justify-content: center;
                 text-align: center;
+                flex-direction: column;
             }
 
             .user-info {
                 flex-direction: column;
+            }
+
+            .button-group {
+                justify-content: center;
+                width: 100%;
+            }
+
+            .sign-out-btn, .admin-portal-btn {
+                padding: 8px 20px;
+                font-size: 14px;
             }
         }
 
@@ -422,9 +440,9 @@
                 <p id="userEmail"></p>
             </div>
         </div>
-        <div style="display: flex; gap: 10px; align-items: center;">
+        <div class="button-group">
             <a href="portal-admin-dashboard.html" id="adminPortalBtn" class="admin-portal-btn" style="display: none;">
-                <span style="margin-right: 5px;">⚙️</span> Admin Portal
+                ⚙️ Admin Portal
             </a>
             <button class="sign-out-btn" id="signOutBtn">Sign Out</button>
         </div>
@@ -652,14 +670,24 @@
                 if (userDoc.exists) {
                     const userData = userDoc.data();
 
-                    // Check if user has admin flag set to true
-                    if (userData.admin === true || userData.isAdmin === true) {
+                    console.log('🔍 Checking admin status for:', email);
+                    console.log('🔍 User data:', userData);
+
+                    // Check if user has admin flag set to true (check all variations)
+                    if (userData.admin === true || userData.isAdmin === true || userData.role === 'admin') {
                         const adminBtn = document.getElementById('adminPortalBtn');
+                        console.log('🔍 Admin button element:', adminBtn);
                         if (adminBtn) {
                             adminBtn.style.display = 'inline-flex';
                             console.log('✅ Admin button shown for user:', email);
+                        } else {
+                            console.error('❌ Admin button element not found!');
                         }
+                    } else {
+                        console.log('❌ User is not admin. userData.admin:', userData.admin, 'userData.isAdmin:', userData.isAdmin, 'userData.role:', userData.role);
                     }
+                } else {
+                    console.error('❌ User document does not exist for:', email);
                 }
             } catch (error) {
                 console.error('Error checking admin status:', error);
