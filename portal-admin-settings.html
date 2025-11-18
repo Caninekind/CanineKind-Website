@@ -553,9 +553,12 @@
 
         async function loadClients() {
             try {
+                console.log('🔵 Loading approved clients...');
                 const usersSnapshot = await db.collection('users')
                     .where('approved', '==', true)
                     .get();
+
+                console.log(`🔵 Found ${usersSnapshot.size} approved users`);
 
                 const select = document.getElementById('clientSelect');
                 let options = '<option value="">-- Choose a client --</option>';
@@ -563,12 +566,22 @@
                 usersSnapshot.docs.forEach(doc => {
                     const userData = doc.data();
                     const displayName = userData.displayName || userData.name || doc.id;
-                    options += `<option value="${doc.id}">${displayName} (${doc.id})</option>`;
+                    const isAdmin = userData.admin === true || userData.isAdmin === true || userData.role === 'admin';
+                    // Don't show admin users in the client list
+                    if (!isAdmin) {
+                        console.log(`  ✓ Adding client: ${displayName} (${doc.id})`);
+                        options += `<option value="${doc.id}">${displayName} (${doc.id})</option>`;
+                    }
                 });
 
                 select.innerHTML = options;
+
+                if (usersSnapshot.size === 0) {
+                    alert('No approved clients found. Make sure you have approved at least one client in the User Approval page.');
+                }
             } catch (error) {
-                console.error('Error loading clients:', error);
+                console.error('❌ Error loading clients:', error);
+                alert('Error loading clients: ' + error.message);
             }
         }
 
@@ -585,6 +598,7 @@
             }
 
             selectedClientEmail = email;
+            console.log(`🔵 Loading settings for: ${email}`);
 
             try {
                 const settingsDoc = await db.collection('users')
@@ -595,7 +609,10 @@
 
                 if (settingsDoc.exists) {
                     clientSettings = settingsDoc.data();
+                    console.log('✓ Settings loaded:', clientSettings);
+                    console.log(`  Advanced settings unlocked: ${clientSettings.advancedDogSettingsUnlocked === true}`);
                 } else {
+                    console.log('⚠️ No settings document found - creating default settings');
                     clientSettings = {
                         advancedDogSettingsUnlocked: false
                     };
@@ -603,8 +620,8 @@
 
                 renderSettings();
             } catch (error) {
-                console.error('Error loading client settings:', error);
-                alert('Error loading settings. Please try again.');
+                console.error('❌ Error loading client settings:', error);
+                alert('Error loading settings: ' + error.message);
             }
         }
 
@@ -779,22 +796,29 @@
 
         async function toggleDogSettings() {
             const isCurrentlyUnlocked = clientSettings.advancedDogSettingsUnlocked === true;
+            console.log(`🔵 Toggling advanced settings from ${isCurrentlyUnlocked} to ${!isCurrentlyUnlocked}`);
 
-            if (confirm(`${isCurrentlyUnlocked ? 'Lock' : 'Unlock'} advanced dog settings for this client?`)) {
+            if (confirm(`${isCurrentlyUnlocked ? 'Lock' : 'Unlock'} advanced dog settings for ${selectedClientEmail}?\n\n${!isCurrentlyUnlocked ? 'This will allow you to fill out detailed dog information.' : 'This will hide the advanced settings from this client.'}`)) {
                 clientSettings.advancedDogSettingsUnlocked = !isCurrentlyUnlocked;
 
                 try {
+                    console.log('🔵 Updating Firestore...');
                     await db.collection('users')
                         .doc(selectedClientEmail)
                         .collection('settings')
                         .doc('profile')
                         .set({ advancedDogSettingsUnlocked: clientSettings.advancedDogSettingsUnlocked }, { merge: true });
 
+                    console.log('✓ Firestore updated successfully');
+                    console.log('🔵 Re-rendering settings...');
                     renderSettings();
-                    alert(`Advanced settings ${isCurrentlyUnlocked ? 'locked' : 'unlocked'} successfully!`);
+                    console.log('✓ Settings rendered - advanced section should now be ' + (clientSettings.advancedDogSettingsUnlocked ? 'visible' : 'hidden'));
+                    alert(`✓ Advanced settings ${isCurrentlyUnlocked ? 'locked' : 'unlocked'} successfully!\n\n${!isCurrentlyUnlocked ? 'You can now fill out the detailed dog questions below.' : 'The advanced section has been hidden.'}`);
                 } catch (error) {
-                    console.error('Error toggling settings:', error);
-                    alert('Error updating settings. Please try again.');
+                    console.error('❌ Error toggling settings:', error);
+                    alert('Error updating settings: ' + error.message);
+                    // Revert the change
+                    clientSettings.advancedDogSettingsUnlocked = isCurrentlyUnlocked;
                 }
             }
         }

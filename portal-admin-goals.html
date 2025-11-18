@@ -391,13 +391,20 @@
             let html = '<div class="goals-grid">';
             html += '<div class="goals-section"><div class="section-header"><h2>Available Goals</h2></div>';
             
-            for (let level = 0; level <= 4; level++) {
+            for (let level = 0; level <= 8; level++) {
                 const goals = GOALS_STRUCTURE[level];
                 if (!goals || goals.length === 0) continue;
 
+                // Levels 5-8 are standalone categories without level numbers
+                const isStandaloneCategory = level >= 5;
+
                 html += '<div class="level-section">';
                 html += '<div class="level-header" onclick="toggleLevel(' + level + ')">';
-                html += '<span>Level ' + level + ': ' + LEVEL_DESCRIPTIONS[level] + '</span>';
+                if (isStandaloneCategory) {
+                    html += '<span>' + LEVEL_DESCRIPTIONS[level] + '</span>';
+                } else {
+                    html += '<span>Level ' + level + ': ' + LEVEL_DESCRIPTIONS[level] + '</span>';
+                }
                 html += '<span>' + goals.length + ' goals</span></div>';
                 html += '<div class="level-content" id="level-' + level + '">';
 
