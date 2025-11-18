@@ -96,6 +96,27 @@
             background-color: #5a7a4f;
         }
 
+        .admin-portal-btn {
+            background: linear-gradient(135deg, #5a7a52 0%, #6a8a62 100%);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .admin-portal-btn:hover {
+            background: linear-gradient(135deg, #4a6a42 0%, #5a7a52 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(90, 122, 82, 0.3);
+        }
+
         /* Main Content */
         .container {
             max-width: 1200px;
@@ -401,7 +422,12 @@
                 <p id="userEmail"></p>
             </div>
         </div>
-        <button class="sign-out-btn" id="signOutBtn">Sign Out</button>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <a href="portal-admin-dashboard.html" id="adminPortalBtn" class="admin-portal-btn" style="display: none;">
+                <span style="margin-right: 5px;">⚙️</span> Admin Portal
+            </a>
+            <button class="sign-out-btn" id="signOutBtn">Sign Out</button>
+        </div>
     </div>
 
     <!-- Main Content -->
@@ -529,6 +555,9 @@
 
                         // Check if settings are complete
                         checkAndShowSettingsAlert(user.email);
+
+                        // Check if user is admin and show admin portal button
+                        checkAndShowAdminButton(user.email);
                     }
                 }
             });
@@ -612,6 +641,28 @@
                     alertBanner.classList.add('show');
                     console.log('⚠️ [SETTINGS ALERT] SHOWING - Error occurred, showing by default');
                 }
+            }
+        }
+
+        // Check if user is admin and show admin portal button
+        async function checkAndShowAdminButton(email) {
+            try {
+                const userDoc = await db.collection('users').doc(email).get();
+
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+
+                    // Check if user has admin flag set to true
+                    if (userData.admin === true || userData.isAdmin === true) {
+                        const adminBtn = document.getElementById('adminPortalBtn');
+                        if (adminBtn) {
+                            adminBtn.style.display = 'inline-flex';
+                            console.log('✅ Admin button shown for user:', email);
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Error checking admin status:', error);
             }
         }
 
