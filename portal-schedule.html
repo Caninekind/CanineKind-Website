@@ -201,13 +201,13 @@
             display: flex;
             flex-direction: column;
             position: relative;
-            height: calc(100vh - 400px);
-            min-height: 600px;
+            height: calc(100vh - 250px);
+            min-height: 700px;
         }
 
         @media (min-width: 1200px) {
             .schedule-layout {
-                height: calc(100vh - 300px);
+                height: calc(100vh - 200px);
                 padding-right: 0;
             }
         }
@@ -688,6 +688,12 @@
             font-size: 1.8rem;
         }
 
+        .calendar-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
         .save-btn {
             padding: 12px 32px;
             background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
@@ -729,6 +735,32 @@
         }
 
         .save-btn:active {
+            transform: translateY(0);
+        }
+
+        .reset-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 100%);
+            color: #666;
+            border: 2px solid #ddd;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reset-btn:hover {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%);
+            color: white;
+            border-color: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.35);
+        }
+
+        .reset-btn:active {
             transform: translateY(0);
         }
 
@@ -1269,9 +1301,9 @@
 
             .schedule-layout {
                 order: 5;
-                height: calc(100vh - 600px);
-                min-height: 500px;
-                margin-bottom: 80px;
+                height: calc(100vh - 400px);
+                min-height: 600px;
+                margin-bottom: 100px;
             }
 
             .calendar-grid {
@@ -1574,7 +1606,10 @@
             <div class="calendar-grid">
                 <div class="calendar-header">
                     <h2 id="currentDayDisplay">Monday Schedule</h2>
-                    <button class="save-btn" onclick="saveSchedule()">Save Schedule</button>
+                    <div class="calendar-actions">
+                        <button class="reset-btn" onclick="resetCurrentDay()">🔄 Reset Day</button>
+                        <button class="save-btn" onclick="saveSchedule()">Save Schedule</button>
+                    </div>
                 </div>
                 <div class="time-slots" id="timeSlots"></div>
             </div>
@@ -2415,6 +2450,33 @@
                 alert('Error saving schedule. Please try again.');
             } finally {
                 showLoading(false);
+            }
+        }
+
+        async function resetCurrentDay() {
+            if (confirm(`Are you sure you want to reset ${currentDay}'s schedule? This will clear all activities and cannot be undone.`)) {
+                showLoading(true);
+                try {
+                    // Clear the current day's schedule
+                    scheduleData[currentDay] = {};
+
+                    // Save to Firestore
+                    await db.collection('users')
+                        .doc(currentUser.email)
+                        .collection('schedules')
+                        .doc('weekly')
+                        .set(scheduleData);
+
+                    // Reload the day's schedule (will be empty now)
+                    loadDaySchedule(currentDay);
+
+                    alert(`${currentDay}'s schedule has been reset!`);
+                } catch (error) {
+                    console.error('Error resetting schedule:', error);
+                    alert('Error resetting schedule. Please try again.');
+                } finally {
+                    showLoading(false);
+                }
             }
         }
 
