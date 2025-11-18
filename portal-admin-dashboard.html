@@ -599,21 +599,33 @@
 
         // Check if user is admin
         async function isUserAdmin(email) {
+            console.log('🔍 [ADMIN DASHBOARD] Checking admin status for:', email);
             try {
                 // First check users collection (primary method)
                 const userDoc = await db.collection('users').doc(email).get();
+                console.log('🔍 [ADMIN DASHBOARD] User doc exists:', userDoc.exists);
+
                 if (userDoc.exists) {
                     const userData = userDoc.data();
-                    if (userData.admin === true || userData.isAdmin === true) {
+                    console.log('🔍 [ADMIN DASHBOARD] User data:', userData);
+                    console.log('🔍 [ADMIN DASHBOARD] userData.role:', userData.role);
+                    console.log('🔍 [ADMIN DASHBOARD] userData.admin:', userData.admin);
+                    console.log('🔍 [ADMIN DASHBOARD] userData.isAdmin:', userData.isAdmin);
+
+                    if (userData.admin === true || userData.isAdmin === true || userData.role === 'admin') {
+                        console.log('✅ [ADMIN DASHBOARD] User IS admin!');
                         return true;
                     }
                 }
 
                 // Fallback: check admins collection
+                console.log('🔍 [ADMIN DASHBOARD] Checking admins collection...');
                 const adminDoc = await db.collection('admins').doc(email).get();
-                return adminDoc.exists && adminDoc.data().isAdmin === true;
+                const isAdmin = adminDoc.exists && adminDoc.data().isAdmin === true;
+                console.log('🔍 [ADMIN DASHBOARD] Admins collection result:', isAdmin);
+                return isAdmin;
             } catch (error) {
-                console.error('Error checking admin status:', error);
+                console.error('❌ [ADMIN DASHBOARD] Error checking admin status:', error);
                 return false;
             }
         }
