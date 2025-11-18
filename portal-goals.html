@@ -1148,7 +1148,17 @@
                 {
                     id: 'training-gear',
                     title: 'Training Gear Checklist',
-                    description: 'Make sure you have your training gear for your first in-person session',
+                    description: `Make sure you have the following training gear for your first in-person session:
+
+• Flat collar or martingale collar
+• 6-foot leash (non-retractable)
+• High-value treats (small, soft pieces)
+• Treat pouch or bag
+• Long line (15-30 feet)
+• Poop bags
+• Water bowl and water
+• Any medications your dog needs
+• Copy of vaccination records`,
                     type: 'single',
                     tasks: ['Yes I have all my things']
                 },
@@ -1432,6 +1442,9 @@
                     };
                 });
 
+                // Auto-assign Level 0 goals if not already assigned
+                await autoAssignLevel0Goals();
+
                 updateLevelProgress();
 
                 // Load training reminders
@@ -1441,6 +1454,57 @@
                 alert('Error loading goals data');
             } finally {
                 showLoading(false);
+            }
+        }
+
+        // Auto-assign Level 0 goals to all users (required onboarding goals)
+        async function autoAssignLevel0Goals() {
+            try {
+                const level0Goals = GOALS_STRUCTURE[0];
+                const batch = db.batch();
+                let goalsAdded = 0;
+
+                for (const goal of level0Goals) {
+                    // Check if this Level 0 goal is already assigned
+                    if (!selectedGoals[goal.id]) {
+                        console.log(`Auto-assigning Level 0 goal: ${goal.title}`);
+
+                        // Prepare goal data
+                        const goalData = {
+                            ...goal,
+                            level: 0,
+                            selectedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            progress: 0,
+                            tasks: goal.tasks.map(task => ({
+                                text: task,
+                                completed: false
+                            }))
+                        };
+
+                        // Add to selectedGoals in memory
+                        selectedGoals[goal.id] = goalData;
+
+                        // Add to batch for Firestore
+                        const goalRef = db.collection('users')
+                            .doc(currentUser.email)
+                            .collection('selectedGoals')
+                            .doc(goal.id);
+
+                        batch.set(goalRef, goalData);
+                        goalsAdded++;
+                    }
+                }
+
+                // Commit batch if we added any goals
+                if (goalsAdded > 0) {
+                    await batch.commit();
+                    console.log(`✅ Auto-assigned ${goalsAdded} Level 0 goals to user`);
+
+                    // Re-render the levels to show the newly assigned goals
+                    renderLevels();
+                }
+            } catch (error) {
+                console.error('Error auto-assigning Level 0 goals:', error);
             }
         }
 
@@ -1618,9 +1682,11 @@
                     </ul>
                 `;
             } else {
+                // Convert newlines to <br> tags for proper formatting
+                const formattedDescription = goal.description.replace(/\n/g, '<br>');
                 cardContent = `
                     <h3>${goal.title}</h3>
-                    <p>${goal.description}</p>
+                    <p style="white-space: pre-line;">${goal.description}</p>
                 `;
             }
 
