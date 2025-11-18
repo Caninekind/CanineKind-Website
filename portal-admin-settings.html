@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Settings Management - CanineKind Admin Portal</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #D1E5F4 0%, #E8F4F8 100%);
+            min-height: 100vh;
+            padding-bottom: 40px;
+        }
+
+        .portal-header {
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .portal-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .portal-logo img {
+            height: 50px;
+            width: auto;
+        }
+
+        .portal-logo h1 {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .admin-badge {
+            background: rgba(255, 193, 7, 0.95);
+            color: #333;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-left: 12px;
+        }
+
+        .portal-nav {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .portal-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        .portal-nav a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .portal-nav a.active {
+            background: rgba(255, 255, 255, 0.3);
+            font-weight: 600;
+        }
+
+        .sign-out-link {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .page-header h1::before {
+            content: '⚙️';
+            font-size: 2.5rem;
+        }
+
+        .page-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .client-selector {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+
+        .client-selector label {
+            display: block;
+            color: #2c3e50;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .client-selector select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 500;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .client-selector select:focus {
+            outline: none;
+            border-color: #799972;
+            box-shadow: 0 0 0 3px rgba(121, 153, 114, 0.1);
+        }
+
+        .settings-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+            border: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 3px solid #f0f0f0;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+        }
+
+        .section-header h2 {
+            color: #2c3e50;
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            flex: 1;
+        }
+
+        .unlock-btn {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #333;
+            border: 2px solid #c9a336;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+        }
+
+        .unlock-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+        }
+
+        .unlock-btn.locked {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            border-color: #b91c1c;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            color: #555;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pending-badge {
+            background: #fff3cd;
+            color: #856404;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        input, textarea, select {
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #799972;
+            box-shadow: 0 0 0 3px rgba(121, 153, 114, 0.1);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+        }
+
+        .actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(121, 153, 114, 0.4);
+        }
+
+        .btn-approve {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .btn-approve:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-deny {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+        }
+
+        .btn-deny:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+        }
+
+        .locked-notice {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px dashed #9ca3af;
+        }
+
+        .locked-notice-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .locked-notice h3 {
+            color: #374151;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .locked-notice p {
+            color: #6b7280;
+            font-size: 1rem;
+        }
+
+        .pending-approvals {
+            background: #fff3cd;
+            border-left: 4px solid #ffa726;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .pending-approvals h3 {
+            color: #856404;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .approval-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .approval-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .approval-info {
+            flex: 1;
+        }
+
+        .approval-field {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.25rem;
+        }
+
+        .approval-value {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .approval-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .approval-actions button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #999;
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="portal-header">
+        <div class="header-content">
+            <div class="portal-logo">
+                <img src="https://i.imgur.com/OXiQWa3.jpeg" alt="CanineKind Logo">
+                <h1>Admin Portal<span class="admin-badge">ADMIN</span></h1>
+            </div>
+            <nav class="portal-nav">
+                <a href="portal-admin-dashboard.html">Dashboard</a>
+                <a href="portal-admin-user-approval.html">User Approval</a>
+                <a href="portal-admin-sessions.html">Sessions</a>
+                <a href="portal-admin-goals.html">Goals</a>
+                <a href="portal-admin-settings.html" class="active">Settings</a>
+                <a href="#" class="sign-out-link" onclick="signOut(); return false;">Sign Out</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Client Settings Management</h1>
+            <p>Manage client profiles and unlock advanced dog settings</p>
+        </div>
+
+        <div class="client-selector">
+            <label>Select Client to Manage</label>
+            <select id="clientSelect" onchange="loadClientSettings()">
+                <option value="">-- Choose a client --</option>
+            </select>
+        </div>
+
+        <div id="settingsContainer">
+            <div class="empty-state">
+                <div class="empty-state-icon">👆</div>
+                <p>Select a client above to view and manage their settings</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <!-- Firebase Config -->
+    <script src="firebase-config.js"></script>
+
+    <script>
+        let currentUser = null;
+        let selectedClientEmail = null;
+        let clientSettings = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const initialized = initializeFirebase();
+            if (!initialized) {
+                alert('Failed to initialize Firebase');
+                window.location.href = 'portal-login.html';
+                return;
+            }
+
+            auth.onAuthStateChanged(async (user) => {
+                if (!user) {
+                    window.location.href = 'portal-login.html';
+                } else {
+                    const isAdmin = await isUserAdmin();
+                    if (!isAdmin) {
+                        alert('Access denied. Admin privileges required.');
+                        window.location.href = 'portal-dashboard.html';
+                        return;
+                    }
+
+                    currentUser = user;
+                    await loadClients();
+                }
+            });
+        });
+
+        async function isUserAdmin() {
+            try {
+                const userDoc = await db.collection('users').doc(auth.currentUser.email).get();
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    return userData.admin === true || userData.isAdmin === true || userData.role === 'admin';
+                }
+                return false;
+            } catch (error) {
+                console.error('Error checking admin status:', error);
+                return false;
+            }
+        }
+
+        async function loadClients() {
+            try {
+                const usersSnapshot = await db.collection('users')
+                    .where('approved', '==', true)
+                    .get();
+
+                const select = document.getElementById('clientSelect');
+                let options = '<option value="">-- Choose a client --</option>';
+
+                usersSnapshot.docs.forEach(doc => {
+                    const userData = doc.data();
+                    const displayName = userData.displayName || userData.name || doc.id;
+                    options += `<option value="${doc.id}">${displayName} (${doc.id})</option>`;
+                });
+
+                select.innerHTML = options;
+            } catch (error) {
+                console.error('Error loading clients:', error);
+            }
+        }
+
+        async function loadClientSettings() {
+            const email = document.getElementById('clientSelect').value;
+            if (!email) {
+                document.getElementById('settingsContainer').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">👆</div>
+                        <p>Select a client above to view and manage their settings</p>
+                    </div>
+                `;
+                return;
+            }
+
+            selectedClientEmail = email;
+
+            try {
+                const settingsDoc = await db.collection('users')
+                    .doc(email)
+                    .collection('settings')
+                    .doc('profile')
+                    .get();
+
+                if (settingsDoc.exists) {
+                    clientSettings = settingsDoc.data();
+                } else {
+                    clientSettings = {
+                        advancedDogSettingsUnlocked: false
+                    };
+                }
+
+                renderSettings();
+            } catch (error) {
+                console.error('Error loading client settings:', error);
+                alert('Error loading settings. Please try again.');
+            }
+        }
+
+        function renderSettings() {
+            const isUnlocked = clientSettings.advancedDogSettingsUnlocked === true;
+            const pendingApproval = clientSettings.pendingApproval || {};
+            const hasPending = Object.keys(pendingApproval).length > 0;
+
+            let html = '';
+
+            // Pending Approvals Section
+            if (hasPending) {
+                html += `
+                    <div class="pending-approvals">
+                        <h3>⏳ Pending Approval Requests</h3>
+                        ${renderPendingApprovals(pendingApproval)}
+                    </div>
+                `;
+            }
+
+            // User Info Section
+            html += `
+                <div class="settings-section">
+                    <div class="section-header">
+                        <span class="section-icon">👤</span>
+                        <h2>User Information</h2>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Owner Name</label>
+                            <input type="text" id="ownerName" value="${clientSettings.ownerName || ''}" placeholder="Full name">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="email" value="${selectedClientEmail}" disabled style="opacity: 0.6;">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input type="tel" id="phone" value="${clientSettings.phone || ''}" placeholder="(555) 555-5555">
+                        </div>
+                        <div class="form-group">
+                            <label>Address (Optional)</label>
+                            <input type="text" id="address" value="${clientSettings.address || ''}" placeholder="Street address">
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Dog Settings Section
+            html += `
+                <div class="settings-section">
+                    <div class="section-header">
+                        <span class="section-icon">🐕</span>
+                        <h2>Dog Settings</h2>
+                        <button class="unlock-btn ${isUnlocked ? 'locked' : ''}" onclick="toggleDogSettings()">
+                            ${isUnlocked ? '🔓 Lock Advanced Settings' : '🔒 Unlock Advanced Settings'}
+                        </button>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 2rem;">
+                        <label>Dog's Name</label>
+                        <input type="text" id="dogName" value="${clientSettings.dogName || ''}" placeholder="Enter dog's name">
+                    </div>
+
+                    ${isUnlocked ? renderAdvancedSettings() : renderLockedNotice()}
+                </div>
+            `;
+
+            // Actions
+            html += `
+                <div class="settings-section">
+                    <div class="actions">
+                        <button class="btn btn-primary" onclick="saveSettings()">💾 Save Changes</button>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('settingsContainer').innerHTML = html;
+
+            // Restore checkbox states if unlocked
+            if (isUnlocked && clientSettings.trainingTools) {
+                clientSettings.trainingTools.forEach(tool => {
+                    const checkbox = document.getElementById(`tool-${tool.replace(/\s+/g, '-')}`);
+                    if (checkbox) checkbox.checked = true;
+                });
+            }
+        }
+
+        function renderPendingApprovals(pending) {
+            let html = '';
+            const fieldLabels = {
+                trainingTools: 'Training Tools',
+                triggersOutside: 'Triggers (Outside)',
+                triggersInside: 'Triggers (Inside)',
+                behavioralIssues: 'Behavioral Issues',
+                foodDrive: 'Food Drive',
+                playDrive: 'Play Drive'
+            };
+
+            for (const [field, value] of Object.entries(pending)) {
+                const displayValue = Array.isArray(value) ? value.join(', ') : value;
+                html += `
+                    <div class="approval-item">
+                        <div class="approval-info">
+                            <div class="approval-field">${fieldLabels[field] || field}</div>
+                            <div class="approval-value">${displayValue}</div>
+                        </div>
+                        <div class="approval-actions">
+                            <button class="btn-approve" onclick="approveChange('${field}')">✓ Approve</button>
+                            <button class="btn-deny" onclick="denyChange('${field}')">✕ Deny</button>
+                        </div>
+                    </div>
+                `;
+            }
+            return html;
+        }
+
+        function renderAdvancedSettings() {
+            const tools = ['Treats', 'Clicker', 'Leash', 'Harness', 'Collar', 'Toys', 'Crate', 'Muzzle'];
+
+            return `
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label>Training Tools Available</label>
+                    <div class="checkbox-group">
+                        ${tools.map(tool => `
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="tool-${tool.replace(/\s+/g, '-')}" value="${tool}">
+                                <label for="tool-${tool.replace(/\s+/g, '-')}">${tool}</label>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Triggers (Outside)</label>
+                        <textarea id="triggersOutside" placeholder="e.g., other dogs, loud noises, cars...">${clientSettings.triggersOutside || ''}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Triggers (Inside Home)</label>
+                        <textarea id="triggersInside" placeholder="e.g., doorbell, visitors, vacuum...">${clientSettings.triggersInside || ''}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label>Behavioral Issues</label>
+                    <textarea id="behavioralIssues" placeholder="Describe any behavioral issues or concerns...">${clientSettings.behavioralIssues || ''}</textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Food Drive (1-10)</label>
+                        <input type="number" id="foodDrive" min="1" max="10" value="${clientSettings.foodDrive || ''}" placeholder="Rate 1-10">
+                    </div>
+                    <div class="form-group">
+                        <label>Play Drive (1-10)</label>
+                        <input type="number" id="playDrive" min="1" max="10" value="${clientSettings.playDrive || ''}" placeholder="Rate 1-10">
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderLockedNotice() {
+            return `
+                <div class="locked-notice">
+                    <div class="locked-notice-icon">🔒</div>
+                    <h3>Advanced Settings Locked</h3>
+                    <p>Click "Unlock Advanced Settings" above to fill out detailed dog information with the client.</p>
+                </div>
+            `;
+        }
+
+        async function toggleDogSettings() {
+            const isCurrentlyUnlocked = clientSettings.advancedDogSettingsUnlocked === true;
+
+            if (confirm(`${isCurrentlyUnlocked ? 'Lock' : 'Unlock'} advanced dog settings for this client?`)) {
+                clientSettings.advancedDogSettingsUnlocked = !isCurrentlyUnlocked;
+
+                try {
+                    await db.collection('users')
+                        .doc(selectedClientEmail)
+                        .collection('settings')
+                        .doc('profile')
+                        .set({ advancedDogSettingsUnlocked: clientSettings.advancedDogSettingsUnlocked }, { merge: true });
+
+                    renderSettings();
+                    alert(`Advanced settings ${isCurrentlyUnlocked ? 'locked' : 'unlocked'} successfully!`);
+                } catch (error) {
+                    console.error('Error toggling settings:', error);
+                    alert('Error updating settings. Please try again.');
+                }
+            }
+        }
+
+        async function saveSettings() {
+            if (!selectedClientEmail) return;
+
+            const isUnlocked = clientSettings.advancedDogSettingsUnlocked === true;
+
+            // Gather basic info
+            const settingsData = {
+                ownerName: document.getElementById('ownerName').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                address: document.getElementById('address').value.trim(),
+                dogName: document.getElementById('dogName').value.trim(),
+                advancedDogSettingsUnlocked: isUnlocked
+            };
+
+            // Gather advanced settings if unlocked
+            if (isUnlocked) {
+                const trainingTools = [];
+                document.querySelectorAll('[id^="tool-"]:checked').forEach(cb => {
+                    trainingTools.push(cb.value);
+                });
+
+                settingsData.trainingTools = trainingTools;
+                settingsData.triggersOutside = document.getElementById('triggersOutside').value.trim();
+                settingsData.triggersInside = document.getElementById('triggersInside').value.trim();
+                settingsData.behavioralIssues = document.getElementById('behavioralIssues').value.trim();
+                settingsData.foodDrive = document.getElementById('foodDrive').value;
+                settingsData.playDrive = document.getElementById('playDrive').value;
+            }
+
+            try {
+                await db.collection('users')
+                    .doc(selectedClientEmail)
+                    .collection('settings')
+                    .doc('profile')
+                    .set(settingsData, { merge: true });
+
+                alert('Settings saved successfully!');
+                await loadClientSettings(); // Reload to refresh
+            } catch (error) {
+                console.error('Error saving settings:', error);
+                alert('Error saving settings. Please try again.');
+            }
+        }
+
+        async function approveChange(field) {
+            if (!selectedClientEmail) return;
+
+            try {
+                const pendingValue = clientSettings.pendingApproval[field];
+
+                // Update the main field with the pending value
+                await db.collection('users')
+                    .doc(selectedClientEmail)
+                    .collection('settings')
+                    .doc('profile')
+                    .update({
+                        [field]: pendingValue,
+                        [`pendingApproval.${field}`]: firebase.firestore.FieldValue.delete()
+                    });
+
+                alert('Change approved!');
+                await loadClientSettings();
+            } catch (error) {
+                console.error('Error approving change:', error);
+                alert('Error approving change. Please try again.');
+            }
+        }
+
+        async function denyChange(field) {
+            if (!selectedClientEmail) return;
+
+            try {
+                await db.collection('users')
+                    .doc(selectedClientEmail)
+                    .collection('settings')
+                    .doc('profile')
+                    .update({
+                        [`pendingApproval.${field}`]: firebase.firestore.FieldValue.delete()
+                    });
+
+                alert('Change denied and removed.');
+                await loadClientSettings();
+            } catch (error) {
+                console.error('Error denying change:', error);
+                alert('Error denying change. Please try again.');
+            }
+        }
+
+        function signOut() {
+            auth.signOut().then(() => {
+                window.location.href = 'portal-login.html';
+            });
+        }
+    </script>
+</body>
+</html>
