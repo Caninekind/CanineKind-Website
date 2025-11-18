@@ -552,12 +552,20 @@
                         console.log('🔵 [LOGIN] Redirecting to portal-pending.html...');
                         window.location.href = 'portal-pending.html';
                     } else {
-                        // User is approved, update last login and redirect to dashboard
+                        // User is approved, update last login and redirect
                         console.log('✅ [LOGIN] User is approved! Updating last login...');
                         const updateResult = await createOrUpdateUser(user);
                         console.log('🔵 [LOGIN] createOrUpdateUser() result:', updateResult);
-                        console.log('🔵 [LOGIN] Redirecting to dashboard...');
-                        window.location.href = 'portal-dashboard.html';
+
+                        // Check if user is admin and redirect accordingly
+                        const isAdmin = approval.admin === true || approval.isAdmin === true || approval.role === 'admin';
+                        if (isAdmin) {
+                            console.log('🔵 [LOGIN] User is admin - redirecting to admin dashboard...');
+                            window.location.href = 'portal-admin-dashboard.html';
+                        } else {
+                            console.log('🔵 [LOGIN] User is client - redirecting to client dashboard...');
+                            window.location.href = 'portal-dashboard.html';
+                        }
                     }
                 } else {
                     // Show error
