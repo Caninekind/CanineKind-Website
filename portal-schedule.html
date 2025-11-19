@@ -2424,8 +2424,7 @@
                                 return;
                             }
 
-                            // Clear and re-add with goal association
-                            scheduleData[currentDay][time] = [];
+                            // Add goal to existing activity (addActivityToSlot handles adding to goalIds array)
                             addActivityToSlot(time, activityName, goalId);
                         } else if (existingActivities.length > 1) {
                             // Multiple activities - let user choose (compatibility will be checked there)
@@ -2464,8 +2463,7 @@
                         return;
                     }
 
-                    // Remove and re-add with goal association
-                    scheduleData[currentDay][time].splice(index, 1);
+                    // Add goal to the selected activity (addActivityToSlot handles adding to goalIds array)
                     addActivityToSlot(time, activityName, goalId);
                 }
             }
@@ -2496,19 +2494,33 @@
             }
 
             if (goalId) {
-                // Check if this activity already exists in the slot
-                const existingActivityIndex = scheduleData[currentDay][time].findIndex(item =>
-                    typeof item === 'object' && item.activity === activity
-                );
+                // Check if this activity already exists in the slot (as object or string)
+                const existingActivityIndex = scheduleData[currentDay][time].findIndex(item => {
+                    if (typeof item === 'object') {
+                        return item.activity === activity;
+                    } else if (typeof item === 'string') {
+                        return item === activity;
+                    }
+                    return false;
+                });
 
                 if (existingActivityIndex !== -1) {
-                    // Activity exists - add goal to goalIds array if not already there
                     const existingActivity = scheduleData[currentDay][time][existingActivityIndex];
-                    if (!existingActivity.goalIds) {
-                        existingActivity.goalIds = [];
-                    }
-                    if (!existingActivity.goalIds.includes(goalId)) {
-                        existingActivity.goalIds.push(goalId);
+
+                    // If it's a plain string, convert to object format
+                    if (typeof existingActivity === 'string') {
+                        scheduleData[currentDay][time][existingActivityIndex] = {
+                            activity: existingActivity,
+                            goalIds: [goalId]
+                        };
+                    } else {
+                        // Activity exists as object - add goal to goalIds array if not already there
+                        if (!existingActivity.goalIds) {
+                            existingActivity.goalIds = [];
+                        }
+                        if (!existingActivity.goalIds.includes(goalId)) {
+                            existingActivity.goalIds.push(goalId);
+                        }
                     }
                 } else {
                     // New activity - create with goalIds array
