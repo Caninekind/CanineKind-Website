@@ -1837,7 +1837,10 @@
         async function loadUserData() {
             showLoading(true);
             try {
+                console.log('🔵 Loading user data for:', currentUser.email);
+
                 // Load selected goals (new system)
+                console.log('🔵 Loading selected goals...');
                 const selectedGoalsSnapshot = await db.collection('users')
                     .doc(currentUser.email)
                     .collection('selectedGoals')
@@ -1850,10 +1853,12 @@
                     }))
                     .filter(goal => goal.level !== 0); // Exclude Level 0 goals from schedule
 
+                console.log('✅ Loaded', activeGoals.length, 'selected goals');
                 displayGoalsTable();
                 populateGoalsBank();
 
                 // Load schedule data
+                console.log('🔵 Loading schedule data...');
                 const scheduleDoc = await db.collection('users')
                     .doc(currentUser.email)
                     .collection('schedules')
@@ -1862,12 +1867,33 @@
 
                 if (scheduleDoc.exists) {
                     scheduleData = scheduleDoc.data();
+                    console.log('✅ Schedule loaded:', scheduleData);
+                } else {
+                    console.log('ℹ️ No schedule found - starting with empty schedule');
+                    scheduleData = {};
                 }
 
                 loadDaySchedule(currentDay);
             } catch (error) {
-                console.error('Error loading user data:', error);
-                alert('Error loading schedule data');
+                console.error('❌ Error loading user data:', error);
+                console.error('❌ Error code:', error.code);
+                console.error('❌ Error message:', error.message);
+
+                let errorMsg = 'Error loading schedule data:\n\n';
+                if (error.code === 'permission-denied') {
+                    errorMsg += '🔒 PERMISSION DENIED\n\n';
+                    errorMsg += 'This means your Firestore security rules need to be updated.\n\n';
+                    errorMsg += 'ACTION REQUIRED:\n';
+                    errorMsg += '1. Open Firebase Console\n';
+                    errorMsg += '2. Go to Firestore > Rules tab\n';
+                    errorMsg += '3. Copy content from FIRESTORE_RULES.txt\n';
+                    errorMsg += '4. Paste and click Publish\n\n';
+                    errorMsg += 'See COPY_PASTE_INSTRUCTIONS.md for detailed steps.';
+                } else {
+                    errorMsg += error.message;
+                }
+
+                alert(errorMsg);
             } finally {
                 showLoading(false);
             }
@@ -2539,16 +2565,38 @@
         async function saveSchedule() {
             showLoading(true);
             try {
+                console.log('🔵 Attempting to save schedule...');
+                console.log('🔵 Current user:', currentUser.email);
+                console.log('🔵 Schedule data:', scheduleData);
+
                 await db.collection('users')
                     .doc(currentUser.email)
                     .collection('schedules')
                     .doc('weekly')
                     .set(scheduleData);
 
+                console.log('✅ Schedule saved successfully!');
                 alert('Schedule saved successfully!');
             } catch (error) {
-                console.error('Error saving schedule:', error);
-                alert('Error saving schedule. Please try again.');
+                console.error('❌ Error saving schedule:', error);
+                console.error('❌ Error code:', error.code);
+                console.error('❌ Error message:', error.message);
+
+                let errorMsg = 'Error saving schedule:\n\n';
+                if (error.code === 'permission-denied') {
+                    errorMsg += '🔒 PERMISSION DENIED\n\n';
+                    errorMsg += 'This means your Firestore security rules need to be updated.\n\n';
+                    errorMsg += 'ACTION REQUIRED:\n';
+                    errorMsg += '1. Open Firebase Console\n';
+                    errorMsg += '2. Go to Firestore > Rules tab\n';
+                    errorMsg += '3. Copy content from FIRESTORE_RULES.txt\n';
+                    errorMsg += '4. Paste and click Publish\n\n';
+                    errorMsg += 'See COPY_PASTE_INSTRUCTIONS.md for detailed steps.';
+                } else {
+                    errorMsg += error.message;
+                }
+
+                alert(errorMsg);
             } finally {
                 showLoading(false);
             }
