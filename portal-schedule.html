@@ -2116,7 +2116,18 @@
         function createScheduledActivityHTML(activityData) {
             // Handle both string (no goals) and object (with goals) format
             const activity = typeof activityData === 'string' ? activityData : activityData.activity;
-            const goalIds = typeof activityData === 'object' ? (activityData.goalIds || []) : [];
+
+            // Backward compatibility: convert old goalId (string) to goalIds (array)
+            let goalIds = [];
+            if (typeof activityData === 'object') {
+                if (activityData.goalIds && Array.isArray(activityData.goalIds)) {
+                    goalIds = activityData.goalIds;
+                } else if (activityData.goalId) {
+                    // Old format: single goalId string
+                    goalIds = [activityData.goalId];
+                }
+            }
+
             const hasGoals = goalIds.length > 0;
 
             // Create goal badges HTML
@@ -2498,7 +2509,8 @@
             const slotElement = activityElement.closest('.time-slot-content');
             const time = slotElement.dataset.time;
             const activity = activityElement.dataset.activity;
-            const goalId = activityElement.dataset.goalId;
+            const goalIdsStr = activityElement.dataset.goalIds || '';
+            const goalIds = goalIdsStr ? goalIdsStr.split(',') : [];
 
             if (scheduleData[currentDay] && scheduleData[currentDay][time]) {
                 // Find and remove the activity (handle both string and object formats)
@@ -2507,7 +2519,12 @@
                     if (typeof item === 'string') {
                         return item === activity;
                     } else {
-                        return item.activity === activity && (!goalId || item.goalId === goalId);
+                        // Match by activity name and goalIds array
+                        const itemGoalIds = item.goalIds || [];
+                        const goalsMatch = goalIds.length === 0 ||
+                                         (itemGoalIds.length === goalIds.length &&
+                                          itemGoalIds.every(id => goalIds.includes(id)));
+                        return item.activity === activity && goalsMatch;
                     }
                 });
 
