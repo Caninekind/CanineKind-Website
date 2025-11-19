@@ -2,9 +2,11 @@
 
 Follow these steps **exactly** to set up your database. Each step has copy-paste ready data.
 
+> ⚠️ **CRITICAL**: You MUST complete STEP 1 (Security Rules) first, or your schedule and goals pages will not be able to save or load data!
+
 ---
 
-## 🔐 STEP 1: Update Security Rules
+## 🔐 STEP 1: Update Security Rules (REQUIRED - DO THIS FIRST!)
 
 1. Go to https://console.firebase.google.com/
 2. Select your **CanineKind project**

@@ -40,6 +40,26 @@ service cloud.firestore {
 
       // Only admins can delete users
       allow delete: if isAdmin();
+
+      // SUBCOLLECTIONS under users/{email}
+
+      // Users can read and write their own selected goals (subcollection)
+      match /selectedGoals/{goalId} {
+        allow read, write: if isSignedIn() && request.auth.token.email == email;
+        allow read, write: if isAdmin();
+      }
+
+      // Users can read and write their own schedules (subcollection)
+      match /schedules/{document=**} {
+        allow read, write: if isSignedIn() && request.auth.token.email == email;
+        allow read, write: if isAdmin();
+      }
+
+      // Users can read and write their own signed documents (subcollection)
+      match /signedDocuments/{documentId} {
+        allow read, write: if isSignedIn() && request.auth.token.email == email;
+        allow read, write: if isAdmin();
+      }
     }
 
     // GOAL LIBRARY Collection (master list of all goals)
