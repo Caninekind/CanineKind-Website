@@ -2435,7 +2435,7 @@
             }
         }
 
-        function addActivityToSlot(time, activity, goalId = null) {
+        function addActivityToSlot(time, activity, goalId = null, personalNote = null) {
             if (!scheduleData[currentDay]) {
                 scheduleData[currentDay] = {};
             }
@@ -2445,10 +2445,15 @@
 
             // Store as object if there's a goal association
             if (goalId) {
-                scheduleData[currentDay][time].push({
+                const activityData = {
                     activity: activity,
                     goalId: goalId
-                });
+                };
+                // Add personal note if provided
+                if (personalNote && personalNote.trim() !== '') {
+                    activityData.personalNote = personalNote.trim();
+                }
+                scheduleData[currentDay][time].push(activityData);
             } else {
                 scheduleData[currentDay][time].push(activity);
             }
