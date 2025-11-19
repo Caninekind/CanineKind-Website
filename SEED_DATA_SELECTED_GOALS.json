@@ -1,0 +1,55 @@
+[
+  {
+    "documentId": "AUTO_GENERATE",
+    "note": "Sample selected goal for test client - use Auto-ID button in Firebase",
+    "fields": {
+      "userEmail": "testclient@example.com",
+      "goalId": "sit",
+      "level": 1,
+      "progress": 33,
+      "status": "in-progress",
+      "tasks": [
+        {
+          "description": "Dog sits within 3 seconds of verbal cue with no distractions",
+          "completed": true,
+          "completedDate": "USE_FIREBASE_TIMESTAMP"
+        },
+        {
+          "description": "Dog sits with mild distractions (toys, other people in room)",
+          "completed": false
+        },
+        {
+          "description": "Dog maintains sit for 10 seconds",
+          "completed": false
+        }
+      ],
+      "selectedAt": "USE_FIREBASE_TIMESTAMP"
+    }
+  },
+  {
+    "documentId": "AUTO_GENERATE",
+    "note": "Another sample selected goal",
+    "fields": {
+      "userEmail": "testclient@example.com",
+      "goalId": "recall",
+      "level": 1,
+      "progress": 0,
+      "status": "not-started",
+      "tasks": [
+        {
+          "description": "Dog comes when called from 10 feet away indoors",
+          "completed": false
+        },
+        {
+          "description": "Dog comes when called from 20 feet away outdoors on long line",
+          "completed": false
+        },
+        {
+          "description": "Dog recalls with mild distractions present",
+          "completed": false
+        }
+      ],
+      "selectedAt": "USE_FIREBASE_TIMESTAMP"
+    }
+  }
+]

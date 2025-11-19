@@ -1,0 +1,338 @@
+[
+  {
+    "documentId": "sit",
+    "fields": {
+      "goalId": "sit",
+      "title": "Sit",
+      "category": "basic-obedience",
+      "description": "Teach your dog to sit on command in various situations",
+      "level": 1,
+      "required": true,
+      "tasks": [
+        {
+          "description": "Dog sits within 3 seconds of verbal cue with no distractions",
+          "completed": false,
+          "order": 1
+        },
+        {
+          "description": "Dog sits with mild distractions (toys, other people in room)",
+          "completed": false,
+          "order": 2
+        },
+        {
+          "description": "Dog maintains sit for 10 seconds",
+          "completed": false,
+          "order": 3
+        }
+      ]
+    }
+  },
+  {
+    "documentId": "down",
+    "fields": {
+      "goalId": "down",
+      "title": "Down",
+      "category": "basic-obedience",
+      "description": "Teach your dog to lie down on command",
+      "level": 1,
+      "required": true,
+      "tasks": [
+        {
+          "description": "Dog lies down within 5 seconds of verbal cue",
+          "completed": false,
+          "order": 1
+        },
+        {
+          "description": "Dog maintains down position for 15 seconds",
+          "completed": false,
+          "order": 2
+        },
+        {
+          "description": "Dog downs with distractions present",
+          "completed": false,
+          "order": 3
+        }
+      ]
+    }
+  },
+  {
+    "documentId": "recall",
+    "fields": {
+      "goalId": "recall",
+      "title": "Recall (Come)",
+      "category": "basic-obedience",
+      "description": "Reliable recall in various environments",
+      "level": 1,
+      "required": true,
+      "tasks": [
+        {
+          "description": "Dog comes when called from 10 feet away indoors",
+          "completed": false,
+          "order": 1
+        },
+        {
+          "description": "Dog comes when called from 20 feet away outdoors on long line",
+          "completed": false,
+          "order": 2
+        },
+        {
+          "description": "Dog recalls with mild distractions present",
+          "completed": false,
+          "order": 3
+        }
+      ]
+    }
+  },
+  {
+    "documentId": "loose-leash",
+    "fields": {
+      "goalId": "loose-leash",
+      "title": "Loose Leash Walking",
+      "category": "basic-obedience",
+      "description": "Walking politely on leash without pulling",
+      "level": 1,
+      "required": false,
+      "tasks": [
+        {
+          "description": "Dog walks on loose leash for 2 minutes in low-distraction area",
+          "completed": false,
+          "order": 1
+        },
+        {
+          "description": "Dog checks in with handler every 10 steps",
+          "completed": false,
+          "order": 2
+        },
+        {
+          "description": "Dog maintains loose leash past one distraction",
+          "completed": false,
+          "order": 3
+        }
+      ]
+    }
+  },
+  {
+    "documentId": "stay",
+    "fields": {
+      "goalId": "stay",
+      "title": "Stay",
+      "category": "basic-obedience",
+      "description": "Remain in position until released",
+      "level": 2,
+      "required": false,
+      "tasks": [
+        {
+          "description": "Dog stays in sit position for 30 seconds while handler stands nearby",
+          "completed": false,
+          "order": 1
+        },
+        {
+          "description": "Dog stays while handler moves 10 feet away",
+          "completed": false,
+          "order": 2
+        },
+        {
+          "description": "Dog stays with mild distractions",
+          "completed": false,
+          "order": 3
+        }
+      ]
+    }
+  },
+  {
+    "documentId": "place",
+    "fields": {
+      "goalId": "place",
+      "title": "Place",
+      "category": "basic-obedience",
+      "description": "Go to designated spot and stay there",
+      "level": 2,
+      "required": false,
+      "tasks": [
+        {
+          "description": "Dog goes to place on cue",
+          "completed": false,
+          "order": 1
+        },
+        {
+          "description": "Dog remains on place for 1 minute",
+          "completed": false,
+          "order": 2
+        },
+        {
+          "description": "Dog stays on place with household distractions",
+          "completed": false,
+          "order": 3
+        }
+      ]
+    }
+  },
+  {
+    "documentId": "leave-it",
+    "fields": {
+      "goalId": "leave-it",
+      "title": "Leave It",
+      "category": "impulse-control",
+      "description": "Ignore items on cue",
+      "level": 2,
+      "required": false,
+      "tasks": [
+        {
+          "description": "Dog ignores treat on floor when told 'leave it'",
+          "completed": false,
+          "order": 1
+        },
+        {
+          "description": "Dog leaves item and looks at handler",
+          "completed": false,
+          "order": 2
+        },
+        {
+          "description": "Dog leaves moving object (rolling ball)",
+          "completed": false,
+          "order": 3
+        }
+      ]
+    }
+  },
+  {
+    "documentId": "drop-it",
+    "fields": {
+      "goalId": "drop-it",
+      "title": "Drop It",
+      "category": "impulse-control",
+      "description": "Release items from mouth on cue",
+      "level": 2,
+      "required": false,
+      "tasks": [
+        {
+          "description": "Dog releases toy from mouth for treat",
+          "completed": false,
+          "order": 1
+        },
+        {
+          "description": "Dog drops item and waits for release cue",
+          "completed": false,
+          "order": 2
+        },
+        {
+          "description": "Dog drops high-value items",
+          "completed": false,
+          "order": 3
+        }
+      ]
+    }
+  },
+  {
+    "documentId": "crate-manners",
+    "fields": {
+      "goalId": "crate-manners",
+      "title": "Crate Manners",
+      "category": "household-manners",
+      "description": "Calm behavior in and around crate",
+      "level": 1,
+      "required": false,
+      "tasks": [
+        {
+          "description": "Dog enters crate willingly",
+          "completed": false,
+          "order": 1
+        },
+        {
+          "description": "Dog remains quiet in crate for 15 minutes",
+          "completed": false,
+          "order": 2
+        },
+        {
+          "description": "Dog waits for release cue before exiting crate",
+          "completed": false,
+          "order": 3
+        }
+      ]
+    }
+  },
+  {
+    "documentId": "door-manners",
+    "fields": {
+      "goalId": "door-manners",
+      "title": "Door Manners",
+      "category": "household-manners",
+      "description": "Polite behavior at doors and thresholds",
+      "level": 2,
+      "required": false,
+      "tasks": [
+        {
+          "description": "Dog sits and waits at door before going outside",
+          "completed": false,
+          "order": 1
+        },
+        {
+          "description": "Dog remains calm when doorbell rings",
+          "completed": false,
+          "order": 2
+        },
+        {
+          "description": "Dog doesn't bolt through open doors",
+          "completed": false,
+          "order": 3
+        }
+      ]
+    }
+  },
+  {
+    "documentId": "greeting-manners",
+    "fields": {
+      "goalId": "greeting-manners",
+      "title": "Greeting Manners",
+      "category": "socialization",
+      "description": "Polite greetings with people",
+      "level": 2,
+      "required": false,
+      "tasks": [
+        {
+          "description": "Dog sits to greet family members",
+          "completed": false,
+          "order": 1
+        },
+        {
+          "description": "Dog maintains four paws on floor during greetings",
+          "completed": false,
+          "order": 2
+        },
+        {
+          "description": "Dog greets strangers politely without jumping",
+          "completed": false,
+          "order": 3
+        }
+      ]
+    }
+  },
+  {
+    "documentId": "dog-socialization",
+    "fields": {
+      "goalId": "dog-socialization",
+      "title": "Dog-to-Dog Socialization",
+      "category": "socialization",
+      "description": "Appropriate interactions with other dogs",
+      "level": 3,
+      "required": false,
+      "tasks": [
+        {
+          "description": "Dog remains calm when seeing other dogs at distance",
+          "completed": false,
+          "order": 1
+        },
+        {
+          "description": "Dog can walk past another dog without reacting",
+          "completed": false,
+          "order": 2
+        },
+        {
+          "description": "Dog greets familiar dogs appropriately",
+          "completed": false,
+          "order": 3
+        }
+      ]
+    }
+  }
+]
