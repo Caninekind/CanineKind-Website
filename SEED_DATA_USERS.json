@@ -1,0 +1,30 @@
+[
+  {
+    "documentId": "YOUR_ADMIN_EMAIL_HERE",
+    "note": "Replace YOUR_ADMIN_EMAIL_HERE with your actual admin email",
+    "fields": {
+      "email": "YOUR_ADMIN_EMAIL_HERE",
+      "displayName": "Admin User",
+      "photoURL": "",
+      "uid": "admin-uid",
+      "approved": true,
+      "role": "admin",
+      "createdAt": "USE_FIREBASE_TIMESTAMP",
+      "lastLogin": "USE_FIREBASE_TIMESTAMP"
+    }
+  },
+  {
+    "documentId": "testclient@example.com",
+    "note": "Sample test client - change email to your test account",
+    "fields": {
+      "email": "testclient@example.com",
+      "displayName": "Test Client",
+      "photoURL": "",
+      "uid": "test-client-uid",
+      "approved": true,
+      "role": "client",
+      "createdAt": "USE_FIREBASE_TIMESTAMP",
+      "lastLogin": "USE_FIREBASE_TIMESTAMP"
+    }
+  }
+]

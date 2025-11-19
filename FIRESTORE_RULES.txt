@@ -1,0 +1,150 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper function to check if user is authenticated
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Helper function to check if user is admin
+    function isAdmin() {
+      return isSignedIn() &&
+             get(/databases/$(database)/documents/users/$(request.auth.token.email)).data.role == 'admin';
+    }
+
+    // Helper function to check if user is approved
+    function isApproved() {
+      return isSignedIn() &&
+             get(/databases/$(database)/documents/users/$(request.auth.token.email)).data.approved == true;
+    }
+
+    // Helper function to check if user owns the resource
+    function isOwner(userEmail) {
+      return isSignedIn() && request.auth.token.email == userEmail;
+    }
+
+    // USERS Collection
+    match /users/{email} {
+      // Anyone can read their own user document
+      allow read: if isSignedIn() && request.auth.token.email == email;
+
+      // Admins can read all users
+      allow read: if isAdmin();
+
+      // Users can create their own document (during signup)
+      allow create: if isSignedIn() && request.auth.token.email == email;
+
+      // Only admins can update user documents (for approval, role changes)
+      allow update: if isAdmin();
+
+      // Only admins can delete users
+      allow delete: if isAdmin();
+    }
+
+    // GOAL LIBRARY Collection (master list of all goals)
+    match /goalLibrary/{goalId} {
+      // Everyone can read the goal library (to see available goals)
+      allow read: if isSignedIn();
+
+      // Only admins can modify the goal library
+      allow write: if isAdmin();
+    }
+
+    // SELECTED GOALS Collection (user's chosen goals)
+    match /selectedGoals/{selectedGoalId} {
+      // Users can read their own selected goals
+      allow read: if isSignedIn() &&
+                     (resource.data.userEmail == request.auth.token.email || isAdmin());
+
+      // Users can create their own selected goals
+      allow create: if isSignedIn() &&
+                       request.resource.data.userEmail == request.auth.token.email;
+
+      // Users can update their own selected goals, admins can update any
+      allow update: if isSignedIn() &&
+                       (resource.data.userEmail == request.auth.token.email || isAdmin());
+
+      // Users can delete their own selected goals, admins can delete any
+      allow delete: if isSignedIn() &&
+                       (resource.data.userEmail == request.auth.token.email || isAdmin());
+    }
+
+    // SCHEDULES Collection
+    match /schedules/{scheduleId} {
+      // Users can read their own schedules
+      allow read: if isSignedIn() &&
+                     (resource.data.userEmail == request.auth.token.email || isAdmin());
+
+      // Users can create their own schedules
+      allow create: if isSignedIn() &&
+                       request.resource.data.userEmail == request.auth.token.email;
+
+      // Users can update their own schedules
+      allow update: if isSignedIn() &&
+                       (resource.data.userEmail == request.auth.token.email || isAdmin());
+
+      // Users can delete their own schedules
+      allow delete: if isSignedIn() &&
+                       (resource.data.userEmail == request.auth.token.email || isAdmin());
+    }
+
+    // SESSIONS Collection
+    match /sessions/{sessionId} {
+      // Users can read their own sessions, admins can read all
+      allow read: if isSignedIn() &&
+                     (resource.data.userEmail == request.auth.token.email || isAdmin());
+
+      // Only admins can create sessions
+      allow create: if isAdmin();
+
+      // Only admins can update sessions
+      allow update: if isAdmin();
+
+      // Only admins can delete sessions
+      allow delete: if isAdmin();
+    }
+
+    // DOCUMENTS Collection
+    match /documents/{documentId} {
+      // Users can read their own documents, admins can read all
+      allow read: if isSignedIn() &&
+                     (resource.data.userEmail == request.auth.token.email || isAdmin());
+
+      // Only admins can create documents
+      allow create: if isAdmin();
+
+      // Users can update their own documents (for signing), admins can update any
+      allow update: if isSignedIn() &&
+                       (resource.data.userEmail == request.auth.token.email || isAdmin());
+
+      // Only admins can delete documents
+      allow delete: if isAdmin();
+    }
+
+    // CUSTOM GOALS Collection
+    match /customGoals/{customGoalId} {
+      // Users can read their own custom goals, admins can read all
+      allow read: if isSignedIn() &&
+                     (resource.data.userEmail == request.auth.token.email || isAdmin());
+
+      // Users can create their own custom goals
+      allow create: if isSignedIn() &&
+                       request.resource.data.userEmail == request.auth.token.email;
+
+      // Users can update their own custom goals
+      allow update: if isSignedIn() &&
+                       (resource.data.userEmail == request.auth.token.email || isAdmin());
+
+      // Users can delete their own custom goals
+      allow delete: if isSignedIn() &&
+                       (resource.data.userEmail == request.auth.token.email || isAdmin());
+    }
+
+    // EXPENSES Collection (Admin only)
+    match /expenses/{expenseId} {
+      // Only admins can access expenses
+      allow read, write: if isAdmin();
+    }
+  }
+}
