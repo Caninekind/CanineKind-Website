@@ -2572,31 +2572,33 @@
 
                                 if (Array.isArray(activities)) {
                                     activities.forEach(activityData => {
-                                        // Check if this activity has a paired goal
-                                        const goalId = typeof activityData === 'object' ? activityData.goalId : null;
+                                        // Check if this activity has paired goals
+                                        const goalIds = typeof activityData === 'object' ? (activityData.goalIds || []) : [];
+                                        const activityName = typeof activityData === 'object' ? activityData.activity : activityData;
+                                        const personalNote = typeof activityData === 'object' ? activityData.personalNote : null;
 
-                                        if (goalId && selectedGoals[goalId]) {
-                                            const goal = selectedGoals[goalId];
-                                            const goalLevel = goal.level;
+                                        // Create a reminder for each goal associated with this activity
+                                        goalIds.forEach(goalId => {
+                                            if (selectedGoals[goalId]) {
+                                                const goal = selectedGoals[goalId];
+                                                const goalLevel = goal.level;
 
-                                            // Get prep instructions for this goal at this level
-                                            const prepInstructions = TRAINING_PREP_INSTRUCTIONS[goalId]?.[goalLevel] ||
-                                                                    'Bring treats and be ready to practice!';
+                                                // Get prep instructions for this goal at this level
+                                                const prepInstructions = TRAINING_PREP_INSTRUCTIONS[goalId]?.[goalLevel] ||
+                                                                        'Bring treats and be ready to practice!';
 
-                                            const activityName = typeof activityData === 'object' ? activityData.activity : activityData;
-                                            const personalNote = typeof activityData === 'object' ? activityData.personalNote : null;
-
-                                            reminders.push({
-                                                goalTitle: goal.title,
-                                                goalId: goalId,
-                                                day: day,
-                                                time: timeSlot,
-                                                activity: activityName,
-                                                level: goalLevel,
-                                                prepInstructions: prepInstructions,
-                                                personalNote: personalNote
-                                            });
-                                        }
+                                                reminders.push({
+                                                    goalTitle: goal.title,
+                                                    goalId: goalId,
+                                                    day: day,
+                                                    time: timeSlot,
+                                                    activity: activityName,
+                                                    level: goalLevel,
+                                                    prepInstructions: prepInstructions,
+                                                    personalNote: personalNote
+                                                });
+                                            }
+                                        });
                                     });
                                 }
                             });
@@ -2756,10 +2758,12 @@
                         for (let i = 0; i < activities.length; i++) {
                             const activityData = activities[i];
                             if (typeof activityData === 'object' &&
-                                activityData.goalId === goalId &&
-                                activityData.activity === activity) {
+                                activityData.activity === activity &&
+                                activityData.goalIds &&
+                                activityData.goalIds.includes(goalId)) {
 
                                 // Update or remove the personal note
+                                // Note: Personal note is shared across all goals for this activity
                                 if (newNote.trim() !== '') {
                                     activityData.personalNote = newNote.trim();
                                 } else {

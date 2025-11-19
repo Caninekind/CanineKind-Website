@@ -211,22 +211,37 @@ Tracks which goals each user has selected and their progress.
 
 ---
 
-### 4. **schedules** Collection
-**Document ID:** Auto-generated
+### 4. **schedules** Subcollection (under users)
+**Path:** `users/{email}/schedules/weekly`
+**Document ID:** `weekly` (single document per user)
 
-Individual schedule entries for goal-activity pairings.
+Stores the entire week's schedule in a nested structure. Each activity can have multiple goals.
 
 ```javascript
 {
-  userEmail: "client@example.com",
-  day: "Monday",
-  time: "9:00 AM",
-  activity: "Neighborhood walk",
-  goalId: "recall",
-  personalNote: "Bring high-value treats",
-  createdAt: Timestamp
+  Monday: {
+    "9:00 AM": [
+      {
+        activity: "Neighborhood walk",
+        goalIds: ["recall", "loose-leash"],
+        personalNote: "Bring high-value treats"
+      }
+    ],
+    "2:00 PM": [
+      {
+        activity: "At Home Training",
+        goalIds: ["sit"],
+        personalNote: "Practice in quiet area"
+      },
+      "Quick Potty Break"  // Activities without goals are stored as strings
+    ]
+  },
+  Tuesday: { ... },
+  // ... other days
 }
 ```
+
+**Note:** `goalIds` is an array to support working on multiple goals during one activity. Activities without associated goals are stored as simple strings. Activities with goals are stored as objects with `activity`, `goalIds`, and optional `personalNote` fields.
 
 ---
 

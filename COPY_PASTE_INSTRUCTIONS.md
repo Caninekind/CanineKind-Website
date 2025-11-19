@@ -216,38 +216,58 @@ Click "Add item" 3 times, then for each item:
 
 ---
 
-## 📅 STEP 5: Create Schedules Collection
+## 📅 STEP 5: Create Schedule (Nested in User Document)
 
-1. In Firestore, click **"Start collection"**
-2. Collection ID: `schedules`
-3. Click **"Auto-ID"**
-4. Add these fields:
+This creates a weekly schedule stored within the test client's user document.
 
-- `userEmail` (string): `testclient@example.com`
-- `day` (string): `Monday`
-- `time` (string): `9:00 AM`
-- `activity` (string): `Neighborhood walk`
-- `goalId` (string): `recall`
-- `personalNote` (string): `Bring high-value treats and practice in quiet area`
-- `createdAt` (timestamp): **Set to current time**
+1. In Firestore, navigate to the **users** collection
+2. Click on your test client document (`testclient@example.com`)
+3. Click **"Start collection"** (this creates a subcollection)
+4. Collection ID: `schedules`
+5. Document ID: `weekly` (type this exactly - don't use Auto-ID)
+6. Now we'll add the nested schedule structure:
 
-5. Click **"Save"**
+**Add Monday field:**
+- Field: `Monday`
+- Type: `map`
+- Click on the `Monday` field to expand it
+- Add a subfield: `9:00 AM`
+- Type: `array`
+- Click "Add item" to create array item [0]
+- Type for item [0]: `map`
+- Click on item [0] to expand and add these fields:
+  - `activity` (string): `Neighborhood walk`
+  - `goalIds` (array):
+    - Item [0] (string): `recall`
+    - Item [1] (string): `loose-leash`
+  - `personalNote` (string): `Bring high-value treats, practice recall every 2 minutes`
 
-### Add Second Schedule Entry
+**Add Wednesday field (to the weekly document):**
+- Back at the weekly document level, add field: `Wednesday`
+- Type: `map`
+- Click on `Wednesday` to expand it
+- Add subfield: `2:00 PM`
+- Type: `array`
+- Click "Add item" to create array item [0]
+- Type for item [0]: `map`
+- Click on item [0] and add:
+  - `activity` (string): `At Home Training Slot`
+  - `goalIds` (array):
+    - Item [0] (string): `sit`
+  - `personalNote` (string): `Practice during low-energy time`
 
-1. Click **"Add document"**
-2. Click **"Auto-ID"**
-3. Add fields:
+7. Click **"Save"**
 
-- `userEmail` (string): `testclient@example.com`
-- `day` (string): `Wednesday`
-- `time` (string): `2:00 PM`
-- `activity` (string): `At Home Training Slot`
-- `goalId` (string): `sit`
-- `personalNote` (string): `Practice during low-energy time`
-- `createdAt` (timestamp): **Set to current time**
-
-4. Click **"Save"**
+**What you just created:**
+A weekly schedule document that looks like this:
+```
+users/
+  testclient@example.com/
+    schedules/
+      weekly/
+        Monday: { "9:00 AM": [...] }
+        Wednesday: { "2:00 PM": [...] }
+```
 
 ---
 
@@ -305,12 +325,13 @@ Click "Add item" 3 times, then for each item:
 **Fix:**
 1. Verify `schedules` collection exists
 2. Check that `userEmail` matches exactly (case-sensitive!)
-3. Verify `goalId` matches a goal in `goalLibrary`
+3. Verify all IDs in `goalIds` array match goals in `goalLibrary`
+4. Make sure `goalIds` is an array, not a string
 
 ### Training Reminders Not Showing
 **Fix:**
 1. Must have entries in BOTH `selectedGoals` AND `schedules` collections
-2. The `goalId` must match in both collections
+2. The `goalIds` array in schedules must contain IDs that exist in `selectedGoals`
 3. The `userEmail` must match your signed-in user
 
 ---

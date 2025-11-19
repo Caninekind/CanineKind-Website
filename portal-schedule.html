@@ -2114,26 +2114,41 @@
         }
 
         function createScheduledActivityHTML(activityData) {
-            // Handle both string (legacy) and object (new with goal) format
+            // Handle both string (no goals) and object (with goals) format
             const activity = typeof activityData === 'string' ? activityData : activityData.activity;
-            const goalId = typeof activityData === 'object' ? activityData.goalId : null;
-            const hasGoal = !!goalId;
+            const goalIds = typeof activityData === 'object' ? (activityData.goalIds || []) : [];
+            const hasGoals = goalIds.length > 0;
 
-            // Find the goal title if this activity has a goal associated
-            let goalTitle = '';
-            if (hasGoal && activeGoals.length > 0) {
-                const goal = activeGoals.find(g => g.id === goalId);
-                goalTitle = goal ? goal.title : 'Unknown Goal';
+            // Create goal badges HTML
+            let goalBadgesHTML = '';
+            if (hasGoals && activeGoals.length > 0) {
+                goalBadgesHTML = '<div style="display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px;">';
+                goalIds.forEach(goalId => {
+                    const goal = activeGoals.find(g => g.id === goalId);
+                    const goalTitle = goal ? goal.title : 'Unknown';
+                    goalBadgesHTML += `
+                        <span style="
+                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                            color: white;
+                            padding: 2px 8px;
+                            border-radius: 10px;
+                            font-size: 0.75rem;
+                            font-weight: 600;
+                            display: inline-block;
+                        ">🎯 ${goalTitle}</span>
+                    `;
+                });
+                goalBadgesHTML += '</div>';
             }
 
             const className = getActivityClass(activity);
             return `
-                <div class="scheduled-activity ${className} ${hasGoal ? 'has-goal' : ''}"
+                <div class="scheduled-activity ${className} ${hasGoals ? 'has-goal' : ''}"
                      draggable="true"
                      data-activity="${activity}"
-                     ${goalId ? `data-goal-id="${goalId}"` : ''}
-                     ${goalTitle ? `data-goal-title="${goalTitle}"` : ''}>
+                     data-goal-ids="${goalIds.join(',')}"}>
                     ${activity}
+                    ${goalBadgesHTML}
                     <span class="remove-activity" onclick="removeActivity(this)">✕</span>
                 </div>
             `;
@@ -2443,18 +2458,35 @@
                 scheduleData[currentDay][time] = [];
             }
 
-            // Store as object if there's a goal association
             if (goalId) {
-                const activityData = {
-                    activity: activity,
-                    goalId: goalId
-                };
-                // Add personal note if provided
-                if (personalNote && personalNote.trim() !== '') {
-                    activityData.personalNote = personalNote.trim();
+                // Check if this activity already exists in the slot
+                const existingActivityIndex = scheduleData[currentDay][time].findIndex(item =>
+                    typeof item === 'object' && item.activity === activity
+                );
+
+                if (existingActivityIndex !== -1) {
+                    // Activity exists - add goal to goalIds array if not already there
+                    const existingActivity = scheduleData[currentDay][time][existingActivityIndex];
+                    if (!existingActivity.goalIds) {
+                        existingActivity.goalIds = [];
+                    }
+                    if (!existingActivity.goalIds.includes(goalId)) {
+                        existingActivity.goalIds.push(goalId);
+                    }
+                } else {
+                    // New activity - create with goalIds array
+                    const activityData = {
+                        activity: activity,
+                        goalIds: [goalId]  // Always store as array
+                    };
+                    // Add personal note if provided
+                    if (personalNote && personalNote.trim() !== '') {
+                        activityData.personalNote = personalNote.trim();
+                    }
+                    scheduleData[currentDay][time].push(activityData);
                 }
-                scheduleData[currentDay][time].push(activityData);
             } else {
+                // Activity without goals - store as string
                 scheduleData[currentDay][time].push(activity);
             }
 
