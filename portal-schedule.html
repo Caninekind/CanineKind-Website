@@ -2372,9 +2372,12 @@
                                 return;
                             }
 
+                            // Prompt for personal note
+                            const personalNote = prompt(`Add a personal reminder note for this training session?\n\n(This note will appear in your training reminders and can be included in future text message notifications)\n\nExample: "Bring high-value treats" or "Focus on reducing distractions"`);
+
                             // Clear and re-add with goal association
                             scheduleData[currentDay][time] = [];
-                            addActivityToSlot(time, activityName, goalId);
+                            addActivityToSlot(time, activityName, goalId, personalNote);
                         } else if (existingActivities.length > 1) {
                             // Multiple activities - let user choose (compatibility will be checked there)
                             associateGoalWithMultipleActivities(time, goalId, goalTitle, existingActivities);
@@ -2412,9 +2415,12 @@
                         return;
                     }
 
+                    // Prompt for personal note
+                    const personalNote = prompt(`Add a personal reminder note for this training session?\n\n(This note will appear in your training reminders and can be included in future text message notifications)\n\nExample: "Bring high-value treats" or "Focus on reducing distractions"`);
+
                     // Remove and re-add with goal association
                     scheduleData[currentDay][time].splice(index, 1);
-                    addActivityToSlot(time, activityName, goalId);
+                    addActivityToSlot(time, activityName, goalId, personalNote);
                 }
             }
         }
@@ -2431,11 +2437,14 @@
                     return;
                 }
 
-                addActivityToSlot(time, activity, goalId);
+                // Prompt for personal note
+                const personalNote = prompt(`Add a personal reminder note for this training session?\n\n(This note will appear in your training reminders and can be included in future text message notifications)\n\nExample: "Bring high-value treats" or "Focus on reducing distractions"`);
+
+                addActivityToSlot(time, activity, goalId, personalNote);
             }
         }
 
-        function addActivityToSlot(time, activity, goalId = null) {
+        function addActivityToSlot(time, activity, goalId = null, personalNote = null) {
             if (!scheduleData[currentDay]) {
                 scheduleData[currentDay] = {};
             }
@@ -2445,10 +2454,15 @@
 
             // Store as object if there's a goal association
             if (goalId) {
-                scheduleData[currentDay][time].push({
+                const activityData = {
                     activity: activity,
                     goalId: goalId
-                });
+                };
+                // Add personal note if provided
+                if (personalNote && personalNote.trim() !== '') {
+                    activityData.personalNote = personalNote.trim();
+                }
+                scheduleData[currentDay][time].push(activityData);
             } else {
                 scheduleData[currentDay][time].push(activity);
             }

@@ -951,6 +951,50 @@
             font-size: 0.95rem;
         }
 
+        .personal-note-section {
+            background: #e8f4f8;
+            border-left: 3px solid #4facfe;
+            border-radius: 6px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .personal-note-section strong {
+            color: #2c3e50;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .personal-note-text {
+            color: #333;
+            line-height: 1.5;
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .edit-note-btn {
+            background: transparent;
+            border: 2px solid #4facfe;
+            color: #2a5a7a;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .edit-note-btn:hover {
+            background: #4facfe;
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(79, 172, 254, 0.3);
+        }
+
+        .edit-note-btn:active {
+            transform: translateY(0);
+        }
+
         .no-reminders {
             text-align: center;
             padding: 2rem;
@@ -2530,6 +2574,7 @@
                                                                     'Bring treats and be ready to practice!';
 
                                             const activityName = typeof activityData === 'object' ? activityData.activity : activityData;
+                                            const personalNote = typeof activityData === 'object' ? activityData.personalNote : null;
 
                                             reminders.push({
                                                 goalTitle: goal.title,
@@ -2538,7 +2583,8 @@
                                                 time: timeSlot,
                                                 activity: activityName,
                                                 level: goalLevel,
-                                                prepInstructions: prepInstructions
+                                                prepInstructions: prepInstructions,
+                                                personalNote: personalNote
                                             });
                                         }
                                     });
@@ -2596,8 +2642,9 @@
 
                 levelReminders.forEach((reminder, index) => {
                     const cardId = `reminder-card-${level}-${index}`;
+                    const hasPersonalNote = reminder.personalNote && reminder.personalNote.trim() !== '';
                     html += `
-                        <div class="reminder-card" id="${cardId}">
+                        <div class="reminder-card" id="${cardId}" data-day="${reminder.day}" data-time="${reminder.time}" data-goal-id="${reminder.goalId}" data-activity="${reminder.activity}">
                             <div class="reminder-card-header" onclick="toggleReminderCard('${cardId}')">
                                 <h3>${reminder.goalTitle}</h3>
                                 <span class="reminder-card-icon">▼</span>
@@ -2617,6 +2664,16 @@
                                 <div class="prep-instructions">
                                     <strong>✅ How to Prep:</strong>
                                     <p>${reminder.prepInstructions}</p>
+                                </div>
+
+                                <div class="personal-note-section">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                        <strong>📝 Personal Note:</strong>
+                                        <button onclick="editPersonalNote('${cardId}')" class="edit-note-btn" title="Edit personal note">✏️ Edit</button>
+                                    </div>
+                                    <p id="${cardId}-note" class="personal-note-text" style="${hasPersonalNote ? '' : 'font-style: italic; color: #999;'}">
+                                        ${hasPersonalNote ? reminder.personalNote : 'No personal note yet. Click "Edit" to add one.'}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -2644,6 +2701,81 @@
             const card = document.getElementById(cardId);
             if (card) {
                 card.classList.toggle('collapsed');
+            }
+        }
+
+        async function editPersonalNote(cardId) {
+            const card = document.getElementById(cardId);
+            if (!card) return;
+
+            const day = card.dataset.day;
+            const time = card.dataset.time;
+            const goalId = card.dataset.goalId;
+            const activity = card.dataset.activity;
+            const noteElement = document.getElementById(`${cardId}-note`);
+            const currentNote = noteElement.textContent.includes('No personal note yet') ? '' : noteElement.textContent.trim();
+
+            const newNote = prompt(
+                `Edit your personal reminder note:\n\n(This note will appear in your training reminders and can be included in future text message notifications)`,
+                currentNote
+            );
+
+            // If user cancelled, do nothing
+            if (newNote === null) return;
+
+            try {
+                // Load current schedule data
+                const scheduleDoc = await db.collection('users')
+                    .doc(currentUser.email)
+                    .collection('schedules')
+                    .doc('weekly')
+                    .get();
+
+                if (scheduleDoc.exists) {
+                    const scheduleData = scheduleDoc.data();
+
+                    // Find and update the specific activity
+                    if (scheduleData[day] && scheduleData[day][time]) {
+                        const activities = scheduleData[day][time];
+
+                        for (let i = 0; i < activities.length; i++) {
+                            const activityData = activities[i];
+                            if (typeof activityData === 'object' &&
+                                activityData.goalId === goalId &&
+                                activityData.activity === activity) {
+
+                                // Update or remove the personal note
+                                if (newNote.trim() !== '') {
+                                    activityData.personalNote = newNote.trim();
+                                } else {
+                                    delete activityData.personalNote;
+                                }
+                                break;
+                            }
+                        }
+
+                        // Save updated schedule data
+                        await db.collection('users')
+                            .doc(currentUser.email)
+                            .collection('schedules')
+                            .doc('weekly')
+                            .set(scheduleData);
+
+                        // Update the display
+                        if (newNote.trim() !== '') {
+                            noteElement.textContent = newNote.trim();
+                            noteElement.style.fontStyle = 'normal';
+                            noteElement.style.color = '#333';
+                        } else {
+                            noteElement.textContent = 'No personal note yet. Click "Edit" to add one.';
+                            noteElement.style.fontStyle = 'italic';
+                            noteElement.style.color = '#999';
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Error updating personal note:', error);
+                alert('Error updating personal note. Please try again.');
             }
         }
 
