@@ -2573,7 +2573,18 @@
                                 if (Array.isArray(activities)) {
                                     activities.forEach(activityData => {
                                         // Check if this activity has paired goals
-                                        const goalIds = typeof activityData === 'object' ? (activityData.goalIds || []) : [];
+                                        let goalIds = [];
+                                        if (typeof activityData === 'object') {
+                                            // New format: goalIds array
+                                            if (activityData.goalIds && Array.isArray(activityData.goalIds)) {
+                                                goalIds = activityData.goalIds;
+                                            }
+                                            // Backward compatibility: old goalId string
+                                            else if (activityData.goalId) {
+                                                goalIds = [activityData.goalId];
+                                            }
+                                        }
+
                                         const activityName = typeof activityData === 'object' ? activityData.activity : activityData;
                                         const personalNote = typeof activityData === 'object' ? activityData.personalNote : null;
 
@@ -2757,19 +2768,21 @@
 
                         for (let i = 0; i < activities.length; i++) {
                             const activityData = activities[i];
-                            if (typeof activityData === 'object' &&
-                                activityData.activity === activity &&
-                                activityData.goalIds &&
-                                activityData.goalIds.includes(goalId)) {
+                            if (typeof activityData === 'object' && activityData.activity === activity) {
+                                // Check if this activity has the goal (support both old and new format)
+                                const hasGoal = (activityData.goalIds && activityData.goalIds.includes(goalId)) ||
+                                              (activityData.goalId === goalId);
 
-                                // Update or remove the personal note
-                                // Note: Personal note is shared across all goals for this activity
-                                if (newNote.trim() !== '') {
-                                    activityData.personalNote = newNote.trim();
-                                } else {
-                                    delete activityData.personalNote;
+                                if (hasGoal) {
+                                    // Update or remove the personal note
+                                    // Note: Personal note is shared across all goals for this activity
+                                    if (newNote.trim() !== '') {
+                                        activityData.personalNote = newNote.trim();
+                                    } else {
+                                        delete activityData.personalNote;
+                                    }
+                                    break;
                                 }
-                                break;
                             }
                         }
 
