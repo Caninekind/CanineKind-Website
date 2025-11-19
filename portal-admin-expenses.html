@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Expenses & Tax Tracker - CanineKind Admin</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #D1E5F4 0%, #E8F4F8 100%);
+            min-height: 100vh;
+            padding-bottom: 40px;
+        }
+
+        .portal-header {
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .portal-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .portal-logo img {
+            height: 50px;
+            width: auto;
+        }
+
+        .portal-logo h1 {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .portal-nav {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .portal-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .portal-nav a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .portal-nav a.active {
+            background: rgba(255, 255, 255, 0.3);
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .page-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Tax Summary Cards */
+        .tax-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-left: 5px solid #799972;
+            transition: transform 0.3s ease;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .summary-card h3 {
+            color: #666;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-card .amount {
+            color: #2c3e50;
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        .summary-card.total {
+            border-left-color: #667eea;
+        }
+
+        .summary-card.deductible {
+            border-left-color: #48bb78;
+        }
+
+        .summary-card.non-deductible {
+            border-left-color: #f56565;
+        }
+
+        .summary-card.mileage {
+            border-left-color: #ed8936;
+        }
+
+        /* Main Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Add Expense Form */
+        .expense-form-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            height: fit-content;
+            sticky: top: 120px;
+        }
+
+        .expense-form-card h2 {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: #555;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #799972;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(121, 153, 114, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin-top: 0.5rem;
+        }
+
+        /* Expenses List */
+        .expenses-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .expenses-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .expenses-header h2 {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-controls select,
+        .filter-controls input {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        .export-btn {
+            padding: 0.5rem 1.5rem;
+            background: #48bb78;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .export-btn:hover {
+            background: #38a169;
+            transform: translateY(-2px);
+        }
+
+        .expenses-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .expenses-table thead {
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            color: white;
+        }
+
+        .expenses-table th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .expenses-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .expenses-table tbody tr {
+            transition: background 0.2s;
+        }
+
+        .expenses-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .category-badge {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .badge-training { background: #e8f5e9; color: #2e7d32; }
+        .badge-marketing { background: #e3f2fd; color: #1565c0; }
+        .badge-travel { background: #fff3e0; color: #e65100; }
+        .badge-office { background: #f3e5f5; color: #6a1b9a; }
+        .badge-software { background: #e0f2f1; color: #00695c; }
+        .badge-professional { background: #fce4ec; color: #c2185b; }
+        .badge-insurance { background: #fff9c4; color: #f57f17; }
+        .badge-utilities { background: #ede7f6; color: #4527a0; }
+        .badge-other { background: #eceff1; color: #37474f; }
+
+        .deductible-badge {
+            display: inline-block;
+            padding: 0.3rem 0.6rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge-yes {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .badge-partial {
+            background: #feebc8;
+            color: #7c2d12;
+        }
+
+        .badge-no {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-icon {
+            padding: 0.4rem 0.8rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .btn-edit {
+            background: #4299e1;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: #3182ce;
+        }
+
+        .btn-delete {
+            background: #f56565;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #e53e3e;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #999;
+        }
+
+        .empty-state p {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #799972;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Tax Category Info */
+        .tax-info {
+            background: #e8f4f8;
+            border-left: 4px solid #4299e1;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .tax-info strong {
+            color: #2c3e50;
+        }
+
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tax-summary {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .tax-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .expenses-table {
+                font-size: 0.85rem;
+            }
+
+            .expenses-table th,
+            .expenses-table td {
+                padding: 0.75rem 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="portal-header">
+        <div class="header-content">
+            <div class="portal-logo">
+                <img src="https://i.imgur.com/OXiQWa3.jpeg" alt="CanineKind Logo">
+                <h1>Admin Portal</h1>
+            </div>
+            <nav class="portal-nav">
+                <a href="portal-admin-dashboard.html">Dashboard</a>
+                <a href="portal-admin.html">Users</a>
+                <a href="portal-admin-sessions.html">Sessions</a>
+                <a href="portal-admin-goals.html">Goals</a>
+                <a href="portal-admin-expenses.html" class="active">Expenses</a>
+                <a href="portal-admin-marketing.html">Marketing</a>
+                <a href="#" onclick="signOut(); return false;" style="opacity: 0.7; font-size: 0.85rem;">Sign Out</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>💰 Business Expenses & Tax Tracker</h1>
+            <p>Track expenses, categorize deductions, and prepare for tax season</p>
+        </div>
+
+        <!-- Tax Summary Cards -->
+        <div class="tax-summary">
+            <div class="summary-card total">
+                <h3>Total Expenses (2024)</h3>
+                <div class="amount" id="totalExpenses">$0.00</div>
+            </div>
+            <div class="summary-card deductible">
+                <h3>Tax Deductible</h3>
+                <div class="amount" id="deductibleExpenses">$0.00</div>
+            </div>
+            <div class="summary-card non-deductible">
+                <h3>Non-Deductible</h3>
+                <div class="amount" id="nonDeductibleExpenses">$0.00</div>
+            </div>
+            <div class="summary-card mileage">
+                <h3>Mileage Deduction</h3>
+                <div class="amount" id="mileageDeduction">$0.00</div>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="content-grid">
+            <!-- Add Expense Form -->
+            <div class="expense-form-card">
+                <h2>➕ Add Expense</h2>
+
+                <div class="tax-info">
+                    <strong>💡 Tax Tip:</strong> Keep receipts and documentation for all business expenses. Most training-related costs are 100% deductible!
+                </div>
+
+                <form id="expenseForm">
+                    <div class="form-group">
+                        <label for="expenseDate">Date *</label>
+                        <input type="date" id="expenseDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="expenseCategory">Category *</label>
+                        <select id="expenseCategory" required>
+                            <option value="">Select category...</option>
+                            <option value="training">Training Supplies & Equipment</option>
+                            <option value="marketing">Marketing & Advertising</option>
+                            <option value="travel">Travel & Mileage</option>
+                            <option value="office">Office Supplies</option>
+                            <option value="software">Software & Subscriptions</option>
+                            <option value="professional">Professional Development</option>
+                            <option value="insurance">Insurance</option>
+                            <option value="utilities">Utilities & Phone</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="expenseDescription">Description *</label>
+                        <input type="text" id="expenseDescription" placeholder="e.g., Dog training clicker set" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="expenseAmount">Amount *</label>
+                        <input type="number" id="expenseAmount" placeholder="0.00" step="0.01" min="0" required>
+                    </div>
+
+                    <div class="form-group" id="mileageGroup" style="display: none;">
+                        <label for="expenseMileage">Miles Driven</label>
+                        <input type="number" id="expenseMileage" placeholder="0" step="0.1" min="0">
+                        <small style="color: #666; font-size: 0.85rem;">2024 IRS rate: $0.67/mile</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="expenseDeductible">Tax Deductible? *</label>
+                        <select id="expenseDeductible" required>
+                            <option value="yes">100% Deductible</option>
+                            <option value="partial">Partially Deductible</option>
+                            <option value="no">Not Deductible</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="deductiblePercentGroup" style="display: none;">
+                        <label for="deductiblePercent">Deductible Percentage</label>
+                        <input type="number" id="deductiblePercent" placeholder="50" step="1" min="0" max="100">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="expenseNotes">Notes (Optional)</label>
+                        <textarea id="expenseNotes" placeholder="Additional details, receipt number, etc."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn">💾 Save Expense</button>
+                    <button type="button" class="btn btn-secondary" onclick="resetForm()">🔄 Clear Form</button>
+                </form>
+            </div>
+
+            <!-- Expenses List -->
+            <div class="expenses-card">
+                <div class="expenses-header">
+                    <h2>📊 Expense History</h2>
+                    <div class="filter-controls">
+                        <select id="filterYear" onchange="filterExpenses()">
+                            <option value="2024">2024</option>
+                            <option value="2023">2023</option>
+                            <option value="all">All Years</option>
+                        </select>
+                        <select id="filterCategory" onchange="filterExpenses()">
+                            <option value="all">All Categories</option>
+                            <option value="training">Training</option>
+                            <option value="marketing">Marketing</option>
+                            <option value="travel">Travel</option>
+                            <option value="office">Office</option>
+                            <option value="software">Software</option>
+                            <option value="professional">Professional Dev</option>
+                            <option value="insurance">Insurance</option>
+                            <option value="utilities">Utilities</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <button class="export-btn" onclick="exportToCSV()">📥 Export CSV</button>
+                    </div>
+                </div>
+
+                <div id="expensesTableContainer">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Loading expenses...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <!-- Firebase Config -->
+    <script src="firebase-config.js"></script>
+
+    <script>
+        let currentUser = null;
+        let allExpenses = [];
+        let editingExpenseId = null;
+
+        // IRS standard mileage rate for 2024
+        const MILEAGE_RATE_2024 = 0.67;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', async () => {
+            const initialized = initializeFirebase();
+            if (!initialized) {
+                window.location.href = 'portal-login.html';
+                return;
+            }
+
+            auth.onAuthStateChanged(async (user) => {
+                if (!user) {
+                    window.location.href = 'portal-login.html';
+                } else {
+                    const isAdmin = await checkIfAdmin(user.email);
+                    if (!isAdmin) {
+                        alert('Access denied. Admin privileges required.');
+                        window.location.href = 'portal-dashboard.html';
+                    } else {
+                        currentUser = user;
+                        setDefaultDate();
+                        setupFormListeners();
+                        await loadExpenses();
+                    }
+                }
+            });
+        });
+
+        async function checkIfAdmin(email) {
+            try {
+                const userDoc = await db.collection('users').doc(email).get();
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    return userData.role === 'admin';
+                }
+                return false;
+            } catch (error) {
+                console.error('Error checking admin status:', error);
+                return false;
+            }
+        }
+
+        function setDefaultDate() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('expenseDate').value = today;
+        }
+
+        function setupFormListeners() {
+            // Show/hide mileage field based on category
+            document.getElementById('expenseCategory').addEventListener('change', function() {
+                const mileageGroup = document.getElementById('mileageGroup');
+                if (this.value === 'travel') {
+                    mileageGroup.style.display = 'block';
+                } else {
+                    mileageGroup.style.display = 'none';
+                    document.getElementById('expenseMileage').value = '';
+                }
+            });
+
+            // Show/hide deductible percentage based on selection
+            document.getElementById('expenseDeductible').addEventListener('change', function() {
+                const percentGroup = document.getElementById('deductiblePercentGroup');
+                if (this.value === 'partial') {
+                    percentGroup.style.display = 'block';
+                } else {
+                    percentGroup.style.display = 'none';
+                    document.getElementById('deductiblePercent').value = '';
+                }
+            });
+
+            // Form submission
+            document.getElementById('expenseForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                await saveExpense();
+            });
+        }
+
+        async function saveExpense() {
+            const expenseData = {
+                date: document.getElementById('expenseDate').value,
+                category: document.getElementById('expenseCategory').value,
+                description: document.getElementById('expenseDescription').value,
+                amount: parseFloat(document.getElementById('expenseAmount').value),
+                deductible: document.getElementById('expenseDeductible').value,
+                notes: document.getElementById('expenseNotes').value,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            // Add mileage if travel category
+            const mileage = document.getElementById('expenseMileage').value;
+            if (mileage && expenseData.category === 'travel') {
+                expenseData.mileage = parseFloat(mileage);
+                expenseData.mileageDeduction = parseFloat(mileage) * MILEAGE_RATE_2024;
+            }
+
+            // Add deductible percentage if partial
+            const deductiblePercent = document.getElementById('deductiblePercent').value;
+            if (expenseData.deductible === 'partial' && deductiblePercent) {
+                expenseData.deductiblePercent = parseInt(deductiblePercent);
+            }
+
+            try {
+                if (editingExpenseId) {
+                    // Update existing expense
+                    await db.collection('expenses').doc(editingExpenseId).update(expenseData);
+                    alert('✅ Expense updated successfully!');
+                    editingExpenseId = null;
+                } else {
+                    // Add new expense
+                    await db.collection('expenses').add(expenseData);
+                    alert('✅ Expense added successfully!');
+                }
+
+                resetForm();
+                await loadExpenses();
+            } catch (error) {
+                console.error('Error saving expense:', error);
+                alert('❌ Error saving expense. Please try again.');
+            }
+        }
+
+        async function loadExpenses() {
+            try {
+                const snapshot = await db.collection('expenses')
+                    .orderBy('date', 'desc')
+                    .get();
+
+                allExpenses = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+
+                displayExpenses(allExpenses);
+                updateSummary();
+            } catch (error) {
+                console.error('Error loading expenses:', error);
+                document.getElementById('expensesTableContainer').innerHTML = `
+                    <div class="empty-state">
+                        <p>❌ Error loading expenses</p>
+                        <small>${error.message}</small>
+                    </div>
+                `;
+            }
+        }
+
+        function displayExpenses(expenses) {
+            const container = document.getElementById('expensesTableContainer');
+
+            if (expenses.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <p>📭 No expenses found</p>
+                        <small>Start adding your business expenses to track deductions!</small>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `
+                <table class="expenses-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Amount</th>
+                            <th>Deductible</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            expenses.forEach(expense => {
+                const categoryClass = `badge-${expense.category}`;
+                const deductibleClass = expense.deductible === 'yes' ? 'badge-yes' :
+                                       expense.deductible === 'partial' ? 'badge-partial' : 'badge-no';
+                const deductibleText = expense.deductible === 'yes' ? '100%' :
+                                      expense.deductible === 'partial' ? `${expense.deductiblePercent || 50}%` : 'No';
+
+                const categoryName = getCategoryName(expense.category);
+
+                html += `
+                    <tr>
+                        <td>${formatDate(expense.date)}</td>
+                        <td><span class="category-badge ${categoryClass}">${categoryName}</span></td>
+                        <td>
+                            ${expense.description}
+                            ${expense.mileage ? `<br><small style="color: #666;">${expense.mileage} miles @ $${MILEAGE_RATE_2024}/mi</small>` : ''}
+                        </td>
+                        <td><strong>$${expense.amount.toFixed(2)}</strong></td>
+                        <td><span class="deductible-badge ${deductibleClass}">${deductibleText}</span></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-icon btn-edit" onclick="editExpense('${expense.id}')" title="Edit">✏️</button>
+                                <button class="btn-icon btn-delete" onclick="deleteExpense('${expense.id}')" title="Delete">🗑️</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                    </tbody>
+                </table>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        function updateSummary() {
+            const currentYear = new Date().getFullYear();
+            const yearExpenses = allExpenses.filter(exp => {
+                const expYear = new Date(exp.date).getFullYear();
+                return expYear === currentYear;
+            });
+
+            let total = 0;
+            let deductible = 0;
+            let nonDeductible = 0;
+            let mileageDeduction = 0;
+
+            yearExpenses.forEach(expense => {
+                total += expense.amount;
+
+                if (expense.deductible === 'yes') {
+                    deductible += expense.amount;
+                } else if (expense.deductible === 'partial') {
+                    const percent = expense.deductiblePercent || 50;
+                    deductible += expense.amount * (percent / 100);
+                    nonDeductible += expense.amount * ((100 - percent) / 100);
+                } else {
+                    nonDeductible += expense.amount;
+                }
+
+                if (expense.mileageDeduction) {
+                    mileageDeduction += expense.mileageDeduction;
+                }
+            });
+
+            document.getElementById('totalExpenses').textContent = `$${total.toFixed(2)}`;
+            document.getElementById('deductibleExpenses').textContent = `$${deductible.toFixed(2)}`;
+            document.getElementById('nonDeductibleExpenses').textContent = `$${nonDeductible.toFixed(2)}`;
+            document.getElementById('mileageDeduction').textContent = `$${mileageDeduction.toFixed(2)}`;
+        }
+
+        function filterExpenses() {
+            const year = document.getElementById('filterYear').value;
+            const category = document.getElementById('filterCategory').value;
+
+            let filtered = allExpenses;
+
+            // Filter by year
+            if (year !== 'all') {
+                filtered = filtered.filter(exp => {
+                    const expYear = new Date(exp.date).getFullYear();
+                    return expYear === parseInt(year);
+                });
+            }
+
+            // Filter by category
+            if (category !== 'all') {
+                filtered = filtered.filter(exp => exp.category === category);
+            }
+
+            displayExpenses(filtered);
+        }
+
+        function editExpense(id) {
+            const expense = allExpenses.find(exp => exp.id === id);
+            if (!expense) return;
+
+            editingExpenseId = id;
+
+            document.getElementById('expenseDate').value = expense.date;
+            document.getElementById('expenseCategory').value = expense.category;
+            document.getElementById('expenseDescription').value = expense.description;
+            document.getElementById('expenseAmount').value = expense.amount;
+            document.getElementById('expenseDeductible').value = expense.deductible;
+            document.getElementById('expenseNotes').value = expense.notes || '';
+
+            if (expense.mileage) {
+                document.getElementById('mileageGroup').style.display = 'block';
+                document.getElementById('expenseMileage').value = expense.mileage;
+            }
+
+            if (expense.deductible === 'partial' && expense.deductiblePercent) {
+                document.getElementById('deductiblePercentGroup').style.display = 'block';
+                document.getElementById('deductiblePercent').value = expense.deductiblePercent;
+            }
+
+            // Scroll to form
+            document.querySelector('.expense-form-card').scrollIntoView({ behavior: 'smooth' });
+
+            // Update button text
+            document.querySelector('.btn').textContent = '💾 Update Expense';
+        }
+
+        async function deleteExpense(id) {
+            if (!confirm('Are you sure you want to delete this expense? This cannot be undone.')) {
+                return;
+            }
+
+            try {
+                await db.collection('expenses').doc(id).delete();
+                alert('✅ Expense deleted successfully!');
+                await loadExpenses();
+            } catch (error) {
+                console.error('Error deleting expense:', error);
+                alert('❌ Error deleting expense. Please try again.');
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('expenseForm').reset();
+            setDefaultDate();
+            editingExpenseId = null;
+            document.getElementById('mileageGroup').style.display = 'none';
+            document.getElementById('deductiblePercentGroup').style.display = 'none';
+            document.querySelector('.btn').textContent = '💾 Save Expense';
+        }
+
+        function exportToCSV() {
+            const year = document.getElementById('filterYear').value;
+            const category = document.getElementById('filterCategory').value;
+
+            let filtered = allExpenses;
+
+            if (year !== 'all') {
+                filtered = filtered.filter(exp => {
+                    const expYear = new Date(exp.date).getFullYear();
+                    return expYear === parseInt(year);
+                });
+            }
+
+            if (category !== 'all') {
+                filtered = filtered.filter(exp => exp.category === category);
+            }
+
+            // CSV header
+            let csv = 'Date,Category,Description,Amount,Mileage,Mileage Deduction,Deductible,Deductible %,Notes\n';
+
+            // CSV rows
+            filtered.forEach(expense => {
+                const row = [
+                    expense.date,
+                    getCategoryName(expense.category),
+                    `"${expense.description}"`,
+                    expense.amount.toFixed(2),
+                    expense.mileage || '',
+                    expense.mileageDeduction ? expense.mileageDeduction.toFixed(2) : '',
+                    expense.deductible,
+                    expense.deductiblePercent || '',
+                    `"${(expense.notes || '').replace(/"/g, '""')}"`
+                ].join(',');
+                csv += row + '\n';
+            });
+
+            // Download
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `caninekind-expenses-${year}-${category}.csv`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        function getCategoryName(category) {
+            const names = {
+                training: 'Training',
+                marketing: 'Marketing',
+                travel: 'Travel',
+                office: 'Office',
+                software: 'Software',
+                professional: 'Professional Dev',
+                insurance: 'Insurance',
+                utilities: 'Utilities',
+                other: 'Other'
+            };
+            return names[category] || category;
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        function signOut() {
+            auth.signOut().then(() => {
+                window.location.href = 'portal-login.html';
+            });
+        }
+    </script>
+</body>
+</html>
