@@ -961,38 +961,48 @@
 
         .personal-note-section strong {
             color: #2c3e50;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 700;
         }
 
-        .personal-note-text {
-            color: #333;
-            line-height: 1.5;
-            margin: 0;
-            font-size: 0.95rem;
-        }
-
-        .edit-note-btn {
-            background: transparent;
-            border: 2px solid #4facfe;
-            color: #2a5a7a;
-            padding: 0.4rem 0.8rem;
+        .personal-note-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #d1e8f7;
             border-radius: 6px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #333;
+            background: white;
+            resize: vertical;
             transition: all 0.3s ease;
         }
 
-        .edit-note-btn:hover {
-            background: #4facfe;
-            color: white;
-            transform: translateY(-1px);
-            box-shadow: 0 2px 8px rgba(79, 172, 254, 0.3);
+        .personal-note-input:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
         }
 
-        .edit-note-btn:active {
-            transform: translateY(0);
+        .personal-note-input::placeholder {
+            color: #999;
+            font-style: italic;
+        }
+
+        .save-status {
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .no-reminders {
@@ -2667,13 +2677,26 @@
                                 </div>
 
                                 <div class="personal-note-section">
-                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                                        <strong>📝 Personal Note:</strong>
-                                        <button onclick="editPersonalNote('${cardId}')" class="edit-note-btn" title="Edit personal note">✏️ Edit</button>
+                                    <div style="margin-bottom: 0.75rem;">
+                                        <strong>📝 Add a custom note to yourself:</strong>
                                     </div>
-                                    <p id="${cardId}-note" class="personal-note-text" style="${hasPersonalNote ? '' : 'font-style: italic; color: #999;'}">
-                                        ${hasPersonalNote ? reminder.personalNote : 'No personal note yet. Click "Edit" to add one.'}
+                                    <p style="font-size: 0.85rem; color: #666; margin-bottom: 0.75rem; line-height: 1.4;">
+                                        This note will be included in your CanineKind training plan text/email reminders
                                     </p>
+                                    <textarea
+                                        id="${cardId}-note"
+                                        class="personal-note-input"
+                                        placeholder="Example: Bring high-value treats, practice in quiet area, keep sessions short..."
+                                        rows="3"
+                                        data-day="${reminder.day}"
+                                        data-time="${reminder.time}"
+                                        data-goal-id="${reminder.goalId}"
+                                        data-activity="${reminder.activity}"
+                                        onblur="savePersonalNote('${cardId}')"
+                                    >${hasPersonalNote ? reminder.personalNote : ''}</textarea>
+                                    <div id="${cardId}-status" class="save-status" style="display: none; margin-top: 0.5rem; font-size: 0.85rem; color: #799972; font-weight: 600;">
+                                        ✓ Saved
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -2704,24 +2727,16 @@
             }
         }
 
-        async function editPersonalNote(cardId) {
-            const card = document.getElementById(cardId);
-            if (!card) return;
+        async function savePersonalNote(cardId) {
+            const noteTextarea = document.getElementById(`${cardId}-note`);
+            if (!noteTextarea) return;
 
-            const day = card.dataset.day;
-            const time = card.dataset.time;
-            const goalId = card.dataset.goalId;
-            const activity = card.dataset.activity;
-            const noteElement = document.getElementById(`${cardId}-note`);
-            const currentNote = noteElement.textContent.includes('No personal note yet') ? '' : noteElement.textContent.trim();
-
-            const newNote = prompt(
-                `Edit your personal reminder note:\n\n(This note will appear in your training reminders and can be included in future text message notifications)`,
-                currentNote
-            );
-
-            // If user cancelled, do nothing
-            if (newNote === null) return;
+            const day = noteTextarea.dataset.day;
+            const time = noteTextarea.dataset.time;
+            const goalId = noteTextarea.dataset.goalId;
+            const activity = noteTextarea.dataset.activity;
+            const newNote = noteTextarea.value;
+            const statusElement = document.getElementById(`${cardId}-status`);
 
             try {
                 // Load current schedule data
@@ -2761,21 +2776,18 @@
                             .doc('weekly')
                             .set(scheduleData);
 
-                        // Update the display
-                        if (newNote.trim() !== '') {
-                            noteElement.textContent = newNote.trim();
-                            noteElement.style.fontStyle = 'normal';
-                            noteElement.style.color = '#333';
-                        } else {
-                            noteElement.textContent = 'No personal note yet. Click "Edit" to add one.';
-                            noteElement.style.fontStyle = 'italic';
-                            noteElement.style.color = '#999';
+                        // Show save confirmation
+                        if (statusElement) {
+                            statusElement.style.display = 'block';
+                            setTimeout(() => {
+                                statusElement.style.display = 'none';
+                            }, 2000);
                         }
                     }
                 }
             } catch (error) {
-                console.error('Error updating personal note:', error);
-                alert('Error updating personal note. Please try again.');
+                console.error('Error saving personal note:', error);
+                alert('Error saving personal note. Please try again.');
             }
         }
 

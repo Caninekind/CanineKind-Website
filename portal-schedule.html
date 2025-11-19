@@ -2372,12 +2372,9 @@
                                 return;
                             }
 
-                            // Prompt for personal note
-                            const personalNote = prompt(`Add a personal reminder note for this training session?\n\n(This note will appear in your training reminders and can be included in future text message notifications)\n\nExample: "Bring high-value treats" or "Focus on reducing distractions"`);
-
                             // Clear and re-add with goal association
                             scheduleData[currentDay][time] = [];
-                            addActivityToSlot(time, activityName, goalId, personalNote);
+                            addActivityToSlot(time, activityName, goalId);
                         } else if (existingActivities.length > 1) {
                             // Multiple activities - let user choose (compatibility will be checked there)
                             associateGoalWithMultipleActivities(time, goalId, goalTitle, existingActivities);
@@ -2415,12 +2412,9 @@
                         return;
                     }
 
-                    // Prompt for personal note
-                    const personalNote = prompt(`Add a personal reminder note for this training session?\n\n(This note will appear in your training reminders and can be included in future text message notifications)\n\nExample: "Bring high-value treats" or "Focus on reducing distractions"`);
-
                     // Remove and re-add with goal association
                     scheduleData[currentDay][time].splice(index, 1);
-                    addActivityToSlot(time, activityName, goalId, personalNote);
+                    addActivityToSlot(time, activityName, goalId);
                 }
             }
         }
@@ -2437,10 +2431,7 @@
                     return;
                 }
 
-                // Prompt for personal note
-                const personalNote = prompt(`Add a personal reminder note for this training session?\n\n(This note will appear in your training reminders and can be included in future text message notifications)\n\nExample: "Bring high-value treats" or "Focus on reducing distractions"`);
-
-                addActivityToSlot(time, activity, goalId, personalNote);
+                addActivityToSlot(time, activity, goalId);
             }
         }
 
