@@ -1097,6 +1097,30 @@
             margin-bottom: 1.5rem;
             padding-bottom: 1rem;
             border-bottom: 2px solid #e0e0e0;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        .table-header-content {
+            flex: 1;
+        }
+
+        .table-collapse-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+            margin-left: 1rem;
+            opacity: 0.6;
+        }
+
+        .goals-table-section.collapsed .table-collapse-icon {
+            transform: rotate(-90deg);
+        }
+
+        .goals-table-section.collapsed .goals-table-container {
+            display: none;
         }
 
         .table-header h3 {
@@ -1586,10 +1610,13 @@
         </div>
 
         <!-- Combined Active Goals & Training Progress -->
-        <div id="combinedGoalsSection" class="goals-table-section" style="display: none;">
-            <div class="table-header">
-                <h3 id="workingTowardsText">You're currently working towards level 1...</h3>
-                <p id="progressSummary">Track your milestones and progress</p>
+        <div id="combinedGoalsSection" class="goals-table-section collapsed" style="display: none;">
+            <div class="table-header" onclick="toggleGoalsTableSection()">
+                <div class="table-header-content">
+                    <h3 id="workingTowardsText">You're currently working towards level 1...</h3>
+                    <p id="progressSummary">Track your milestones and progress</p>
+                </div>
+                <span class="table-collapse-icon">▼</span>
             </div>
             <div class="goals-table-container">
                 <table class="goals-table">
@@ -2698,6 +2725,14 @@
 
             header.classList.toggle('collapsed');
             content.classList.toggle('collapsed');
+        }
+
+        // Toggle goals table section
+        function toggleGoalsTableSection() {
+            const section = document.getElementById('combinedGoalsSection');
+            if (section) {
+                section.classList.toggle('collapsed');
+            }
         }
 
         function signOut() {
