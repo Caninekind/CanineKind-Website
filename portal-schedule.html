@@ -1888,14 +1888,22 @@
                     .collection('selectedGoals')
                     .get();
 
-                activeGoals = selectedGoalsSnapshot.docs
-                    .map(doc => ({
+                // Map and deduplicate goals (in case there are duplicate documents)
+                const goalsMap = new Map();
+                selectedGoalsSnapshot.docs.forEach(doc => {
+                    const goalData = {
                         id: doc.id,
                         ...doc.data()
-                    }))
-                    .filter(goal => goal.level !== 0); // Exclude Level 0 goals from schedule
+                    };
+                    // Only keep if level is not 0 and not already in map
+                    if (goalData.level !== 0) {
+                        goalsMap.set(doc.id, goalData);
+                    }
+                });
+                activeGoals = Array.from(goalsMap.values());
 
-                console.log('✅ Loaded', activeGoals.length, 'selected goals');
+                console.log('✅ Loaded', activeGoals.length, 'selected goals (deduplicated)');
+                console.log('Goals:', activeGoals.map(g => g.id));
                 displayGoalsTable();
                 populateGoalsBank();
 
