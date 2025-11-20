@@ -1539,6 +1539,21 @@
                 font-weight: 600;
                 color: #799972;
             }
+
+            /* Fix activity text wrapping on mobile */
+            .scheduled-activity {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.8rem;
+                min-height: auto;
+                flex-wrap: wrap;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                white-space: normal;
+            }
+
+            .remove-activity {
+                flex-shrink: 0;
+            }
         }
     </style>
 </head>
@@ -1644,11 +1659,11 @@
                 <div class="drawer-tab-content active" id="activitiesTab">
                     <!-- Category: In the Home -->
                     <div class="activity-category category-home">
-                        <div class="category-header" onclick="toggleCategory(this)">
+                        <div class="category-header collapsed" onclick="toggleCategory(this)">
                             <span class="category-icon">▼</span>
                             <span class="category-title">🏠 In the Home</span>
                         </div>
-                        <div class="category-content">
+                        <div class="category-content collapsed">
                             <div class="activity-item activity-kennel" draggable="true" data-activity="Crate/Kennel Time">🏠 Crate/Kennel Time</div>
                             <div class="activity-item activity-meal" draggable="true" data-activity="Meal Time">🍖 Meal Time</div>
                             <div class="activity-item activity-yard" draggable="true" data-activity="Yard Time">🏡 Yard Time</div>
@@ -1668,11 +1683,11 @@
 
                     <!-- Category: Recreational - Outdoor -->
                     <div class="activity-category category-outdoor">
-                        <div class="category-header" onclick="toggleCategory(this)">
+                        <div class="category-header collapsed" onclick="toggleCategory(this)">
                             <span class="category-icon">▼</span>
                             <span class="category-title">🌳 Recreational - Outdoor</span>
                         </div>
-                        <div class="category-content">
+                        <div class="category-content collapsed">
                             <div class="activity-item activity-neighborhood-walk" draggable="true" data-activity="Neighborhood walk">🚶 Neighborhood walk</div>
                             <div class="activity-item activity-outdoor-play" draggable="true" data-activity="Outdoor Play Session">🏃 Outdoor Play Session</div>
                             <div class="activity-item activity-forest-hike" draggable="true" data-activity="Forest Hike">🥾 Forest Hike</div>
@@ -1691,11 +1706,11 @@
 
                     <!-- Category: Urban Environments -->
                     <div class="activity-category category-urban">
-                        <div class="category-header" onclick="toggleCategory(this)">
+                        <div class="category-header collapsed" onclick="toggleCategory(this)">
                             <span class="category-icon">▼</span>
                             <span class="category-title">🏙️ Urban Environments</span>
                         </div>
-                        <div class="category-content">
+                        <div class="category-content collapsed">
                             <div class="activity-item activity-store" draggable="true" data-activity="Store trip">🛒 Store trip</div>
                             <div class="activity-item activity-vet" draggable="true" data-activity="Vet visit">🏥 Vet visit</div>
                             <div class="activity-item activity-training-facility" draggable="true" data-activity="Indoor training facility">🏢 Indoor training facility</div>
@@ -1713,11 +1728,11 @@
 
                     <!-- Category: Private Training Session -->
                     <div class="activity-category category-premium">
-                        <div class="category-header" onclick="toggleCategory(this)">
+                        <div class="category-header collapsed" onclick="toggleCategory(this)">
                             <span class="category-icon">▼</span>
                             <span class="category-title">⭐ Private Training Session</span>
                         </div>
-                        <div class="category-content">
+                        <div class="category-content collapsed">
                             <div class="activity-item activity-caninekind-training" draggable="true" data-activity="Private Lesson with CanineKind Trainer">⭐ Private Lesson with CanineKind Trainer</div>
                         </div>
                     </div>
