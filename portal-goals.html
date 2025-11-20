@@ -2090,7 +2090,7 @@
                                     <span class="level-collapse-icon" id="collapse-icon-level-${level}">▼</span>
                                 </div>
                             </div>
-                            <div class="level-content" id="level-content-${level}">
+                            <div class="level-content collapsed" id="level-content-${level}">
                                 ${isLocked ? `
                                     <div class="unlock-message">
                                         🔒 This ${isStandaloneCategory ? 'category' : 'level'} will be unlocked by your trainer
@@ -2122,7 +2122,7 @@
                                 <span class="level-collapse-icon" id="collapse-icon-level-custom-goals">▼</span>
                             </div>
                         </div>
-                        <div class="level-content" id="level-content-custom-goals">
+                        <div class="level-content collapsed" id="level-content-custom-goals">
                             <div class="unlock-message">
                                 🎯 Your trainer will create personalized goals specifically for you and your dog's unique needs
                             </div>
@@ -2247,6 +2247,9 @@
             const goal = GOALS_STRUCTURE[level].find(g => g.id === goalId);
             if (!goal) return;
 
+            // Save scroll position before any operations
+            const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+
             if (selectedGoals.hasOwnProperty(goalId)) {
                 // Check if this is a Level 0 (onboarding) goal - these cannot be removed
                 if (level === 0) {
@@ -2268,6 +2271,9 @@
                         renderLevels();
                         updateLevelProgress();
                         await loadTrainingReminders(); // Refresh reminders when goal removed
+
+                        // Restore scroll position after rendering
+                        window.scrollTo(0, scrollPosition);
                     } catch (error) {
                         console.error('Error removing goal:', error);
                         alert('Error removing goal');
@@ -2321,6 +2327,9 @@
                     renderLevels();
                     updateLevelProgress();
                     await loadTrainingReminders(); // Refresh reminders when goal added
+
+                    // Restore scroll position after rendering
+                    window.scrollTo(0, scrollPosition);
                 } catch (error) {
                     console.error('Error selecting goal:', error);
                     alert('Error selecting goal');
@@ -2680,7 +2689,7 @@
                 const levelName = level === 0 ? 'Preparation' : `Level ${level}`;
 
                 html += `
-                    <div class="reminder-level-group" id="reminder-level-${level}">
+                    <div class="reminder-level-group collapsed" id="reminder-level-${level}">
                         <div class="reminder-level-header" onclick="toggleReminderLevel(${level})">
                             <span>${levelName} (${levelReminders.length} goal${levelReminders.length !== 1 ? 's' : ''})</span>
                             <span class="reminder-collapse-icon">▼</span>
@@ -2692,7 +2701,7 @@
                     const cardId = `reminder-card-${level}-${index}`;
                     const hasPersonalNote = reminder.personalNote && reminder.personalNote.trim() !== '';
                     html += `
-                        <div class="reminder-card" id="${cardId}" data-day="${reminder.day}" data-time="${reminder.time}" data-goal-id="${reminder.goalId}" data-activity="${reminder.activity}">
+                        <div class="reminder-card collapsed" id="${cardId}" data-day="${reminder.day}" data-time="${reminder.time}" data-goal-id="${reminder.goalId}" data-activity="${reminder.activity}">
                             <div class="reminder-card-header" onclick="toggleReminderCard('${cardId}')">
                                 <h3>${reminder.goalTitle}</h3>
                                 <span class="reminder-card-icon">▼</span>
