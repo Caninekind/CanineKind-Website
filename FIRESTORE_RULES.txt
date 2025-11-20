@@ -49,6 +49,12 @@ service cloud.firestore {
         allow read, write: if isAdmin();
       }
 
+      // Users can read and write their own goal access settings (subcollection)
+      match /goalAccess/{document=**} {
+        allow read, write: if isSignedIn() && request.auth.token.email == email;
+        allow read, write: if isAdmin();
+      }
+
       // Users can read and write their own schedules (subcollection)
       match /schedules/{document=**} {
         allow read, write: if isSignedIn() && request.auth.token.email == email;

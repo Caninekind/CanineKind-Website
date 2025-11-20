@@ -1869,7 +1869,10 @@
         async function loadUserData() {
             showLoading(true);
             try {
+                console.log('🔵 Loading user data for:', currentUser.email);
+
                 // Load access settings
+                console.log('🔵 Loading goal access settings...');
                 const accessDoc = await db.collection('users')
                     .doc(currentUser.email)
                     .collection('goalAccess')
@@ -1878,9 +1881,13 @@
 
                 if (accessDoc.exists) {
                     userAccess = accessDoc.data();
+                    console.log('✅ Goal access settings loaded');
+                } else {
+                    console.log('ℹ️ No goal access settings found - using defaults');
                 }
 
                 // Load selected goals
+                console.log('🔵 Loading selected goals...');
                 const goalsSnapshot = await db.collection('users')
                     .doc(currentUser.email)
                     .collection('selectedGoals')
@@ -1893,6 +1900,7 @@
                         ...doc.data()
                     };
                 });
+                console.log('✅ Loaded', Object.keys(selectedGoals).length, 'selected goals');
 
                 // Auto-assign Level 0 goals if not already assigned
                 await autoAssignLevel0Goals();
@@ -1902,8 +1910,25 @@
                 // Load training reminders
                 await loadTrainingReminders();
             } catch (error) {
-                console.error('Error loading user data:', error);
-                alert('Error loading goals data');
+                console.error('❌ Error loading user data:', error);
+                console.error('❌ Error code:', error.code);
+                console.error('❌ Error message:', error.message);
+
+                let errorMsg = 'Error loading goals data:\n\n';
+                if (error.code === 'permission-denied') {
+                    errorMsg += '🔒 PERMISSION DENIED\n\n';
+                    errorMsg += 'This means your Firestore security rules need to be updated.\n\n';
+                    errorMsg += 'ACTION REQUIRED:\n';
+                    errorMsg += '1. Open Firebase Console\n';
+                    errorMsg += '2. Go to Firestore > Rules tab\n';
+                    errorMsg += '3. Copy content from FIRESTORE_RULES.txt\n';
+                    errorMsg += '4. Paste and click Publish\n\n';
+                    errorMsg += 'See COPY_PASTE_INSTRUCTIONS.md for detailed steps.';
+                } else {
+                    errorMsg += error.message;
+                }
+
+                alert(errorMsg);
             } finally {
                 showLoading(false);
             }
