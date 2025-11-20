@@ -602,14 +602,6 @@
         <div class="sessions-grid" id="pastSessions">
             <!-- Past sessions will be loaded here -->
         </div>
-
-        <!-- Empty State -->
-        <div class="empty-state" id="emptyState" style="display: none;">
-            <div class="empty-state-icon"></div>
-            <h3>No Sessions Scheduled</h3>
-            <p>You don't have any training sessions scheduled yet.</p>
-            <a href="https://book.squareup.com/appointments/yxzgsmqobnwc1j/location/L8H5N5KVRNVAH/services" target="_blank" class="btn-primary">Book Your First Session</a>
-        </div>
     </div>
 
     <!-- Firebase SDK -->
@@ -823,7 +815,6 @@
         async function loadSessions() {
             const upcomingGrid = document.getElementById('upcomingSessions');
             const pastGrid = document.getElementById('pastSessions');
-            const emptyState = document.getElementById('emptyState');
 
             try {
                 // TODO: Fetch sessions from Firestore
@@ -845,11 +836,8 @@
                 if (sessions.length === 0) {
                     upcomingGrid.innerHTML = '';
                     pastGrid.innerHTML = '';
-                    emptyState.style.display = 'block';
                     return;
                 }
-
-                emptyState.style.display = 'none';
 
                 // Separate upcoming and past sessions
                 const now = new Date();
