@@ -330,9 +330,18 @@ async function approveUser(uid) {
         await db.collection('users').doc(uid).update({
             status: 'approved',
             approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
-            approvedBy: auth.currentUser ? auth.currentUser.uid : 'system'
+            approvedBy: auth.currentUser ? auth.currentUser.uid : 'system',
+            settings: {
+                canAccessGoals: false,
+                canAccessSchedule: false,
+                canAccessSessions: false,
+                canAccessForms: false,
+                accessibleLevels: [],
+                hasCompletedIntake: false,
+                firstSessionCompleted: false
+            }
         });
-        console.log('User approved:', uid);
+        console.log('User approved with default settings:', uid);
         return { success: true };
     } catch (error) {
         console.error('Error approving user:', error);
