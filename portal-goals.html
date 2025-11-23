@@ -1886,21 +1886,22 @@
                     console.log('ℹ️ No goal access settings found - using defaults');
                 }
 
-                // Load selected goals
-                console.log('🔵 Loading selected goals...');
-                const goalsSnapshot = await db.collection('users')
-                    .doc(currentUser.uid)
-                    .collection('selectedGoals')
+                // Load goals progress from top-level collection
+                console.log('🔵 Loading goals progress...');
+                const goalsSnapshot = await db.collection('goalsProgress')
+                    .where('userId', '==', currentUser.uid)
                     .get();
 
                 selectedGoals = {};
                 goalsSnapshot.docs.forEach(doc => {
-                    selectedGoals[doc.id] = {
-                        id: doc.id,
-                        ...doc.data()
+                    const data = doc.data();
+                    selectedGoals[data.goalId] = {
+                        id: data.goalId,
+                        progressDocId: doc.id, // Store the progress document ID for updates
+                        ...data
                     };
                 });
-                console.log('✅ Loaded', Object.keys(selectedGoals).length, 'selected goals');
+                console.log('✅ Loaded', Object.keys(selectedGoals).length, 'goals in progress');
 
                 // Auto-assign Level 0 goals if not already assigned
                 await autoAssignLevel0Goals();
@@ -1961,13 +1962,16 @@
                         // Add to selectedGoals in memory
                         selectedGoals[goal.id] = goalData;
 
-                        // Add to batch for Firestore
-                        const goalRef = db.collection('users')
-                            .doc(currentUser.uid)
-                            .collection('selectedGoals')
-                            .doc(goal.id);
+                        // Add to batch for Firestore goalsProgress collection
+                        const progressRef = db.collection('goalsProgress').doc();
+                        batch.set(progressRef, {
+                            userId: currentUser.uid,
+                            goalId: goal.id,
+                            ...goalData
+                        });
 
-                        batch.set(goalRef, goalData);
+                        // Store progress doc ID for future updates
+                        selectedGoals[goal.id].progressDocId = progressRef.id;
                         goalsAdded++;
                     }
                 }
@@ -2261,11 +2265,12 @@
                 if (confirm('Are you sure you want to remove this goal? Your progress will be saved.')) {
                     try {
                         showLoading(true);
-                        await db.collection('users')
-                            .doc(currentUser.uid)
-                            .collection('selectedGoals')
-                            .doc(goalId)
-                            .delete();
+                        const progressDocId = selectedGoals[goalId]?.progressDocId;
+                        if (progressDocId) {
+                            await db.collection('goalsProgress')
+                                .doc(progressDocId)
+                                .delete();
+                        }
 
                         delete selectedGoals[goalId];
                         renderLevels();
@@ -2300,22 +2305,22 @@
                         }));
                     }
 
-                    await db.collection('users')
-                        .doc(currentUser.uid)
-                        .collection('selectedGoals')
-                        .doc(goalId)
-                        .set({
-                            level: level,
-                            title: goal.title,
-                            description: goal.description,
-                            type: goal.type,
-                            tasks: tasks,
-                            selectedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                            progress: 0
-                        });
+                    const progressRef = db.collection('goalsProgress').doc();
+                    await progressRef.set({
+                        userId: currentUser.uid,
+                        goalId: goalId,
+                        level: level,
+                        title: goal.title,
+                        description: goal.description,
+                        type: goal.type,
+                        tasks: tasks,
+                        selectedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        progress: 0
+                    });
 
                     selectedGoals[goalId] = {
                         id: goalId,
+                        progressDocId: progressRef.id,
                         level,
                         title: goal.title,
                         description: goal.description,
@@ -2357,14 +2362,15 @@
 
                     const progress = calculateGoalProgress(goalId);
 
-                    await db.collection('users')
-                        .doc(currentUser.uid)
-                        .collection('selectedGoals')
-                        .doc(goalId)
-                        .update({
-                            tasks: goalData.tasks,
-                            progress: progress
-                        });
+                    const progressDocId = selectedGoals[goalId]?.progressDocId;
+                    if (progressDocId) {
+                        await db.collection('goalsProgress')
+                            .doc(progressDocId)
+                            .update({
+                                tasks: goalData.tasks,
+                                progress: progress
+                            });
+                    }
 
                     selectedGoals[goalId].progress = progress;
                     renderLevels();
@@ -2420,14 +2426,15 @@
 
                 const progress = calculateGoalProgress(goalId);
 
-                await db.collection('users')
-                    .doc(currentUser.uid)
-                    .collection('selectedGoals')
-                    .doc(goalId)
-                    .update({
-                        tasks: goalData.tasks,
-                        progress: progress
-                    });
+                const progressDocId = selectedGoals[goalId]?.progressDocId;
+                if (progressDocId) {
+                    await db.collection('goalsProgress')
+                        .doc(progressDocId)
+                        .update({
+                            tasks: goalData.tasks,
+                            progress: progress
+                        });
+                }
 
                 selectedGoals[goalId].progress = progress;
 
@@ -2587,10 +2594,8 @@
                 const reminders = [];
 
                 // Load schedule data from Firebase
-                const scheduleDoc = await db.collection('users')
-                    .doc(currentUser.uid)
-                    .collection('schedules')
-                    .doc('weekly')
+                const scheduleDoc = await db.collection('schedules')
+                    .doc(`${currentUser.uid}-weekly`)
                     .get();
 
                 if (scheduleDoc.exists) {
@@ -2787,10 +2792,8 @@
 
             try {
                 // Load current schedule data
-                const scheduleDoc = await db.collection('users')
-                    .doc(currentUser.uid)
-                    .collection('schedules')
-                    .doc('weekly')
+                const scheduleDoc = await db.collection('schedules')
+                    .doc(`${currentUser.uid}-weekly`)
                     .get();
 
                 if (scheduleDoc.exists) {
@@ -2821,11 +2824,12 @@
                         }
 
                         // Save updated schedule data
-                        await db.collection('users')
-                            .doc(currentUser.uid)
-                            .collection('schedules')
-                            .doc('weekly')
-                            .set(scheduleData);
+                        await db.collection('schedules')
+                            .doc(`${currentUser.uid}-weekly`)
+                            .set({
+                                userId: currentUser.uid,
+                                ...scheduleData
+                            });
 
                         // Show save confirmation
                         if (statusElement) {

@@ -421,27 +421,23 @@
 
         // Fetch user sessions from Firestore
         async function fetchUserSessions() {
-            // TODO: Implement Firestore query
-            // For now, return empty array (skeleton mode)
+            try {
+                // Query top-level sessions collection filtered by clientId
+                const sessionsRef = db.collection('sessions')
+                    .where('clientId', '==', currentUser.uid)
+                    .orderBy('sessionDate', 'desc');
 
-            /* Future implementation:
-            // Client sees only their sessions
-            const sessionsRef = db.collection('users')
-                .doc(currentUser.uid)
-                .collection('sessions');
+                const snapshot = await sessionsRef.get();
 
-            const snapshot = await sessionsRef
-                .orderBy('sessionDate', 'desc')
-                .get();
-
-            return snapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data(),
-                date: doc.data().sessionDate.toDate()
-            }));
-            */
-
-            return []; // Empty for now
+                return snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data(),
+                    date: doc.data().sessionDate.toDate()
+                }));
+            } catch (error) {
+                console.error('Error fetching sessions:', error);
+                return [];
+            }
         }
 
         // Render a session card
