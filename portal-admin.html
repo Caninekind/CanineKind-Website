@@ -667,12 +667,12 @@
                     }
 
                     if (user.role === 'admin') {
-                        actions += `<button class="action-btn btn-make-client" onclick="changeRole('${user.email}', 'client')">Make Client</button>`;
+                        actions += `<button class="action-btn btn-make-client" onclick="changeRole('${user.uid}', 'client')">Make Client</button>`;
                     } else {
-                        actions += `<button class="action-btn btn-make-admin" onclick="changeRole('${user.email}', 'admin')">Make Admin</button>`;
+                        actions += `<button class="action-btn btn-make-admin" onclick="changeRole('${user.uid}', 'admin')">Make Admin</button>`;
                     }
 
-                    actions += `<button class="action-btn btn-delete" onclick="deleteUserClick('${user.email}')">Delete</button>`;
+                    actions += `<button class="action-btn btn-delete" onclick="deleteUserClick('${user.uid}')">Delete</button>`;
                 } else {
                     actions = '<span style="color: #999;">Current User</span>';
                 }

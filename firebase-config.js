@@ -292,8 +292,8 @@ async function getAllUsers() {
             const userData = doc.data();
             console.log('🔵 [ADMIN] Document data:', userData);
             users.push({
-                email: doc.id,
-                ...userData
+                uid: doc.id,  // Document ID is now the UID
+                ...userData   // This includes email, role, status, etc.
             });
         });
 
@@ -325,13 +325,14 @@ async function getAllUsers() {
 }
 
 // Approve a user (admin only)
-async function approveUser(email) {
+async function approveUser(uid) {
     try {
-        await db.collection('users').doc(email).update({
-            approved: true,
-            approvedAt: firebase.firestore.FieldValue.serverTimestamp()
+        await db.collection('users').doc(uid).update({
+            status: 'approved',
+            approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
+            approvedBy: auth.currentUser ? auth.currentUser.uid : 'system'
         });
-        console.log('User approved:', email);
+        console.log('User approved:', uid);
         return { success: true };
     } catch (error) {
         console.error('Error approving user:', error);
@@ -340,12 +341,12 @@ async function approveUser(email) {
 }
 
 // Deny/remove user approval (admin only)
-async function denyUser(email) {
+async function denyUser(uid) {
     try {
-        await db.collection('users').doc(email).update({
-            approved: false
+        await db.collection('users').doc(uid).update({
+            status: 'rejected'
         });
-        console.log('User denied:', email);
+        console.log('User denied:', uid);
         return { success: true };
     } catch (error) {
         console.error('Error denying user:', error);
@@ -354,12 +355,12 @@ async function denyUser(email) {
 }
 
 // Update user role (admin only)
-async function updateUserRole(email, role) {
+async function updateUserRole(uid, role) {
     try {
-        await db.collection('users').doc(email).update({
+        await db.collection('users').doc(uid).update({
             role: role
         });
-        console.log('User role updated:', email, role);
+        console.log('User role updated:', uid, role);
         return { success: true };
     } catch (error) {
         console.error('Error updating user role:', error);
@@ -368,10 +369,10 @@ async function updateUserRole(email, role) {
 }
 
 // Delete user from database (admin only)
-async function deleteUser(email) {
+async function deleteUser(uid) {
     try {
-        await db.collection('users').doc(email).delete();
-        console.log('User deleted:', email);
+        await db.collection('users').doc(uid).delete();
+        console.log('User deleted:', uid);
         return { success: true };
     } catch (error) {
         console.error('Error deleting user:', error);
