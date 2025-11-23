@@ -693,9 +693,9 @@
             });
         });
 
-        async function checkIfAdmin(email) {
+        async function checkIfAdmin(uid) {
             try {
-                const userDoc = await db.collection('users').doc(email).get();
+                const userDoc = await db.collection('users').doc(uid).get();
                 if (userDoc.exists) {
                     const userData = userDoc.data();
                     return userData.role === 'admin';

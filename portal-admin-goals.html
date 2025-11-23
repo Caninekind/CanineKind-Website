@@ -368,13 +368,13 @@
             selectedClientEmail = email;
 
             try {
-                const goalsSnapshot = await db.collection('users').doc(email).collection('selectedGoals').get();
+                const goalsSnapshot = await db.collection('users').doc(uid).collection('selectedGoals').get();
                 clientGoals = {};
                 goalsSnapshot.docs.forEach(doc => {
                     clientGoals[doc.id] = { id: doc.id, ...doc.data() };
                 });
 
-                const customGoalsSnapshot = await db.collection('users').doc(email).collection('customGoals').get();
+                const customGoalsSnapshot = await db.collection('users').doc(uid).collection('customGoals').get();
                 const customGoals = {};
                 customGoalsSnapshot.docs.forEach(doc => {
                     customGoals[doc.id] = { id: doc.id, ...doc.data() };
