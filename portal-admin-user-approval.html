@@ -583,10 +583,10 @@
 
                     <div class="actions">
                         ${status === 'pending' ? `
-                            <button class="btn btn-approve" onclick="approveUser('${user.email}')">✓ Approve</button>
-                            <button class="btn btn-deny" onclick="denyUser('${user.email}')">✕ Deny</button>
+                            <button class="btn btn-approve" onclick="approveUser('${user.uid}')">✓ Approve</button>
+                            <button class="btn btn-deny" onclick="denyUser('${user.uid}')">✕ Deny</button>
                         ` : status === 'approved' ? `
-                            <button class="btn btn-deny" onclick="denyUser('${user.email}')">Revoke Access</button>
+                            <button class="btn btn-deny" onclick="denyUser('${user.uid}')">Revoke Access</button>
                         ` : `
                             <button class="btn btn-undo" onclick="undoDenial('${user.email}')">↺ Undo Denial</button>
                         `}
