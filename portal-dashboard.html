@@ -626,13 +626,13 @@
         async function checkAndShowFormsAlert(uid) {
             try {
                 // Don't show banners for admin users
-                const isAdmin = await checkIfUserIsAdmin(email);
+                const isAdmin = await checkIfUserIsAdmin(uid);
                 if (isAdmin) {
                     console.log('User is admin - skipping forms alert');
                     return;
                 }
 
-                const documentsComplete = await checkDocumentsComplete(email);
+                const documentsComplete = await checkDocumentsComplete(uid);
 
                 if (!documentsComplete) {
                     // Show alert banner if documents not complete
@@ -651,7 +651,7 @@
         async function checkAndShowSettingsAlert(uid) {
             try {
                 // Don't show banners for admin users
-                const isAdmin = await checkIfUserIsAdmin(email);
+                const isAdmin = await checkIfUserIsAdmin(uid);
                 if (isAdmin) {
                     console.log('User is admin - skipping settings alert');
                     return;
@@ -693,7 +693,7 @@
 
         // Check if user is admin and show admin portal button
         async function checkAndShowAdminButton(uid) {
-            console.log('🔍 [ADMIN CHECK] Starting admin check for:', email);
+            console.log('🔍 [ADMIN CHECK] Starting admin check for:', uid);
             try {
                 const userDoc = await db.collection('users').doc(uid).get();
 
@@ -716,7 +716,7 @@
                         console.log('🔍 [ADMIN CHECK] Admin button element:', adminBtn);
                         if (adminBtn) {
                             adminBtn.style.display = 'inline-flex';
-                            console.log('✅ [ADMIN CHECK] Admin button shown for user:', email);
+                            console.log('✅ [ADMIN CHECK] Admin button shown for user:', uid);
                         } else {
                             console.error('❌ [ADMIN CHECK] Admin button element not found in DOM!');
                         }
@@ -727,7 +727,7 @@
                         console.log('   - userData.role:', userData.role);
                     }
                 } else {
-                    console.error('❌ [ADMIN CHECK] User document does not exist for:', email);
+                    console.error('❌ [ADMIN CHECK] User document does not exist for:', uid);
                 }
             } catch (error) {
                 console.error('❌ [ADMIN CHECK] Error checking admin status:', error);
