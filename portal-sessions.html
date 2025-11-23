@@ -250,197 +250,6 @@
             box-shadow: 0 4px 10px rgba(121, 153, 114, 0.3);
         }
 
-        /* Admin Notice (hidden for now, will be used in admin version) */
-        .admin-notice {
-            background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
-            color: #333;
-            padding: 15px 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            display: none; /* Hidden in client view */
-        }
-
-        .admin-notice.show {
-            display: block;
-        }
-
-        /* Admin Panel Styles */
-        .admin-panel {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-            border: 3px solid #799972;
-        }
-
-        .panel-header {
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #e0e0e0;
-        }
-
-        .panel-header h3 {
-            color: #799972;
-            font-size: 1.8em;
-            margin-bottom: 5px;
-        }
-
-        .panel-header p {
-            color: #666;
-            font-size: 1em;
-        }
-
-        .access-control-form {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .form-group label {
-            font-weight: 600;
-            color: #333;
-            font-size: 1.1em;
-        }
-
-        .form-control {
-            padding: 12px 15px;
-            border: 2px solid #d0d0d0;
-            border-radius: 8px;
-            font-size: 1em;
-            transition: all 0.3s;
-            background: white;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: #799972;
-            box-shadow: 0 0 0 3px rgba(121, 153, 114, 0.1);
-        }
-
-        .access-sections {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-        }
-
-        .access-section {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            border: 2px solid #e0e0e0;
-        }
-
-        .access-section h4 {
-            color: #799972;
-            font-size: 1.3em;
-            margin-bottom: 8px;
-        }
-
-        .section-description {
-            color: #666;
-            font-size: 0.9em;
-            margin-bottom: 15px;
-        }
-
-        .level-checkboxes,
-        .goal-checkboxes {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .checkbox-label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px;
-            background: white;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 2px solid transparent;
-        }
-
-        .checkbox-label:hover {
-            background: #e8f5e9;
-            border-color: #799972;
-        }
-
-        .checkbox-label input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-            accent-color: #799972;
-        }
-
-        .checkbox-text {
-            font-size: 1em;
-            color: #333;
-            font-weight: 500;
-        }
-
-        .goal-checkbox-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .goal-level-badge {
-            background: #799972;
-            color: white;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.75em;
-            font-weight: 600;
-        }
-
-        .form-actions {
-            display: flex;
-            gap: 15px;
-            padding-top: 10px;
-        }
-
-        .btn-save {
-            flex: 1;
-            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 8px;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 3px 10px rgba(121, 153, 114, 0.3);
-        }
-
-        .btn-save:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(121, 153, 114, 0.4);
-        }
-
-        .btn-secondary {
-            background: white;
-            color: #799972;
-            border: 2px solid #799972;
-            padding: 15px 30px;
-            border-radius: 8px;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-secondary:hover {
-            background: #f0f0f0;
-        }
 
         /* Mobile Styles */
         @media (max-width: 768px) {
@@ -474,23 +283,6 @@
             .sessions-grid {
                 grid-template-columns: 1fr;
             }
-
-            .access-sections {
-                grid-template-columns: 1fr;
-            }
-
-            .admin-panel {
-                padding: 20px;
-            }
-
-            .form-actions {
-                flex-direction: column;
-            }
-
-            .btn-save,
-            .btn-secondary {
-                width: 100%;
-            }
         }
     </style>
 </head>
@@ -519,68 +311,6 @@
         <div class="page-header">
             <h2>Training Sessions</h2>
             <p>View your upcoming and past training sessions</p>
-        </div>
-
-        <!-- Admin Notice (will be visible in admin version) -->
-        <div class="admin-notice" id="adminNotice">
-            <strong>👑 Admin View:</strong> You can manage all client sessions. Click on a session to edit notes and homework.
-        </div>
-
-        <!-- Admin Goal Access Control Panel -->
-        <div class="admin-panel" id="adminPanel" style="display: none;">
-            <div class="panel-header">
-                <h3>Goal Access Management</h3>
-                <p>Grant clients access to training goal levels or specific goals</p>
-            </div>
-
-            <div class="access-control-form">
-                <div class="form-group">
-                    <label for="clientSelect">Select Client:</label>
-                    <select id="clientSelect" class="form-control">
-                        <option value="">-- Choose a client --</option>
-                    </select>
-                </div>
-
-                <div class="access-sections">
-                    <!-- Level Access Section -->
-                    <div class="access-section">
-                        <h4>Level Access</h4>
-                        <p class="section-description">Grant access to all goals in a level</p>
-                        <div class="level-checkboxes" id="levelCheckboxes">
-                            <label class="checkbox-label">
-                                <input type="checkbox" value="1" class="level-checkbox">
-                                <span class="checkbox-text">Level 1: Basic/Beginner Commands</span>
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" value="2" class="level-checkbox">
-                                <span class="checkbox-text">Level 2: Intermediate Commands</span>
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" value="3" class="level-checkbox">
-                                <span class="checkbox-text">Level 3: Advanced Commands</span>
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" value="4" class="level-checkbox">
-                                <span class="checkbox-text">Level 4: Expert/Specialized</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Individual Goal Access Section -->
-                    <div class="access-section">
-                        <h4>Individual Goal Access</h4>
-                        <p class="section-description">Grant access to specific goals (overrides level settings)</p>
-                        <div class="goal-checkboxes" id="goalCheckboxes">
-                            <!-- Will be populated dynamically -->
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-actions">
-                    <button class="btn-save" onclick="saveGoalAccess()">Save Access Settings</button>
-                    <button class="btn-secondary" onclick="loadClientAccess()">Refresh</button>
-                </div>
-            </div>
         </div>
 
         <!-- Upcoming Sessions Section -->
@@ -614,36 +344,6 @@
 
     <script>
         let currentUser = null;
-        let isAdmin = false;
-        let allClients = [];
-        let selectedClientEmail = '';
-
-        // Define all goals with their levels
-        const GOALS_STRUCTURE = {
-            1: [
-                { id: 'sit', title: 'Sit' },
-                { id: 'down', title: 'Down' },
-                { id: 'recall', title: 'Recall' },
-                { id: 'markers-release', title: 'Markers & Release Words' },
-                { id: 'place', title: 'Place' },
-                { id: 'crate-manners', title: 'Crate Manners' }
-            ],
-            2: [
-                { id: 'stay', title: 'Stay' },
-                { id: 'heel', title: 'Heel' },
-                { id: 'leave-it', title: 'Leave It' },
-                { id: 'drop-it', title: 'Drop It' }
-            ],
-            3: [
-                { id: 'distance-commands', title: 'Distance Commands' },
-                { id: 'duration-work', title: 'Duration Work' },
-                { id: 'distractions', title: 'Working with Distractions' }
-            ],
-            4: [
-                { id: 'off-leash', title: 'Off-Leash Reliability' },
-                { id: 'advanced-behaviors', title: 'Advanced Behaviors' }
-            ]
-        };
 
         // Initialize Firebase and check authentication
         document.addEventListener('DOMContentLoaded', async () => {
@@ -661,155 +361,10 @@
                     window.location.href = 'portal-login.html';
                 } else {
                     currentUser = user;
-
-                    // Check if user is admin
-                    isAdmin = await isUserAdmin();
-                    if (isAdmin) {
-                        document.getElementById('adminNotice').classList.add('show');
-                        document.getElementById('adminPanel').style.display = 'block';
-                        await loadAdminPanel();
-                    }
-
                     await loadSessions();
                 }
             });
         });
-
-        // Load admin panel data
-        async function loadAdminPanel() {
-            try {
-                // Load all clients
-                const usersSnapshot = await db.collection('users').get();
-                allClients = usersSnapshot.docs
-                    .map(doc => ({
-                        email: doc.id,
-                        ...doc.data()
-                    }))
-                    .filter(user => user.role !== 'admin'); // Filter out admins
-
-                // Populate client dropdown
-                const clientSelect = document.getElementById('clientSelect');
-                clientSelect.innerHTML = '<option value="">-- Choose a client --</option>' +
-                    allClients.map(client =>
-                        `<option value="${client.email}">${client.displayName || client.email}</option>`
-                    ).join('');
-
-                // Add event listener for client selection
-                clientSelect.addEventListener('change', async (e) => {
-                    selectedClientEmail = e.target.value;
-                    if (selectedClientEmail) {
-                        await loadClientAccess();
-                    }
-                });
-
-                // Populate individual goals checkboxes
-                populateGoalCheckboxes();
-
-            } catch (error) {
-                console.error('Error loading admin panel:', error);
-                alert('Error loading admin panel');
-            }
-        }
-
-        // Populate individual goal checkboxes
-        function populateGoalCheckboxes() {
-            const container = document.getElementById('goalCheckboxes');
-            let html = '';
-
-            for (let level = 1; level <= 4; level++) {
-                const goals = GOALS_STRUCTURE[level];
-                goals.forEach(goal => {
-                    html += `
-                        <label class="checkbox-label">
-                            <input type="checkbox" value="${goal.id}" data-level="${level}" class="goal-checkbox">
-                            <div class="goal-checkbox-item">
-                                <span class="checkbox-text">${goal.emoji} ${goal.title}</span>
-                                <span class="goal-level-badge">L${level}</span>
-                            </div>
-                        </label>
-                    `;
-                });
-            }
-
-            container.innerHTML = html;
-        }
-
-        // Load client's current access settings
-        async function loadClientAccess() {
-            if (!selectedClientEmail) return;
-
-            try {
-                const accessDoc = await db.collection('users')
-                    .doc(selectedClientEmail)
-                    .collection('goalAccess')
-                    .doc('settings')
-                    .get();
-
-                // Clear all checkboxes first
-                document.querySelectorAll('.level-checkbox').forEach(cb => cb.checked = false);
-                document.querySelectorAll('.goal-checkbox').forEach(cb => cb.checked = false);
-
-                if (accessDoc.exists) {
-                    const accessData = accessDoc.data();
-
-                    // Check level checkboxes
-                    if (accessData.levels && Array.isArray(accessData.levels)) {
-                        accessData.levels.forEach(level => {
-                            const checkbox = document.querySelector(`.level-checkbox[value="${level}"]`);
-                            if (checkbox) checkbox.checked = true;
-                        });
-                    }
-
-                    // Check individual goal checkboxes
-                    if (accessData.individualGoals && Array.isArray(accessData.individualGoals)) {
-                        accessData.individualGoals.forEach(goalId => {
-                            const checkbox = document.querySelector(`.goal-checkbox[value="${goalId}"]`);
-                            if (checkbox) checkbox.checked = true;
-                        });
-                    }
-                }
-
-            } catch (error) {
-                console.error('Error loading client access:', error);
-                alert('Error loading client access settings');
-            }
-        }
-
-        // Save goal access settings
-        async function saveGoalAccess() {
-            if (!selectedClientEmail) {
-                alert('Please select a client first');
-                return;
-            }
-
-            try {
-                // Get selected levels
-                const selectedLevels = Array.from(document.querySelectorAll('.level-checkbox:checked'))
-                    .map(cb => parseInt(cb.value));
-
-                // Get selected individual goals
-                const selectedGoals = Array.from(document.querySelectorAll('.goal-checkbox:checked'))
-                    .map(cb => cb.value);
-
-                // Save to Firestore
-                await db.collection('users')
-                    .doc(selectedClientEmail)
-                    .collection('goalAccess')
-                    .doc('settings')
-                    .set({
-                        levels: selectedLevels,
-                        individualGoals: selectedGoals,
-                        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                        updatedBy: currentUser.email
-                    });
-
-                alert('Goal access settings saved successfully!');
-
-            } catch (error) {
-                console.error('Error saving goal access:', error);
-                alert('Error saving goal access settings. Please try again.');
-            }
-        }
 
         // Load sessions for the user
         async function loadSessions() {
@@ -870,24 +425,19 @@
             // For now, return empty array (skeleton mode)
 
             /* Future implementation:
-            const sessionsRef = db.collection('sessions');
-            let query;
+            // Client sees only their sessions
+            const sessionsRef = db.collection('users')
+                .doc(currentUser.email)
+                .collection('sessions');
 
-            if (isAdmin) {
-                // Admin sees all sessions
-                query = sessionsRef.orderBy('date', 'desc');
-            } else {
-                // Client sees only their sessions
-                query = sessionsRef
-                    .where('clientEmail', '==', currentUser.email)
-                    .orderBy('date', 'desc');
-            }
+            const snapshot = await sessionsRef
+                .orderBy('sessionDate', 'desc')
+                .get();
 
-            const snapshot = await query.get();
             return snapshot.docs.map(doc => ({
                 id: doc.id,
                 ...doc.data(),
-                date: doc.data().date.toDate()
+                date: doc.data().sessionDate.toDate()
             }));
             */
 
