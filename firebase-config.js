@@ -152,12 +152,12 @@ function protectPage(redirectUrl = 'portal-login.html') {
 // ==========================================
 
 // Check if user exists and is approved in Firestore
-async function checkUserApproval(email) {
-    console.log('🔵 [FIRESTORE] checkUserApproval() called for:', email);
+async function checkUserApproval(uid) {
+    console.log('🔵 [FIRESTORE] checkUserApproval() called for UID:', uid);
 
     try {
-        console.log('🔵 [FIRESTORE] Querying Firestore for users/' + email);
-        const userDoc = await db.collection('users').doc(email).get();
+        console.log('🔵 [FIRESTORE] Querying Firestore for users/' + uid);
+        const userDoc = await db.collection('users').doc(uid).get();
         console.log('🔵 [FIRESTORE] Query complete. User exists:', userDoc.exists);
 
         if (!userDoc.exists) {
@@ -175,7 +175,7 @@ async function checkUserApproval(email) {
 
         const result = {
             exists: true,
-            approved: userData.approved || false,
+            approved: userData.status === 'approved',
             role: userData.role || 'client'
         };
         console.log('🔵 [FIRESTORE] Returning approval result:', result);
@@ -201,8 +201,8 @@ async function createOrUpdateUser(user, approved = false, role = 'client') {
     console.log('🔵 [FIRESTORE] Role:', role);
 
     try {
-        console.log('🔵 [FIRESTORE] Getting reference to users/' + user.email);
-        const userRef = db.collection('users').doc(user.email);
+        console.log('🔵 [FIRESTORE] Getting reference to users/' + user.uid);
+        const userRef = db.collection('users').doc(user.uid);
 
         console.log('🔵 [FIRESTORE] Checking if user document exists...');
         const userDoc = await userRef.get();
@@ -213,30 +213,29 @@ async function createOrUpdateUser(user, approved = false, role = 'client') {
             console.log('🔵 [FIRESTORE] Creating new user document...');
             const userData = {
                 email: user.email,
-                displayName: user.displayName,
-                photoURL: user.photoURL,
-                uid: user.uid,
-                approved: approved,
+                displayName: user.displayName || user.email,
                 role: role,
+                status: approved ? 'approved' : 'pending',
                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+                approvedAt: approved ? firebase.firestore.FieldValue.serverTimestamp() : null,
+                approvedBy: approved ? 'system' : null,
+                settings: {
+                    canAccessGoals: false,
+                    canAccessSchedule: false,
+                    canAccessSessions: false,
+                    canAccessForms: false,
+                    accessibleLevels: [],
+                    hasCompletedIntake: false,
+                    firstSessionCompleted: false
+                }
             };
             console.log('🔵 [FIRESTORE] User data to write:', userData);
 
             await userRef.set(userData);
             console.log('✅ [FIRESTORE] New user created successfully in database!');
         } else {
-            // Update last login
-            console.log('🔵 [FIRESTORE] User exists - updating last login...');
-            const updateData = {
-                lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
-                displayName: user.displayName,
-                photoURL: user.photoURL
-            };
-            console.log('🔵 [FIRESTORE] Update data:', updateData);
-
-            await userRef.update(updateData);
-            console.log('✅ [FIRESTORE] User last login updated successfully!');
+            // User exists - don't update
+            console.log('✅ [FIRESTORE] User already exists - no update needed');
         }
 
         return { success: true };
@@ -250,9 +249,9 @@ async function createOrUpdateUser(user, approved = false, role = 'client') {
 }
 
 // Get user data from Firestore
-async function getUserData(email) {
+async function getUserData(uid) {
     try {
-        const userDoc = await db.collection('users').doc(email).get();
+        const userDoc = await db.collection('users').doc(uid).get();
 
         if (!userDoc.exists) {
             return null;
@@ -270,13 +269,8 @@ async function isUserAdmin() {
     const user = auth.currentUser;
     if (!user) return false;
 
-    const userData = await getUserData(user.email);
-    // Check multiple possible admin indicators
-    return userData && (
-        userData.role === 'admin' ||
-        userData.admin === true ||
-        userData.isAdmin === true
-    );
+    const userData = await getUserData(user.uid);
+    return userData && userData.role === 'admin' && userData.status === 'approved';
 }
 
 // Get all users (admin only)
