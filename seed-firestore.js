@@ -166,7 +166,7 @@ async function createAdminUser() {
 async function createIndexes() {
   console.log('\n🔍 Creating Database Indexes...');
   console.log('   Note: Firestore indexes need to be created via Firebase Console or firebase.json');
-  console.log('
+  console.log(`
    Recommended indexes:
 
    Collection: goalsProgress
@@ -186,7 +186,7 @@ async function createIndexes() {
    Collection: formSubmissions
    - userId (Ascending) + formId (Ascending)
    - status (Ascending) + submittedAt (Descending)
-  ');
+  `);
 }
 
 async function seedDatabase() {
