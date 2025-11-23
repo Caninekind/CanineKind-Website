@@ -690,28 +690,29 @@
             allSessions = [];
 
             try {
+                // Load all sessions from top-level collection
+                const sessionsSnapshot = await db.collection('sessions')
+                    .orderBy('sessionDate', 'desc')
+                    .get();
+
+                // Load all users to map UIDs to emails
                 const usersSnapshot = await db.collection('users').get();
+                const usersMap = {};
+                usersSnapshot.docs.forEach(doc => {
+                    usersMap[doc.id] = doc.data();
+                });
 
-                for (const userDoc of usersSnapshot.docs) {
-                    const uid = userDoc.id;  // Document ID is the UID
-                    const userData = userDoc.data();
-                    const email = userData.email;  // Get email from user document
-
-                    const sessionsSnapshot = await db.collection('users')
-                        .doc(uid)
-                        .collection('sessions')
-                        .orderBy('sessionDate', 'desc')
-                        .get();
-
-                    sessionsSnapshot.docs.forEach(doc => {
-                        allSessions.push({
-                            id: doc.id,
-                            clientId: uid,
-                            clientEmail: email,
-                            ...doc.data()
-                        });
+                // Map sessions with client email
+                sessionsSnapshot.docs.forEach(doc => {
+                    const sessionData = doc.data();
+                    const clientData = usersMap[sessionData.clientId] || {};
+                    allSessions.push({
+                        id: doc.id,
+                        clientId: sessionData.clientId,
+                        clientEmail: clientData.email || 'Unknown',
+                        ...sessionData
                     });
-                }
+                });
 
                 renderSessions(allSessions);
                 updateMetrics(allSessions);
@@ -931,9 +932,7 @@
             editingSessionClient = clientEmail;
 
             try {
-                const sessionDoc = await db.collection('users')
-                    .doc(clientEmail)
-                    .collection('sessions')
+                const sessionDoc = await db.collection('sessions')
                     .doc(sessionId)
                     .get();
 
@@ -977,33 +976,44 @@
             }
 
             try {
+                // Find client UID from email
+                const usersSnapshot = await db.collection('users')
+                    .where('email', '==', clientEmail)
+                    .limit(1)
+                    .get();
+
+                if (usersSnapshot.empty) {
+                    alert('Client not found');
+                    return;
+                }
+
+                const clientId = usersSnapshot.docs[0].id;
+
                 const sessionData = {
+                    clientId: clientId,
+                    trainerId: currentUser.uid,
                     sessionDate: firebase.firestore.Timestamp.fromDate(new Date(dateStr)),
                     sessionTime: time,
                     duration: parseInt(duration),
                     notes: notes,
                     homework: homework,
+                    status: 'completed',
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    updatedBy: currentUser.email
+                    updatedBy: currentUser.uid
                 };
 
-                if (editingSessionId && editingSessionClient) {
+                if (editingSessionId) {
                     // Update existing session
-                    await db.collection('users')
-                        .doc(editingSessionClient)
-                        .collection('sessions')
+                    await db.collection('sessions')
                         .doc(editingSessionId)
                         .update(sessionData);
                     alert('Session updated successfully!');
                 } else {
                     // Create new session
                     sessionData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-                    sessionData.createdBy = currentUser.email;
+                    sessionData.createdBy = currentUser.uid;
 
-                    await db.collection('users')
-                        .doc(clientEmail)
-                        .collection('sessions')
-                        .add(sessionData);
+                    await db.collection('sessions').add(sessionData);
                     alert('Session created successfully!');
                 }
 
@@ -1022,9 +1032,7 @@
             }
 
             try {
-                await db.collection('users')
-                    .doc(clientEmail)
-                    .collection('sessions')
+                await db.collection('sessions')
                     .doc(sessionId)
                     .delete();
 

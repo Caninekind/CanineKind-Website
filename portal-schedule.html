@@ -1854,30 +1854,27 @@
             try {
                 console.log('🔵 Loading user data for:', currentUser.email);
 
-                // Load selected goals (new system)
-                console.log('🔵 Loading selected goals...');
-                const selectedGoalsSnapshot = await db.collection('users')
-                    .doc(currentUser.uid)
-                    .collection('selectedGoals')
+                // Load selected goals from goalsProgress collection
+                console.log('🔵 Loading goals progress...');
+                const goalsProgressSnapshot = await db.collection('goalsProgress')
+                    .where('userId', '==', currentUser.uid)
                     .get();
 
-                activeGoals = selectedGoalsSnapshot.docs
+                activeGoals = goalsProgressSnapshot.docs
                     .map(doc => ({
                         id: doc.id,
                         ...doc.data()
                     }))
                     .filter(goal => goal.level !== 0); // Exclude Level 0 goals from schedule
 
-                console.log('✅ Loaded', activeGoals.length, 'selected goals');
+                console.log('✅ Loaded', activeGoals.length, 'goals in progress');
                 displayGoalsTable();
                 populateGoalsBank();
 
-                // Load schedule data
+                // Load schedule data from top-level schedules collection
                 console.log('🔵 Loading schedule data...');
-                const scheduleDoc = await db.collection('users')
-                    .doc(currentUser.uid)
-                    .collection('schedules')
-                    .doc('weekly')
+                const scheduleDoc = await db.collection('schedules')
+                    .doc(`${currentUser.uid}-weekly`)
                     .get();
 
                 if (scheduleDoc.exists) {
@@ -2596,11 +2593,13 @@
                 console.log('🔵 Current user:', currentUser.email);
                 console.log('🔵 Schedule data:', scheduleData);
 
-                await db.collection('users')
-                    .doc(currentUser.uid)
-                    .collection('schedules')
-                    .doc('weekly')
-                    .set(scheduleData);
+                // Save to top-level schedules collection with userId field
+                await db.collection('schedules')
+                    .doc(`${currentUser.uid}-weekly`)
+                    .set({
+                        userId: currentUser.uid,
+                        ...scheduleData
+                    });
 
                 console.log('✅ Schedule saved successfully!');
                 alert('Schedule saved successfully!');

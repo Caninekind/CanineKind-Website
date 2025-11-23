@@ -368,13 +368,27 @@
             selectedClientUid = uid;
 
             try {
-                const goalsSnapshot = await db.collection('users').doc(uid).collection('selectedGoals').get();
+                // Load client's goals progress from top-level collection
+                const goalsSnapshot = await db.collection('goalsProgress')
+                    .where('userId', '==', uid)
+                    .get();
+
                 clientGoals = {};
                 goalsSnapshot.docs.forEach(doc => {
-                    clientGoals[doc.id] = { id: doc.id, ...doc.data() };
+                    const data = doc.data();
+                    clientGoals[data.goalId] = {
+                        id: data.goalId,
+                        progressDocId: doc.id,
+                        ...data
+                    };
                 });
 
-                const customGoalsSnapshot = await db.collection('users').doc(uid).collection('customGoals').get();
+                // Load custom goals created by this user from top-level goals collection
+                const customGoalsSnapshot = await db.collection('goals')
+                    .where('isCustom', '==', true)
+                    .where('ownerId', '==', uid)
+                    .get();
+
                 const customGoals = {};
                 customGoalsSnapshot.docs.forEach(doc => {
                     customGoals[doc.id] = { id: doc.id, ...doc.data() };
@@ -474,11 +488,13 @@
         }
 
         async function addGoal(goalId, level) {
-            if (!selectedClientEmail) return;
+            if (!selectedClientUid) return;
             const goalTemplate = GOALS_STRUCTURE[level].find(g => g.id === goalId);
             if (!goalTemplate) return;
 
             const goalData = {
+                userId: selectedClientUid,
+                goalId: goalId,
                 ...goalTemplate,
                 level: level,
                 selectedAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -487,7 +503,7 @@
             };
 
             try {
-                await db.collection('users').doc(selectedClientEmail).collection('selectedGoals').doc(goalId).set(goalData);
+                await db.collection('goalsProgress').add(goalData);
                 alert('Goal "' + goalTemplate.title + '" added!');
                 await loadClientGoals();
             } catch (error) {
@@ -497,13 +513,18 @@
         }
 
         async function removeGoal(goalId, level) {
-            if (!selectedClientEmail) return;
+            if (!selectedClientUid) return;
             if (!confirm('Remove this goal?')) return;
 
             try {
-                await db.collection('users').doc(selectedClientEmail).collection('selectedGoals').doc(goalId).delete();
-                alert('Goal removed!');
-                await loadClientGoals();
+                const progressDocId = clientGoals[goalId]?.progressDocId;
+                if (progressDocId) {
+                    await db.collection('goalsProgress').doc(progressDocId).delete();
+                    alert('Goal removed!');
+                    await loadClientGoals();
+                } else {
+                    alert('Goal not found in progress tracking');
+                }
             } catch (error) {
                 console.error('Error removing goal:', error);
                 alert('Error removing goal');
@@ -511,7 +532,7 @@
         }
 
         async function createCustomGoal() {
-            if (!selectedClientEmail) return;
+            if (!selectedClientUid) return;
 
             const title = document.getElementById('customGoalTitle').value.trim();
             const description = document.getElementById('customGoalDesc').value.trim();
@@ -525,15 +546,15 @@
             const customGoalData = {
                 title: title,
                 description: description,
-                tasks: tasks.map(task => ({ text: task, completed: false })),
+                tasks: tasks,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                createdBy: currentUser.email,
-                progress: 0,
-                isCustom: true
+                createdBy: currentUser.uid,
+                isCustom: true,
+                ownerId: selectedClientUid
             };
 
             try {
-                await db.collection('users').doc(selectedClientEmail).collection('customGoals').add(customGoalData);
+                await db.collection('goals').add(customGoalData);
                 alert('Custom goal "' + title + '" created!');
                 document.getElementById('customGoalTitle').value = '';
                 document.getElementById('customGoalDesc').value = '';
@@ -546,11 +567,11 @@
         }
 
         async function removeCustomGoal(goalId) {
-            if (!selectedClientEmail) return;
+            if (!selectedClientUid) return;
             if (!confirm('Remove this custom goal?')) return;
 
             try {
-                await db.collection('users').doc(selectedClientEmail).collection('customGoals').doc(goalId).delete();
+                await db.collection('goals').doc(goalId).delete();
                 alert('Custom goal removed!');
                 await loadClientGoals();
             } catch (error) {
