@@ -764,14 +764,13 @@
         async function loadSettings() {
             showLoading(true);
             try {
-                const settingsDoc = await db.collection('users')
-                    .doc(currentUser.email)
-                    .collection('settings')
-                    .doc('profile')
+                // Load user document directly (not subcollection)
+                const userDoc = await db.collection('users')
+                    .doc(currentUser.uid)
                     .get();
 
-                if (settingsDoc.exists) {
-                    const data = settingsDoc.data();
+                if (userDoc.exists) {
+                    const data = userDoc.data();
                     originalSettings = data;
 
                     // User Info
@@ -784,8 +783,8 @@
                     // Dog Settings
                     document.getElementById('dogName').value = data.dogName || '';
 
-                    // Check if advanced dog settings are unlocked
-                    if (data.advancedDogSettingsUnlocked === true) {
+                    // Check if advanced dog settings are unlocked (first session completed)
+                    if (data.settings && data.settings.firstSessionCompleted === true) {
                         unlockAdvancedSettings();
 
                         // Load advanced settings
@@ -899,45 +898,17 @@
                     lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
                 };
 
-                // If advanced settings are unlocked, check for changes and mark for approval
-                if (originalSettings.advancedDogSettingsUnlocked === true) {
-                    const pendingApproval = {};
-
-                    // Check each field for changes
-                    const currentTools = trainingTools.sort().join(',');
-                    const originalTools = (originalSettings.trainingTools || []).sort().join(',');
-                    if (currentTools !== originalTools) {
-                        pendingApproval.trainingTools = trainingTools;
-                    } else {
-                        settingsData.trainingTools = trainingTools;
-                    }
-
-                    const checkField = (fieldId, fieldName) => {
-                        const currentValue = document.getElementById(fieldId).value.trim();
-                        if (currentValue !== (originalSettings[fieldName] || '')) {
-                            pendingApproval[fieldName] = currentValue;
-                        } else {
-                            settingsData[fieldName] = currentValue;
-                        }
-                    };
-
-                    checkField('triggersOutside', 'triggersOutside');
-                    checkField('triggersInside', 'triggersInside');
-                    checkField('behavioralIssues', 'behavioralIssues');
-                    checkField('foodDrive', 'foodDrive');
-                    checkField('playDrive', 'playDrive');
-
-                    if (Object.keys(pendingApproval).length > 0) {
-                        settingsData.pendingApproval = pendingApproval;
-                    }
-
-                    settingsData.advancedDogSettingsUnlocked = true;
+                // If advanced settings are unlocked (first session completed), save the additional fields
+                if (originalSettings.settings && originalSettings.settings.firstSessionCompleted === true) {
+                    settingsData.trainingTools = trainingTools;
+                    settingsData.triggersOutside = document.getElementById('triggersOutside').value.trim();
+                    settingsData.triggersInside = document.getElementById('triggersInside').value.trim();
+                    settingsData.behavioralIssues = document.getElementById('behavioralIssues').value.trim();
                 }
 
+                // Save directly to user document (not subcollection)
                 await db.collection('users')
-                    .doc(currentUser.email)
-                    .collection('settings')
-                    .doc('profile')
+                    .doc(currentUser.uid)
                     .set(settingsData, { merge: true });
 
                 showSuccess();
