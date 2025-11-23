@@ -553,7 +553,7 @@
 
         async function isUserAdmin() {
             try {
-                const userDoc = await db.collection('users').doc(auth.currentUser.email).get();
+                const userDoc = await db.collection('users').doc(auth.currentUser.uid).get();
                 if (userDoc.exists) {
                     const userData = userDoc.data();
                     return userData.admin === true || userData.isAdmin === true || userData.role === 'admin';

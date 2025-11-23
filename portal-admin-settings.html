@@ -539,7 +539,7 @@
 
         async function isUserAdmin() {
             try {
-                const userDoc = await db.collection('users').doc(auth.currentUser.email).get();
+                const userDoc = await db.collection('users').doc(auth.currentUser.uid).get();
                 if (userDoc.exists) {
                     const userData = userDoc.data();
                     return userData.admin === true || userData.isAdmin === true || userData.role === 'admin';
@@ -555,7 +555,7 @@
             try {
                 console.log('🔵 Loading approved clients...');
                 const usersSnapshot = await db.collection('users')
-                    .where('approved', '==', true)
+                    .where('status', '==', 'approved')
                     .get();
 
                 console.log(`🔵 Found ${usersSnapshot.size} approved users`);
@@ -586,7 +586,7 @@
         }
 
         async function loadClientSettings() {
-            const email = document.getElementById('clientSelect').value;
+            const uid = document.getElementById("clientSelect").value;
             if (!email) {
                 document.getElementById('settingsContainer').innerHTML = `
                     <div class="empty-state">
@@ -597,7 +597,7 @@
                 return;
             }
 
-            selectedClientEmail = email;
+            selectedClientUid = uid;
             console.log(`🔵 Loading settings for: ${email}`);
 
             try {

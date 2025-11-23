@@ -226,7 +226,7 @@
 
         async function isUserAdmin() {
             try {
-                const userDoc = await db.collection('users').doc(auth.currentUser.email).get();
+                const userDoc = await db.collection('users').doc(auth.currentUser.uid).get();
                 if (userDoc.exists) {
                     const userData = userDoc.data();
                     return userData.admin === true || userData.isAdmin === true || userData.role === 'admin';
@@ -239,7 +239,7 @@
 
         async function loadClients() {
             try {
-                const usersSnapshot = await db.collection('users').where('approved', '==', true).get();
+                const usersSnapshot = await db.collection('users').where('status', '==', 'approved').get();
                 const select = document.getElementById('clientFilter');
                 let options = '<option value="">All Clients</option>';
                 usersSnapshot.docs.forEach(doc => {

@@ -330,7 +330,7 @@
 
         async function isUserAdmin() {
             try {
-                const userDoc = await db.collection('users').doc(auth.currentUser.email).get();
+                const userDoc = await db.collection('users').doc(auth.currentUser.uid).get();
                 if (userDoc.exists) {
                     const userData = userDoc.data();
                     return userData.admin === true || userData.isAdmin === true || userData.role === 'admin';
@@ -344,7 +344,7 @@
 
         async function loadClients() {
             try {
-                const usersSnapshot = await db.collection('users').where('approved', '==', true).get();
+                const usersSnapshot = await db.collection('users').where('status', '==', 'approved').get();
                 const select = document.getElementById('clientSelect');
                 let options = '<option value="">-- Choose a client --</option>';
                 usersSnapshot.docs.forEach(doc => {
@@ -359,13 +359,13 @@
         }
 
         async function loadClientGoals() {
-            const email = document.getElementById('clientSelect').value;
+            const uid = document.getElementById("clientSelect").value;
             if (!email) {
                 document.getElementById('goalsContainer').innerHTML = '<div class="empty-state"><div style="font-size: 4rem; margin-bottom: 1rem;">👆</div><p>Select a client above</p></div>';
                 return;
             }
 
-            selectedClientEmail = email;
+            selectedClientUid = uid;
 
             try {
                 const goalsSnapshot = await db.collection('users').doc(uid).collection('selectedGoals').get();
