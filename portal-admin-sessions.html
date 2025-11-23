@@ -693,7 +693,10 @@
                 const usersSnapshot = await db.collection('users').get();
 
                 for (const userDoc of usersSnapshot.docs) {
-                    const email = userDoc.id;
+                    const uid = userDoc.id;  // Document ID is the UID
+                    const userData = userDoc.data();
+                    const email = userData.email;  // Get email from user document
+
                     const sessionsSnapshot = await db.collection('users')
                         .doc(uid)
                         .collection('sessions')
@@ -703,6 +706,7 @@
                     sessionsSnapshot.docs.forEach(doc => {
                         allSessions.push({
                             id: doc.id,
+                            clientId: uid,
                             clientEmail: email,
                             ...doc.data()
                         });
