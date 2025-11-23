@@ -557,7 +557,7 @@
                 } else {
                     // User is signed in, check if approved
                     console.log('User authenticated, checking approval status...');
-                    const approval = await checkUserApproval(user.email);
+                    const approval = await checkUserApproval(user.uid);
 
                     if (!approval.approved) {
                         // User is not approved, redirect to pending page

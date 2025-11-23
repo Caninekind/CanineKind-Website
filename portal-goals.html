@@ -1854,7 +1854,7 @@
                 if (!user) {
                     window.location.href = 'portal-login.html';
                 } else {
-                    const approval = await checkUserApproval(user.email);
+                    const approval = await checkUserApproval(user.uid);
                     if (!approval.approved) {
                         window.location.href = 'portal-pending.html';
                     } else {
