@@ -569,13 +569,13 @@
                         displayUserInfo(user);
 
                         // Check if forms/documents are complete
-                        checkAndShowFormsAlert(user.email);
+                        checkAndShowFormsAlert(user.uid);
 
                         // Check if settings are complete
-                        checkAndShowSettingsAlert(user.email);
+                        checkAndShowSettingsAlert(user.uid);
 
                         // Check if user is admin and show admin portal button
-                        checkAndShowAdminButton(user.email);
+                        checkAndShowAdminButton(user.uid);
                     }
                 }
             });
@@ -608,9 +608,9 @@
         }
 
         // Helper function to check if user is admin
-        async function checkIfUserIsAdmin(email) {
+        async function checkIfUserIsAdmin(uid) {
             try {
-                const userDoc = await db.collection('users').doc(email).get();
+                const userDoc = await db.collection('users').doc(uid).get();
                 if (userDoc.exists) {
                     const userData = userDoc.data();
                     return userData.admin === true || userData.isAdmin === true || userData.role === 'admin';
@@ -623,7 +623,7 @@
         }
 
         // Check and show forms alert if documents not complete
-        async function checkAndShowFormsAlert(email) {
+        async function checkAndShowFormsAlert(uid) {
             try {
                 // Don't show banners for admin users
                 const isAdmin = await checkIfUserIsAdmin(email);
@@ -648,7 +648,7 @@
         }
 
         // Check and show settings alert if profile not complete
-        async function checkAndShowSettingsAlert(email) {
+        async function checkAndShowSettingsAlert(uid) {
             try {
                 // Don't show banners for admin users
                 const isAdmin = await checkIfUserIsAdmin(email);
@@ -692,10 +692,10 @@
         }
 
         // Check if user is admin and show admin portal button
-        async function checkAndShowAdminButton(email) {
+        async function checkAndShowAdminButton(uid) {
             console.log('🔍 [ADMIN CHECK] Starting admin check for:', email);
             try {
-                const userDoc = await db.collection('users').doc(email).get();
+                const userDoc = await db.collection('users').doc(uid).get();
 
                 console.log('🔍 [ADMIN CHECK] User document exists?:', userDoc.exists);
 
