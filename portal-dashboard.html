@@ -96,26 +96,6 @@
             background-color: #5a7a4f;
         }
 
-        .admin-portal-btn {
-            background: linear-gradient(135deg, #5a7a52 0%, #6a8a62 100%);
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-        }
-
-        .admin-portal-btn:hover {
-            background: linear-gradient(135deg, #4a6a42 0%, #5a7a52 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(90, 122, 82, 0.3);
-        }
 
         .button-group {
             display: flex;
@@ -402,7 +382,7 @@
                 width: 100%;
             }
 
-            .sign-out-btn, .admin-portal-btn {
+            .sign-out-btn {
                 padding: 8px 20px;
                 font-size: 14px;
             }
@@ -441,9 +421,6 @@
             </div>
         </div>
         <div class="button-group">
-            <a href="portal-admin-dashboard.html" id="adminPortalBtn" class="admin-portal-btn" style="display: none;">
-                ⚙️ Admin Portal
-            </a>
             <button class="sign-out-btn" id="signOutBtn">Sign Out</button>
         </div>
     </div>
@@ -512,13 +489,6 @@
                 <p>Manage your profile information and preferences.</p>
                 <a href="portal-settings.html" class="card-btn">Manage Settings</a>
             </div>
-
-            <!-- User Approval Card (visible only to admins) -->
-            <div class="dashboard-card" id="adminCard" style="display: none;">
-                <h2>User Approval</h2>
-                <p>Manage user access, approve new clients, and control portal settings.</p>
-                <a href="portal-admin.html" class="card-btn" style="background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);">Manage Users</a>
-            </div>
         </div>
     </div>
 
@@ -573,9 +543,6 @@
 
                         // Check if settings are complete
                         checkAndShowSettingsAlert(user.uid);
-
-                        // Check if user is admin and show admin portal button
-                        checkAndShowAdminButton(user.uid);
                     }
                 }
             });
@@ -599,39 +566,11 @@
                 userPhotoElement.src = user.photoURL;
                 userPhotoElement.style.display = 'block';
             }
-
-            // Check if user is admin and show admin card
-            const isAdmin = await isUserAdmin();
-            if (isAdmin) {
-                document.getElementById('adminCard').style.display = 'block';
-            }
-        }
-
-        // Helper function to check if user is admin
-        async function checkIfUserIsAdmin(uid) {
-            try {
-                const userDoc = await db.collection('users').doc(uid).get();
-                if (userDoc.exists) {
-                    const userData = userDoc.data();
-                    return userData.admin === true || userData.isAdmin === true || userData.role === 'admin';
-                }
-                return false;
-            } catch (error) {
-                console.error('Error checking admin status:', error);
-                return false;
-            }
         }
 
         // Check and show forms alert if documents not complete
         async function checkAndShowFormsAlert(uid) {
             try {
-                // Don't show banners for admin users
-                const isAdmin = await checkIfUserIsAdmin(uid);
-                if (isAdmin) {
-                    console.log('User is admin - skipping forms alert');
-                    return;
-                }
-
                 const documentsComplete = await checkDocumentsComplete(uid);
 
                 if (!documentsComplete) {
@@ -650,13 +589,6 @@
         // Check and show settings alert if profile not complete
         async function checkAndShowSettingsAlert(uid) {
             try {
-                // Don't show banners for admin users
-                const isAdmin = await checkIfUserIsAdmin(uid);
-                if (isAdmin) {
-                    console.log('User is admin - skipping settings alert');
-                    return;
-                }
-
                 const alertBanner = document.getElementById('settingsAlert');
                 console.log('🔍 [SETTINGS ALERT] Element found:', alertBanner);
 
@@ -688,50 +620,6 @@
                     alertBanner.classList.add('show');
                     console.log('⚠️ [SETTINGS ALERT] SHOWING - Error occurred, showing by default');
                 }
-            }
-        }
-
-        // Check if user is admin and show admin portal button
-        async function checkAndShowAdminButton(uid) {
-            console.log('🔍 [ADMIN CHECK] Starting admin check for:', uid);
-            try {
-                const userDoc = await db.collection('users').doc(uid).get();
-
-                console.log('🔍 [ADMIN CHECK] User document exists?:', userDoc.exists);
-
-                if (userDoc.exists) {
-                    const userData = userDoc.data();
-
-                    console.log('🔍 [ADMIN CHECK] Full user data:', JSON.stringify(userData, null, 2));
-                    console.log('🔍 [ADMIN CHECK] userData.role:', userData.role);
-                    console.log('🔍 [ADMIN CHECK] userData.admin:', userData.admin);
-                    console.log('🔍 [ADMIN CHECK] userData.isAdmin:', userData.isAdmin);
-
-                    // Check if user has admin flag set to true (check all variations)
-                    const isAdmin = userData.admin === true || userData.isAdmin === true || userData.role === 'admin';
-                    console.log('🔍 [ADMIN CHECK] Is user admin?:', isAdmin);
-
-                    if (isAdmin) {
-                        const adminBtn = document.getElementById('adminPortalBtn');
-                        console.log('🔍 [ADMIN CHECK] Admin button element:', adminBtn);
-                        if (adminBtn) {
-                            adminBtn.style.display = 'inline-flex';
-                            console.log('✅ [ADMIN CHECK] Admin button shown for user:', uid);
-                        } else {
-                            console.error('❌ [ADMIN CHECK] Admin button element not found in DOM!');
-                        }
-                    } else {
-                        console.log('❌ [ADMIN CHECK] User is NOT admin');
-                        console.log('   - userData.admin:', userData.admin);
-                        console.log('   - userData.isAdmin:', userData.isAdmin);
-                        console.log('   - userData.role:', userData.role);
-                    }
-                } else {
-                    console.error('❌ [ADMIN CHECK] User document does not exist for:', uid);
-                }
-            } catch (error) {
-                console.error('❌ [ADMIN CHECK] Error checking admin status:', error);
-                console.error('   Error details:', error.message);
             }
         }
 
