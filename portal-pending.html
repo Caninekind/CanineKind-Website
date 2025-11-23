@@ -281,7 +281,7 @@
                     displayUserInfo(user);
 
                     // Check if user is now approved (they might have been approved while on this page)
-                    const approval = await checkUserApproval(user.email);
+                    const approval = await checkUserApproval(user.uid);
                     if (approval.approved) {
                         // User is now approved, redirect to dashboard
                         window.location.href = 'portal-dashboard.html';
