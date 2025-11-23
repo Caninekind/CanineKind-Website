@@ -96,6 +96,22 @@
             background-color: #5a7a4f;
         }
 
+        .admin-toggle-btn {
+            background-color: #4A90A4;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            display: none; /* Hidden by default, shown for admins */
+        }
+
+        .admin-toggle-btn:hover {
+            background-color: #3a7284;
+        }
 
         .button-group {
             display: flex;
@@ -421,6 +437,7 @@
             </div>
         </div>
         <div class="button-group">
+            <button class="admin-toggle-btn" id="adminToggleBtn" onclick="window.location.href='portal-admin-dashboard.html'">Admin Portal</button>
             <button class="sign-out-btn" id="signOutBtn">Sign Out</button>
         </div>
     </div>
@@ -553,6 +570,7 @@
             const userNameElement = document.getElementById('userName');
             const userEmailElement = document.getElementById('userEmail');
             const userPhotoElement = document.getElementById('userPhoto');
+            const adminToggleBtn = document.getElementById('adminToggleBtn');
 
             if (user.displayName) {
                 userNameElement.textContent = `Welcome, ${user.displayName}!`;
@@ -565,6 +583,16 @@
             if (user.photoURL) {
                 userPhotoElement.src = user.photoURL;
                 userPhotoElement.style.display = 'block';
+            }
+
+            // Check if user is admin and show admin portal button
+            try {
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                if (userDoc.exists && userDoc.data().role === 'admin') {
+                    adminToggleBtn.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error checking admin status:', error);
             }
         }
 

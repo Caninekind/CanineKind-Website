@@ -1125,6 +1125,7 @@
                 <a href="portal-forms.html">Forms & Documents</a>
                 <a href="portal-schedule.html">Weekly Schedule</a>
                 <a href="portal-goals.html" class="active">Goals</a>
+                <a href="portal-admin-dashboard.html" id="adminPortalLink" style="display: none; background-color: #4A90A4;">Admin Portal</a>
                 <a href="#" class="sign-out-link" onclick="signOut(); return false;">Sign Out</a>
             </nav>
         </div>
@@ -1871,19 +1872,27 @@
             try {
                 console.log('🔵 Loading user data for:', currentUser.email);
 
-                // Load access settings
-                console.log('🔵 Loading goal access settings...');
-                const accessDoc = await db.collection('users')
+                // Load user document with settings and role
+                console.log('🔵 Loading user settings...');
+                const userDoc = await db.collection('users')
                     .doc(currentUser.uid)
-                    .collection('goalAccess')
-                    .doc('settings')
                     .get();
 
-                if (accessDoc.exists) {
-                    userAccess = accessDoc.data();
-                    console.log('✅ Goal access settings loaded');
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    userAccess = userData.settings || {};
+                    const isAdmin = userData.role === 'admin';
+                    console.log('✅ User settings loaded. Role:', userData.role);
+
+                    // Admins have full access to everything
+                    if (isAdmin) {
+                        userAccess.accessibleLevels = [0, 1, 2, 3, 4];
+                        document.getElementById('adminPortalLink').style.display = 'inline-block';
+                        console.log('✅ Admin detected - granting full access');
+                    }
                 } else {
-                    console.log('ℹ️ No goal access settings found - using defaults');
+                    console.log('ℹ️ No user document found - using defaults');
+                    userAccess = {};
                 }
 
                 // Load goals progress from top-level collection
