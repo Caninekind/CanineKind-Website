@@ -1874,7 +1874,7 @@
                 // Load access settings
                 console.log('🔵 Loading goal access settings...');
                 const accessDoc = await db.collection('users')
-                    .doc(currentUser.email)
+                    .doc(currentUser.uid)
                     .collection('goalAccess')
                     .doc('settings')
                     .get();
@@ -1889,7 +1889,7 @@
                 // Load selected goals
                 console.log('🔵 Loading selected goals...');
                 const goalsSnapshot = await db.collection('users')
-                    .doc(currentUser.email)
+                    .doc(currentUser.uid)
                     .collection('selectedGoals')
                     .get();
 
@@ -1963,7 +1963,7 @@
 
                         // Add to batch for Firestore
                         const goalRef = db.collection('users')
-                            .doc(currentUser.email)
+                            .doc(currentUser.uid)
                             .collection('selectedGoals')
                             .doc(goal.id);
 
@@ -2262,7 +2262,7 @@
                     try {
                         showLoading(true);
                         await db.collection('users')
-                            .doc(currentUser.email)
+                            .doc(currentUser.uid)
                             .collection('selectedGoals')
                             .doc(goalId)
                             .delete();
@@ -2301,7 +2301,7 @@
                     }
 
                     await db.collection('users')
-                        .doc(currentUser.email)
+                        .doc(currentUser.uid)
                         .collection('selectedGoals')
                         .doc(goalId)
                         .set({
@@ -2358,7 +2358,7 @@
                     const progress = calculateGoalProgress(goalId);
 
                     await db.collection('users')
-                        .doc(currentUser.email)
+                        .doc(currentUser.uid)
                         .collection('selectedGoals')
                         .doc(goalId)
                         .update({
@@ -2421,7 +2421,7 @@
                 const progress = calculateGoalProgress(goalId);
 
                 await db.collection('users')
-                    .doc(currentUser.email)
+                    .doc(currentUser.uid)
                     .collection('selectedGoals')
                     .doc(goalId)
                     .update({
@@ -2457,7 +2457,7 @@
 
             // Check if already sent for approval
             const approvalDoc = await db.collection('users')
-                .doc(currentUser.email)
+                .doc(currentUser.uid)
                 .collection('levelCompletions')
                 .doc(`level-${level}`)
                 .get();
@@ -2523,7 +2523,7 @@
                 }
 
                 await db.collection('users')
-                    .doc(currentUser.email)
+                    .doc(currentUser.uid)
                     .collection('levelCompletions')
                     .doc(`level-${level}`)
                     .set(completionData);
@@ -2588,7 +2588,7 @@
 
                 // Load schedule data from Firebase
                 const scheduleDoc = await db.collection('users')
-                    .doc(currentUser.email)
+                    .doc(currentUser.uid)
                     .collection('schedules')
                     .doc('weekly')
                     .get();
@@ -2788,7 +2788,7 @@
             try {
                 // Load current schedule data
                 const scheduleDoc = await db.collection('users')
-                    .doc(currentUser.email)
+                    .doc(currentUser.uid)
                     .collection('schedules')
                     .doc('weekly')
                     .get();
@@ -2822,7 +2822,7 @@
 
                         // Save updated schedule data
                         await db.collection('users')
-                            .doc(currentUser.email)
+                            .doc(currentUser.uid)
                             .collection('schedules')
                             .doc('weekly')
                             .set(scheduleData);
@@ -2885,7 +2885,7 @@
 
             try {
                 const customGoalsSnapshot = await db.collection('users')
-                    .doc(currentUser.email)
+                    .doc(currentUser.uid)
                     .collection('customGoals')
                     .orderBy('createdAt', 'desc')
                     .get();
@@ -2988,7 +2988,7 @@
 
             try {
                 const goalRef = db.collection('users')
-                    .doc(currentUser.email)
+                    .doc(currentUser.uid)
                     .collection('customGoals')
                     .doc(goalId);
 
