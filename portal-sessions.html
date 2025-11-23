@@ -300,6 +300,7 @@
                 <a href="portal-forms.html">Forms & Documents</a>
                 <a href="portal-schedule.html">Weekly Schedule</a>
                 <a href="portal-goals.html">Goals</a>
+                <a href="portal-admin-dashboard.html" id="adminPortalLink" style="display: none; background-color: #4A90A4;">Admin Portal</a>
                 <a href="#" class="sign-out-link" onclick="signOut(); return false;">Sign Out</a>
             </nav>
         </div>
@@ -370,6 +371,16 @@
         async function loadSessions() {
             const upcomingGrid = document.getElementById('upcomingSessions');
             const pastGrid = document.getElementById('pastSessions');
+
+            // Check if user is admin and show admin portal link
+            try {
+                const userDoc = await db.collection('users').doc(currentUser.uid).get();
+                if (userDoc.exists && userDoc.data().role === 'admin') {
+                    document.getElementById('adminPortalLink').style.display = 'inline-block';
+                }
+            } catch (error) {
+                console.error('Error checking admin status:', error);
+            }
 
             try {
                 // TODO: Fetch sessions from Firestore

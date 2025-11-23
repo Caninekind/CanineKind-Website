@@ -1574,6 +1574,7 @@
                 <a href="portal-forms.html">Forms & Documents</a>
                 <a href="portal-schedule.html" class="active">Weekly Schedule</a>
                 <a href="portal-goals.html">Goals</a>
+                <a href="portal-admin-dashboard.html" id="adminPortalLink" style="display: none; background-color: #4A90A4;">Admin Portal</a>
                 <a href="#" class="sign-out-link" onclick="signOut(); return false;">Sign Out</a>
             </nav>
         </div>
@@ -1853,6 +1854,12 @@
             showLoading(true);
             try {
                 console.log('🔵 Loading user data for:', currentUser.email);
+
+                // Check if user is admin and show admin portal link
+                const userDoc = await db.collection('users').doc(currentUser.uid).get();
+                if (userDoc.exists && userDoc.data().role === 'admin') {
+                    document.getElementById('adminPortalLink').style.display = 'inline-block';
+                }
 
                 // Load selected goals from goalsProgress collection
                 console.log('🔵 Loading goals progress...');
