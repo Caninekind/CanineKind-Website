@@ -521,7 +521,7 @@
 
                     // Check if user exists and is approved
                     console.log('🔵 [LOGIN] Calling checkUserApproval()...');
-                    const approval = await checkUserApproval(user.email);
+                    const approval = await checkUserApproval(user.uid);
                     console.log('🔵 [LOGIN] checkUserApproval() result:', approval);
 
                     if (!approval.exists) {
