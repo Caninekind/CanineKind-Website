@@ -509,7 +509,7 @@
             try {
                 const usersSnapshot = await db.collection('users').get();
                 allUsers = usersSnapshot.docs.map(doc => ({
-                    email: doc.id,
+                    uid: doc.id,
                     ...doc.data()
                 }));
 
@@ -521,9 +521,9 @@
         }
 
         function renderUsers() {
-            const pending = allUsers.filter(u => !u.approved && !u.denied);
-            const approved = allUsers.filter(u => u.approved === true);
-            const denied = allUsers.filter(u => u.denied === true);
+            const pending = allUsers.filter(u => u.status === 'pending');
+            const approved = allUsers.filter(u => u.status === 'approved');
+            const denied = allUsers.filter(u => u.status === 'rejected');
 
             renderUserList('pending-tab', pending, 'pending');
             renderUserList('approved-tab', approved, 'approved');
@@ -583,29 +583,28 @@
 
                     <div class="actions">
                         ${status === 'pending' ? `
-                            <button class="btn btn-approve" onclick="approveUser('${user.uid}')">✓ Approve</button>
-                            <button class="btn btn-deny" onclick="denyUser('${user.uid}')">✕ Deny</button>
+                            <button class="btn btn-approve" onclick="approveUser('${user.uid}', '${user.email}')">✓ Approve</button>
+                            <button class="btn btn-deny" onclick="denyUser('${user.uid}', '${user.email}')">✕ Deny</button>
                         ` : status === 'approved' ? `
-                            <button class="btn btn-deny" onclick="denyUser('${user.uid}')">Revoke Access</button>
+                            <button class="btn btn-deny" onclick="denyUser('${user.uid}', '${user.email}')">Revoke Access</button>
                         ` : `
-                            <button class="btn btn-undo" onclick="undoDenial('${user.email}')">↺ Undo Denial</button>
+                            <button class="btn btn-undo" onclick="undoDenial('${user.uid}', '${user.email}')">↺ Undo Denial</button>
                         `}
                     </div>
                 </div>
             `;
         }
 
-        async function approveUser(uid) {
+        async function approveUser(uid, email) {
             if (!confirm(`Approve ${email}? They will gain access to the client portal.`)) {
                 return;
             }
 
             try {
                 await db.collection('users').doc(uid).update({
-                    approved: true,
-                    denied: false,
+                    status: 'approved',
                     approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    approvedBy: currentUser.email
+                    approvedBy: currentUser.uid
                 });
 
                 await loadUsers();
@@ -616,17 +615,16 @@
             }
         }
 
-        async function denyUser(uid) {
+        async function denyUser(uid, email) {
             if (!confirm(`Deny ${email}? They will be unable to access the client portal.`)) {
                 return;
             }
 
             try {
                 await db.collection('users').doc(uid).update({
-                    approved: false,
-                    denied: true,
+                    status: 'rejected',
                     deniedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    deniedBy: currentUser.email
+                    deniedBy: currentUser.uid
                 });
 
                 await loadUsers();
@@ -637,15 +635,14 @@
             }
         }
 
-        async function undoDenial(uid) {
+        async function undoDenial(uid, email) {
             if (!confirm(`Undo denial for ${email}? They will return to pending status.`)) {
                 return;
             }
 
             try {
                 await db.collection('users').doc(uid).update({
-                    approved: false,
-                    denied: false
+                    status: 'pending'
                 });
 
                 await loadUsers();
