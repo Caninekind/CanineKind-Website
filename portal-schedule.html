@@ -1857,7 +1857,7 @@
                 // Load selected goals (new system)
                 console.log('🔵 Loading selected goals...');
                 const selectedGoalsSnapshot = await db.collection('users')
-                    .doc(currentUser.email)
+                    .doc(currentUser.uid)
                     .collection('selectedGoals')
                     .get();
 
@@ -1875,7 +1875,7 @@
                 // Load schedule data
                 console.log('🔵 Loading schedule data...');
                 const scheduleDoc = await db.collection('users')
-                    .doc(currentUser.email)
+                    .doc(currentUser.uid)
                     .collection('schedules')
                     .doc('weekly')
                     .get();
@@ -2597,7 +2597,7 @@
                 console.log('🔵 Schedule data:', scheduleData);
 
                 await db.collection('users')
-                    .doc(currentUser.email)
+                    .doc(currentUser.uid)
                     .collection('schedules')
                     .doc('weekly')
                     .set(scheduleData);
@@ -2638,7 +2638,7 @@
 
                     // Save to Firestore
                     await db.collection('users')
-                        .doc(currentUser.email)
+                        .doc(currentUser.uid)
                         .collection('schedules')
                         .doc('weekly')
                         .set(scheduleData);

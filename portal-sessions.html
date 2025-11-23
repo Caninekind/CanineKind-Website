@@ -427,7 +427,7 @@
             /* Future implementation:
             // Client sees only their sessions
             const sessionsRef = db.collection('users')
-                .doc(currentUser.email)
+                .doc(currentUser.uid)
                 .collection('sessions');
 
             const snapshot = await sessionsRef
