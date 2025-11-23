@@ -509,8 +509,9 @@
 
     <script>
         let currentUser = null;
+        let selectedClientUid = null;
         let selectedClientEmail = null;
-        let clientSettings = null;
+        let clientData = null;
 
         document.addEventListener('DOMContentLoaded', async () => {
             const initialized = initializeFirebase();
@@ -587,7 +588,7 @@
 
         async function loadClientSettings() {
             const uid = document.getElementById("clientSelect").value;
-            if (!email) {
+            if (!uid) {
                 document.getElementById('settingsContainer').innerHTML = `
                     <div class="empty-state">
                         <div class="empty-state-icon">👆</div>
@@ -598,24 +599,20 @@
             }
 
             selectedClientUid = uid;
-            console.log(`🔵 Loading settings for: ${email}`);
 
             try {
-                const settingsDoc = await db.collection('users')
-                    .doc(uid)
-                    .collection('settings')
-                    .doc('profile')
-                    .get();
+                const userDoc = await db.collection('users').doc(uid).get();
 
-                if (settingsDoc.exists) {
-                    clientSettings = settingsDoc.data();
-                    console.log('✓ Settings loaded:', clientSettings);
-                    console.log(`  Advanced settings unlocked: ${clientSettings.advancedDogSettingsUnlocked === true}`);
+                if (userDoc.exists) {
+                    clientData = userDoc.data();
+                    selectedClientEmail = clientData.email;
+                    console.log('✓ Client data loaded:', clientData);
+                    console.log('  Email:', selectedClientEmail);
+                    console.log('  Settings:', clientData.settings);
                 } else {
-                    console.log('⚠️ No settings document found - creating default settings');
-                    clientSettings = {
-                        advancedDogSettingsUnlocked: false
-                    };
+                    console.log('⚠️ No user document found');
+                    alert('User not found!');
+                    return;
                 }
 
                 renderSettings();
@@ -626,21 +623,9 @@
         }
 
         function renderSettings() {
-            const isUnlocked = clientSettings.advancedDogSettingsUnlocked === true;
-            const pendingApproval = clientSettings.pendingApproval || {};
-            const hasPending = Object.keys(pendingApproval).length > 0;
+            const settings = clientData.settings || {};
 
             let html = '';
-
-            // Pending Approvals Section
-            if (hasPending) {
-                html += `
-                    <div class="pending-approvals">
-                        <h3>⏳ Pending Approval Requests</h3>
-                        ${renderPendingApprovals(pendingApproval)}
-                    </div>
-                `;
-            }
 
             // User Info Section
             html += `
@@ -651,42 +636,104 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Owner Name</label>
-                            <input type="text" id="ownerName" value="${clientSettings.ownerName || ''}" placeholder="Full name">
+                            <label>Display Name</label>
+                            <input type="text" id="displayName" value="${clientData.displayName || ''}" placeholder="Full name">
                         </div>
                         <div class="form-group">
                             <label>Email</label>
                             <input type="email" id="email" value="${selectedClientEmail}" disabled style="opacity: 0.6;">
                         </div>
                         <div class="form-group">
-                            <label>Phone</label>
-                            <input type="tel" id="phone" value="${clientSettings.phone || ''}" placeholder="(555) 555-5555">
+                            <label>Role</label>
+                            <input type="text" value="${clientData.role || 'client'}" disabled style="opacity: 0.6;">
                         </div>
                         <div class="form-group">
-                            <label>Address (Optional)</label>
-                            <input type="text" id="address" value="${clientSettings.address || ''}" placeholder="Street address">
+                            <label>Status</label>
+                            <input type="text" value="${clientData.status || 'pending'}" disabled style="opacity: 0.6;">
                         </div>
                     </div>
                 </div>
             `;
 
-            // Dog Settings Section
+            // Access Permissions Section
             html += `
                 <div class="settings-section">
                     <div class="section-header">
-                        <span class="section-icon">🐕</span>
-                        <h2>Dog Settings</h2>
-                        <button class="unlock-btn ${isUnlocked ? 'locked' : ''}" onclick="toggleDogSettings()">
-                            ${isUnlocked ? '🔓 Lock Advanced Settings' : '🔒 Unlock Advanced Settings'}
-                        </button>
+                        <span class="section-icon">🔐</span>
+                        <h2>Access Permissions</h2>
+                    </div>
+                    <p style="color: #666; margin-bottom: 1.5rem;">Grant or revoke access to different portal features for this client.</p>
+
+                    <div class="checkbox-group">
+                        <div class="checkbox-item" style="flex-basis: 100%; margin-bottom: 1rem;">
+                            <input type="checkbox" id="canAccessGoals" ${settings.canAccessGoals ? 'checked' : ''}>
+                            <label for="canAccessGoals" style="font-weight: 600; color: #2c3e50;">Can Access Goals - Allow client to view and track training goals</label>
+                        </div>
+                        <div class="checkbox-item" style="flex-basis: 100%; margin-bottom: 1rem;">
+                            <input type="checkbox" id="canAccessSchedule" ${settings.canAccessSchedule ? 'checked' : ''}>
+                            <label for="canAccessSchedule" style="font-weight: 600; color: #2c3e50;">Can Access Schedule - Allow client to view training schedule</label>
+                        </div>
+                        <div class="checkbox-item" style="flex-basis: 100%; margin-bottom: 1rem;">
+                            <input type="checkbox" id="canAccessSessions" ${settings.canAccessSessions ? 'checked' : ''}>
+                            <label for="canAccessSessions" style="font-weight: 600; color: #2c3e50;">Can Access Sessions - Allow client to view session history</label>
+                        </div>
+                        <div class="checkbox-item" style="flex-basis: 100%; margin-bottom: 1rem;">
+                            <input type="checkbox" id="canAccessForms" ${settings.canAccessForms ? 'checked' : ''}>
+                            <label for="canAccessForms" style="font-weight: 600; color: #2c3e50;">Can Access Forms - Allow client to submit forms</label>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Training Levels Section
+            const levels = settings.accessibleLevels || [];
+            html += `
+                <div class="settings-section">
+                    <div class="section-header">
+                        <span class="section-icon">📊</span>
+                        <h2>Accessible Training Levels</h2>
+                    </div>
+                    <p style="color: #666; margin-bottom: 1.5rem;">Select which training levels this client can access.</p>
+
+                    <div class="checkbox-group">
+                        <div class="checkbox-item" style="margin-right: 2rem;">
+                            <input type="checkbox" id="level1" ${levels.includes(1) ? 'checked' : ''} value="1">
+                            <label for="level1" style="font-weight: 600; color: #2c3e50;">Level 1</label>
+                        </div>
+                        <div class="checkbox-item" style="margin-right: 2rem;">
+                            <input type="checkbox" id="level2" ${levels.includes(2) ? 'checked' : ''} value="2">
+                            <label for="level2" style="font-weight: 600; color: #2c3e50;">Level 2</label>
+                        </div>
+                        <div class="checkbox-item" style="margin-right: 2rem;">
+                            <input type="checkbox" id="level3" ${levels.includes(3) ? 'checked' : ''} value="3">
+                            <label for="level3" style="font-weight: 600; color: #2c3e50;">Level 3</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="level4" ${levels.includes(4) ? 'checked' : ''} value="4">
+                            <label for="level4" style="font-weight: 600; color: #2c3e50;">Level 4</label>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Progress Tracking Section
+            html += `
+                <div class="settings-section">
+                    <div class="section-header">
+                        <span class="section-icon">📝</span>
+                        <h2>Progress Tracking</h2>
                     </div>
 
-                    <div class="form-group" style="margin-bottom: 2rem;">
-                        <label>Dog's Name</label>
-                        <input type="text" id="dogName" value="${clientSettings.dogName || ''}" placeholder="Enter dog's name">
+                    <div class="checkbox-group">
+                        <div class="checkbox-item" style="flex-basis: 100%; margin-bottom: 1rem;">
+                            <input type="checkbox" id="hasCompletedIntake" ${settings.hasCompletedIntake ? 'checked' : ''}>
+                            <label for="hasCompletedIntake" style="font-weight: 600; color: #2c3e50;">Has Completed Intake - Initial intake forms completed</label>
+                        </div>
+                        <div class="checkbox-item" style="flex-basis: 100%; margin-bottom: 1rem;">
+                            <input type="checkbox" id="firstSessionCompleted" ${settings.firstSessionCompleted ? 'checked' : ''}>
+                            <label for="firstSessionCompleted" style="font-weight: 600; color: #2c3e50;">First Session Completed - First training session completed</label>
+                        </div>
                     </div>
-
-                    ${isUnlocked ? renderAdvancedSettings() : renderLockedNotice()}
                 </div>
             `;
 
@@ -700,214 +747,43 @@
             `;
 
             document.getElementById('settingsContainer').innerHTML = html;
-
-            // Restore checkbox states if unlocked
-            if (isUnlocked && clientSettings.trainingTools) {
-                clientSettings.trainingTools.forEach(tool => {
-                    const checkbox = document.getElementById(`tool-${tool.replace(/\s+/g, '-')}`);
-                    if (checkbox) checkbox.checked = true;
-                });
-            }
-        }
-
-        function renderPendingApprovals(pending) {
-            let html = '';
-            const fieldLabels = {
-                trainingTools: 'Training Tools',
-                triggersOutside: 'Triggers (Outside)',
-                triggersInside: 'Triggers (Inside)',
-                behavioralIssues: 'Behavioral Issues',
-                foodDrive: 'Food Drive',
-                playDrive: 'Play Drive'
-            };
-
-            for (const [field, value] of Object.entries(pending)) {
-                const displayValue = Array.isArray(value) ? value.join(', ') : value;
-                html += `
-                    <div class="approval-item">
-                        <div class="approval-info">
-                            <div class="approval-field">${fieldLabels[field] || field}</div>
-                            <div class="approval-value">${displayValue}</div>
-                        </div>
-                        <div class="approval-actions">
-                            <button class="btn-approve" onclick="approveChange('${field}')">✓ Approve</button>
-                            <button class="btn-deny" onclick="denyChange('${field}')">✕ Deny</button>
-                        </div>
-                    </div>
-                `;
-            }
-            return html;
-        }
-
-        function renderAdvancedSettings() {
-            const tools = ['Treats', 'Clicker', 'Leash', 'Harness', 'Collar', 'Toys', 'Crate', 'Muzzle'];
-
-            return `
-                <div class="form-group" style="margin-bottom: 1.5rem;">
-                    <label>Training Tools Available</label>
-                    <div class="checkbox-group">
-                        ${tools.map(tool => `
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="tool-${tool.replace(/\s+/g, '-')}" value="${tool}">
-                                <label for="tool-${tool.replace(/\s+/g, '-')}">${tool}</label>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Triggers (Outside)</label>
-                        <textarea id="triggersOutside" placeholder="e.g., other dogs, loud noises, cars...">${clientSettings.triggersOutside || ''}</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Triggers (Inside Home)</label>
-                        <textarea id="triggersInside" placeholder="e.g., doorbell, visitors, vacuum...">${clientSettings.triggersInside || ''}</textarea>
-                    </div>
-                </div>
-
-                <div class="form-group" style="margin-bottom: 1.5rem;">
-                    <label>Behavioral Issues</label>
-                    <textarea id="behavioralIssues" placeholder="Describe any behavioral issues or concerns...">${clientSettings.behavioralIssues || ''}</textarea>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Food Drive (1-10)</label>
-                        <input type="number" id="foodDrive" min="1" max="10" value="${clientSettings.foodDrive || ''}" placeholder="Rate 1-10">
-                    </div>
-                    <div class="form-group">
-                        <label>Play Drive (1-10)</label>
-                        <input type="number" id="playDrive" min="1" max="10" value="${clientSettings.playDrive || ''}" placeholder="Rate 1-10">
-                    </div>
-                </div>
-            `;
-        }
-
-        function renderLockedNotice() {
-            return `
-                <div class="locked-notice">
-                    <div class="locked-notice-icon">🔒</div>
-                    <h3>Advanced Settings Locked</h3>
-                    <p>Click "Unlock Advanced Settings" above to fill out detailed dog information with the client.</p>
-                </div>
-            `;
-        }
-
-        async function toggleDogSettings() {
-            const isCurrentlyUnlocked = clientSettings.advancedDogSettingsUnlocked === true;
-            console.log(`🔵 Toggling advanced settings from ${isCurrentlyUnlocked} to ${!isCurrentlyUnlocked}`);
-
-            if (confirm(`${isCurrentlyUnlocked ? 'Lock' : 'Unlock'} advanced dog settings for ${selectedClientEmail}?\n\n${!isCurrentlyUnlocked ? 'This will allow you to fill out detailed dog information.' : 'This will hide the advanced settings from this client.'}`)) {
-                clientSettings.advancedDogSettingsUnlocked = !isCurrentlyUnlocked;
-
-                try {
-                    console.log('🔵 Updating Firestore...');
-                    await db.collection('users')
-                        .doc(selectedClientEmail)
-                        .collection('settings')
-                        .doc('profile')
-                        .set({ advancedDogSettingsUnlocked: clientSettings.advancedDogSettingsUnlocked }, { merge: true });
-
-                    console.log('✓ Firestore updated successfully');
-                    console.log('🔵 Re-rendering settings...');
-                    renderSettings();
-                    console.log('✓ Settings rendered - advanced section should now be ' + (clientSettings.advancedDogSettingsUnlocked ? 'visible' : 'hidden'));
-                    alert(`✓ Advanced settings ${isCurrentlyUnlocked ? 'locked' : 'unlocked'} successfully!\n\n${!isCurrentlyUnlocked ? 'You can now fill out the detailed dog questions below.' : 'The advanced section has been hidden.'}`);
-                } catch (error) {
-                    console.error('❌ Error toggling settings:', error);
-                    alert('Error updating settings: ' + error.message);
-                    // Revert the change
-                    clientSettings.advancedDogSettingsUnlocked = isCurrentlyUnlocked;
-                }
-            }
         }
 
         async function saveSettings() {
-            if (!selectedClientEmail) return;
-
-            const isUnlocked = clientSettings.advancedDogSettingsUnlocked === true;
-
-            // Gather basic info
-            const settingsData = {
-                ownerName: document.getElementById('ownerName').value.trim(),
-                phone: document.getElementById('phone').value.trim(),
-                address: document.getElementById('address').value.trim(),
-                dogName: document.getElementById('dogName').value.trim(),
-                advancedDogSettingsUnlocked: isUnlocked
-            };
-
-            // Gather advanced settings if unlocked
-            if (isUnlocked) {
-                const trainingTools = [];
-                document.querySelectorAll('[id^="tool-"]:checked').forEach(cb => {
-                    trainingTools.push(cb.value);
-                });
-
-                settingsData.trainingTools = trainingTools;
-                settingsData.triggersOutside = document.getElementById('triggersOutside').value.trim();
-                settingsData.triggersInside = document.getElementById('triggersInside').value.trim();
-                settingsData.behavioralIssues = document.getElementById('behavioralIssues').value.trim();
-                settingsData.foodDrive = document.getElementById('foodDrive').value;
-                settingsData.playDrive = document.getElementById('playDrive').value;
-            }
+            if (!selectedClientUid) return;
 
             try {
-                await db.collection('users')
-                    .doc(selectedClientEmail)
-                    .collection('settings')
-                    .doc('profile')
-                    .set(settingsData, { merge: true });
+                // Gather access permissions
+                const accessibleLevels = [];
+                if (document.getElementById('level1').checked) accessibleLevels.push(1);
+                if (document.getElementById('level2').checked) accessibleLevels.push(2);
+                if (document.getElementById('level3').checked) accessibleLevels.push(3);
+                if (document.getElementById('level4').checked) accessibleLevels.push(4);
 
-                alert('Settings saved successfully!');
+                const updatedData = {
+                    displayName: document.getElementById('displayName').value.trim(),
+                    settings: {
+                        canAccessGoals: document.getElementById('canAccessGoals').checked,
+                        canAccessSchedule: document.getElementById('canAccessSchedule').checked,
+                        canAccessSessions: document.getElementById('canAccessSessions').checked,
+                        canAccessForms: document.getElementById('canAccessForms').checked,
+                        accessibleLevels: accessibleLevels,
+                        hasCompletedIntake: document.getElementById('hasCompletedIntake').checked,
+                        firstSessionCompleted: document.getElementById('firstSessionCompleted').checked
+                    }
+                };
+
+                console.log('💾 Saving settings:', updatedData);
+
+                await db.collection('users')
+                    .doc(selectedClientUid)
+                    .update(updatedData);
+
+                alert('✓ Settings saved successfully!');
                 await loadClientSettings(); // Reload to refresh
             } catch (error) {
-                console.error('Error saving settings:', error);
-                alert('Error saving settings. Please try again.');
-            }
-        }
-
-        async function approveChange(field) {
-            if (!selectedClientEmail) return;
-
-            try {
-                const pendingValue = clientSettings.pendingApproval[field];
-
-                // Update the main field with the pending value
-                await db.collection('users')
-                    .doc(selectedClientEmail)
-                    .collection('settings')
-                    .doc('profile')
-                    .update({
-                        [field]: pendingValue,
-                        [`pendingApproval.${field}`]: firebase.firestore.FieldValue.delete()
-                    });
-
-                alert('Change approved!');
-                await loadClientSettings();
-            } catch (error) {
-                console.error('Error approving change:', error);
-                alert('Error approving change. Please try again.');
-            }
-        }
-
-        async function denyChange(field) {
-            if (!selectedClientEmail) return;
-
-            try {
-                await db.collection('users')
-                    .doc(selectedClientEmail)
-                    .collection('settings')
-                    .doc('profile')
-                    .update({
-                        [`pendingApproval.${field}`]: firebase.firestore.FieldValue.delete()
-                    });
-
-                alert('Change denied and removed.');
-                await loadClientSettings();
-            } catch (error) {
-                console.error('Error denying change:', error);
-                alert('Error denying change. Please try again.');
+                console.error('❌ Error saving settings:', error);
+                alert('Error saving settings: ' + error.message);
             }
         }
 
