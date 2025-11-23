@@ -521,68 +521,6 @@
             <p>View your upcoming and past training sessions</p>
         </div>
 
-        <!-- Admin Notice (will be visible in admin version) -->
-        <div class="admin-notice" id="adminNotice">
-            <strong>👑 Admin View:</strong> You can manage all client sessions. Click on a session to edit notes and homework.
-        </div>
-
-        <!-- Admin Goal Access Control Panel -->
-        <div class="admin-panel" id="adminPanel" style="display: none;">
-            <div class="panel-header">
-                <h3>Goal Access Management</h3>
-                <p>Grant clients access to training goal levels or specific goals</p>
-            </div>
-
-            <div class="access-control-form">
-                <div class="form-group">
-                    <label for="clientSelect">Select Client:</label>
-                    <select id="clientSelect" class="form-control">
-                        <option value="">-- Choose a client --</option>
-                    </select>
-                </div>
-
-                <div class="access-sections">
-                    <!-- Level Access Section -->
-                    <div class="access-section">
-                        <h4>Level Access</h4>
-                        <p class="section-description">Grant access to all goals in a level</p>
-                        <div class="level-checkboxes" id="levelCheckboxes">
-                            <label class="checkbox-label">
-                                <input type="checkbox" value="1" class="level-checkbox">
-                                <span class="checkbox-text">Level 1: Basic/Beginner Commands</span>
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" value="2" class="level-checkbox">
-                                <span class="checkbox-text">Level 2: Intermediate Commands</span>
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" value="3" class="level-checkbox">
-                                <span class="checkbox-text">Level 3: Advanced Commands</span>
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" value="4" class="level-checkbox">
-                                <span class="checkbox-text">Level 4: Expert/Specialized</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Individual Goal Access Section -->
-                    <div class="access-section">
-                        <h4>Individual Goal Access</h4>
-                        <p class="section-description">Grant access to specific goals (overrides level settings)</p>
-                        <div class="goal-checkboxes" id="goalCheckboxes">
-                            <!-- Will be populated dynamically -->
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-actions">
-                    <button class="btn-save" onclick="saveGoalAccess()">Save Access Settings</button>
-                    <button class="btn-secondary" onclick="loadClientAccess()">Refresh</button>
-                </div>
-            </div>
-        </div>
-
         <!-- Upcoming Sessions Section -->
         <div class="section-header">
             <h3>Upcoming Sessions</h3>
@@ -614,9 +552,6 @@
 
     <script>
         let currentUser = null;
-        let isAdmin = false;
-        let allClients = [];
-        let selectedClientEmail = '';
 
         // Define all goals with their levels
         const GOALS_STRUCTURE = {
@@ -661,155 +596,13 @@
                     window.location.href = 'portal-login.html';
                 } else {
                     currentUser = user;
-
-                    // Check if user is admin
-                    isAdmin = await isUserAdmin();
-                    if (isAdmin) {
-                        document.getElementById('adminNotice').classList.add('show');
-                        document.getElementById('adminPanel').style.display = 'block';
-                        await loadAdminPanel();
-                    }
-
                     await loadSessions();
                 }
             });
         });
 
-        // Load admin panel data
-        async function loadAdminPanel() {
-            try {
-                // Load all clients
-                const usersSnapshot = await db.collection('users').get();
-                allClients = usersSnapshot.docs
-                    .map(doc => ({
-                        email: doc.id,
-                        ...doc.data()
-                    }))
-                    .filter(user => user.role !== 'admin'); // Filter out admins
-
-                // Populate client dropdown
-                const clientSelect = document.getElementById('clientSelect');
-                clientSelect.innerHTML = '<option value="">-- Choose a client --</option>' +
-                    allClients.map(client =>
-                        `<option value="${client.email}">${client.displayName || client.email}</option>`
-                    ).join('');
-
-                // Add event listener for client selection
-                clientSelect.addEventListener('change', async (e) => {
-                    selectedClientEmail = e.target.value;
-                    if (selectedClientEmail) {
-                        await loadClientAccess();
-                    }
-                });
-
-                // Populate individual goals checkboxes
-                populateGoalCheckboxes();
-
-            } catch (error) {
-                console.error('Error loading admin panel:', error);
-                alert('Error loading admin panel');
-            }
-        }
-
-        // Populate individual goal checkboxes
-        function populateGoalCheckboxes() {
-            const container = document.getElementById('goalCheckboxes');
-            let html = '';
-
-            for (let level = 1; level <= 4; level++) {
-                const goals = GOALS_STRUCTURE[level];
-                goals.forEach(goal => {
-                    html += `
-                        <label class="checkbox-label">
-                            <input type="checkbox" value="${goal.id}" data-level="${level}" class="goal-checkbox">
-                            <div class="goal-checkbox-item">
-                                <span class="checkbox-text">${goal.emoji} ${goal.title}</span>
-                                <span class="goal-level-badge">L${level}</span>
-                            </div>
-                        </label>
-                    `;
-                });
-            }
-
-            container.innerHTML = html;
-        }
-
-        // Load client's current access settings
-        async function loadClientAccess() {
-            if (!selectedClientEmail) return;
-
-            try {
-                const accessDoc = await db.collection('users')
-                    .doc(selectedClientEmail)
-                    .collection('goalAccess')
-                    .doc('settings')
-                    .get();
-
-                // Clear all checkboxes first
-                document.querySelectorAll('.level-checkbox').forEach(cb => cb.checked = false);
-                document.querySelectorAll('.goal-checkbox').forEach(cb => cb.checked = false);
-
-                if (accessDoc.exists) {
-                    const accessData = accessDoc.data();
-
-                    // Check level checkboxes
-                    if (accessData.levels && Array.isArray(accessData.levels)) {
-                        accessData.levels.forEach(level => {
-                            const checkbox = document.querySelector(`.level-checkbox[value="${level}"]`);
-                            if (checkbox) checkbox.checked = true;
-                        });
-                    }
-
-                    // Check individual goal checkboxes
-                    if (accessData.individualGoals && Array.isArray(accessData.individualGoals)) {
-                        accessData.individualGoals.forEach(goalId => {
-                            const checkbox = document.querySelector(`.goal-checkbox[value="${goalId}"]`);
-                            if (checkbox) checkbox.checked = true;
-                        });
-                    }
-                }
-
-            } catch (error) {
-                console.error('Error loading client access:', error);
-                alert('Error loading client access settings');
-            }
-        }
-
-        // Save goal access settings
-        async function saveGoalAccess() {
-            if (!selectedClientEmail) {
-                alert('Please select a client first');
-                return;
-            }
-
-            try {
-                // Get selected levels
-                const selectedLevels = Array.from(document.querySelectorAll('.level-checkbox:checked'))
-                    .map(cb => parseInt(cb.value));
-
-                // Get selected individual goals
-                const selectedGoals = Array.from(document.querySelectorAll('.goal-checkbox:checked'))
-                    .map(cb => cb.value);
-
-                // Save to Firestore
-                await db.collection('users')
-                    .doc(selectedClientEmail)
-                    .collection('goalAccess')
-                    .doc('settings')
-                    .set({
-                        levels: selectedLevels,
-                        individualGoals: selectedGoals,
-                        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                        updatedBy: currentUser.email
-                    });
-
-                alert('Goal access settings saved successfully!');
-
-            } catch (error) {
-                console.error('Error saving goal access:', error);
-                alert('Error saving goal access settings. Please try again.');
-            }
-        }
+        // NOTE: Admin session management is in portal-admin-sessions.html
+        // This page is client-only view
 
         // Load sessions for the user
         async function loadSessions() {
@@ -871,17 +664,9 @@
 
             /* Future implementation:
             const sessionsRef = db.collection('sessions');
-            let query;
-
-            if (isAdmin) {
-                // Admin sees all sessions
-                query = sessionsRef.orderBy('date', 'desc');
-            } else {
-                // Client sees only their sessions
-                query = sessionsRef
-                    .where('clientEmail', '==', currentUser.email)
-                    .orderBy('date', 'desc');
-            }
+            const query = sessionsRef
+                .where('clientEmail', '==', currentUser.email)
+                .orderBy('date', 'desc');
 
             const snapshot = await query.get();
             return snapshot.docs.map(doc => ({
