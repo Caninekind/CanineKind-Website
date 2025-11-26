@@ -156,7 +156,7 @@
             background-position: center;
             background-repeat: no-repeat;
             padding: 50px 20px;
-            margin: 0;
+            margin: 0 0 -30px 0;
         }
 
         .page-title {
@@ -257,19 +257,19 @@
 
         /* Welcome Section */
         .welcome-section {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
             text-align: center;
             position: relative;
         }
 
         .centerpiece-image {
             width: 100%;
-            max-width: 800px;
+            max-width: 100%;
             height: auto;
-            border-radius: 10px;
-            margin: 30px auto 40px;
+            border-radius: 0;
+            margin: 0 0 40px 0;
             box-shadow: 0 8px 30px rgba(0,0,0,0.15);
             display: block;
         }
@@ -278,7 +278,10 @@
             background-color: white;
             padding: 30px;
             border-radius: 10px;
-            margin-top: 30px;
+            margin: 30px 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
             border: 3px solid #799972;
             box-shadow: 0 3px 15px rgba(0,0,0,0.08);
         }
@@ -345,9 +348,10 @@
             background-size: cover;
             background-position: center;
             border-radius: 15px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), 0 0 20px rgba(121, 153, 114, 0.2);
             text-align: center;
             position: relative;
+            overflow: hidden;
         }
 
         .client-portal-section::before {
@@ -357,14 +361,32 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(121, 153, 114, 0.85);
+            background: linear-gradient(135deg, rgba(121, 153, 114, 0.9) 0%, rgba(90, 115, 84, 0.85) 50%, rgba(121, 153, 114, 0.9) 100%);
             border-radius: 15px;
             z-index: 0;
         }
 
+        .client-portal-section::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: galaxyMove 20s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes galaxyMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
         .client-portal-content {
             position: relative;
-            z-index: 1;
+            z-index: 2;
         }
 
         .client-portal-section h2 {
@@ -395,6 +417,108 @@
             transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
             background: #f5f5f5;
+        }
+
+        /* Galaxy Navigation Section */
+        .galaxy-nav-section {
+            position: relative;
+            width: 100%;
+            background-image: url('https://i.imgur.com/cug3epT.jpeg');
+            background-size: cover;
+            background-position: center;
+            padding: 60px 20px;
+            margin: 60px 0;
+            overflow: hidden;
+        }
+
+        .galaxy-nav-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(65, 88, 208, 0.7) 0%, rgba(121, 153, 114, 0.85) 50%, rgba(65, 88, 208, 0.7) 100%);
+            z-index: 0;
+        }
+
+        .galaxy-nav-section::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px);
+            background-size: 40px 40px;
+            animation: galaxyMove 25s linear infinite;
+            z-index: 1;
+        }
+
+        .galaxy-nav-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .galaxy-nav-text {
+            color: white;
+            font-size: 1.3em;
+            font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .galaxy-nav-button {
+            display: inline-block;
+            padding: 18px 35px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #4158d0;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: 700;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 255, 255, 0.3);
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+        }
+
+        .galaxy-nav-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(121, 153, 114, 0.6), transparent);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .galaxy-nav-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 40px rgba(121, 153, 114, 0.6);
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .galaxy-nav-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .galaxy-nav-button:active {
+            transform: translateY(-3px) scale(1.02);
         }
 
         /* Service Cards Section */
@@ -1139,6 +1263,28 @@
             .services-section-bg {
                 padding: 40px 0;
             }
+
+            .galaxy-nav-section {
+                padding: 40px 15px;
+                margin: 40px 0;
+            }
+
+            .galaxy-nav-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .galaxy-nav-text {
+                font-size: 1.1em;
+                margin-bottom: 0;
+            }
+
+            .galaxy-nav-button {
+                width: 100%;
+                max-width: 280px;
+                padding: 15px 25px;
+                font-size: 1em;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1346,6 +1492,20 @@
             </div>
             </div>
         </section>
+
+        <!-- Galaxy Navigation Section -->
+        <div class="galaxy-nav-section">
+            <div class="galaxy-nav-content">
+                <span class="galaxy-nav-text">Check out our</span>
+                <a href="https://caninekind.io/faqs" class="galaxy-nav-button">FAQs</a>
+                <span class="galaxy-nav-text">Watch our</span>
+                <a href="https://caninekind.io/videos" class="galaxy-nav-button">Videos</a>
+                <span class="galaxy-nav-text">Check out our</span>
+                <a href="https://caninekind.io/services" class="galaxy-nav-button">Services</a>
+                <span class="galaxy-nav-text">Become a</span>
+                <a href="https://caninekind.io/intake" class="galaxy-nav-button">New Client</a>
+            </div>
+        </div>
 
         <section class="shop-section scroll-animate">
             <h2>UNIQUE, ARTISANAL & HANDMADE DOG TREATS AND TOYS</h2>
