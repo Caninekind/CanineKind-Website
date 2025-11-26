@@ -184,7 +184,7 @@
     #progressbar li {
       list-style-type: none;
       font-size: 11px;
-      width: 12.5%;
+      width: 25%;
       float: left;
       position: relative;
       font-weight: 400;
@@ -223,11 +223,7 @@
     }
 
     #progressbar li:nth-child(2):after,
-    #progressbar li:nth-child(3):after,
-    #progressbar li:nth-child(4):after,
-    #progressbar li:nth-child(5):after,
-    #progressbar li:nth-child(6):after,
-    #progressbar li:nth-child(7):after {
+    #progressbar li:nth-child(3):after {
       left: -50%;
     }
 
@@ -918,12 +914,8 @@
                 <ul id="progressbar">
                   <li class="active" id="step1"><strong>Owner</strong></li>
                   <li id="step2"><strong>Dog</strong></li>
-                  <li id="step3"><strong>Dog Sociability</strong></li>
-                  <li id="step4"><strong>Human Sociability</strong></li>
-                  <li id="step5"><strong>Misc. Behavior Problems</strong></li>
-                  <li id="step6"><strong>Drive</strong></li>
-                  <li id="step7"><strong>Other Goals</strong></li>
-                  <li id="step8"><strong>Complete</strong></li>
+                  <li id="step3"><strong>Other Goals</strong></li>
+                  <li id="step4"><strong>Complete</strong></li>
                 </ul>
                 
                 <!-- Step 1: Owner Information -->
@@ -941,7 +933,9 @@
                     <input type="tel" name="owner_phone" placeholder="Phone Number"/>
                     <label>5. Who is responsible for the dog and its training?</label>
                     <div class="checkbox-group-horizontal">
+                      <label><input type="checkbox" name="responsible_me" value="yes"/> Me</label>
                       <label><input type="checkbox" name="responsible_spouse" value="yes"/> Spouse</label>
+                      <label><input type="checkbox" name="responsible_housekeeper" value="yes"/> Housekeeper</label>
                       <label><input type="checkbox" name="responsible_roommates" value="yes"/> Roommates</label>
                       <label><input type="checkbox" name="responsible_children" value="yes"/> Children</label>
                       <label><input type="checkbox" name="responsible_parents" value="yes"/> Parents/In-laws</label>
@@ -953,20 +947,25 @@
                       <label><input type="checkbox" name="previous_trainer_yes" value="yes"/> Yes</label>
                       <label><input type="checkbox" name="previous_trainer_no" value="no"/> No</label>
                     </div>
-                    <label>7. What services are you interested in?</label>
+                    <label>7. What services are you interested in? (Select all that may apply so we can give you more information)</label>
                     <div class="checkbox-group-horizontal">
-                      <label><input type="checkbox" name="service_general_private" value="yes"/> General private lesson</label>
-                      <label><input type="checkbox" name="service_online" value="yes"/> Online lessons</label>
-                      <label><input type="checkbox" name="service_behavioral_eval" value="yes"/> Behavioral evaluation</label>
-                      <label><input type="checkbox" name="service_group" value="yes"/> Group lessons</label>
-                      <label><input type="checkbox" name="service_walking" value="yes"/> Dog walking services</label>
-                      <label><input type="checkbox" name="service_puppy" value="yes"/> Puppy lessons</label>
-                      <label><input type="checkbox" name="service_trick_training" value="yes"/> Trick training/competitive obedience help</label>
-                      <label><input type="checkbox" name="service_dog_skills" value="yes"/> Service dog skills/public access</label>
-                      <label><input type="checkbox" name="service_other_check" value="yes"/> Other</label>
+                      <label><input type="checkbox" name="service_private_lesson" value="yes"/> Private 1-on-1 Lesson</label>
+                      <label><input type="checkbox" name="service_online_lesson" value="yes"/> Online 1-on-1 Lesson</label>
+                      <label><input type="checkbox" name="service_multi_package" value="yes"/> Private 1-on-1 Multi Session Training Package</label>
+                      <label><input type="checkbox" name="service_dog_walking" value="yes"/> Dog Walking Services</label>
+                      <label><input type="checkbox" name="service_day_train" value="yes"/> Day Train Services</label>
+                      <label><input type="checkbox" name="service_pack_walk" value="yes"/> Pack Walk</label>
+                      <label><input type="checkbox" name="service_group_classes" value="yes"/> Group Classes</label>
                     </div>
-                    <input type="text" name="service_other_text" placeholder="If other, please specify..."/>
-                    <label>8. What are your top 3 personal goals in seeking out professional dog training today?</label>
+                    <label>8. Are you interested in learning about how our CanineKind Client Portal can be used to send automatic training notifications and tips directly from CanineKind to your phone?</label>
+                    <div class="checkbox-group-horizontal">
+                      <label><input type="checkbox" name="client_portal_yes" value="yes"/> Yes!</label>
+                      <label><input type="checkbox" name="client_portal_no" value="no"/> No</label>
+                      <label><input type="checkbox" name="client_portal_unsure" value="unsure"/> Not Sure</label>
+                    </div>
+                    <label>9. Where did you hear about us?</label>
+                    <input type="text" name="referral_source" placeholder="Social media, friend referral, Google search, etc."/>
+                    <label>10. What are your top 3 personal goals in seeking out professional dog training today?</label>
                     <textarea name="training_goals_top3" placeholder="List your top 3 goals..." style="min-height: 80px;"></textarea>
                   </div>
                   <input type="button" name="next" class="next action-button" value="Next →"/>
@@ -999,17 +998,23 @@
                     <input type="text" name="dog_source" placeholder="Breeder, Rescue, Shelter, etc."/>
                     <label>8. How long have you had your dog?</label>
                     <input type="text" name="dog_duration" placeholder="Time with dog"/>
-                    <label>9. Vaccines/Prevention</label>
+                    <label>9. What types of issues or skills are you looking for help on with your dog? (Select all that apply)</label>
                     <div class="checkbox-group-horizontal">
-                      <label><input type="checkbox" name="vaccine_rabies" value="yes"/> Rabies</label>
-                      <label><input type="checkbox" name="vaccine_flea_tick" value="yes"/> Flea/Tick</label>
-                      <label><input type="checkbox" name="vaccine_distemper" value="yes"/> Distemper</label>
-                      <label><input type="checkbox" name="vaccine_heartworm" value="yes"/> Heartworm</label>
-                      <label><input type="checkbox" name="vaccine_other_check" value="yes"/> Other</label>
+                      <label><input type="checkbox" name="issue_dog_reactivity" value="yes"/> Dog Reactivity/Excitement</label>
+                      <label><input type="checkbox" name="issue_human_reactivity" value="yes"/> Human Reactivity/Excitement</label>
+                      <label><input type="checkbox" name="issue_house_manners" value="yes"/> General House-manners</label>
+                      <label><input type="checkbox" name="issue_basic_obedience" value="yes"/> General/Basic Obedience</label>
+                      <label><input type="checkbox" name="issue_loose_leash" value="yes"/> Loose Leash Walking</label>
+                      <label><input type="checkbox" name="issue_trick_training" value="yes"/> Trick Training</label>
+                      <label><input type="checkbox" name="issue_off_leash" value="yes"/> Off Leash Reliability</label>
+                      <label><input type="checkbox" name="issue_service_dog" value="yes"/> Public Access/Service Dog Skills</label>
+                      <label><input type="checkbox" name="issue_competition" value="yes"/> Competition Training</label>
                     </div>
-                    <input type="text" name="vaccine_other_text" placeholder="If other, please specify..."/>
-                    <label>10. Does your dog have any diagnosed medical issues, sensitivities or conditions?</label>
-                    <textarea name="dog_medical_issues" placeholder="Describe any medical issues, sensitivities or conditions"></textarea>
+                    <label>10. Has your dog ever bitten anybody?</label>
+                    <div class="checkbox-group-horizontal">
+                      <label><input type="checkbox" name="dog_bitten_yes" value="yes"/> Yes</label>
+                      <label><input type="checkbox" name="dog_bitten_no" value="no"/> No</label>
+                    </div>
                     <label>11. In a couple sentences - describe what an average day for your dog looks like.</label>
                     <textarea name="dog_average_day" placeholder="Describe your dog's typical day"></textarea>
                     <label>12. Do you currently use any of these training tools?</label>
@@ -1027,238 +1032,8 @@
                   <input type="button" name="previous" class="previous action-button-previous" value="← Previous"/>
                   <input type="button" name="next" class="next action-button" value="Next →"/>
                 </fieldset>
-                
-                <!-- Step 3: Dog Sociability -->
-                <fieldset>
-                  <div class="form-card">
-                    <h2 class="fs-title" style="margin-top: -10px;">Dog Sociability</h2>
-                    <p class="fs-subtitle">These questions will be used to gauge your dog's feelings and experiences with other dogs.</p>
-                    
-                    <label style="margin-top: 5px;">Do you utilize any of the following services?</label>
-                    <div class="checkbox-group-horizontal">
-                      <label><input type="checkbox" name="utilize_daycare" value="yes"/> Doggy Daycare</label>
-                      <label><input type="checkbox" name="utilize_dog_parks" value="yes"/> Public Dog Parks</label>
-                      <label><input type="checkbox" name="utilize_other" value="yes"/> Other</label>
-                    </div>
-                    <input type="text" name="utilize_other_text" placeholder="If other, please specify..." style="margin-bottom: 10px;"/>
-                    
-                    <label style="margin-top: 15px;">1. Are you seeking assistance with an aspect of your dog's behavior around other dogs?</label>
-                    
-                    <div class="radio-option">
-                      <input type="radio" id="dog_q1_a" name="seeking_dog_behavior_help" value="yes_main_issue"/>
-                      <span>a. Yes this is an issue/part of an issue I am contacting you for.</span>
-                    </div>
-                    
-                    <div class="radio-option">
-                      <input type="radio" id="dog_q1_b" name="seeking_dog_behavior_help" value="yes_may_want_help"/>
-                      <span>b. No, I am contacting you for something not related to other dogs but may want help with an issue that involves other dogs like neighborhood leash walking.</span>
-                    </div>
-                    
-                    <div class="radio-option">
-                      <input type="radio" id="dog_q1_c" name="seeking_dog_behavior_help" value="no_not_issue"/>
-                      <span>c. No, this is not something I am contacting you for and need assistance on something completely non related to my dog's sociability with other dogs.</span>
-                    </div>
-                    
-                    <div style="background-color: rgba(255,255,255,0.15); border: 2px solid #D1E5F4; border-radius: 8px; padding: 15px; margin: 15px 0;">
-                      <p style="color: white; font-size: 14px; margin: 0; font-weight: bold; line-height: 1.5;">*If you selected A or B, please fill out the questions below to the best of your abilities. If you selected C, continue to the next page.*</p>
-                    </div>
-                    
-                    <label style="margin-top: 5px;">2. Which of the following things does your dog struggle with? (Check any/all that apply)</label>
-                    <div class="checkbox-group">
-                      <label><input type="checkbox" name="struggle_onleash" value="yes"/> Seeing/passing other dogs when being walked ON LEASH and staying under control or redirected.</label>
-                      <label><input type="checkbox" name="struggle_offleash" value="yes"/> Seeing/passing dogs when OFF LEASH and staying under control or redirected.</label>
-                      <label><input type="checkbox" name="struggle_too_excited" value="yes"/> Liking dogs too much/being too excited persistent about playing with other dogs.</label>
-                      <label class="sub-checkbox"><input type="checkbox" name="struggle_sport_distraction" value="yes"/> I want to teach my dog fancy tricks, obedience or title my dog in a sport but they are instantly distracted by other dogs.</label>
-                      <label><input type="checkbox" name="struggle_too_afraid" value="yes"/> Too afraid of other dogs, avoiding, cowering or unable to socialize with other dogs.</label>
-                      <label><input type="checkbox" name="struggle_aggression" value="yes"/> Aggression towards other dogs, barking, growling and/or intent to harm.</label>
-                      <label><input type="checkbox" name="struggle_phobia_specific" value="yes"/> My dog has a phobia or aggression towards a specific type or size of dog.</label>
-                      <label><input type="checkbox" name="struggle_fight_in_house" value="yes"/> My dog has bitten or started a fight with another dog in the house.</label>
-                      <label><input type="checkbox" name="struggle_fight_outside" value="yes"/> My dog has bitten or started a fight with a dog outside the house.</label>
-                      <label><input type="checkbox" name="struggle_coexist_family" value="yes"/> I want my dog to coexist better with family dogs, or dogs that they only see sometimes.</label>
-                      <label class="sub-checkbox"><input type="checkbox" name="struggle_fence_fighting" value="yes"/> My dog is fence fighting with a boundary or a space that I share with my neighbors.</label>
-                      <label><input type="checkbox" name="struggle_coexist" value="yes"/> My dog has a hard time coexisting with other dogs in the house (sharing space, sharing toys, objects, bowls).</label>
-                      <label><input type="checkbox" name="struggle_attacked" value="yes"/> My dog was attacked by a dog and now has a hard time being around other dogs.</label>
-                      <label><input type="checkbox" name="struggle_fear_interactions" value="yes"/> I fear interactions with off-leash dogs or other dogs while I am walking my dog.</label>
-                      <label><input type="checkbox" name="struggle_unsure" value="yes"/> I am not entirely sure how my dog feels about other dogs.</label>
-                      <label><input type="checkbox" name="struggle_none" value="yes"/> None of these apply to my dog.</label>
-                      <label><input type="checkbox" name="struggle_sudden_issue" value="yes"/> My dog has suddenly developed an issue with other dogs and I don't know why.</label>
-                      <label><input type="checkbox" name="struggle_other_check" value="yes"/> Other</label>
-                    </div>
-                    <input type="text" name="struggle_other_text" placeholder="If other, please describe..."/>
-                  </div>
-                  <input type="button" name="previous" class="previous action-button-previous" value="← Previous"/>
-                  <input type="button" name="next" class="next action-button" value="Next →"/>
-                </fieldset>
-                
-                <!-- Step 4: Human Sociability -->
-                <fieldset>
-                  <div class="form-card">
-                    <h2 class="fs-title" style="margin-top: -10px;">Human Sociability</h2>
-                    <p class="fs-subtitle">These questions will be used to gauge your dog's feelings and experiences with people.</p>
-                    
-                    <label style="margin-top: 5px;">1. Are you seeking assistance with an aspect of your dog's behavior around people?</label>
-                    
-                    <div class="radio-option">
-                      <input type="radio" id="human_q1_a" name="seeking_human_behavior_help" value="yes_main_issue"/>
-                      <span>a. Yes this is an issue/part of an issue I am contacting you for.</span>
-                    </div>
-                    
-                    <div class="radio-option">
-                      <input type="radio" id="human_q1_b" name="seeking_human_behavior_help" value="yes_may_want_help"/>
-                      <span>b. No, I am contacting you for something not related to people but may want help with an issue that involves people like greeting guests at home.</span>
-                    </div>
-                    
-                    <div class="radio-option">
-                      <input type="radio" id="human_q1_c" name="seeking_human_behavior_help" value="no_not_issue"/>
-                      <span>c. No, this is not something I am contacting you for and need assistance on something completely non related to my dog's sociability with people.</span>
-                    </div>
-                    
-                    <div style="background-color: rgba(255,255,255,0.15); border: 2px solid #D1E5F4; border-radius: 8px; padding: 15px; margin: 15px 0;">
-                      <p style="color: white; font-size: 14px; margin: 0; font-weight: bold; line-height: 1.5;">*If you selected A or B, please fill out the questions below to the best of your abilities. If you selected C, continue to the next page.*</p>
-                    </div>
-                    
-                    <label style="margin-top: 5px;">2. Which of the following things does your dog struggle with? (Check any/all that apply)</label>
-                    <div class="checkbox-group">
-                      <label><input type="checkbox" name="human_struggle_strangers_onleash" value="yes"/> Seeing/passing strangers when being walked ON LEASH and staying under control or redirected.</label>
-                      <label><input type="checkbox" name="human_struggle_strangers_offleash" value="yes"/> Seeing/passing strangers when OFF LEASH and staying under control or redirected.</label>
-                      <label><input type="checkbox" name="human_struggle_too_excited" value="yes"/> Liking people too much/being too excited or persistent about greeting people.</label>
-                      <label><input type="checkbox" name="human_struggle_jumping" value="yes"/> Jumping on people excessively when greeting them.</label>
-                      <label><input type="checkbox" name="human_struggle_too_afraid" value="yes"/> Too afraid of strangers, avoiding, cowering or unable to socialize with new people.</label>
-                      <label><input type="checkbox" name="human_struggle_aggression" value="yes"/> Aggression towards people, barking, growling and/or intent to harm.</label>
-                      <label><input type="checkbox" name="human_struggle_phobia_specific" value="yes"/> My dog has a phobia or aggression towards a specific type of person (men, children, uniforms, etc.).</label>
-                      <label><input type="checkbox" name="human_struggle_bitten" value="yes"/> My dog has bitten or attempted to bite a person.</label>
-                      <label><input type="checkbox" name="human_struggle_nipping" value="yes"/> My dog nips or mouths people during play or excitement.</label>
-                      <label><input type="checkbox" name="human_struggle_children" value="yes"/> My dog struggles specifically around children.</label>
-                      <label><input type="checkbox" name="human_struggle_guests" value="yes"/> My dog has difficulty when guests visit our home.</label>
-                      <label><input type="checkbox" name="human_struggle_door_behavior" value="yes"/> My dog becomes overly excited or aggressive when someone approaches the door.</label>
-                      <label><input type="checkbox" name="human_struggle_handling" value="yes"/> My dog doesn't like being touched, handled, or groomed by strangers.</label>
-                      <label><input type="checkbox" name="human_struggle_vet" value="yes"/> My dog is anxious or aggressive at the veterinarian or groomer.</label>
-                      <label><input type="checkbox" name="human_struggle_family_members" value="yes"/> My dog acts differently (fearful or aggressive) toward specific family members or household members.</label>
-                      <label><input type="checkbox" name="human_struggle_protective" value="yes"/> My dog is overly protective of me or family members around other people.</label>
-                      <label><input type="checkbox" name="human_struggle_public_spaces" value="yes"/> My dog struggles with crowds or busy public spaces.</label>
-                      <label><input type="checkbox" name="human_struggle_suddenly_developed" value="yes"/> My dog has suddenly developed an issue with people and I don't know why.</label>
-                      <label><input type="checkbox" name="human_struggle_unsure" value="yes"/> I am not entirely sure how my dog feels about strangers or new people.</label>
-                      <label><input type="checkbox" name="human_struggle_none" value="yes"/> None of these apply to my dog.</label>
-                      <label><input type="checkbox" name="human_struggle_other_check" value="yes"/> Other</label>
-                    </div>
-                    <input type="text" name="human_struggle_other_text" placeholder="If other, please describe..."/>
-                  </div>
-                  <input type="button" name="previous" class="previous action-button-previous" value="← Previous"/>
-                  <input type="button" name="next" class="next action-button" value="Next →"/>
-                </fieldset>
-                
-                <!-- Step 5: Misc Behavioral Issues -->
-                <fieldset>
-                  <div class="form-card">
-                    <h2 class="fs-title" style="margin-top: -10px;">Behavioral Issues</h2>
-                    <label>What behavioral issues are you experiencing? (Check all that apply)</label>
-                    <div class="checkbox-group">
-                      <label><input type="checkbox" name="behavior_barking" value="yes"/> Excessive barking</label>
-                      <label><input type="checkbox" name="behavior_separation" value="yes"/> Separation anxiety</label>
-                      <label><input type="checkbox" name="behavior_housetraining" value="yes"/> House training issues</label>
-                      <label><input type="checkbox" name="behavior_chewing" value="yes"/> Destructive chewing</label>
-                      <label><input type="checkbox" name="behavior_digging" value="yes"/> Digging</label>
-                      <label><input type="checkbox" name="behavior_counter_surfing" value="yes"/> Counter surfing / stealing food</label>
-                      <label><input type="checkbox" name="behavior_resource_guarding" value="yes"/> Resource guarding (food, toys, etc.)</label>
-                      <label><input type="checkbox" name="behavior_fear" value="yes"/> Fear / anxiety issues</label>
-                      <label><input type="checkbox" name="behavior_reactivity" value="yes"/> Reactivity (barking/lunging on leash)</label>
-                    </div>
-                    <label>Additional behavioral concerns:</label>
-                    <textarea name="behavior_other" placeholder="Describe any other behavioral concerns"></textarea>
-                    <label>Medical conditions or medications:</label>
-                    <textarea name="medical_conditions" placeholder="List any medical conditions, allergies, medications, or physical limitations"></textarea>
-                  </div>
-                  <input type="button" name="previous" class="previous action-button-previous" value="← Previous"/>
-                  <input type="button" name="next" class="next action-button" value="Next →"/>
-                </fieldset>
-                
-                <!-- Step 6: Drive -->
-                <fieldset>
-                  <div class="form-card">
-                    <h2 class="fs-title" style="margin-top: -10px;">Drive</h2>
-                    <p class="fs-subtitle">Understanding your dog's motivation helps us create effective training plans!</p>
-                    
-                    <label>1. Food Drive - How motivated is your dog by food/treats?</label>
-                    <select name="food_drive">
-                      <option value="">Select</option>
-                      <option value="very_high">Very High - Will do anything for food</option>
-                      <option value="high">High - Very interested in treats</option>
-                      <option value="moderate">Moderate - Interested but selective</option>
-                      <option value="low">Low - Sometimes interested</option>
-                      <option value="very_low">Very Low - Rarely interested in food</option>
-                    </select>
-                    
-                    <label>2. Toy Drive - How motivated is your dog by toys?</label>
-                    <select name="toy_drive">
-                      <option value="">Select</option>
-                      <option value="very_high">Very High - Obsessed with toys</option>
-                      <option value="high">High - Very interested in toys</option>
-                      <option value="moderate">Moderate - Plays with toys sometimes</option>
-                      <option value="low">Low - Minimal interest in toys</option>
-                      <option value="very_low">Very Low - No interest in toys</option>
-                    </select>
-                    
-                    <label>3. Play Drive - How motivated is your dog by play and interaction?</label>
-                    <select name="play_drive">
-                      <option value="">Select</option>
-                      <option value="very_high">Very High - Always wants to play</option>
-                      <option value="high">High - Very playful and energetic</option>
-                      <option value="moderate">Moderate - Enjoys play in moderation</option>
-                      <option value="low">Low - Occasional play interest</option>
-                      <option value="very_low">Very Low - Prefers to rest</option>
-                    </select>
-                    
-                    <label>4. Praise/Social Drive - How motivated is your dog by verbal praise and attention?</label>
-                    <select name="praise_drive">
-                      <option value="">Select</option>
-                      <option value="very_high">Very High - Lives for praise and attention</option>
-                      <option value="high">High - Very responsive to praise</option>
-                      <option value="moderate">Moderate - Likes praise but not essential</option>
-                      <option value="low">Low - Somewhat indifferent to praise</option>
-                      <option value="very_low">Very Low - Uninterested in praise</option>
-                    </select>
-                    
-                    <label>5. What is your dog's favorite reward/motivator?</label>
-                    <textarea name="favorite_reward" placeholder="Describe what motivates your dog the most (specific treats, toys, activities, etc.)"></textarea>
-                    
-                    <label>6. Does your dog know any commands?</label>
-                    <textarea name="dog_known_commands" placeholder="List commands your dog knows (sit, stay, come, etc.)"></textarea>
-                    
-                    <label>7. Does your dog come when called?</label>
-                    <select name="dog_recall">
-                      <option value="">Select</option>
-                      <option value="always">Always</option>
-                      <option value="sometimes">Sometimes</option>
-                      <option value="rarely">Rarely</option>
-                      <option value="never">Never</option>
-                    </select>
-                    
-                    <label>8. How does your dog walk on a leash?</label>
-                    <select name="dog_leash_walking">
-                      <option value="">Select</option>
-                      <option value="excellent">Walks nicely, no pulling</option>
-                      <option value="good">Mostly good, occasional pulling</option>
-                      <option value="fair">Pulls sometimes</option>
-                      <option value="poor">Pulls constantly</option>
-                    </select>
-                    
-                    <label>9. Has your dog had any previous training?</label>
-                    <select name="previous_training">
-                      <option value="">Select</option>
-                      <option value="no">No previous training</option>
-                      <option value="basic">Basic obedience classes</option>
-                      <option value="advanced">Advanced training</option>
-                      <option value="professional">Professional private training</option>
-                    </select>
-                    
-                    <label>10. If yes, please describe previous training:</label>
-                    <textarea name="previous_training_details" placeholder="What training methods were used? What was accomplished?"></textarea>
-                  </div>
-                  <input type="button" name="previous" class="previous action-button-previous" value="← Previous"/>
-                  <input type="button" name="next" class="next action-button" value="Next →"/>
-                </fieldset>
-                
-                <!-- Step 7: Other Issues and Goals -->
+
+                <!-- Step 3: Other Issues and Goals -->
                 <fieldset>
                   <div class="form-card">
                     <h2 class="fs-title" style="margin-top: -10px;">Training Goals & Other Information</h2>
@@ -1282,16 +1057,14 @@
                       <option value="virtual">Virtual Training</option>
                       <option value="unsure">Not Sure</option>
                     </select>
-                    <label>4. How did you hear about CanineKind?</label>
-                    <input type="text" name="referral_source" placeholder="Referral, Google, Social Media, etc."/>
-                    <label>5. Additional Comments or Questions:</label>
+                    <label>4. Additional Comments or Questions:</label>
                     <textarea name="additional_comments" placeholder="Anything else you'd like us to know?"></textarea>
                   </div>
                   <input type="button" name="previous" class="previous action-button-previous" value="← Previous"/>
                   <button type="submit" class="submit-button" id="submitBtn">Submit →</button>
                 </fieldset>
-                
-                <!-- Step 8: Thank You / Confirmation -->
+
+                <!-- Step 4: Thank You / Confirmation -->
                 <fieldset>
                   <div class="form-card">
                     <h2 class="fs-title text-center">Thank You!</h2>
@@ -1576,9 +1349,9 @@
           const result = await response.json();
           
           if (result.success) {
-            // Move to thank you page (step 8)
+            // Move to thank you page (step 4)
             fieldsets[currentStep].style.display = 'none';
-            currentStep = 7;
+            currentStep = 3;
             fieldsets[currentStep].style.display = 'block';
             progressbarItems[currentStep].classList.add('active');
             window.scrollTo(0, 0);
