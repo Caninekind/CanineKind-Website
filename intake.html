@@ -856,14 +856,15 @@
             <a onclick="toggleDropdown(event)">ABOUT US</a>
             <div class="dropdown-content">
               <a href="https://caninekind.io/about">Our Team</a>
-              <a href="https://caninekind.io/faqs">Training FAQs</a>
+              <a href="https://caninekind.io/faqs">FAQs</a>
             </div>
           </li>
           <li class="mobile-only"><a href="https://caninekind.io/about">OUR TEAM</a></li>
-          <li class="mobile-only"><a href="https://caninekind.io/faqs">TRAINING FAQs</a></li>
+          <li class="mobile-only"><a href="https://caninekind.io/faqs">FAQs</a></li>
+          <li class="mobile-only"><a href="https://caninekind.io/portal-login">CLIENT PORTAL</a></li>
           <li><a href="https://caninekind.io/videos">VIDEOS</a></li>
           <li><a href="https://caninekind.io/services">SERVICES</a></li>
-          <li><a href="https://caninekind.io/intake">NEW CLIENT INTAKE</a></li>
+          <li><a href="https://caninekind.io/intake">NEW CLIENT APPLICATION</a></li>
           <li><a href="https://caninekind.io/shop">SHOP</a></li>
           <li><a href="https://caninekind.io/contact">CONTACT US</a></li>
         </ul>
@@ -914,7 +915,7 @@
                 <ul id="progressbar">
                   <li class="active" id="step1"><strong>Owner</strong></li>
                   <li id="step2"><strong>Dog</strong></li>
-                  <li id="step3"><strong>Other Goals</strong></li>
+                  <li id="step3"><strong>Misc.</strong></li>
                   <li id="step4"><strong>Complete</strong></li>
                 </ul>
                 
@@ -1033,32 +1034,21 @@
                   <input type="button" name="next" class="next action-button" value="Next →"/>
                 </fieldset>
 
-                <!-- Step 3: Other Issues and Goals -->
+                <!-- Step 3: Misc -->
                 <fieldset>
                   <div class="form-card">
-                    <h2 class="fs-title" style="margin-top: -10px;">Training Goals & Other Information</h2>
-                    <label>1. What are your primary training goals?</label>
-                    <textarea name="training_goals" placeholder="What would you like to achieve through training?"></textarea>
-                    <label>2. What training services are you interested in?</label>
-                    <div class="checkbox-group">
-                      <label><input type="checkbox" name="service_obedience" value="yes"/> Basic Obedience</label>
-                      <label><input type="checkbox" name="service_puppy" value="yes"/> Puppy Training</label>
-                      <label><input type="checkbox" name="service_advanced" value="yes"/> Advanced Training</label>
-                      <label><input type="checkbox" name="service_behavioral" value="yes"/> Behavioral Modification</label>
-                      <label><input type="checkbox" name="service_sport" value="yes"/> Dog Sports (IGP, Obedience, etc.)</label>
-                      <label><input type="checkbox" name="service_service" value="yes"/> Service Dog Training</label>
+                    <h2 class="fs-title" style="margin-top: -10px;">Agreement</h2>
+                    <p class="fs-subtitle" style="font-size: 18px; line-height: 1.6; margin-bottom: 25px;">On the next page you will be taken to a link to schedule a free phone consultation. Your time & the time of CanineKind are important. By scheduling your free consultation, you agree to be reaching out for our services in good faith.</p>
+
+                    <label>Type your full name as signature:</label>
+                    <input type="text" name="signature_name" placeholder="Full Name" required/>
+
+                    <div class="checkbox-group-horizontal" style="margin-top: 20px;">
+                      <label style="display: flex; align-items: center; font-size: 16px;">
+                        <input type="checkbox" name="agreement_confirmed" value="yes" required style="width: 24px; height: 24px; margin-right: 12px;"/>
+                        I agree to the above statement
+                      </label>
                     </div>
-                    <label>3. Preferred training format:</label>
-                    <select name="training_format">
-                      <option value="">Select</option>
-                      <option value="private">Private Sessions</option>
-                      <option value="group">Group Classes</option>
-                      <option value="board">Board & Train</option>
-                      <option value="virtual">Virtual Training</option>
-                      <option value="unsure">Not Sure</option>
-                    </select>
-                    <label>4. Additional Comments or Questions:</label>
-                    <textarea name="additional_comments" placeholder="Anything else you'd like us to know?"></textarea>
                   </div>
                   <input type="button" name="previous" class="previous action-button-previous" value="← Previous"/>
                   <button type="submit" class="submit-button" id="submitBtn">Submit →</button>
