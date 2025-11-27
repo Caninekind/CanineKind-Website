@@ -305,7 +305,7 @@
         }
 
         .welcome-text p {
-            font-size: 1.1em;
+            font-size: 1.25em;
             line-height: 1.8;
             color: #555;
             max-width: 900px;
@@ -508,48 +508,23 @@
 
         .galaxy-nav-button {
             display: inline-block;
-            padding: 18px 35px;
-            background: rgba(255, 255, 255, 0.95);
-            color: #4158d0;
+            padding: 15px 50px;
+            background: white;
+            color: #799972;
             text-decoration: none;
-            border-radius: 30px;
-            font-size: 1.1em;
+            border-radius: 8px;
+            font-size: 1.2em;
             font-weight: 700;
             text-align: center;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             letter-spacing: 0.5px;
-            position: relative;
-            overflow: hidden;
-            text-transform: uppercase;
-        }
-
-        .galaxy-nav-button::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(121, 153, 114, 0.6), transparent);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
         }
 
         .galaxy-nav-button:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 40px rgba(121, 153, 114, 0.6);
-            background: rgba(255, 255, 255, 1);
-        }
-
-        .galaxy-nav-button:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        .galaxy-nav-button:active {
-            transform: translateY(-3px) scale(1.02);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            background: #f5f5f5;
         }
 
         /* Service Cards Section */
@@ -799,9 +774,14 @@
             font-size: 1.8em;
             text-align: center;
             margin: -40px -20px 30px -20px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
+            font-family: Impact, 'Arial Black', 'Helvetica Neue', Arial, sans-serif;
+            font-weight: 700;
+            letter-spacing: 1.2px;
             border-radius: 10px 10px 0 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3),
+                         1px 1px 2px rgba(0, 0, 0, 0.2);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         /* Product Slideshow */
@@ -900,25 +880,26 @@
         }
 
         .shop-button {
-            display: block;
-            width: 200px;
-            margin: 30px auto;
-            padding: 15px 30px;
-            background-color: #799972;
-            color: white;
+            display: inline-block;
+            padding: 15px 50px;
+            background: white;
+            color: #799972;
             text-decoration: none;
-            border-radius: 5px;
-            font-size: 1.1em;
-            font-weight: bold;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: 700;
             text-align: center;
             transition: all 0.3s ease;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            letter-spacing: 0.5px;
+            margin: 30px auto;
+            width: fit-content;
         }
 
         .shop-button:hover {
-            background-color: #5a7354;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            background: #f5f5f5;
         }
 
         /* Background Decoration */
@@ -1211,6 +1192,8 @@
 
             .carousel-container {
                 display: block;
+                max-width: 95%;
+                margin: 40px auto;
             }
 
             .service-card {
@@ -1604,20 +1587,9 @@
     <footer>
         <div class="footer-container">
             <div class="footer-section">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="https://caninekind.io/about">About Us</a></li>
-                    <li><a href="https://caninekind.io/services">Training Services</a></li>
-                    <li><a href="https://caninekind.io/intake">Intake Form</a></li>
-                    <li><a href="https://caninekind.io/testimonials">Testimonials</a></li>
-                    <li><a href="https://caninekind.io/shop">Shop</a></li>
-                    <li><a href="https://caninekind.io/forms">Legal Forms</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section">
                 <h3>Contact Us</h3>
                 <p><a href="mailto:caninekindtraining@gmail.com">caninekindtraining@gmail.com</a></p>
+                <p><a href="https://caninekind.io/contact">Contact Us Page</a></p>
             </div>
         </div>
 
