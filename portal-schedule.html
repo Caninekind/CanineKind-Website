@@ -1554,6 +1554,21 @@
                 white-space: normal;
             }
 
+            /* Ensure activities with goals have enough space on mobile */
+            .scheduled-activity.has-goal {
+                min-height: 80px; /* Increased for mobile to fit goal badge + activity text */
+                padding-top: 2.5rem;
+                padding-bottom: 0.75rem;
+            }
+
+            .scheduled-activity.has-goal::before {
+                font-size: 0.7rem; /* Slightly smaller on mobile */
+                top: 3px;
+                left: 6px;
+                right: 6px;
+                padding: 3px 6px;
+            }
+
             .remove-activity {
                 flex-shrink: 0;
             }
