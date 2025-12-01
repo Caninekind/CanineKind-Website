@@ -879,6 +879,9 @@
             box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3), 0 1px 3px rgba(0,0,0,0.12);
             position: relative;
             padding-top: 2.5rem;
+            padding-bottom: 0.75rem; /* Add bottom padding for better spacing */
+            align-items: flex-start; /* Align to top instead of center so text doesn't get cut off */
+            min-height: 70px; /* Increase min-height to fit goal badge + activity text */
         }
 
         .scheduled-activity.has-goal::before {
