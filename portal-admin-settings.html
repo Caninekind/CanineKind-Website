@@ -285,6 +285,67 @@
             width: auto;
         }
 
+        .training-tools-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .tool-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .drive-rating {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .drive-option {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            flex: 1;
+        }
+
+        .drive-option:hover {
+            border-color: #799972;
+            background-color: #f5f9f3;
+        }
+
+        .drive-option.selected {
+            border-color: #799972;
+            background-color: #799972;
+            color: white;
+        }
+
+        .drive-label {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            resize: vertical;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #799972;
+        }
+
         .actions {
             display: flex;
             gap: 1rem;
@@ -512,6 +573,7 @@
         let selectedClientUid = null;
         let selectedClientEmail = null;
         let clientData = null;
+        let selectedDrives = { food: '', play: '' };
 
         document.addEventListener('DOMContentLoaded', async () => {
             const initialized = initializeFirebase();
@@ -606,6 +668,11 @@
                 if (userDoc.exists) {
                     clientData = userDoc.data();
                     selectedClientEmail = clientData.email;
+
+                    // Initialize drive selections
+                    selectedDrives.food = clientData.foodDrive || '';
+                    selectedDrives.play = clientData.playDrive || '';
+
                     console.log('✓ Client data loaded:', clientData);
                     console.log('  Email:', selectedClientEmail);
                     console.log('  Settings:', clientData.settings);
@@ -757,6 +824,182 @@
                 </div>
             `;
 
+            // Dog Information Section (for admin to fill out after first session)
+            html += `
+                <div class="settings-section">
+                    <div class="section-header">
+                        <span class="section-icon">🐕</span>
+                        <h2>Dog Information</h2>
+                    </div>
+                    <p style="color: #666; margin-bottom: 1.5rem;">Fill out these details during or after the client's first session.</p>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-weight: 700; color: #2c3e50; margin-bottom: 0.75rem;">Training Tools Currently Using</label>
+                        <div class="training-tools-grid">
+                            <div class="tool-option">
+                                <input type="checkbox" id="tool_slip_lead" ${(clientData.trainingTools || []).includes('Slip Lead/Collar') ? 'checked' : ''}>
+                                <label for="tool_slip_lead">Slip Lead/Collar</label>
+                            </div>
+                            <div class="tool-option">
+                                <input type="checkbox" id="tool_flat_collar" ${(clientData.trainingTools || []).includes('Flat Collar') ? 'checked' : ''}>
+                                <label for="tool_flat_collar">Flat Collar</label>
+                            </div>
+                            <div class="tool-option">
+                                <input type="checkbox" id="tool_electronic" ${(clientData.trainingTools || []).includes('Electronic Collar') ? 'checked' : ''}>
+                                <label for="tool_electronic">Electronic Collar</label>
+                            </div>
+                            <div class="tool-option">
+                                <input type="checkbox" id="tool_prong" ${(clientData.trainingTools || []).includes('Prong Collar') ? 'checked' : ''}>
+                                <label for="tool_prong">Prong Collar</label>
+                            </div>
+                            <div class="tool-option">
+                                <input type="checkbox" id="tool_harness" ${(clientData.trainingTools || []).includes('Harness') ? 'checked' : ''}>
+                                <label for="tool_harness">Harness</label>
+                            </div>
+                            <div class="tool-option">
+                                <input type="checkbox" id="tool_gentle_leader" ${(clientData.trainingTools || []).includes('Gentle Leader') ? 'checked' : ''}>
+                                <label for="tool_gentle_leader">Gentle Leader</label>
+                            </div>
+                            <div class="tool-option">
+                                <input type="checkbox" id="tool_flexi" ${(clientData.trainingTools || []).includes('Flexi Lead') ? 'checked' : ''}>
+                                <label for="tool_flexi">Flexi Lead</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-weight: 700; color: #2c3e50; margin-bottom: 0.75rem;">Triggers Outside the Home</label>
+                        <div class="training-tools-grid">
+                            <div class="tool-option">
+                                <input type="checkbox" id="trigger_out_dogs" ${(clientData.triggersOutside || []).includes('Other Dogs') ? 'checked' : ''}>
+                                <label for="trigger_out_dogs">Other Dogs</label>
+                            </div>
+                            <div class="tool-option">
+                                <input type="checkbox" id="trigger_out_people" ${(clientData.triggersOutside || []).includes('People/Strangers') ? 'checked' : ''}>
+                                <label for="trigger_out_people">People/Strangers</label>
+                            </div>
+                            <div class="tool-option">
+                                <input type="checkbox" id="trigger_out_bikes" ${(clientData.triggersOutside || []).includes('Bicycles/Skateboards') ? 'checked' : ''}>
+                                <label for="trigger_out_bikes">Bicycles/Skateboards</label>
+                            </div>
+                            <div class="tool-option">
+                                <input type="checkbox" id="trigger_out_cars" ${(clientData.triggersOutside || []).includes('Cars/Vehicles') ? 'checked' : ''}>
+                                <label for="trigger_out_cars">Cars/Vehicles</label>
+                            </div>
+                            <div class="tool-option">
+                                <input type="checkbox" id="trigger_out_noises" ${(clientData.triggersOutside || []).includes('Loud Noises') ? 'checked' : ''}>
+                                <label for="trigger_out_noises">Loud Noises</label>
+                            </div>
+                            <div class="tool-option">
+                                <input type="checkbox" id="trigger_out_wildlife" ${(clientData.triggersOutside || []).includes('Wildlife/Animals') ? 'checked' : ''}>
+                                <label for="trigger_out_wildlife">Wildlife/Animals</label>
+                            </div>
+                        </div>
+                        <textarea id="triggersOutsideOther" placeholder="Other triggers (optional)" style="margin-top: 0.75rem;">${clientData.triggersOutsideOther || ''}</textarea>
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-weight: 700; color: #2c3e50; margin-bottom: 0.75rem;">Triggers Inside the Home</label>
+                        <div class="training-tools-grid">
+                            <div class="tool-option">
+                                <input type="checkbox" id="trigger_in_doorbell" ${(clientData.triggersInside || []).includes('Doorbell') ? 'checked' : ''}>
+                                <label for="trigger_in_doorbell">Doorbell</label>
+                            </div>
+                            <div class="tool-option">
+                                <input type="checkbox" id="trigger_in_visitors" ${(clientData.triggersInside || []).includes('Visitors/Guests') ? 'checked' : ''}>
+                                <label for="trigger_in_visitors">Visitors/Guests</label>
+                            </div>
+                            <div class="tool-option">
+                                <input type="checkbox" id="trigger_in_pets" ${(clientData.triggersInside || []).includes('Other Pets') ? 'checked' : ''}>
+                                <label for="trigger_in_pets">Other Pets</label>
+                            </div>
+                            <div class="tool-option">
+                                <input type="checkbox" id="trigger_in_vacuum" ${(clientData.triggersInside || []).includes('Vacuum/Appliances') ? 'checked' : ''}>
+                                <label for="trigger_in_vacuum">Vacuum/Appliances</label>
+                            </div>
+                            <div class="tool-option">
+                                <input type="checkbox" id="trigger_in_alone" ${(clientData.triggersInside || []).includes('Being Left Alone') ? 'checked' : ''}>
+                                <label for="trigger_in_alone">Being Left Alone</label>
+                            </div>
+                            <div class="tool-option">
+                                <input type="checkbox" id="trigger_in_kids" ${(clientData.triggersInside || []).includes('Children') ? 'checked' : ''}>
+                                <label for="trigger_in_kids">Children</label>
+                            </div>
+                        </div>
+                        <textarea id="triggersInsideOther" placeholder="Other triggers (optional)" style="margin-top: 0.75rem;">${clientData.triggersInsideOther || ''}</textarea>
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-weight: 700; color: #2c3e50; margin-bottom: 0.75rem;">Behavioral Issues</label>
+                        <div class="training-tools-grid">
+                            <div class="tool-option">
+                                <input type="checkbox" id="behavior_jumping" ${(clientData.behavioralIssues || []).includes('Jumping on People') ? 'checked' : ''}>
+                                <label for="behavior_jumping">Jumping on People</label>
+                            </div>
+                            <div class="tool-option">
+                                <input type="checkbox" id="behavior_pulling" ${(clientData.behavioralIssues || []).includes('Pulling on Leash') ? 'checked' : ''}>
+                                <label for="behavior_pulling">Pulling on Leash</label>
+                            </div>
+                            <div class="tool-option">
+                                <input type="checkbox" id="behavior_reactivity" ${(clientData.behavioralIssues || []).includes('Reactivity/Lunging') ? 'checked' : ''}>
+                                <label for="behavior_reactivity">Reactivity/Lunging</label>
+                            </div>
+                            <div class="tool-option">
+                                <input type="checkbox" id="behavior_barking" ${(clientData.behavioralIssues || []).includes('Excessive Barking') ? 'checked' : ''}>
+                                <label for="behavior_barking">Excessive Barking</label>
+                            </div>
+                            <div class="tool-option">
+                                <input type="checkbox" id="behavior_mouthing" ${(clientData.behavioralIssues || []).includes('Mouthing/Nipping') ? 'checked' : ''}>
+                                <label for="behavior_mouthing">Mouthing/Nipping</label>
+                            </div>
+                            <div class="tool-option">
+                                <input type="checkbox" id="behavior_counter" ${(clientData.behavioralIssues || []).includes('Counter Surfing') ? 'checked' : ''}>
+                                <label for="behavior_counter">Counter Surfing</label>
+                            </div>
+                            <div class="tool-option">
+                                <input type="checkbox" id="behavior_aggression" ${(clientData.behavioralIssues || []).includes('Aggression') ? 'checked' : ''}>
+                                <label for="behavior_aggression">Aggression</label>
+                            </div>
+                            <div class="tool-option">
+                                <input type="checkbox" id="behavior_resource" ${(clientData.behavioralIssues || []).includes('Resource Guarding') ? 'checked' : ''}>
+                                <label for="behavior_resource">Resource Guarding</label>
+                            </div>
+                        </div>
+                        <textarea id="behavioralIssuesOther" placeholder="Other behavioral issues (optional)" style="margin-top: 0.75rem;">${clientData.behavioralIssuesOther || ''}</textarea>
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-weight: 700; color: #2c3e50; margin-bottom: 0.75rem;">Food Drive</label>
+                        <div class="drive-rating">
+                            <div class="drive-option ${clientData.foodDrive === 'low' ? 'selected' : ''}" onclick="selectDrive('food', 'low')">
+                                <span class="drive-label">Low</span>
+                            </div>
+                            <div class="drive-option ${clientData.foodDrive === 'medium' ? 'selected' : ''}" onclick="selectDrive('food', 'medium')">
+                                <span class="drive-label">Medium</span>
+                            </div>
+                            <div class="drive-option ${clientData.foodDrive === 'high' ? 'selected' : ''}" onclick="selectDrive('food', 'high')">
+                                <span class="drive-label">High</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-weight: 700; color: #2c3e50; margin-bottom: 0.75rem;">Play Drive</label>
+                        <div class="drive-rating">
+                            <div class="drive-option ${clientData.playDrive === 'low' ? 'selected' : ''}" onclick="selectDrive('play', 'low')">
+                                <span class="drive-label">Low</span>
+                            </div>
+                            <div class="drive-option ${clientData.playDrive === 'medium' ? 'selected' : ''}" onclick="selectDrive('play', 'medium')">
+                                <span class="drive-label">Medium</span>
+                            </div>
+                            <div class="drive-option ${clientData.playDrive === 'high' ? 'selected' : ''}" onclick="selectDrive('play', 'high')">
+                                <span class="drive-label">High</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
             // Actions
             html += `
                 <div class="settings-section">
@@ -785,8 +1028,56 @@
                 if (document.getElementById('level7').checked) accessibleLevels.push(7);
                 if (document.getElementById('level8').checked) accessibleLevels.push(8);
 
+                // Collect training tools
+                const trainingTools = [];
+                if (document.getElementById('tool_slip_lead').checked) trainingTools.push('Slip Lead/Collar');
+                if (document.getElementById('tool_flat_collar').checked) trainingTools.push('Flat Collar');
+                if (document.getElementById('tool_electronic').checked) trainingTools.push('Electronic Collar');
+                if (document.getElementById('tool_prong').checked) trainingTools.push('Prong Collar');
+                if (document.getElementById('tool_harness').checked) trainingTools.push('Harness');
+                if (document.getElementById('tool_gentle_leader').checked) trainingTools.push('Gentle Leader');
+                if (document.getElementById('tool_flexi').checked) trainingTools.push('Flexi Lead');
+
+                // Collect triggers outside
+                const triggersOutside = [];
+                if (document.getElementById('trigger_out_dogs').checked) triggersOutside.push('Other Dogs');
+                if (document.getElementById('trigger_out_people').checked) triggersOutside.push('People/Strangers');
+                if (document.getElementById('trigger_out_bikes').checked) triggersOutside.push('Bicycles/Skateboards');
+                if (document.getElementById('trigger_out_cars').checked) triggersOutside.push('Cars/Vehicles');
+                if (document.getElementById('trigger_out_noises').checked) triggersOutside.push('Loud Noises');
+                if (document.getElementById('trigger_out_wildlife').checked) triggersOutside.push('Wildlife/Animals');
+
+                // Collect triggers inside
+                const triggersInside = [];
+                if (document.getElementById('trigger_in_doorbell').checked) triggersInside.push('Doorbell');
+                if (document.getElementById('trigger_in_visitors').checked) triggersInside.push('Visitors/Guests');
+                if (document.getElementById('trigger_in_pets').checked) triggersInside.push('Other Pets');
+                if (document.getElementById('trigger_in_vacuum').checked) triggersInside.push('Vacuum/Appliances');
+                if (document.getElementById('trigger_in_alone').checked) triggersInside.push('Being Left Alone');
+                if (document.getElementById('trigger_in_kids').checked) triggersInside.push('Children');
+
+                // Collect behavioral issues
+                const behavioralIssues = [];
+                if (document.getElementById('behavior_jumping').checked) behavioralIssues.push('Jumping on People');
+                if (document.getElementById('behavior_pulling').checked) behavioralIssues.push('Pulling on Leash');
+                if (document.getElementById('behavior_reactivity').checked) behavioralIssues.push('Reactivity/Lunging');
+                if (document.getElementById('behavior_barking').checked) behavioralIssues.push('Excessive Barking');
+                if (document.getElementById('behavior_mouthing').checked) behavioralIssues.push('Mouthing/Nipping');
+                if (document.getElementById('behavior_counter').checked) behavioralIssues.push('Counter Surfing');
+                if (document.getElementById('behavior_aggression').checked) behavioralIssues.push('Aggression');
+                if (document.getElementById('behavior_resource').checked) behavioralIssues.push('Resource Guarding');
+
                 const updatedData = {
                     displayName: document.getElementById('displayName').value.trim(),
+                    trainingTools: trainingTools,
+                    triggersOutside: triggersOutside,
+                    triggersOutsideOther: document.getElementById('triggersOutsideOther').value.trim(),
+                    triggersInside: triggersInside,
+                    triggersInsideOther: document.getElementById('triggersInsideOther').value.trim(),
+                    behavioralIssues: behavioralIssues,
+                    behavioralIssuesOther: document.getElementById('behavioralIssuesOther').value.trim(),
+                    foodDrive: selectedDrives.food || '',
+                    playDrive: selectedDrives.play || '',
                     settings: {
                         canAccessGoals: document.getElementById('canAccessGoals').checked,
                         canAccessSchedule: document.getElementById('canAccessSchedule').checked,
@@ -810,6 +1101,23 @@
                 console.error('❌ Error saving settings:', error);
                 alert('Error saving settings: ' + error.message);
             }
+        }
+
+        function selectDrive(driveType, value) {
+            selectedDrives[driveType] = value;
+
+            // Update UI for selected drive
+            const driveOptions = document.querySelectorAll(`.drive-rating .drive-option`);
+            driveOptions.forEach(option => {
+                const optionValue = option.getAttribute('onclick')?.match(/selectDrive\('(food|play)', '(\w+)'\)/);
+                if (optionValue && optionValue[1] === driveType) {
+                    if (optionValue[2] === value) {
+                        option.classList.add('selected');
+                    } else {
+                        option.classList.remove('selected');
+                    }
+                }
+            });
         }
 
         function signOut() {
