@@ -2076,6 +2076,16 @@
             const container = document.getElementById('levelsContainer');
             let html = '';
 
+            // Save currently open levels before re-rendering
+            const openLevels = new Set();
+            for (let level = 0; level <= 8; level++) {
+                const levelContent = document.getElementById(`level-content-${level}`);
+                if (levelContent && !levelContent.classList.contains('collapsed')) {
+                    openLevels.add(level);
+                }
+            }
+            const customGoalsOpen = document.getElementById('level-content-custom-goals')?.classList.contains('collapsed') === false;
+
             // Render regular levels
             for (let level = 0; level <= 8; level++) {
                 const goals = GOALS_STRUCTURE[level];
@@ -2103,7 +2113,7 @@
                                     <span class="level-collapse-icon" id="collapse-icon-level-${level}">▼</span>
                                 </div>
                             </div>
-                            <div class="level-content collapsed" id="level-content-${level}">
+                            <div class="level-content ${openLevels.has(level) ? '' : 'collapsed'}" id="level-content-${level}">
                                 ${isLocked ? `
                                     <div class="unlock-message">
                                         🔒 This ${isStandaloneCategory ? 'category' : 'level'} will be unlocked by your trainer
@@ -2135,7 +2145,7 @@
                                 <span class="level-collapse-icon" id="collapse-icon-level-custom-goals">▼</span>
                             </div>
                         </div>
-                        <div class="level-content collapsed" id="level-content-custom-goals">
+                        <div class="level-content ${customGoalsOpen ? '' : 'collapsed'}" id="level-content-custom-goals">
                             <div class="unlock-message">
                                 🎯 Your trainer will create personalized goals specifically for you and your dog's unique needs
                             </div>
