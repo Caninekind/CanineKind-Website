@@ -2,124 +2,157 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Helper function to check if user is authenticated
+    // Helper functions
     function isSignedIn() {
       return request.auth != null;
     }
 
-    // Helper function to check if user is admin
     function isAdmin() {
       return isSignedIn() &&
-             get(/databases/$(database)/documents/users/$(request.auth.token.email)).data.role == 'admin';
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
     }
 
-    // Helper function to check if user is approved
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
     function isApproved() {
       return isSignedIn() &&
-             get(/databases/$(database)/documents/users/$(request.auth.token.email)).data.approved == true;
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.status == 'approved';
     }
 
-    // Helper function to check if user owns the resource
-    function isOwner(userEmail) {
-      return isSignedIn() && request.auth.token.email == userEmail;
+    function hasPermission(permission) {
+      return isSignedIn() &&
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.settings[permission] == true;
     }
 
-    // USERS Collection
-    match /users/{email} {
-      // Anyone can read their own user document
-      allow read: if isSignedIn() && request.auth.token.email == email;
+    // ===========================
+    // USERS COLLECTION
+    // ===========================
+    match /users/{userId} {
+      // Anyone can create their own user document on first sign-in
+      allow create: if isSignedIn() && request.auth.uid == userId &&
+                       request.resource.data.role == 'client' &&
+                       request.resource.data.status == 'pending';
 
-      // Admins can read all users
-      allow read: if isAdmin();
+      // Users can read their own document
+      allow read: if isOwner(userId) || isAdmin();
 
-      // Users can create their own document (during signup)
-      allow create: if isSignedIn() && request.auth.token.email == email;
-
-      // Only admins can update user documents (for approval, role changes)
+      // Only admins can update user documents (for approval, permissions, etc.)
       allow update: if isAdmin();
 
       // Only admins can delete users
       allow delete: if isAdmin();
-
-      // SUBCOLLECTIONS under users/{email}
-
-      // Users can read and write their own selected goals (subcollection)
-      match /selectedGoals/{goalId} {
-        allow read, write: if isSignedIn() && request.auth.token.email == email;
-        allow read, write: if isAdmin();
-      }
-
-      // Users can read and write their own goal access settings (subcollection)
-      match /goalAccess/{document=**} {
-        allow read, write: if isSignedIn() && request.auth.token.email == email;
-        allow read, write: if isAdmin();
-      }
-
-      // Users can read and write their own schedules (subcollection)
-      match /schedules/{document=**} {
-        allow read, write: if isSignedIn() && request.auth.token.email == email;
-        allow read, write: if isAdmin();
-      }
-
-      // Users can read and write their own signed documents (subcollection)
-      match /signedDocuments/{documentId} {
-        allow read, write: if isSignedIn() && request.auth.token.email == email;
-        allow read, write: if isAdmin();
-      }
     }
 
-    // GOAL LIBRARY Collection (master list of all goals)
-    match /goalLibrary/{goalId} {
-      // Everyone can read the goal library (to see available goals)
-      allow read: if isSignedIn();
+    // ===========================
+    // GOALS COLLECTION
+    // ===========================
+    match /goals/{goalId} {
+      // Approved users can read default goals and their own custom goals
+      allow read: if isApproved() &&
+                     (resource.data.isCustom == false ||
+                      resource.data.ownerId == request.auth.uid);
 
-      // Only admins can modify the goal library
-      allow write: if isAdmin();
+      // Admins can read all goals
+      allow read: if isAdmin();
+
+      // Admins can create default goals
+      allow create: if isAdmin() && request.resource.data.isCustom == false;
+
+      // Users can create custom goals for themselves
+      allow create: if isApproved() &&
+                       request.resource.data.isCustom == true &&
+                       request.resource.data.ownerId == request.auth.uid;
+
+      // Admins can update any goal
+      allow update: if isAdmin();
+
+      // Users can update their own custom goals
+      allow update: if isApproved() &&
+                       resource.data.isCustom == true &&
+                       resource.data.ownerId == request.auth.uid;
+
+      // Admins can delete any goal
+      allow delete: if isAdmin();
+
+      // Users can delete their own custom goals
+      allow delete: if isApproved() &&
+                       resource.data.isCustom == true &&
+                       resource.data.ownerId == request.auth.uid;
     }
 
-    // SELECTED GOALS Collection (user's chosen goals)
-    match /selectedGoals/{selectedGoalId} {
-      // Users can read their own selected goals
-      allow read: if isSignedIn() &&
-                     (resource.data.userEmail == request.auth.token.email || isAdmin());
+    // ===========================
+    // GOALS PROGRESS COLLECTION
+    // ===========================
+    match /goalsProgress/{progressId} {
+      // Users can read their own progress
+      allow read: if isApproved() && resource.data.userId == request.auth.uid;
 
-      // Users can create their own selected goals
-      allow create: if isSignedIn() &&
-                       request.resource.data.userEmail == request.auth.token.email;
+      // Admins can read all progress
+      allow read: if isAdmin();
 
-      // Users can update their own selected goals, admins can update any
-      allow update: if isSignedIn() &&
-                       (resource.data.userEmail == request.auth.token.email || isAdmin());
+      // Users can create their own progress entries
+      allow create: if isApproved() && request.resource.data.userId == request.auth.uid;
 
-      // Users can delete their own selected goals, admins can delete any
-      allow delete: if isSignedIn() &&
-                       (resource.data.userEmail == request.auth.token.email || isAdmin());
+      // Admins can create progress for any user
+      allow create: if isAdmin();
+
+      // Users can update their own progress
+      allow update: if isApproved() && resource.data.userId == request.auth.uid;
+
+      // Admins can update any progress
+      allow update: if isAdmin();
+
+      // Users can delete their own progress (to remove goals)
+      allow delete: if isApproved() && resource.data.userId == request.auth.uid;
+
+      // Admins can delete any progress
+      allow delete: if isAdmin();
     }
 
-    // SCHEDULES Collection
-    match /schedules/{scheduleId} {
-      // Users can read their own schedules
-      allow read: if isSignedIn() &&
-                     (resource.data.userEmail == request.auth.token.email || isAdmin());
+    // ===========================
+    // TASKS COLLECTION
+    // ===========================
+    match /tasks/{taskId} {
+      // Users can read tasks for goals they have access to
+      allow read: if isApproved();
 
-      // Users can create their own schedules
-      allow create: if isSignedIn() &&
-                       request.resource.data.userEmail == request.auth.token.email;
+      // Admins can read all tasks
+      allow read: if isAdmin();
 
-      // Users can update their own schedules
-      allow update: if isSignedIn() &&
-                       (resource.data.userEmail == request.auth.token.email || isAdmin());
+      // Admins can create default tasks (userId = null)
+      allow create: if isAdmin() && request.resource.data.userId == null;
 
-      // Users can delete their own schedules
-      allow delete: if isSignedIn() &&
-                       (resource.data.userEmail == request.auth.token.email || isAdmin());
+      // Users can create custom tasks for themselves
+      allow create: if isApproved() && request.resource.data.userId == request.auth.uid;
+
+      // Admins can update any task
+      allow update: if isAdmin();
+
+      // Users can update their own custom tasks
+      allow update: if isApproved() &&
+                       resource.data.userId == request.auth.uid;
+
+      // Admins can delete any task
+      allow delete: if isAdmin();
+
+      // Users can delete their own custom tasks
+      allow delete: if isApproved() &&
+                       resource.data.userId == request.auth.uid;
     }
 
-    // SESSIONS Collection
+    // ===========================
+    // SESSIONS COLLECTION
+    // ===========================
     match /sessions/{sessionId} {
-      // Users can read their own sessions, admins can read all
-      allow read: if isSignedIn() &&
-                     (resource.data.userEmail == request.auth.token.email || isAdmin());
+      // Clients can read their own sessions if they have permission
+      allow read: if isApproved() &&
+                     hasPermission('canAccessSessions') &&
+                     resource.data.clientId == request.auth.uid;
+
+      // Admins can read all sessions
+      allow read: if isAdmin();
 
       // Only admins can create sessions
       allow create: if isAdmin();
@@ -131,46 +164,92 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
-    // DOCUMENTS Collection
-    match /documents/{documentId} {
-      // Users can read their own documents, admins can read all
-      allow read: if isSignedIn() &&
-                     (resource.data.userEmail == request.auth.token.email || isAdmin());
+    // ===========================
+    // SCHEDULES COLLECTION
+    // ===========================
+    match /schedules/{scheduleId} {
+      // Users can read their own schedules if they have permission
+      allow read: if isApproved() &&
+                     hasPermission('canAccessSchedule') &&
+                     resource.data.userId == request.auth.uid;
 
-      // Only admins can create documents
+      // Admins can read all schedules
+      allow read: if isAdmin();
+
+      // Users can create their own schedules if they have permission
+      allow create: if isApproved() &&
+                       hasPermission('canAccessSchedule') &&
+                       request.resource.data.userId == request.auth.uid;
+
+      // Admins can create schedules for any user
       allow create: if isAdmin();
 
-      // Users can update their own documents (for signing), admins can update any
-      allow update: if isSignedIn() &&
-                       (resource.data.userEmail == request.auth.token.email || isAdmin());
+      // Users can update their own schedules
+      allow update: if isApproved() &&
+                       hasPermission('canAccessSchedule') &&
+                       resource.data.userId == request.auth.uid;
 
-      // Only admins can delete documents
+      // Admins can update any schedule
+      allow update: if isAdmin();
+
+      // Users can delete their own schedules
+      allow delete: if isApproved() &&
+                       hasPermission('canAccessSchedule') &&
+                       resource.data.userId == request.auth.uid;
+
+      // Admins can delete any schedule
       allow delete: if isAdmin();
     }
 
-    // CUSTOM GOALS Collection
-    match /customGoals/{customGoalId} {
-      // Users can read their own custom goals, admins can read all
-      allow read: if isSignedIn() &&
-                     (resource.data.userEmail == request.auth.token.email || isAdmin());
+    // ===========================
+    // FORMS COLLECTION
+    // ===========================
+    match /forms/{formId} {
+      // Approved users with permission can read active forms
+      allow read: if isApproved() &&
+                     hasPermission('canAccessForms') &&
+                     resource.data.isActive == true;
 
-      // Users can create their own custom goals
-      allow create: if isSignedIn() &&
-                       request.resource.data.userEmail == request.auth.token.email;
+      // Admins can read all forms
+      allow read: if isAdmin();
 
-      // Users can update their own custom goals
-      allow update: if isSignedIn() &&
-                       (resource.data.userEmail == request.auth.token.email || isAdmin());
-
-      // Users can delete their own custom goals
-      allow delete: if isSignedIn() &&
-                       (resource.data.userEmail == request.auth.token.email || isAdmin());
+      // Only admins can create, update, or delete forms
+      allow create, update, delete: if isAdmin();
     }
 
-    // EXPENSES Collection (Admin only)
-    match /expenses/{expenseId} {
-      // Only admins can access expenses
-      allow read, write: if isAdmin();
+    // ===========================
+    // FORM SUBMISSIONS COLLECTION
+    // ===========================
+    match /formSubmissions/{submissionId} {
+      // Users can read their own submissions
+      allow read: if isApproved() &&
+                     hasPermission('canAccessForms') &&
+                     resource.data.userId == request.auth.uid;
+
+      // Admins can read all submissions
+      allow read: if isAdmin();
+
+      // Users can create their own submissions
+      allow create: if isApproved() &&
+                       hasPermission('canAccessForms') &&
+                       request.resource.data.userId == request.auth.uid;
+
+      // Users can update their own pending submissions
+      allow update: if isApproved() &&
+                       hasPermission('canAccessForms') &&
+                       resource.data.userId == request.auth.uid &&
+                       resource.data.status == 'pending';
+
+      // Admins can update any submission (for approval)
+      allow update: if isAdmin();
+
+      // Only admins can delete submissions
+      allow delete: if isAdmin();
+    }
+
+    // Deny all other access by default
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }

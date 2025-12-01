@@ -2907,9 +2907,10 @@
             if (!currentUser) return;
 
             try {
-                const customGoalsSnapshot = await db.collection('users')
-                    .doc(currentUser.uid)
-                    .collection('customGoals')
+                // Load custom goals from top-level goals collection
+                const customGoalsSnapshot = await db.collection('goals')
+                    .where('isCustom', '==', true)
+                    .where('ownerId', '==', currentUser.uid)
                     .orderBy('createdAt', 'desc')
                     .get();
 

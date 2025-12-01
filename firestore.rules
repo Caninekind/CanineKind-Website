@@ -104,7 +104,10 @@ service cloud.firestore {
       // Admins can update any progress
       allow update: if isAdmin();
 
-      // Only admins can delete progress
+      // Users can delete their own progress (to remove goals)
+      allow delete: if isApproved() && resource.data.userId == request.auth.uid;
+
+      // Admins can delete any progress
       allow delete: if isAdmin();
     }
 
