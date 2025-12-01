@@ -695,22 +695,42 @@
                     </div>
                     <p style="color: #666; margin-bottom: 1.5rem;">Select which training levels this client can access.</p>
 
-                    <div class="checkbox-group">
-                        <div class="checkbox-item" style="margin-right: 2rem;">
+                    <div class="checkbox-group" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem;">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="level0" ${levels.includes(0) ? 'checked' : ''} value="0">
+                            <label for="level0" style="font-weight: 600; color: #2c3e50;">Level 0: Get Ready</label>
+                        </div>
+                        <div class="checkbox-item">
                             <input type="checkbox" id="level1" ${levels.includes(1) ? 'checked' : ''} value="1">
-                            <label for="level1" style="font-weight: 600; color: #2c3e50;">Level 1</label>
+                            <label for="level1" style="font-weight: 600; color: #2c3e50;">Level 1: Basic</label>
                         </div>
-                        <div class="checkbox-item" style="margin-right: 2rem;">
+                        <div class="checkbox-item">
                             <input type="checkbox" id="level2" ${levels.includes(2) ? 'checked' : ''} value="2">
-                            <label for="level2" style="font-weight: 600; color: #2c3e50;">Level 2</label>
+                            <label for="level2" style="font-weight: 600; color: #2c3e50;">Level 2: Intermediate</label>
                         </div>
-                        <div class="checkbox-item" style="margin-right: 2rem;">
+                        <div class="checkbox-item">
                             <input type="checkbox" id="level3" ${levels.includes(3) ? 'checked' : ''} value="3">
-                            <label for="level3" style="font-weight: 600; color: #2c3e50;">Level 3</label>
+                            <label for="level3" style="font-weight: 600; color: #2c3e50;">Level 3: Advanced</label>
                         </div>
                         <div class="checkbox-item">
                             <input type="checkbox" id="level4" ${levels.includes(4) ? 'checked' : ''} value="4">
-                            <label for="level4" style="font-weight: 600; color: #2c3e50;">Level 4</label>
+                            <label for="level4" style="font-weight: 600; color: #2c3e50;">Level 4: Master</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="level5" ${levels.includes(5) ? 'checked' : ''} value="5">
+                            <label for="level5" style="font-weight: 600; color: #2c3e50;">Level 5: Dog Neutrality</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="level6" ${levels.includes(6) ? 'checked' : ''} value="6">
+                            <label for="level6" style="font-weight: 600; color: #2c3e50;">Level 6: Human Neutrality</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="level7" ${levels.includes(7) ? 'checked' : ''} value="7">
+                            <label for="level7" style="font-weight: 600; color: #2c3e50;">Level 7: Trigger Neutrality</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="level8" ${levels.includes(8) ? 'checked' : ''} value="8">
+                            <label for="level8" style="font-weight: 600; color: #2c3e50;">Level 8: Loose Leash</label>
                         </div>
                     </div>
                 </div>
@@ -753,12 +773,17 @@
             if (!selectedClientUid) return;
 
             try {
-                // Gather access permissions
+                // Gather access permissions for all levels (0-8)
                 const accessibleLevels = [];
+                if (document.getElementById('level0').checked) accessibleLevels.push(0);
                 if (document.getElementById('level1').checked) accessibleLevels.push(1);
                 if (document.getElementById('level2').checked) accessibleLevels.push(2);
                 if (document.getElementById('level3').checked) accessibleLevels.push(3);
                 if (document.getElementById('level4').checked) accessibleLevels.push(4);
+                if (document.getElementById('level5').checked) accessibleLevels.push(5);
+                if (document.getElementById('level6').checked) accessibleLevels.push(6);
+                if (document.getElementById('level7').checked) accessibleLevels.push(7);
+                if (document.getElementById('level8').checked) accessibleLevels.push(8);
 
                 const updatedData = {
                     displayName: document.getElementById('displayName').value.trim(),
