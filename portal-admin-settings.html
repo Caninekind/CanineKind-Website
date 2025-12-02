@@ -575,6 +575,82 @@
         let clientData = null;
         let selectedDrives = { food: '', play: '' };
 
+        // Level descriptions
+        const LEVEL_DESCRIPTIONS = {
+            0: 'Get Ready',
+            1: 'Basic',
+            2: 'Intermediate',
+            3: 'Advanced',
+            4: 'Master',
+            5: 'Dog Neutrality',
+            6: 'Human Neutrality',
+            7: 'Trigger Neutrality',
+            8: 'Loose Leash Walking'
+        };
+
+        // Goals structure (simplified version - just IDs and titles)
+        const GOALS_STRUCTURE = {
+            0: [
+                { id: 'training-gear', title: 'Training Gear Checklist' },
+                { id: 'legal-forms', title: 'Sign Legal Forms' },
+                { id: 'review-instructions', title: 'Review Email Instructions' }
+            ],
+            1: [
+                { id: 'crate-manners-1', title: 'Crate Manners' },
+                { id: 'boundaries-thresholds-1', title: 'Boundaries and Thresholds' },
+                { id: 'sit-1', title: 'Sit' },
+                { id: 'down-1', title: 'Down' },
+                { id: 'markers-release-1', title: 'Markers & Release' },
+                { id: 'leave-it-1', title: 'Leave It' },
+                { id: 'place-1', title: 'Place' }
+            ],
+            2: [
+                { id: 'crate-manners-2', title: 'Crate Manners' },
+                { id: 'boundaries-thresholds-2', title: 'Boundaries and Thresholds' },
+                { id: 'sit-2', title: 'Sit' },
+                { id: 'down-2', title: 'Down' },
+                { id: 'markers-release-2', title: 'Markers & Release' },
+                { id: 'leave-it-2', title: 'Leave It' },
+                { id: 'place-2', title: 'Place' },
+                { id: 'toy-ball-out-2', title: 'Toy-Ball Out' }
+            ],
+            3: [
+                { id: 'crate-manners-3', title: 'Crate Manners' },
+                { id: 'boundaries-thresholds-3', title: 'Boundaries and Thresholds' },
+                { id: 'sit-3', title: 'Sit' },
+                { id: 'down-3', title: 'Down' },
+                { id: 'markers-release-3', title: 'Markers & Release' },
+                { id: 'leave-it-3', title: 'Leave It' },
+                { id: 'place-3', title: 'Place' },
+                { id: 'toy-ball-out-3', title: 'Toy-Ball Out' },
+                { id: 'heel-3', title: 'Heel' }
+            ],
+            4: [
+                { id: 'crate-manners-4', title: 'Crate Manners' },
+                { id: 'boundaries-thresholds-4', title: 'Boundaries and Thresholds' },
+                { id: 'sit-4', title: 'Sit' },
+                { id: 'down-4', title: 'Down' },
+                { id: 'markers-release-4', title: 'Markers & Release' },
+                { id: 'leave-it-4', title: 'Leave It' },
+                { id: 'place-4', title: 'Place' },
+                { id: 'toy-ball-out-4', title: 'Toy-Ball Out' },
+                { id: 'heel-4', title: 'Heel' },
+                { id: 'off-leash-recall-4', title: 'Off-Leash Recall' }
+            ],
+            5: [
+                { id: 'dog-neutrality', title: 'Dog Neutrality' }
+            ],
+            6: [
+                { id: 'human-neutrality', title: 'Human Neutrality' }
+            ],
+            7: [
+                { id: 'trigger-neutrality', title: 'Trigger Neutrality' }
+            ],
+            8: [
+                { id: 'loose-leash', title: 'Loose Leash Walking' }
+            ]
+        };
+
         document.addEventListener('DOMContentLoaded', async () => {
             const initialized = initializeFirebase();
             if (!initialized) {
@@ -752,53 +828,89 @@
                 </div>
             `;
 
-            // Training Levels Section
+            // Training Levels & Goals Section
             const levels = settings.accessibleLevels || [];
+            const individualGoals = settings.individualGoals || [];
+
             html += `
                 <div class="settings-section">
                     <div class="section-header">
                         <span class="section-icon">📊</span>
-                        <h2>Accessible Training Levels</h2>
+                        <h2>Accessible Training Levels & Goals</h2>
                     </div>
-                    <p style="color: #666; margin-bottom: 1.5rem;">Select which training levels this client can access.</p>
+                    <p style="color: #666; margin-bottom: 1.5rem;">
+                        Grant access to entire levels or specific goals within levels.
+                        <strong>Tip:</strong> Check a level to grant all goals, or expand to select individual goals.
+                    </p>
 
-                    <div class="checkbox-group" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem;">
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="level0" ${levels.includes(0) ? 'checked' : ''} value="0">
-                            <label for="level0" style="font-weight: 600; color: #2c3e50;">Level 0: Get Ready</label>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+            `;
+
+            // Generate each level with expandable goals
+            for (let level = 0; level <= 8; level++) {
+                const levelGoals = GOALS_STRUCTURE[level];
+                const levelChecked = levels.includes(level);
+                const levelName = LEVEL_DESCRIPTIONS[level];
+
+                html += `
+                    <div style="border: 2px solid #e0e0e0; border-radius: 12px; overflow: hidden; background: white;">
+                        <div style="padding: 1rem; background: ${levelChecked ? '#e8f5e9' : '#f8f9fa'}; display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 1rem; flex: 1;">
+                                <input type="checkbox" id="level${level}" ${levelChecked ? 'checked' : ''} value="${level}"
+                                    onchange="toggleLevel(${level})"
+                                    style="width: 20px; height: 20px; cursor: pointer;">
+                                <label for="level${level}" style="font-weight: 700; color: #2c3e50; font-size: 1.1rem; cursor: pointer; margin: 0;">
+                                    Level ${level}: ${levelName}
+                                    <span style="color: #666; font-weight: 400; font-size: 0.9rem;">(${levelGoals.length} goals)</span>
+                                </label>
+                            </div>
+                            <button type="button" onclick="toggleGoalsList(${level})"
+                                style="background: transparent; border: 2px solid #799972; color: #799972; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.3s;">
+                                <span id="toggle-icon-${level}">▼</span> Show Goals
+                            </button>
                         </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="level1" ${levels.includes(1) ? 'checked' : ''} value="1">
-                            <label for="level1" style="font-weight: 600; color: #2c3e50;">Level 1: Basic</label>
+                        <div id="goals-list-${level}" style="display: none; padding: 1rem; background: #fafbfc; border-top: 2px solid #e0e0e0;">
+                            <div style="margin-bottom: 0.75rem;">
+                                <button type="button" onclick="selectAllGoalsInLevel(${level})"
+                                    style="background: #799972; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; margin-right: 0.5rem; font-size: 0.9rem;">
+                                    ✓ Select All
+                                </button>
+                                <button type="button" onclick="deselectAllGoalsInLevel(${level})"
+                                    style="background: #dc3545; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem;">
+                                    ✗ Deselect All
+                                </button>
+                            </div>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 0.75rem;">
+                `;
+
+                // Add individual goal checkboxes
+                levelGoals.forEach(goal => {
+                    const goalChecked = levelChecked || individualGoals.includes(goal.id);
+                    html += `
+                        <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem; background: white; border-radius: 6px; border: 1px solid #e0e0e0;">
+                            <input type="checkbox" id="goal-${goal.id}" class="goal-checkbox level-${level}-goal"
+                                ${goalChecked ? 'checked' : ''}
+                                ${levelChecked ? 'disabled' : ''}
+                                value="${goal.id}"
+                                style="width: 18px; height: 18px; cursor: pointer;">
+                            <label for="goal-${goal.id}" style="cursor: pointer; margin: 0; font-size: 0.95rem; color: #2c3e50;">
+                                ${goal.title}
+                            </label>
                         </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="level2" ${levels.includes(2) ? 'checked' : ''} value="2">
-                            <label for="level2" style="font-weight: 600; color: #2c3e50;">Level 2: Intermediate</label>
+                    `;
+                });
+
+                html += `
+                            </div>
+                            <p style="margin-top: 0.75rem; font-size: 0.85rem; color: #666; font-style: italic;">
+                                ${levelChecked ? '✓ All goals in this level are accessible (level access granted)' : 'Select individual goals above or check the level checkbox for full access'}
+                            </p>
                         </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="level3" ${levels.includes(3) ? 'checked' : ''} value="3">
-                            <label for="level3" style="font-weight: 600; color: #2c3e50;">Level 3: Advanced</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="level4" ${levels.includes(4) ? 'checked' : ''} value="4">
-                            <label for="level4" style="font-weight: 600; color: #2c3e50;">Level 4: Master</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="level5" ${levels.includes(5) ? 'checked' : ''} value="5">
-                            <label for="level5" style="font-weight: 600; color: #2c3e50;">Level 5: Dog Neutrality</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="level6" ${levels.includes(6) ? 'checked' : ''} value="6">
-                            <label for="level6" style="font-weight: 600; color: #2c3e50;">Level 6: Human Neutrality</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="level7" ${levels.includes(7) ? 'checked' : ''} value="7">
-                            <label for="level7" style="font-weight: 600; color: #2c3e50;">Level 7: Trigger Neutrality</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="level8" ${levels.includes(8) ? 'checked' : ''} value="8">
-                            <label for="level8" style="font-weight: 600; color: #2c3e50;">Level 8: Loose Leash</label>
-                        </div>
+                    </div>
+                `;
+            }
+
+            html += `
                     </div>
                 </div>
             `;
@@ -1012,6 +1124,74 @@
             document.getElementById('settingsContainer').innerHTML = html;
         }
 
+        // Helper functions for level/goal management
+        function toggleLevel(level) {
+            const levelCheckbox = document.getElementById(`level${level}`);
+            const goalCheckboxes = document.querySelectorAll(`.level-${level}-goal`);
+            const goalsList = document.getElementById(`goals-list-${level}`);
+            const levelContainer = levelCheckbox.closest('div').closest('div');
+
+            // Update background color based on checkbox state
+            if (levelCheckbox.checked) {
+                levelContainer.querySelector('div').style.background = '#e8f5e9';
+                // Disable and check all goal checkboxes when level is checked
+                goalCheckboxes.forEach(checkbox => {
+                    checkbox.checked = true;
+                    checkbox.disabled = true;
+                });
+                // Update the message
+                if (goalsList.style.display !== 'none') {
+                    goalsList.querySelector('p').innerHTML = '✓ All goals in this level are accessible (level access granted)';
+                }
+            } else {
+                levelContainer.querySelector('div').style.background = '#f8f9fa';
+                // Enable goal checkboxes when level is unchecked
+                goalCheckboxes.forEach(checkbox => {
+                    checkbox.disabled = false;
+                });
+                // Update the message
+                if (goalsList.style.display !== 'none') {
+                    goalsList.querySelector('p').innerHTML = 'Select individual goals above or check the level checkbox for full access';
+                }
+            }
+        }
+
+        function toggleGoalsList(level) {
+            const goalsList = document.getElementById(`goals-list-${level}`);
+            const toggleIcon = document.getElementById(`toggle-icon-${level}`);
+            const button = toggleIcon.parentElement;
+
+            if (goalsList.style.display === 'none') {
+                goalsList.style.display = 'block';
+                toggleIcon.textContent = '▲';
+                button.childNodes[1].textContent = ' Hide Goals';
+            } else {
+                goalsList.style.display = 'none';
+                toggleIcon.textContent = '▼';
+                button.childNodes[1].textContent = ' Show Goals';
+            }
+        }
+
+        function selectAllGoalsInLevel(level) {
+            const levelCheckbox = document.getElementById(`level${level}`);
+            if (!levelCheckbox.checked) {
+                const goalCheckboxes = document.querySelectorAll(`.level-${level}-goal`);
+                goalCheckboxes.forEach(checkbox => {
+                    checkbox.checked = true;
+                });
+            }
+        }
+
+        function deselectAllGoalsInLevel(level) {
+            const levelCheckbox = document.getElementById(`level${level}`);
+            if (!levelCheckbox.checked) {
+                const goalCheckboxes = document.querySelectorAll(`.level-${level}-goal`);
+                goalCheckboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+            }
+        }
+
         async function saveSettings() {
             if (!selectedClientUid) return;
 
@@ -1027,6 +1207,16 @@
                 if (document.getElementById('level6').checked) accessibleLevels.push(6);
                 if (document.getElementById('level7').checked) accessibleLevels.push(7);
                 if (document.getElementById('level8').checked) accessibleLevels.push(8);
+
+                // Gather individual goal access (only for goals whose level is not fully granted)
+                const individualGoals = [];
+                const allGoalCheckboxes = document.querySelectorAll('.goal-checkbox');
+                allGoalCheckboxes.forEach(checkbox => {
+                    // Only include goals that are checked and not disabled (disabled means level access is granted)
+                    if (checkbox.checked && !checkbox.disabled) {
+                        individualGoals.push(checkbox.value);
+                    }
+                });
 
                 // Collect training tools
                 const trainingTools = [];
@@ -1084,6 +1274,7 @@
                         canAccessSessions: document.getElementById('canAccessSessions').checked,
                         canAccessForms: document.getElementById('canAccessForms').checked,
                         accessibleLevels: accessibleLevels,
+                        individualGoals: individualGoals,
                         hasCompletedIntake: document.getElementById('hasCompletedIntake').checked,
                         firstSessionCompleted: document.getElementById('firstSessionCompleted').checked
                     }

@@ -1886,7 +1886,7 @@
 
                     // Admins have full access to everything
                     if (isAdmin) {
-                        userAccess.accessibleLevels = [0, 1, 2, 3, 4];
+                        userAccess.accessibleLevels = [0, 1, 2, 3, 4, 5, 6, 7, 8];
                         document.getElementById('adminPortalLink').style.display = 'inline-block';
                         console.log('✅ Admin detected - granting full access');
                     }
@@ -2002,11 +2002,8 @@
             // Level 0 is always accessible
             if (level === 0) return true;
 
-            // TEMPORARY: Unlock all goals for testing (remove when Firebase functions are implemented)
-            return true;
-
             // Check if user has level access
-            if (userAccess.levels && userAccess.levels.includes(level)) {
+            if (userAccess.accessibleLevels && userAccess.accessibleLevels.includes(level)) {
                 return true;
             }
             // Check if user has individual goal access
@@ -2089,7 +2086,7 @@
             // Render regular levels
             for (let level = 0; level <= 8; level++) {
                 const goals = GOALS_STRUCTURE[level];
-                const hasLevelAccess = level === 0 || userAccess.levels?.includes(level);
+                const hasLevelAccess = level === 0 || userAccess.accessibleLevels?.includes(level);
                 const isLocked = !hasLevelAccess && !goals.some(g => hasAccessToGoal(g.id, level));
                 const isComingSoon = false; // No longer using coming soon
 
