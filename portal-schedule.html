@@ -830,7 +830,7 @@
         }
 
         .scheduled-activity {
-            padding: 0.6rem 1rem;
+            padding: 0.6rem 2rem 0.6rem 1rem;
             border-radius: 8px;
             font-weight: 500;
             font-size: 0.9rem;
@@ -906,15 +906,30 @@
         }
 
         .remove-activity {
-            margin-left: auto;
+            position: absolute;
+            top: 4px;
+            right: 4px;
             cursor: pointer;
             font-weight: bold;
             opacity: 0.7;
             transition: opacity 0.3s;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            line-height: 1;
+            color: #666;
+            z-index: 10;
         }
 
         .remove-activity:hover {
             opacity: 1;
+            background: rgba(255, 0, 0, 0.1);
+            color: #d32f2f;
         }
 
         .empty-state {
@@ -1409,7 +1424,7 @@
 
             .time-slot {
                 grid-template-columns: 60px 1fr;
-                min-height: 50px;
+                min-height: 120px;
             }
 
             .time-label {
@@ -1436,6 +1451,7 @@
 
             .time-slot {
                 grid-template-columns: 70px 1fr;
+                min-height: 120px;
             }
 
             .day-selector {
@@ -1545,7 +1561,7 @@
 
             /* Fix activity text wrapping on mobile */
             .scheduled-activity {
-                padding: 0.5rem 0.75rem;
+                padding: 0.5rem 1.75rem 0.5rem 0.75rem;
                 font-size: 0.8rem;
                 min-height: auto;
                 flex-wrap: wrap;
@@ -1570,7 +1586,12 @@
             }
 
             .remove-activity {
-                flex-shrink: 0;
+                position: absolute;
+                top: 2px;
+                right: 2px;
+                width: 18px;
+                height: 18px;
+                font-size: 12px;
             }
         }
     </style>
@@ -2654,9 +2675,19 @@
         }
 
         async function resetCurrentDay() {
+            if (!currentDay) {
+                alert('No day selected. Please select a day first.');
+                return;
+            }
+
             if (confirm(`Are you sure you want to reset ${currentDay}'s schedule? This will clear all activities and cannot be undone.`)) {
                 showLoading(true);
                 try {
+                    // Ensure scheduleData exists
+                    if (!scheduleData) {
+                        scheduleData = {};
+                    }
+
                     // Clear the current day's schedule
                     scheduleData[currentDay] = {};
 
@@ -2665,7 +2696,7 @@
                         .doc(currentUser.uid)
                         .collection('schedules')
                         .doc('weekly')
-                        .set(scheduleData);
+                        .set(scheduleData, { merge: true });
 
                     // Reload the day's schedule (will be empty now)
                     loadDaySchedule(currentDay);
