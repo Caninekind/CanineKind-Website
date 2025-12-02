@@ -1937,10 +1937,12 @@
                 displayGoalsTable();
                 populateGoalsBank();
 
-                // Load schedule data from top-level schedules collection
+                // Load schedule data from user's subcollection
                 console.log('🔵 Loading schedule data...');
-                const scheduleDoc = await db.collection('schedules')
-                    .doc(`${currentUser.uid}-weekly`)
+                const scheduleDoc = await db.collection('users')
+                    .doc(currentUser.uid)
+                    .collection('schedules')
+                    .doc('weekly')
                     .get();
 
                 if (scheduleDoc.exists) {
@@ -2659,13 +2661,12 @@
                 console.log('🔵 Current user:', currentUser.email);
                 console.log('🔵 Schedule data:', scheduleData);
 
-                // Save to top-level schedules collection with userId field
-                await db.collection('schedules')
-                    .doc(`${currentUser.uid}-weekly`)
-                    .set({
-                        userId: currentUser.uid,
-                        ...scheduleData
-                    });
+                // Save to user's subcollection
+                await db.collection('users')
+                    .doc(currentUser.uid)
+                    .collection('schedules')
+                    .doc('weekly')
+                    .set(scheduleData);
 
                 console.log('✅ Schedule saved successfully!');
                 alert('Schedule saved successfully!');
