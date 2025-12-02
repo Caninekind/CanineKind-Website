@@ -1106,12 +1106,47 @@
             padding: 2rem;
             margin-bottom: 2rem;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .goals-table-section.collapsed .goals-table-container {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: all 0.3s ease;
+            margin-top: 0;
+        }
+
+        .goals-table-section:not(.collapsed) .goals-table-container {
+            max-height: 2000px;
+            opacity: 1;
+            transition: all 0.3s ease;
+        }
+
+        .goals-collapse-icon {
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+            user-select: none;
+            margin-left: 10px;
+        }
+
+        .goals-table-section.collapsed .goals-collapse-icon {
+            transform: rotate(-90deg);
         }
 
         .table-header {
             margin-bottom: 1.5rem;
             padding-bottom: 1rem;
             border-bottom: 2px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .goals-table-section.collapsed .table-header {
+            margin-bottom: 0;
+            padding-bottom: 1rem;
+            border-bottom: none;
         }
 
         .table-header h3 {
@@ -1608,12 +1643,15 @@
         </div>
 
         <!-- Combined Active Goals & Training Progress -->
-        <div id="combinedGoalsSection" class="goals-table-section" style="display: none;">
-            <div class="table-header">
-                <h3 id="workingTowardsText">You're currently working towards level 1...</h3>
-                <p id="progressSummary">Track your milestones and progress</p>
+        <div id="combinedGoalsSection" class="goals-table-section collapsed" style="display: none;">
+            <div class="table-header" onclick="toggleGoalsSection()" style="cursor: pointer;">
+                <div>
+                    <h3 id="workingTowardsText">You're currently working towards level 1...</h3>
+                    <p id="progressSummary">Track your milestones and progress</p>
+                </div>
+                <span class="goals-collapse-icon" id="goalsCollapseIcon">▼</span>
             </div>
-            <div class="goals-table-container">
+            <div class="goals-table-container" id="goalsTableContainer">
                 <table class="goals-table">
                     <thead>
                         <tr>
@@ -2706,6 +2744,13 @@
         function toggleDrawer() {
             const drawer = document.getElementById('activityDrawer');
             drawer.classList.toggle('open');
+        }
+
+        // Toggle goals section collapsed/expanded
+        function toggleGoalsSection() {
+            const goalsSection = document.getElementById('combinedGoalsSection');
+            const icon = document.getElementById('goalsCollapseIcon');
+            goalsSection.classList.toggle('collapsed');
         }
 
         // Switch between Activities and Goals tabs

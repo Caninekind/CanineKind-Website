@@ -2602,9 +2602,11 @@
             try {
                 const reminders = [];
 
-                // Load schedule data from Firebase
-                const scheduleDoc = await db.collection('schedules')
-                    .doc(`${currentUser.uid}-weekly`)
+                // Load schedule data from Firebase (from user's subcollection)
+                const scheduleDoc = await db.collection('users')
+                    .doc(currentUser.uid)
+                    .collection('schedules')
+                    .doc('weekly')
                     .get();
 
                 if (scheduleDoc.exists) {
@@ -2800,9 +2802,11 @@
             const statusElement = document.getElementById(`${cardId}-status`);
 
             try {
-                // Load current schedule data
-                const scheduleDoc = await db.collection('schedules')
-                    .doc(`${currentUser.uid}-weekly`)
+                // Load current schedule data (from user's subcollection)
+                const scheduleDoc = await db.collection('users')
+                    .doc(currentUser.uid)
+                    .collection('schedules')
+                    .doc('weekly')
                     .get();
 
                 if (scheduleDoc.exists) {
@@ -2833,12 +2837,11 @@
                         }
 
                         // Save updated schedule data
-                        await db.collection('schedules')
-                            .doc(`${currentUser.uid}-weekly`)
-                            .set({
-                                userId: currentUser.uid,
-                                ...scheduleData
-                            });
+                        await db.collection('users')
+                            .doc(currentUser.uid)
+                            .collection('schedules')
+                            .doc('weekly')
+                            .set(scheduleData, { merge: true });
 
                         // Show save confirmation
                         if (statusElement) {
