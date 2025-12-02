@@ -960,8 +960,61 @@
             padding: 2.5rem;
             max-width: 600px;
             width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
             box-shadow: 0 10px 40px rgba(0,0,0,0.3);
             animation: modalSlideIn 0.3s ease-out;
+        }
+
+        .goals-checklist {
+            max-height: 400px;
+            overflow-y: auto;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 2px solid #e8ebf0;
+        }
+
+        .goal-checkbox-item {
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            background: white;
+            border-radius: 8px;
+            border: 2px solid #e8ebf0;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .goal-checkbox-item:hover {
+            border-color: #799972;
+            background: #f8fdf6;
+        }
+
+        .goal-checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #799972;
+        }
+
+        .goal-checkbox-label {
+            flex: 1;
+            cursor: pointer;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .goal-level-badge {
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
         }
 
         @keyframes modalSlideIn {
@@ -1503,6 +1556,33 @@
                 padding: 1rem;
             }
 
+            /* Goals Modal Mobile Fixes */
+            .goals-checklist {
+                max-height: 50vh;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .settings-modal {
+                max-height: 85vh;
+                width: 95%;
+                overflow-y: visible; /* Prevent double scrolling */
+            }
+
+            .modal-actions {
+                flex-direction: column;
+                gap: 0.75rem;
+                margin-top: 1rem;
+            }
+
+            .modal-btn {
+                width: 100%;
+                padding: 1rem;
+            }
+
+            .goal-checkbox-item {
+                padding: 14px;
+            }
+
             .table-header h3 {
                 font-size: 1.1rem;
                 line-height: 1.3;
@@ -1839,6 +1919,23 @@
             <div class="modal-actions">
                 <button class="modal-btn secondary" onclick="closeTimeSettings()">Cancel</button>
                 <button class="modal-btn primary" onclick="saveTimeSettings()">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Goals Selection Modal -->
+    <div class="modal-overlay" id="goalsModal" onclick="if(event.target === this) closeGoalsModal()">
+        <div class="settings-modal">
+            <h2>Manage Goals for Activity</h2>
+            <p class="modal-subtitle" id="goalsModalActivity"></p>
+
+            <div class="goals-checklist" id="goalsChecklist">
+                <!-- Will be populated dynamically -->
+            </div>
+
+            <div class="modal-actions">
+                <button class="modal-btn secondary" onclick="closeGoalsModal()">Cancel</button>
+                <button class="modal-btn primary" onclick="saveActivityGoals()">Save Goals</button>
             </div>
         </div>
     </div>
@@ -2263,10 +2360,11 @@
                 <div class="scheduled-activity ${className} ${hasGoals ? 'has-goal' : ''}"
                      draggable="true"
                      data-activity="${activity}"
-                     data-goal-ids="${goalIds.join(',')}"}>
+                     data-goal-ids="${goalIds.join(',')}"
+                     onclick="openGoalsModal(event, this)">
                     ${activity}
                     ${goalBadgesHTML}
-                    <span class="remove-activity" onclick="removeActivity(this)">✕</span>
+                    <span class="remove-activity" onclick="removeActivity(this); event.stopPropagation();">✕</span>
                 </div>
             `;
         }
@@ -2752,6 +2850,117 @@
             const goalsSection = document.getElementById('combinedGoalsSection');
             const icon = document.getElementById('goalsCollapseIcon');
             goalsSection.classList.toggle('collapsed');
+        }
+
+        // Goals Modal Management
+        let currentActivityElement = null;
+
+        function openGoalsModal(event, activityElement) {
+            // Don't open if clicking the remove button
+            if (event.target.classList.contains('remove-activity')) {
+                return;
+            }
+
+            event.stopPropagation();
+            currentActivityElement = activityElement;
+
+            const activity = activityElement.dataset.activity;
+            const currentGoalIds = activityElement.dataset.goalIds ? activityElement.dataset.goalIds.split(',').filter(id => id) : [];
+
+            // Update modal title
+            document.getElementById('goalsModalActivity').textContent = `Activity: ${activity}`;
+
+            // Populate goals checklist
+            const checklist = document.getElementById('goalsChecklist');
+            if (activeGoals.length === 0) {
+                checklist.innerHTML = '<p style="text-align: center; color: #999; padding: 2rem;">No active goals available. Add goals from the Goals page first.</p>';
+            } else {
+                checklist.innerHTML = activeGoals.map(goal => {
+                    const isChecked = currentGoalIds.includes(goal.id);
+                    const levelText = goal.level ? `Level ${goal.level}` : '';
+                    return `
+                        <div class="goal-checkbox-item">
+                            <input type="checkbox"
+                                   id="goal-check-${goal.id}"
+                                   value="${goal.id}"
+                                   ${isChecked ? 'checked' : ''}
+                                   onchange="toggleGoalCheckbox('${goal.id}')">
+                            <label class="goal-checkbox-label" for="goal-check-${goal.id}">
+                                ${goal.title}
+                            </label>
+                            ${levelText ? `<span class="goal-level-badge">${levelText}</span>` : ''}
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            // Show modal
+            document.getElementById('goalsModal').classList.add('active');
+        }
+
+        function toggleGoalCheckbox(goalId) {
+            // Just for UX feedback - actual saving happens in saveActivityGoals
+            const checkbox = document.getElementById(`goal-check-${goalId}`);
+            const item = checkbox.closest('.goal-checkbox-item');
+            if (checkbox.checked) {
+                item.style.background = '#f8fdf6';
+                item.style.borderColor = '#799972';
+            } else {
+                item.style.background = 'white';
+                item.style.borderColor = '#e8ebf0';
+            }
+        }
+
+        function closeGoalsModal() {
+            document.getElementById('goalsModal').classList.remove('active');
+            currentActivityElement = null;
+        }
+
+        async function saveActivityGoals() {
+            if (!currentActivityElement) return;
+
+            // Get selected goal IDs
+            const checkboxes = document.querySelectorAll('#goalsChecklist input[type="checkbox"]:checked');
+            const selectedGoalIds = Array.from(checkboxes).map(cb => cb.value);
+
+            // Update the activity element's data
+            currentActivityElement.dataset.goalIds = selectedGoalIds.join(',');
+
+            // Find this activity in scheduleData and update it
+            const activity = currentActivityElement.dataset.activity;
+            const timeSlot = currentActivityElement.closest('.time-slot-content');
+            const time = timeSlot.dataset.time;
+
+            if (scheduleData[currentDay] && scheduleData[currentDay][time]) {
+                const activities = scheduleData[currentDay][time];
+                for (let i = 0; i < activities.length; i++) {
+                    const act = activities[i];
+                    const actName = typeof act === 'string' ? act : act.activity;
+                    if (actName === activity) {
+                        // Update the activity with new goalIds
+                        if (typeof act === 'string') {
+                            // Convert string to object
+                            activities[i] = {
+                                activity: act,
+                                goalIds: selectedGoalIds
+                            };
+                        } else {
+                            // Update existing object
+                            act.goalIds = selectedGoalIds;
+                        }
+                        break;
+                    }
+                }
+            }
+
+            // Reload the schedule to reflect changes
+            loadDaySchedule(currentDay);
+
+            // Close modal
+            closeGoalsModal();
+
+            // Show feedback
+            alert('Goals updated! Don\'t forget to save your schedule.');
         }
 
         // Switch between Activities and Goals tabs
