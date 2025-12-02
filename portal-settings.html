@@ -287,6 +287,38 @@
             flex: 1;
         }
 
+        /* Trigger Note */
+        .trigger-note {
+            background: linear-gradient(135deg, #fff9e6 0%, #fff4d4 100%);
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: #7a5c1e;
+            line-height: 1.5;
+        }
+
+        .trigger-note strong {
+            color: #6b4e19;
+        }
+
+        /* Disabled tool options styling */
+        .tool-option input[type="checkbox"]:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .tool-option:has(input[type="checkbox"]:disabled) {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .tool-option:has(input[type="checkbox"]:disabled):hover {
+            border-color: #e8ebf0;
+            background: linear-gradient(135deg, #fafbfc 0%, #f8f9fa 100%);
+        }
+
         /* Locked Section */
         .locked-section {
             position: relative;
@@ -674,18 +706,108 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="triggersOutside">Triggers Outside the Home <span id="outsidePendingBadge" class="pending-approval-badge" style="display: none;">Pending Approval</span></label>
-                    <textarea id="triggersOutside" placeholder="Describe any triggers your dog has when outside (e.g., other dogs, bikes, loud noises)"></textarea>
+                    <label>Triggers Outside the Home <span id="outsidePendingBadge" class="pending-approval-badge" style="display: none;">Pending Approval</span></label>
+                    <div class="trigger-note">
+                        <strong>Note:</strong> The selection of these notes related to your dog is guided by your trainer at the end of your first session. These selections will be used as information to send you accurate notifications for your self scheduled training sessions. Contact your trainer if you believe that you need to change this information for your dog.
+                    </div>
+                    <div class="training-tools-grid">
+                        <div class="tool-option trigger-outside-option">
+                            <input type="checkbox" id="trigger_out_dogs" value="Dogs" disabled>
+                            <label for="trigger_out_dogs">Dogs</label>
+                        </div>
+                        <div class="tool-option trigger-outside-option">
+                            <input type="checkbox" id="trigger_out_small_dogs" value="Small dogs" disabled>
+                            <label for="trigger_out_small_dogs">Small dogs</label>
+                        </div>
+                        <div class="tool-option trigger-outside-option">
+                            <input type="checkbox" id="trigger_out_adults" value="Adults" disabled>
+                            <label for="trigger_out_adults">Adults</label>
+                        </div>
+                        <div class="tool-option trigger-outside-option">
+                            <input type="checkbox" id="trigger_out_kids" value="Kids" disabled>
+                            <label for="trigger_out_kids">Kids</label>
+                        </div>
+                        <div class="tool-option trigger-outside-option">
+                            <input type="checkbox" id="trigger_out_squirrels" value="Squirrels" disabled>
+                            <label for="trigger_out_squirrels">Squirrels</label>
+                        </div>
+                        <div class="tool-option trigger-outside-option">
+                            <input type="checkbox" id="trigger_out_cats" value="Cats" disabled>
+                            <label for="trigger_out_cats">Cats</label>
+                        </div>
+                        <div class="tool-option trigger-outside-option">
+                            <input type="checkbox" id="trigger_out_bunnies" value="Bunnies" disabled>
+                            <label for="trigger_out_bunnies">Bunnies</label>
+                        </div>
+                        <div class="tool-option trigger-outside-option">
+                            <input type="checkbox" id="trigger_out_cars" value="Cars" disabled>
+                            <label for="trigger_out_cars">Cars</label>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="triggersInside">Triggers Inside the Home <span id="insidePendingBadge" class="pending-approval-badge" style="display: none;">Pending Approval</span></label>
-                    <textarea id="triggersInside" placeholder="Describe any triggers your dog has at home (e.g., doorbell, visitors, other pets)"></textarea>
+                    <label>Triggers Inside the Home <span id="insidePendingBadge" class="pending-approval-badge" style="display: none;">Pending Approval</span></label>
+                    <div class="training-tools-grid">
+                        <div class="tool-option trigger-inside-option">
+                            <input type="checkbox" id="trigger_in_dog_housemates" value="Dog - Housemates" disabled>
+                            <label for="trigger_in_dog_housemates">Dog - Housemates</label>
+                        </div>
+                        <div class="tool-option trigger-inside-option">
+                            <input type="checkbox" id="trigger_in_dog_visitors" value="Dog - Visitors" disabled>
+                            <label for="trigger_in_dog_visitors">Dog - Visitors</label>
+                        </div>
+                        <div class="tool-option trigger-inside-option">
+                            <input type="checkbox" id="trigger_in_human_visitors" value="Human - Visitors" disabled>
+                            <label for="trigger_in_human_visitors">Human - Visitors</label>
+                        </div>
+                        <div class="tool-option trigger-inside-option">
+                            <input type="checkbox" id="trigger_in_kids_visitors" value="Kids - Visitors" disabled>
+                            <label for="trigger_in_kids_visitors">Kids - Visitors</label>
+                        </div>
+                        <div class="tool-option trigger-inside-option">
+                            <input type="checkbox" id="trigger_in_kids" value="Kids" disabled>
+                            <label for="trigger_in_kids">Kids</label>
+                        </div>
+                        <div class="tool-option trigger-inside-option">
+                            <input type="checkbox" id="trigger_in_cats_housemates" value="Cats - Housemates" disabled>
+                            <label for="trigger_in_cats_housemates">Cats - Housemates</label>
+                        </div>
+                        <div class="tool-option trigger-inside-option">
+                            <input type="checkbox" id="trigger_in_delivery" value="Delivery People" disabled>
+                            <label for="trigger_in_delivery">Delivery People</label>
+                        </div>
+                        <div class="tool-option trigger-inside-option">
+                            <input type="checkbox" id="trigger_in_noises" value="Loud Noises" disabled>
+                            <label for="trigger_in_noises">Loud Noises</label>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="behavioralIssues">Behavioral Issues <span id="behaviorPendingBadge" class="pending-approval-badge" style="display: none;">Pending Approval</span></label>
-                    <textarea id="behavioralIssues" placeholder="Describe any behavioral issues (e.g., jumping, pulling, reactivity)"></textarea>
+                    <label>Behavioral Notes <span id="behaviorPendingBadge" class="pending-approval-badge" style="display: none;">Pending Approval</span></label>
+                    <div class="training-tools-grid">
+                        <div class="tool-option behavioral-note-option">
+                            <input type="checkbox" id="behavior_puppy" value="Puppy Development" disabled>
+                            <label for="behavior_puppy">Puppy Development</label>
+                        </div>
+                        <div class="tool-option behavioral-note-option">
+                            <input type="checkbox" id="behavior_dog_reactivity" value="Dog Reactivity" disabled>
+                            <label for="behavior_dog_reactivity">Dog Reactivity</label>
+                        </div>
+                        <div class="tool-option behavioral-note-option">
+                            <input type="checkbox" id="behavior_human_reactivity" value="Human Reactivity" disabled>
+                            <label for="behavior_human_reactivity">Human Reactivity</label>
+                        </div>
+                        <div class="tool-option behavioral-note-option">
+                            <input type="checkbox" id="behavior_noise_sensitivity" value="Noise Sensitivity" disabled>
+                            <label for="behavior_noise_sensitivity">Noise Sensitivity</label>
+                        </div>
+                        <div class="tool-option behavioral-note-option">
+                            <input type="checkbox" id="behavior_counter_surfing" value="Counter Surfing" disabled>
+                            <label for="behavior_counter_surfing">Counter Surfing</label>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -790,14 +912,34 @@
                         // Load advanced settings
                         if (data.trainingTools) {
                             data.trainingTools.forEach(tool => {
-                                const checkbox = document.querySelector(`input[value="${tool}"]`);
+                                const checkbox = document.querySelector(`.tool-option input[value="${tool}"]`);
                                 if (checkbox) checkbox.checked = true;
                             });
                         }
 
-                        document.getElementById('triggersOutside').value = data.triggersOutside || '';
-                        document.getElementById('triggersInside').value = data.triggersInside || '';
-                        document.getElementById('behavioralIssues').value = data.behavioralIssues || '';
+                        // Load triggers outside
+                        if (data.triggersOutside && Array.isArray(data.triggersOutside)) {
+                            data.triggersOutside.forEach(trigger => {
+                                const checkbox = document.querySelector(`.trigger-outside-option input[value="${trigger}"]`);
+                                if (checkbox) checkbox.checked = true;
+                            });
+                        }
+
+                        // Load triggers inside
+                        if (data.triggersInside && Array.isArray(data.triggersInside)) {
+                            data.triggersInside.forEach(trigger => {
+                                const checkbox = document.querySelector(`.trigger-inside-option input[value="${trigger}"]`);
+                                if (checkbox) checkbox.checked = true;
+                            });
+                        }
+
+                        // Load behavioral notes
+                        if (data.behavioralNotes && Array.isArray(data.behavioralNotes)) {
+                            data.behavioralNotes.forEach(note => {
+                                const checkbox = document.querySelector(`.behavioral-note-option input[value="${note}"]`);
+                                if (checkbox) checkbox.checked = true;
+                            });
+                        }
 
                         if (data.foodDrive) {
                             selectDrive('food', data.foodDrive);
@@ -877,9 +1019,9 @@
             hideMessages();
 
             try {
-                // Collect training tools
+                // Collect training tools (only non-disabled checkboxes are counted for user changes)
                 const trainingTools = [];
-                document.querySelectorAll('.tool-option input[type="checkbox"]:checked').forEach(checkbox => {
+                document.querySelectorAll('.tool-option:not(.trigger-outside-option):not(.trigger-inside-option):not(.behavioral-note-option) input[type="checkbox"]:checked').forEach(checkbox => {
                     trainingTools.push(checkbox.value);
                 });
 
@@ -901,9 +1043,27 @@
                 // If advanced settings are unlocked (first session completed), save the additional fields
                 if (originalSettings.settings && originalSettings.settings.firstSessionCompleted === true) {
                     settingsData.trainingTools = trainingTools;
-                    settingsData.triggersOutside = document.getElementById('triggersOutside').value.trim();
-                    settingsData.triggersInside = document.getElementById('triggersInside').value.trim();
-                    settingsData.behavioralIssues = document.getElementById('behavioralIssues').value.trim();
+
+                    // Collect triggers outside
+                    const triggersOutside = [];
+                    document.querySelectorAll('.trigger-outside-option input[type="checkbox"]:checked').forEach(checkbox => {
+                        triggersOutside.push(checkbox.value);
+                    });
+                    settingsData.triggersOutside = triggersOutside;
+
+                    // Collect triggers inside
+                    const triggersInside = [];
+                    document.querySelectorAll('.trigger-inside-option input[type="checkbox"]:checked').forEach(checkbox => {
+                        triggersInside.push(checkbox.value);
+                    });
+                    settingsData.triggersInside = triggersInside;
+
+                    // Collect behavioral notes
+                    const behavioralNotes = [];
+                    document.querySelectorAll('.behavioral-note-option input[type="checkbox"]:checked').forEach(checkbox => {
+                        behavioralNotes.push(checkbox.value);
+                    });
+                    settingsData.behavioralNotes = behavioralNotes;
                 }
 
                 // Save directly to user document (not subcollection)
