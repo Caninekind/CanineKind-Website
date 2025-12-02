@@ -43,6 +43,34 @@ service cloud.firestore {
 
       // Only admins can delete users
       allow delete: if isAdmin();
+
+      // ===========================
+      // USER SUBCOLLECTIONS
+      // ===========================
+
+      // Users can read and write their own schedules (subcollection)
+      match /schedules/{document=**} {
+        allow read, write: if isApproved() && isOwner(userId);
+        allow read, write: if isAdmin();
+      }
+
+      // Users can read and write their own selected goals (subcollection)
+      match /selectedGoals/{goalId} {
+        allow read, write: if isApproved() && isOwner(userId);
+        allow read, write: if isAdmin();
+      }
+
+      // Users can read and write their own goal access settings (subcollection)
+      match /goalAccess/{document=**} {
+        allow read, write: if isApproved() && isOwner(userId);
+        allow read, write: if isAdmin();
+      }
+
+      // Users can read and write their own signed documents (subcollection)
+      match /signedDocuments/{documentId} {
+        allow read, write: if isApproved() && isOwner(userId);
+        allow read, write: if isAdmin();
+      }
     }
 
     // ===========================
