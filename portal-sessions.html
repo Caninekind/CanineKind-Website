@@ -250,6 +250,197 @@
             box-shadow: 0 4px 10px rgba(121, 153, 114, 0.3);
         }
 
+        /* Training Reminders Styles */
+        .reminder-level-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .reminder-level-header {
+            background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+            color: white;
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .reminder-level-header:hover {
+            box-shadow: 0 4px 12px rgba(121, 153, 114, 0.3);
+        }
+
+        .reminder-collapse-icon {
+            font-size: 0.9rem;
+            transition: transform 0.3s ease;
+        }
+
+        .reminder-level-group.collapsed .reminder-collapse-icon {
+            transform: rotate(-90deg);
+        }
+
+        .reminder-level-content {
+            max-height: 5000px;
+            overflow: hidden;
+            transition: max-height 0.4s ease, opacity 0.3s ease;
+            opacity: 1;
+        }
+
+        .reminder-level-group.collapsed .reminder-level-content {
+            max-height: 0;
+            opacity: 0;
+        }
+
+        .reminder-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid #799972;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .reminder-card:hover {
+            box-shadow: 0 4px 12px rgba(121, 153, 114, 0.15);
+            transform: translateX(4px);
+        }
+
+        .reminder-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            cursor: pointer;
+        }
+
+        .reminder-card h3 {
+            color: #2c3e50;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .reminder-card-icon {
+            font-size: 0.9rem;
+            color: #799972;
+            transition: transform 0.3s ease;
+        }
+
+        .reminder-card.collapsed .reminder-card-icon {
+            transform: rotate(-90deg);
+        }
+
+        .reminder-card-content {
+            max-height: 2000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            opacity: 1;
+        }
+
+        .reminder-card.collapsed .reminder-card-content {
+            max-height: 0;
+            opacity: 0;
+        }
+
+        .reminder-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .reminder-detail {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid #799972;
+        }
+
+        .reminder-detail strong {
+            display: block;
+            color: #799972;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .reminder-detail span {
+            color: #2c3e50;
+            font-size: 1rem;
+        }
+
+        .prep-instructions {
+            background: #e8f5e9;
+            padding: 1.25rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 3px solid #799972;
+        }
+
+        .prep-instructions strong {
+            display: block;
+            color: #2e7d32;
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .prep-instructions p {
+            color: #1b5e20;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .personal-note-section {
+            background: #fff9e6;
+            padding: 1.25rem;
+            border-radius: 8px;
+            border-left: 3px solid #f9a825;
+        }
+
+        .personal-note-section textarea {
+            width: 100%;
+            min-height: 80px;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        .personal-note-section textarea:focus {
+            outline: none;
+            border-color: #799972;
+        }
+
+        .save-note-btn {
+            background: #799972;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.25rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.75rem;
+            transition: all 0.3s;
+        }
+
+        .save-note-btn:hover {
+            background: #6a8862;
+            box-shadow: 0 2px 8px rgba(121, 153, 114, 0.3);
+        }
+
 
         /* Mobile Styles */
         @media (max-width: 768px) {
@@ -314,6 +505,13 @@
             <p>View your upcoming and past training sessions</p>
         </div>
 
+        <!-- Training Reminders Section -->
+        <div id="trainingRemindersSection" style="display: none; margin-bottom: 3rem; background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+            <h2 style="color: #2c3e50; font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px;">📅 Your Weekly Training Plan</h2>
+            <p style="color: #666; font-size: 1.1rem; margin-bottom: 2rem;">Here's your at-home training plan based on your scheduled activities and goals</p>
+            <div id="reminderCards"></div>
+        </div>
+
         <!-- Upcoming Sessions Section -->
         <div class="section-header">
             <h3>Upcoming Sessions</h3>
@@ -345,6 +543,65 @@
 
     <script>
         let currentUser = null;
+        let selectedGoals = {};
+
+        // Training Prep Instructions for each goal at each level
+        const TRAINING_PREP_INSTRUCTIONS = {
+            'sit': {
+                1: 'Bring small, soft training treats. Practice in a quiet area with minimal distractions. Keep sessions short (5-10 minutes).',
+                2: 'Practice with mild distractions present. Bring high-value treats and work on duration.',
+                3: 'Practice in public places with more distractions. Work on sit-stays with distance.',
+                4: 'Master level - practice sit command in highly distracting environments and at a distance.'
+            },
+            'down': {
+                1: 'Use a comfortable mat or towel for your dog. Bring soft treats and practice in a quiet space.',
+                2: 'Practice down with mild distractions. Work on holding the position longer.',
+                3: 'Practice in different locations and with moderate distractions.',
+                4: 'Master level - down-stay in public places with high distractions.'
+            },
+            'recall': {
+                1: 'Since we\'re still on level 1, make sure you bring your longline! Use high-value treats and practice in a safe, enclosed area.',
+                2: 'Bring your longline for safety. Practice with mild distractions present. Use a special recall word.',
+                3: 'Practice recall with moderate distractions. Begin working on distance recalls.',
+                4: 'Master level recall - practice in highly distracting environments. Work towards reliable off-leash recall.'
+            },
+            'markers-release': {
+                1: 'Bring a clicker or use a verbal marker ("Yes!"). Have plenty of small treats ready.',
+                2: 'Practice clear, consistent markers. Work on timing and precision.',
+                3: 'Use markers with more complex behaviors and in distracting environments.',
+                4: 'Master level - markers should be second nature. Practice with advanced behaviors.'
+            },
+            'place': {
+                1: 'Bring your dog\'s place mat or bed. Use treats to lure them to the spot. Practice in a quiet area.',
+                2: 'Practice "place" with mild distractions. Work on duration and distance.',
+                3: 'Use the place command in different locations. Increase distractions.',
+                4: 'Master level - your dog should go to place and stay even in highly distracting environments.'
+            },
+            'crate-manners': {
+                1: 'Make the crate comfortable with bedding and safe toys. Bring high-value treats for positive associations.',
+                2: 'Practice longer duration crate time. Work on calm entry and exit.',
+                3: 'Your dog should be comfortable in the crate for extended periods. Practice in different locations.',
+                4: 'Master level - your dog should love their crate and be calm for extended periods.'
+            },
+            'boundaries-thresholds': {
+                1: 'Practice at familiar doorways first. Use treats to reward waiting. Keep sessions short and positive.',
+                2: 'Increase duration and practice at different thresholds. Add mild distractions.',
+                3: 'Practice boundary respect in public spaces and new environments.',
+                4: 'Master level - your dog should automatically wait at all thresholds and boundaries.'
+            },
+            'leave-it': {
+                1: 'Start with low-value items. Use high-value treats as rewards. Practice in a controlled environment.',
+                2: 'Increase difficulty with more tempting items. Practice on walks with real-world distractions.',
+                3: 'Work on leave-it at a distance and with highly tempting objects.',
+                4: 'Master level - your dog should reliably leave anything on command, even off-leash.'
+            },
+            'basic-engagement': {
+                1: 'Bring your dog\'s favorite treats. Practice in a quiet area with minimal distractions. Keep sessions fun and short.',
+                2: 'Practice engagement with mild distractions present. Work on increasing duration of focus.',
+                3: 'Practice in busier environments. Your dog should check in regularly during walks.',
+                4: 'Master level - your dog should be highly engaged and responsive even in distracting environments.'
+            }
+        };
 
         // Initialize Firebase and check authentication
         document.addEventListener('DOMContentLoaded', async () => {
@@ -428,6 +685,9 @@
                 console.error('Error loading sessions:', error);
                 upcomingGrid.innerHTML = '<div class="empty-state"><p style="color: #dc3545;">Error loading sessions. Please refresh.</p></div>';
             }
+
+            // Load training reminders
+            await loadTrainingReminders();
         }
 
         // Fetch user sessions from Firestore
@@ -488,6 +748,261 @@
             /* Future implementation:
             window.location.href = `portal-session-detail.html?id=${sessionId}`;
             */
+        }
+
+        // Training Reminders Functions
+        async function loadTrainingReminders() {
+            try {
+                const reminders = [];
+
+                // First, load user's goals progress
+                const goalsSnapshot = await db.collection('goalsProgress')
+                    .where('userId', '==', currentUser.uid)
+                    .get();
+
+                selectedGoals = {};
+                goalsSnapshot.docs.forEach(doc => {
+                    selectedGoals[doc.id] = {
+                        id: doc.id,
+                        ...doc.data()
+                    };
+                });
+
+                // Load schedule data from Firebase
+                const scheduleDoc = await db.collection('users')
+                    .doc(currentUser.uid)
+                    .collection('schedules')
+                    .doc('weekly')
+                    .get();
+
+                if (scheduleDoc.exists) {
+                    const scheduleData = scheduleDoc.data();
+
+                    // Check each day and time slot for goal pairings
+                    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+                    days.forEach(day => {
+                        if (scheduleData[day]) {
+                            Object.keys(scheduleData[day]).forEach(timeSlot => {
+                                const activities = scheduleData[day][timeSlot];
+
+                                if (Array.isArray(activities)) {
+                                    activities.forEach(activityData => {
+                                        // Check if this activity has paired goals
+                                        let goalIds = [];
+                                        if (typeof activityData === 'object') {
+                                            // New format: goalIds array
+                                            if (activityData.goalIds && Array.isArray(activityData.goalIds)) {
+                                                goalIds = activityData.goalIds;
+                                            }
+                                            // Backward compatibility: old goalId string
+                                            else if (activityData.goalId) {
+                                                goalIds = [activityData.goalId];
+                                            }
+                                        }
+
+                                        const activityName = typeof activityData === 'object' ? activityData.activity : activityData;
+                                        const personalNote = typeof activityData === 'object' ? activityData.personalNote : null;
+
+                                        // Create a reminder for each goal associated with this activity
+                                        goalIds.forEach(goalId => {
+                                            if (selectedGoals[goalId]) {
+                                                const goal = selectedGoals[goalId];
+                                                const goalLevel = goal.level;
+
+                                                // Get prep instructions for this goal at this level
+                                                const prepInstructions = TRAINING_PREP_INSTRUCTIONS[goalId]?.[goalLevel] ||
+                                                                        'Bring treats and be ready to practice!';
+
+                                                reminders.push({
+                                                    goalTitle: goal.title,
+                                                    goalId: goalId,
+                                                    day: day,
+                                                    time: timeSlot,
+                                                    activity: activityName,
+                                                    level: goalLevel,
+                                                    prepInstructions: prepInstructions,
+                                                    personalNote: personalNote
+                                                });
+                                            }
+                                        });
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+
+                // Display reminders if any exist
+                if (reminders.length > 0) {
+                    displayTrainingReminders(reminders);
+                } else {
+                    displayNoReminders();
+                }
+            } catch (error) {
+                console.error('Error loading training reminders:', error);
+                document.getElementById('trainingRemindersSection').style.display = 'none';
+            }
+        }
+
+        function displayTrainingReminders(reminders) {
+            const section = document.getElementById('trainingRemindersSection');
+            const container = document.getElementById('reminderCards');
+
+            // Group reminders by level
+            const remindersByLevel = {};
+            reminders.forEach(reminder => {
+                const levelKey = reminder.level;
+                if (!remindersByLevel[levelKey]) {
+                    remindersByLevel[levelKey] = [];
+                }
+                remindersByLevel[levelKey].push(reminder);
+            });
+
+            let html = '';
+
+            // Sort levels
+            const sortedLevels = Object.keys(remindersByLevel).sort((a, b) => parseInt(a) - parseInt(b));
+
+            sortedLevels.forEach(levelKey => {
+                const level = parseInt(levelKey);
+                const levelReminders = remindersByLevel[levelKey];
+                const levelName = level === 0 ? 'Preparation' : `Level ${level}`;
+
+                html += `
+                    <div class="reminder-level-group collapsed" id="reminder-level-${level}">
+                        <div class="reminder-level-header" onclick="toggleReminderLevel(${level})">
+                            <span>${levelName} (${levelReminders.length} goal${levelReminders.length !== 1 ? 's' : ''})</span>
+                            <span class="reminder-collapse-icon">▼</span>
+                        </div>
+                        <div class="reminder-level-content">
+                `;
+
+                levelReminders.forEach((reminder, index) => {
+                    const cardId = `reminder-card-${level}-${index}`;
+                    const hasPersonalNote = reminder.personalNote && reminder.personalNote.trim() !== '';
+                    html += `
+                        <div class="reminder-card collapsed" id="${cardId}" data-day="${reminder.day}" data-time="${reminder.time}" data-goal-id="${reminder.goalId}" data-activity="${reminder.activity}">
+                            <div class="reminder-card-header" onclick="toggleReminderCard('${cardId}')">
+                                <h3>${reminder.goalTitle}</h3>
+                                <span class="reminder-card-icon">▼</span>
+                            </div>
+                            <div class="reminder-card-content">
+                                <div class="reminder-info">
+                                    <div class="reminder-detail">
+                                        <strong>📅 When:</strong>
+                                        <span>${reminder.day}, ${reminder.time}</span>
+                                    </div>
+                                    <div class="reminder-detail">
+                                        <strong>📍 Where:</strong>
+                                        <span>${reminder.activity}</span>
+                                    </div>
+                                </div>
+
+                                <div class="prep-instructions">
+                                    <strong>✅ How to Prep:</strong>
+                                    <p>${reminder.prepInstructions}</p>
+                                </div>
+
+                                <div class="personal-note-section">
+                                    <div style="margin-bottom: 0.75rem;">
+                                        <strong>📝 Personal Note for This Goal:</strong>
+                                    </div>
+                                    <p style="font-size: 0.85rem; color: #666; margin-bottom: 0.75rem; line-height: 1.4;">
+                                        Add a custom note to yourself for this training session
+                                    </p>
+                                    <textarea
+                                        id="note-${reminder.day}-${reminder.time}-${reminder.goalId}"
+                                        placeholder="Example: Focus on high-value treats today..."
+                                        style="width: 100%;"
+                                    >${hasPersonalNote ? reminder.personalNote : ''}</textarea>
+                                    <button class="save-note-btn"
+                                        onclick="savePersonalNote('${reminder.day}', '${reminder.time}', '${reminder.goalId}', '${reminder.activity}')">
+                                        Save Note
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += `
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            section.style.display = 'block';
+        }
+
+        function displayNoReminders() {
+            document.getElementById('trainingRemindersSection').style.display = 'none';
+        }
+
+        function toggleReminderLevel(level) {
+            const group = document.getElementById(`reminder-level-${level}`);
+            if (group) {
+                group.classList.toggle('collapsed');
+            }
+        }
+
+        function toggleReminderCard(cardId) {
+            const card = document.getElementById(cardId);
+            if (card) {
+                card.classList.toggle('collapsed');
+            }
+        }
+
+        async function savePersonalNote(day, time, goalId, activity) {
+            const noteField = document.getElementById(`note-${day}-${time}-${goalId}`);
+            const personalNote = noteField.value.trim();
+
+            try {
+                // Load current schedule
+                const scheduleDoc = await db.collection('users')
+                    .doc(currentUser.uid)
+                    .collection('schedules')
+                    .doc('weekly')
+                    .get();
+
+                if (!scheduleDoc.exists) {
+                    alert('Schedule not found');
+                    return;
+                }
+
+                const scheduleData = scheduleDoc.data();
+
+                // Find and update the specific activity with this goal
+                if (scheduleData[day] && scheduleData[day][time]) {
+                    const activities = scheduleData[day][time];
+
+                    // Find the activity that matches
+                    for (let i = 0; i < activities.length; i++) {
+                        if (typeof activities[i] === 'object' &&
+                            activities[i].activity === activity &&
+                            (activities[i].goalIds?.includes(goalId) || activities[i].goalId === goalId)) {
+                            // Update the personal note
+                            activities[i].personalNote = personalNote;
+                            break;
+                        }
+                    }
+
+                    // Save back to Firestore
+                    await db.collection('users')
+                        .doc(currentUser.uid)
+                        .collection('schedules')
+                        .doc('weekly')
+                        .set(scheduleData);
+
+                    alert('✓ Personal note saved!');
+                } else {
+                    alert('Activity not found in schedule');
+                }
+            } catch (error) {
+                console.error('Error saving personal note:', error);
+                alert('Error saving note: ' + error.message);
+            }
         }
 
         // Sign out function
