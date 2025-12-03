@@ -694,17 +694,22 @@
         async function fetchUserSessions() {
             try {
                 // Query top-level sessions collection filtered by clientId
+                // Note: Removed .orderBy() to avoid requiring a composite index
+                // We'll sort client-side instead
                 const sessionsRef = db.collection('sessions')
-                    .where('clientId', '==', currentUser.uid)
-                    .orderBy('sessionDate', 'desc');
+                    .where('clientId', '==', currentUser.uid);
 
                 const snapshot = await sessionsRef.get();
 
-                return snapshot.docs.map(doc => ({
+                // Map and sort client-side by sessionDate descending
+                const sessions = snapshot.docs.map(doc => ({
                     id: doc.id,
                     ...doc.data(),
                     date: doc.data().sessionDate.toDate()
                 }));
+
+                // Sort by date, newest first
+                return sessions.sort((a, b) => b.date - a.date);
             } catch (error) {
                 console.error('Error fetching sessions:', error);
                 return [];
@@ -753,6 +758,7 @@
         // Training Reminders Functions
         async function loadTrainingReminders() {
             try {
+                console.log('🔵 Loading training reminders...');
                 const reminders = [];
 
                 // First, load user's goals progress
@@ -760,12 +766,15 @@
                     .where('userId', '==', currentUser.uid)
                     .get();
 
+                console.log('📊 Found', goalsSnapshot.size, 'goals in progress');
+
                 selectedGoals = {};
                 goalsSnapshot.docs.forEach(doc => {
                     selectedGoals[doc.id] = {
                         id: doc.id,
                         ...doc.data()
                     };
+                    console.log('  ✓ Goal:', doc.id, '-', doc.data().title);
                 });
 
                 // Load schedule data from Firebase
@@ -777,6 +786,7 @@
 
                 if (scheduleDoc.exists) {
                     const scheduleData = scheduleDoc.data();
+                    console.log('📅 Schedule data loaded');
 
                     // Check each day and time slot for goal pairings
                     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -804,6 +814,10 @@
                                         const activityName = typeof activityData === 'object' ? activityData.activity : activityData;
                                         const personalNote = typeof activityData === 'object' ? activityData.personalNote : null;
 
+                                        if (goalIds.length > 0) {
+                                            console.log('  📍', day, timeSlot, '-', activityName, '- Goals:', goalIds);
+                                        }
+
                                         // Create a reminder for each goal associated with this activity
                                         goalIds.forEach(goalId => {
                                             if (selectedGoals[goalId]) {
@@ -824,6 +838,9 @@
                                                     prepInstructions: prepInstructions,
                                                     personalNote: personalNote
                                                 });
+                                                console.log('    ✅ Created reminder for:', goal.title);
+                                            } else {
+                                                console.warn('    ⚠️ Goal not found in selectedGoals:', goalId);
                                             }
                                         });
                                     });
@@ -831,16 +848,23 @@
                             });
                         }
                     });
+                } else {
+                    console.log('ℹ️ No schedule data found');
                 }
+
+                console.log('📋 Total reminders created:', reminders.length);
 
                 // Display reminders if any exist
                 if (reminders.length > 0) {
+                    console.log('✅ Displaying training reminders');
                     displayTrainingReminders(reminders);
                 } else {
+                    console.log('ℹ️ No reminders to display');
                     displayNoReminders();
                 }
             } catch (error) {
-                console.error('Error loading training reminders:', error);
+                console.error('❌ Error loading training reminders:', error);
+                console.error('Error details:', error.message, error.stack);
                 document.getElementById('trainingRemindersSection').style.display = 'none';
             }
         }
