@@ -626,6 +626,7 @@
 
         // Load sessions for the user
         async function loadSessions() {
+            console.log('🟢 loadSessions() called');
             const upcomingGrid = document.getElementById('upcomingSessions');
             const pastGrid = document.getElementById('pastSessions');
 
@@ -687,7 +688,9 @@
             }
 
             // Load training reminders
+            console.log('🟡 About to call loadTrainingReminders()');
             await loadTrainingReminders();
+            console.log('🟢 loadTrainingReminders() completed');
         }
 
         // Fetch user sessions from Firestore
