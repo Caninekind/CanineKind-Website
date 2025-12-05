@@ -1649,7 +1649,7 @@
                     const userData = userDoc.data();
                     userAccess = userData.settings || {};
                     isAdmin = userData.role === 'admin'; // Set global isAdmin variable
-                    console.log('✅ User settings loaded. Role:', userData.role, 'isAdmin:', isAdmin);
+                    console.log('✅ User settings loaded. Role:', userData.role, 'Status:', userData.status, 'ApprovedBy:', userData.approvedBy, 'isAdmin:', isAdmin);
 
                     // Admins have full access to everything
                     if (isAdmin) {
