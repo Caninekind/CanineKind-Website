@@ -507,9 +507,12 @@
 
         <!-- Training Reminders Section -->
         <div id="trainingRemindersSection" style="display: none; margin-bottom: 3rem; background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-            <h2 style="color: #2c3e50; font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px;">📅 Your Weekly Training Plan</h2>
-            <p style="color: #666; font-size: 1.1rem; margin-bottom: 2rem;">Here's your at-home training plan based on your scheduled activities and goals</p>
+            <h2 style="color: #2c3e50; font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px;">YOU HAVE PLANS TO WORK ON YOUR TRAINING GOALS THIS WEEK!</h2>
+            <p style="color: #666; font-size: 1.1rem; margin-bottom: 2rem;">here are the plans you scheduled:</p>
             <div id="reminderCards"></div>
+            <div id="notificationNote" style="display: none; margin-top: 2rem; padding: 1.5rem; background: #f8f9fa; border-radius: 10px; border-left: 4px solid #4a90e2; color: #555; font-size: 0.95rem; line-height: 1.6;">
+                <strong>Note:</strong> Your notification and training reminders are based on your settings in the "Account Settings" page. Please ensure that the settings for your dog that were created between you and your trainer during your first session are accurate, and that you have accurately selected the tools that you are currently using. If you would like to opt out of text notifications or change the frequency, you can do this in your user settings. If you're having issues, contact <a href="mailto:caninekindtraining@gmail.com" style="color: #4a90e2; text-decoration: none;">caninekindtraining@gmail.com</a>!
+            </div>
         </div>
 
         <!-- Upcoming Sessions Section -->
@@ -601,6 +604,19 @@
                 3: 'Practice in busier environments. Your dog should check in regularly during walks.',
                 4: 'Master level - your dog should be highly engaged and responsive even in distracting environments.'
             }
+        };
+
+        // Activity-specific motivational messages
+        const ACTIVITY_MESSAGES = {
+            'neighborhood walk': "You're going on a walk around your neighborhood! This is a great opportunity for you to work on goals - CanineKind",
+            'forest hike': "You're going on a forest hike! This is a great opportunity to work on your dog's recall around distractions! - CanineKind",
+            'park visit': "You're heading to the park! A perfect place to practice training with real-world distractions - CanineKind",
+            'backyard training': "Training in your backyard! A controlled environment is perfect for building foundations - CanineKind",
+            'downtown walk': "Walking downtown! Great for socialization and practicing commands in busy environments - CanineKind",
+            'beach trip': "Beach time! A fun and challenging environment for practicing recall and engagement - CanineKind",
+            'trail walk': "Trail walk ahead! Natural settings are excellent for building confidence and focus - CanineKind",
+            'pet store visit': "Pet store visit! A high-distraction environment perfect for advanced training - CanineKind",
+            'default': "Time for training! This is a great opportunity to work on your goals with your dog - CanineKind"
         };
 
         // Initialize Firebase and check authentication
@@ -887,85 +903,72 @@
         function displayTrainingReminders(reminders) {
             const section = document.getElementById('trainingRemindersSection');
             const container = document.getElementById('reminderCards');
+            const notificationNote = document.getElementById('notificationNote');
 
-            // Group reminders by level
-            const remindersByLevel = {};
+            // Group reminders by activity (day + time + activity name)
+            const remindersByActivity = {};
             reminders.forEach(reminder => {
-                const levelKey = reminder.level;
-                if (!remindersByLevel[levelKey]) {
-                    remindersByLevel[levelKey] = [];
+                const activityKey = `${reminder.day}|${reminder.time}|${reminder.activity}`;
+                if (!remindersByActivity[activityKey]) {
+                    remindersByActivity[activityKey] = {
+                        day: reminder.day,
+                        time: reminder.time,
+                        activity: reminder.activity,
+                        goals: []
+                    };
                 }
-                remindersByLevel[levelKey].push(reminder);
+                remindersByActivity[activityKey].goals.push(reminder);
             });
 
             let html = '';
 
-            // Sort levels
-            const sortedLevels = Object.keys(remindersByLevel).sort((a, b) => parseInt(a) - parseInt(b));
+            // Sort activities by day of week
+            const dayOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+            const sortedActivities = Object.entries(remindersByActivity).sort((a, b) => {
+                const dayA = dayOrder.indexOf(a[1].day);
+                const dayB = dayOrder.indexOf(b[1].day);
+                if (dayA !== dayB) return dayA - dayB;
+                // If same day, sort by time
+                return a[1].time.localeCompare(b[1].time);
+            });
 
-            sortedLevels.forEach(levelKey => {
-                const level = parseInt(levelKey);
-                const levelReminders = remindersByLevel[levelKey];
-                const levelName = level === 0 ? 'Preparation' : `Level ${level}`;
+            sortedActivities.forEach(([key, activityData], activityIndex) => {
+                const activityKey = `activity-${activityIndex}`;
+                const activityName = activityData.activity.toUpperCase();
+                const time = activityData.time.toUpperCase();
+                const day = activityData.day.toUpperCase();
 
-                html += `
-                    <div class="reminder-level-group collapsed" id="reminder-level-${level}">
-                        <div class="reminder-level-header" onclick="toggleReminderLevel(${level})">
-                            <span>${levelName} (${levelReminders.length} goal${levelReminders.length !== 1 ? 's' : ''})</span>
-                            <span class="reminder-collapse-icon">▼</span>
-                        </div>
-                        <div class="reminder-level-content">
-                `;
+                // Get activity message (case-insensitive lookup)
+                const activityLower = activityData.activity.toLowerCase();
+                const activityMessage = ACTIVITY_MESSAGES[activityLower] || ACTIVITY_MESSAGES['default'];
 
-                levelReminders.forEach((reminder, index) => {
-                    const cardId = `reminder-card-${level}-${index}`;
-                    const hasPersonalNote = reminder.personalNote && reminder.personalNote.trim() !== '';
-                    html += `
-                        <div class="reminder-card collapsed" id="${cardId}" data-day="${reminder.day}" data-time="${reminder.time}" data-goal-id="${reminder.goalId}" data-activity="${reminder.activity}">
-                            <div class="reminder-card-header" onclick="toggleReminderCard('${cardId}')">
-                                <h3>${reminder.goalTitle}</h3>
-                                <span class="reminder-card-icon">▼</span>
-                            </div>
-                            <div class="reminder-card-content">
-                                <div class="reminder-info">
-                                    <div class="reminder-detail">
-                                        <strong>📅 When:</strong>
-                                        <span>${reminder.day}, ${reminder.time}</span>
-                                    </div>
-                                    <div class="reminder-detail">
-                                        <strong>📍 Where:</strong>
-                                        <span>${reminder.activity}</span>
-                                    </div>
-                                </div>
-
-                                <div class="prep-instructions">
-                                    <strong>✅ How to Prep:</strong>
-                                    <p>${reminder.prepInstructions}</p>
-                                </div>
-
-                                <div class="personal-note-section">
-                                    <div style="margin-bottom: 0.75rem;">
-                                        <strong>📝 Personal Note for This Goal:</strong>
-                                    </div>
-                                    <p style="font-size: 0.85rem; color: #666; margin-bottom: 0.75rem; line-height: 1.4;">
-                                        Add a custom note to yourself for this training session
-                                    </p>
-                                    <textarea
-                                        id="note-${reminder.day}-${reminder.time}-${reminder.goalId}"
-                                        placeholder="Example: Focus on high-value treats today..."
-                                        style="width: 100%;"
-                                    >${hasPersonalNote ? reminder.personalNote : ''}</textarea>
-                                    <button class="save-note-btn"
-                                        onclick="savePersonalNote('${reminder.day}', '${reminder.time}', '${reminder.goalId}', '${reminder.activity}')">
-                                        Save Note
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
+                // Format goals list as "Level X Goal; Level Y Goal"
+                const goalsFormatted = activityData.goals
+                    .map(g => `Level ${g.level} ${g.goalTitle}`)
+                    .join('; ');
 
                 html += `
+                    <div class="reminder-activity-group" id="${activityKey}" style="margin-bottom: 1.5rem; border: 1px solid #ddd; border-radius: 10px; overflow: hidden;">
+                        <div class="reminder-activity-header" onclick="toggleActivitySection('${activityKey}')" style="background: #4a90e2; color: white; padding: 1rem 1.5rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 1.1rem;">
+                            <span>${activityName} ${time} ${day}</span>
+                            <span class="activity-collapse-icon" style="font-size: 1.2rem; transition: transform 0.3s;">▼</span>
+                        </div>
+                        <div class="reminder-activity-content" style="display: none; padding: 1.5rem; background: #f8f9fa;">
+                            <p style="color: #555; font-size: 1rem; margin-bottom: 1.5rem; font-style: italic; line-height: 1.5;">
+                                ${activityMessage}
+                            </p>
+
+                            <div style="margin-bottom: 1.5rem;">
+                                <strong style="color: #2c3e50; font-size: 1rem;">Goals:</strong>
+                                <p style="color: #444; font-size: 0.95rem; margin-top: 0.5rem;">${goalsFormatted}</p>
+                            </div>
+
+                            <div style="padding: 1rem; background: white; border-radius: 8px; border-left: 4px solid #27ae60;">
+                                <strong style="color: #2c3e50;">Notification settings:</strong>
+                                <p style="color: #555; font-size: 0.9rem; margin-top: 0.5rem; line-height: 1.5;">
+                                    You will receive a notification 45 minutes before your session, 10 minutes before your session and 10 minutes after your session to record notes.
+                                </p>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -973,23 +976,26 @@
 
             container.innerHTML = html;
             section.style.display = 'block';
+            notificationNote.style.display = 'block';
         }
 
         function displayNoReminders() {
             document.getElementById('trainingRemindersSection').style.display = 'none';
         }
 
-        function toggleReminderLevel(level) {
-            const group = document.getElementById(`reminder-level-${level}`);
-            if (group) {
-                group.classList.toggle('collapsed');
-            }
-        }
+        function toggleActivitySection(activityKey) {
+            const activity = document.getElementById(activityKey);
+            if (activity) {
+                const content = activity.querySelector('.reminder-activity-content');
+                const icon = activity.querySelector('.activity-collapse-icon');
 
-        function toggleReminderCard(cardId) {
-            const card = document.getElementById(cardId);
-            if (card) {
-                card.classList.toggle('collapsed');
+                if (content.style.display === 'none') {
+                    content.style.display = 'block';
+                    icon.style.transform = 'rotate(180deg)';
+                } else {
+                    content.style.display = 'none';
+                    icon.style.transform = 'rotate(0deg)';
+                }
             }
         }
 
