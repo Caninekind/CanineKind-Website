@@ -664,33 +664,32 @@
                 console.log('🔷 Step 6: fetchUserSessions() returned', sessions.length, 'sessions');
 
                 if (sessions.length === 0) {
-                    console.log('🔷 Step 7: No sessions found, clearing grids');
-                    upcomingGrid.innerHTML = '';
-                    pastGrid.innerHTML = '';
-                    return;
-                }
-
-                console.log('🔷 Step 8: Separating upcoming and past sessions');
-                // Separate upcoming and past sessions
-                const now = new Date();
-                const upcoming = sessions.filter(s => s.date > now);
-                const past = sessions.filter(s => s.date <= now);
-                console.log('🔷 Step 9:', upcoming.length, 'upcoming,', past.length, 'past sessions');
-
-                // Render upcoming sessions
-                console.log('🔷 Step 10: Rendering upcoming sessions');
-                if (upcoming.length > 0) {
-                    upcomingGrid.innerHTML = upcoming.map(session => renderSessionCard(session, 'upcoming')).join('');
-                } else {
+                    console.log('🔷 Step 7: No sessions found, showing empty state');
                     upcomingGrid.innerHTML = '<div class="empty-state"><p style="color: #999;">No upcoming sessions</p></div>';
-                }
-
-                // Render past sessions
-                console.log('🔷 Step 11: Rendering past sessions');
-                if (past.length > 0) {
-                    pastGrid.innerHTML = past.map(session => renderSessionCard(session, 'completed')).join('');
-                } else {
                     pastGrid.innerHTML = '<div class="empty-state"><p style="color: #999;">No past sessions</p></div>';
+                } else {
+                    console.log('🔷 Step 8: Separating upcoming and past sessions');
+                    // Separate upcoming and past sessions
+                    const now = new Date();
+                    const upcoming = sessions.filter(s => s.date > now);
+                    const past = sessions.filter(s => s.date <= now);
+                    console.log('🔷 Step 9:', upcoming.length, 'upcoming,', past.length, 'past sessions');
+
+                    // Render upcoming sessions
+                    console.log('🔷 Step 10: Rendering upcoming sessions');
+                    if (upcoming.length > 0) {
+                        upcomingGrid.innerHTML = upcoming.map(session => renderSessionCard(session, 'upcoming')).join('');
+                    } else {
+                        upcomingGrid.innerHTML = '<div class="empty-state"><p style="color: #999;">No upcoming sessions</p></div>';
+                    }
+
+                    // Render past sessions
+                    console.log('🔷 Step 11: Rendering past sessions');
+                    if (past.length > 0) {
+                        pastGrid.innerHTML = past.map(session => renderSessionCard(session, 'completed')).join('');
+                    } else {
+                        pastGrid.innerHTML = '<div class="empty-state"><p style="color: #999;">No past sessions</p></div>';
+                    }
                 }
 
                 console.log('🔷 Step 12: Session rendering completed');
