@@ -2031,10 +2031,13 @@
             const goal = GOALS_STRUCTURE[level].find(g => g.id === goalId);
             if (!goal) return;
 
+            console.log('🔧 toggleGoal called:', { goalId, level, isAdmin, currentUser: currentUser?.uid });
+
             // Save scroll position before any operations
             const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
 
             if (selectedGoals.hasOwnProperty(goalId)) {
+                console.log('📤 Attempting to remove goal:', goalId, 'Level:', level);
                 // Check if this is a Level 0 (onboarding) goal - these cannot be removed
                 if (level === 0) {
                     alert('This is a required onboarding goal and cannot be removed. Please complete all onboarding tasks before proceeding with other training goals.');
@@ -2045,56 +2048,81 @@
                 if (confirm('Are you sure you want to remove this goal? Your progress will be saved.')) {
                     try {
                         showLoading(true);
+                        console.log('🗑️ Deleting goal from Firestore...');
                         const progressDocId = selectedGoals[goalId]?.progressDocId;
+                        console.log('📄 Progress doc ID:', progressDocId);
+
                         if (progressDocId) {
                             await db.collection('goalsProgress')
                                 .doc(progressDocId)
                                 .delete();
+                            console.log('✅ Goal deleted from Firestore');
                         }
 
                         delete selectedGoals[goalId];
+                        console.log('✅ Goal removed from selectedGoals');
 
                         // Render updates
                         try {
+                            console.log('🎨 Rendering levels...');
                             renderLevels();
+                            console.log('📊 Updating level progress...');
                             updateLevelProgress();
+                            console.log('✅ Rendering complete');
                         } catch (renderError) {
-                            console.error('Error rendering after goal removal:', renderError);
+                            console.error('❌ Error rendering after goal removal:', renderError);
+                            console.error('Render error stack:', renderError.stack);
+                            alert('Error updating display after removal: ' + renderError.message);
                         }
 
                         // Restore scroll position after rendering
                         window.scrollTo(0, scrollPosition);
                     } catch (error) {
-                        console.error('Error removing goal:', error);
+                        console.error('❌ Error removing goal:', error);
+                        console.error('Error stack:', error.stack);
                         alert('Error removing goal: ' + error.message);
                     } finally {
                         showLoading(false);
                     }
                 }
             } else {
+                console.log('📥 Attempting to add goal:', goalId, 'at level', level);
                 // Before adding a goal, check if prerequisite level is complete (unless admin)
+                console.log('🔍 Prerequisite check: level > 1?', level > 1, 'isAdmin?', isAdmin);
                 if (level > 1 && !isAdmin) {
                     // Extract base goal name (e.g., 'sit' from 'sit-2')
                     const baseGoalName = goalId.replace(/-\d+$/, '');
                     const previousLevel = level - 1;
                     const previousGoalId = `${baseGoalName}-${previousLevel}`;
 
+                    console.log('🔍 Checking prerequisite:', {
+                        baseGoalName,
+                        previousLevel,
+                        previousGoalId,
+                        hasSelectedGoals: Object.keys(selectedGoals)
+                    });
+
                     // Check if previous level exists for this goal
                     const previousLevelGoal = GOALS_STRUCTURE[previousLevel]?.find(g => g.id === previousGoalId);
+                    console.log('🔍 Previous level goal found:', previousLevelGoal);
 
                     if (previousLevelGoal) {
                         // Check if user has selected the previous level goal
                         if (!selectedGoals[previousGoalId]) {
+                            console.log('❌ Previous level goal not selected');
                             alert(`You must first add "${previousLevelGoal.title}" from Level ${previousLevel} before you can work on Level ${level}.`);
                             return;
                         }
 
                         // Check if previous level goal is 100% complete
                         const previousProgress = calculateGoalProgress(previousGoalId);
+                        console.log('📊 Previous level progress:', previousProgress, '%');
                         if (previousProgress < 100) {
+                            console.log('❌ Previous level not complete');
                             alert(`You must complete "${previousLevelGoal.title}" (Level ${previousLevel}) at 100% before advancing to Level ${level}. Current progress: ${previousProgress}%`);
                             return;
                         }
+                        console.log('✅ Prerequisites met, proceeding with goal addition');
                     }
                 }
 
