@@ -630,16 +630,20 @@
             const upcomingGrid = document.getElementById('upcomingSessions');
             const pastGrid = document.getElementById('pastSessions');
 
+            console.log('🔷 Step 1: About to check admin status');
             // Check if user is admin and show admin portal link
             try {
                 const userDoc = await db.collection('users').doc(currentUser.uid).get();
+                console.log('🔷 Step 2: Got user doc, checking admin role');
                 if (userDoc.exists && userDoc.data().role === 'admin') {
                     document.getElementById('adminPortalLink').style.display = 'inline-block';
                 }
+                console.log('🔷 Step 3: Admin check completed');
             } catch (error) {
-                console.error('Error checking admin status:', error);
+                console.error('❌ Error checking admin status:', error);
             }
 
+            console.log('🔷 Step 4: Starting sessions try-catch block');
             try {
                 // TODO: Fetch sessions from Firestore
                 // For now, we'll use placeholder data structure
@@ -655,20 +659,26 @@
                 //   - notes: object { pre, during, post }
                 //   - homework: array
 
+                console.log('🔷 Step 5: About to call fetchUserSessions()');
                 const sessions = await fetchUserSessions();
+                console.log('🔷 Step 6: fetchUserSessions() returned', sessions.length, 'sessions');
 
                 if (sessions.length === 0) {
+                    console.log('🔷 Step 7: No sessions found, clearing grids');
                     upcomingGrid.innerHTML = '';
                     pastGrid.innerHTML = '';
                     return;
                 }
 
+                console.log('🔷 Step 8: Separating upcoming and past sessions');
                 // Separate upcoming and past sessions
                 const now = new Date();
                 const upcoming = sessions.filter(s => s.date > now);
                 const past = sessions.filter(s => s.date <= now);
+                console.log('🔷 Step 9:', upcoming.length, 'upcoming,', past.length, 'past sessions');
 
                 // Render upcoming sessions
+                console.log('🔷 Step 10: Rendering upcoming sessions');
                 if (upcoming.length > 0) {
                     upcomingGrid.innerHTML = upcoming.map(session => renderSessionCard(session, 'upcoming')).join('');
                 } else {
@@ -676,14 +686,17 @@
                 }
 
                 // Render past sessions
+                console.log('🔷 Step 11: Rendering past sessions');
                 if (past.length > 0) {
                     pastGrid.innerHTML = past.map(session => renderSessionCard(session, 'completed')).join('');
                 } else {
                     pastGrid.innerHTML = '<div class="empty-state"><p style="color: #999;">No past sessions</p></div>';
                 }
 
+                console.log('🔷 Step 12: Session rendering completed');
+
             } catch (error) {
-                console.error('Error loading sessions:', error);
+                console.error('❌ Error loading sessions:', error);
                 upcomingGrid.innerHTML = '<div class="empty-state"><p style="color: #dc3545;">Error loading sessions. Please refresh.</p></div>';
             }
 
