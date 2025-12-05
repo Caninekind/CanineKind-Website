@@ -2053,6 +2053,19 @@
                         console.log('📄 Progress doc ID:', progressDocId);
 
                         if (progressDocId) {
+                            // First, read the document to check its contents
+                            const docSnapshot = await db.collection('goalsProgress')
+                                .doc(progressDocId)
+                                .get();
+
+                            if (docSnapshot.exists) {
+                                const docData = docSnapshot.data();
+                                console.log('📋 Document data:', docData);
+                                console.log('📋 Document userId:', docData.userId);
+                                console.log('📋 Current user:', currentUser.uid);
+                                console.log('📋 Match?', docData.userId === currentUser.uid);
+                            }
+
                             await db.collection('goalsProgress')
                                 .doc(progressDocId)
                                 .delete();
