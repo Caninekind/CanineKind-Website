@@ -982,6 +982,7 @@
         let userAccess = { levels: [], individualGoals: [] };
         let selectedGoals = {};
         let currentLevel = 0;
+        let isAdmin = false; // Track if user is admin
         let pendingMilestone = null; // Track milestone being edited
         let completedGoalData = null; // Track goal completion for notes
 
@@ -1647,8 +1648,8 @@
                 if (userDoc.exists) {
                     const userData = userDoc.data();
                     userAccess = userData.settings || {};
-                    const isAdmin = userData.role === 'admin';
-                    console.log('✅ User settings loaded. Role:', userData.role);
+                    isAdmin = userData.role === 'admin'; // Set global isAdmin variable
+                    console.log('✅ User settings loaded. Role:', userData.role, 'isAdmin:', isAdmin);
 
                     // Admins have full access to everything
                     if (isAdmin) {
@@ -2052,19 +2053,51 @@
                         }
 
                         delete selectedGoals[goalId];
-                        renderLevels();
-                        updateLevelProgress();
+
+                        // Render updates
+                        try {
+                            renderLevels();
+                            updateLevelProgress();
+                        } catch (renderError) {
+                            console.error('Error rendering after goal removal:', renderError);
+                        }
 
                         // Restore scroll position after rendering
                         window.scrollTo(0, scrollPosition);
                     } catch (error) {
                         console.error('Error removing goal:', error);
-                        alert('Error removing goal');
+                        alert('Error removing goal: ' + error.message);
                     } finally {
                         showLoading(false);
                     }
                 }
             } else {
+                // Before adding a goal, check if prerequisite level is complete (unless admin)
+                if (level > 1 && !isAdmin) {
+                    // Extract base goal name (e.g., 'sit' from 'sit-2')
+                    const baseGoalName = goalId.replace(/-\d+$/, '');
+                    const previousLevel = level - 1;
+                    const previousGoalId = `${baseGoalName}-${previousLevel}`;
+
+                    // Check if previous level exists for this goal
+                    const previousLevelGoal = GOALS_STRUCTURE[previousLevel]?.find(g => g.id === previousGoalId);
+
+                    if (previousLevelGoal) {
+                        // Check if user has selected the previous level goal
+                        if (!selectedGoals[previousGoalId]) {
+                            alert(`You must first add "${previousLevelGoal.title}" from Level ${previousLevel} before you can work on Level ${level}.`);
+                            return;
+                        }
+
+                        // Check if previous level goal is 100% complete
+                        const previousProgress = calculateGoalProgress(previousGoalId);
+                        if (previousProgress < 100) {
+                            alert(`You must complete "${previousLevelGoal.title}" (Level ${previousLevel}) at 100% before advancing to Level ${level}. Current progress: ${previousProgress}%`);
+                            return;
+                        }
+                    }
+                }
+
                 // Select goal
                 try {
                     showLoading(true);
@@ -2114,7 +2147,7 @@
                     window.scrollTo(0, scrollPosition);
                 } catch (error) {
                     console.error('Error selecting goal:', error);
-                    alert('Error selecting goal');
+                    alert('Error selecting goal: ' + error.message);
                 } finally {
                     showLoading(false);
                 }
