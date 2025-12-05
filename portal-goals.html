@@ -1649,7 +1649,7 @@
                     const userData = userDoc.data();
                     userAccess = userData.settings || {};
                     isAdmin = userData.role === 'admin'; // Set global isAdmin variable
-                    console.log('✅ User settings loaded. Role:', userData.role, 'isAdmin:', isAdmin);
+                    console.log('✅ User settings loaded. Role:', userData.role, 'Status:', userData.status, 'ApprovedBy:', userData.approvedBy, 'isAdmin:', isAdmin);
 
                     // Admins have full access to everything
                     if (isAdmin) {
@@ -2431,10 +2431,10 @@
 
             try {
                 // Load custom goals from top-level goals collection
+                // Note: Removed .orderBy() to avoid requiring a composite index
                 const customGoalsSnapshot = await db.collection('goals')
                     .where('isCustom', '==', true)
                     .where('ownerId', '==', currentUser.uid)
-                    .orderBy('createdAt', 'desc')
                     .get();
 
                 const customGoalsList = document.getElementById('customGoalsList');
@@ -2445,9 +2445,17 @@
                     return;
                 }
 
+                // Sort client-side by createdAt descending
+                const customGoals = customGoalsSnapshot.docs
+                    .map(doc => ({ id: doc.id, ...doc.data() }))
+                    .sort((a, b) => {
+                        const dateA = a.createdAt?.toDate?.() || new Date(0);
+                        const dateB = b.createdAt?.toDate?.() || new Date(0);
+                        return dateB - dateA;
+                    });
+
                 let html = '<div class="goals-grid" style="margin-top: 1rem;">';
-                customGoalsSnapshot.docs.forEach(doc => {
-                    const goal = { id: doc.id, ...doc.data() };
+                customGoals.forEach(goal => {
                     const progress = calculateCustomGoalProgress(goal);
 
                     html += `
@@ -2483,7 +2491,7 @@
 
                 // Unlock the custom goals section if there are goals
                 const customGoalsHeader = document.querySelector('[onclick="toggleLevelContainer(\'custom-goals\')"]');
-                if (customGoalsHeader && customGoalsSnapshot.size > 0) {
+                if (customGoalsHeader && customGoals.length > 0) {
                     customGoalsHeader.classList.remove('locked');
                     const lockIcon = customGoalsHeader.querySelector('.lock-icon');
                     if (lockIcon) lockIcon.remove();
