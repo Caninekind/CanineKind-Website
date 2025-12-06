@@ -24,6 +24,19 @@ service firebase.storage {
                      firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role == 'admin';
     }
 
+    // Signature images - users can upload their own signatures
+    match /signatures/{userId}/{signatureFile} {
+      // Users can read their own signatures
+      allow read: if isOwner(userId);
+
+      // Users can write their own signatures
+      allow write: if isSignedIn() && request.auth.uid == userId;
+
+      // Admins can read all signatures
+      allow read: if isSignedIn() &&
+                     firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
     // Form uploads - admins only
     match /forms/{allPaths=**} {
       allow read: if isSignedIn();
