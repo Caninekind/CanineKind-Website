@@ -1,0 +1,39 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Signed documents - users can upload their own signed documents
+    match /signed-documents/{userId}/{document} {
+      // Users can read their own documents
+      allow read: if isOwner(userId);
+
+      // Users can write their own documents
+      allow write: if isSignedIn() && request.auth.uid == userId;
+
+      // Admins can read all documents
+      allow read: if isSignedIn() &&
+                     firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // Form uploads - admins only
+    match /forms/{allPaths=**} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() &&
+                      firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // Deny all other access by default
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
