@@ -288,8 +288,178 @@
         }
 
         async function loadSubmissions() {
-            // Placeholder for future implementation
-            // This would query form submissions from Firestore
+            const submissionsList = document.getElementById('submissionsList');
+
+            try {
+                // Query all form submissions, ordered by most recent first
+                const submissionsSnapshot = await db.collection('formSubmissions')
+                    .orderBy('submittedAt', 'desc')
+                    .limit(50)
+                    .get();
+
+                if (submissionsSnapshot.empty) {
+                    submissionsList.innerHTML = `
+                        <div class="empty-state">
+                            <div style="font-size: 4rem; margin-bottom: 1rem;">📋</div>
+                            <p>No form submissions yet. Submissions will appear here when clients complete forms.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = '<div class="submissions-list" style="display: flex; flex-direction: column; gap: 1rem;">';
+
+                submissionsSnapshot.docs.forEach(doc => {
+                    const submission = doc.data();
+                    const submittedDate = submission.submittedAt?.toDate() || new Date();
+                    const formattedDate = submittedDate.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+
+                    html += `
+                        <div class="submission-card" style="background: white; border-radius: 10px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-left: 4px solid #799972;">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                                <div>
+                                    <h3 style="color: #2c3e50; font-size: 1.2rem; margin-bottom: 0.5rem;">${submission.formTitle || 'Form Submission'}</h3>
+                                    <p style="color: #666; font-size: 0.9rem; margin: 0;">
+                                        <strong>From:</strong> ${submission.userEmail || 'Unknown'}<br>
+                                        <strong>Submitted:</strong> ${formattedDate}
+                                    </p>
+                                </div>
+                                <span style="background: #51cf66; color: white; padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">
+                                    ${submission.status || 'Submitted'}
+                                </span>
+                            </div>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button onclick="viewSubmission('${doc.id}')" style="background: #4a90e2; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 5px; cursor: pointer; font-weight: 500;">
+                                    View Details
+                                </button>
+                                <button onclick="downloadSubmissionData('${doc.id}')" style="background: #799972; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 5px; cursor: pointer; font-weight: 500;">
+                                    Download JSON
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += '</div>';
+                submissionsList.innerHTML = html;
+
+            } catch (error) {
+                console.error('Error loading submissions:', error);
+                submissionsList.innerHTML = `
+                    <div class="empty-state">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">❌</div>
+                        <p style="color: #dc3545;">Error loading submissions. Please try refreshing the page.</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function viewSubmission(submissionId) {
+            try {
+                const doc = await db.collection('formSubmissions').doc(submissionId).get();
+                if (!doc.exists) {
+                    alert('Submission not found');
+                    return;
+                }
+
+                const submission = doc.data();
+                const formData = submission.formData || {};
+
+                // Create a formatted display of the form data
+                let content = `
+                    <div style="max-height: 70vh; overflow-y: auto; padding: 1rem;">
+                        <h2 style="color: #799972; margin-bottom: 1rem;">${submission.formTitle}</h2>
+                        <p style="color: #666; margin-bottom: 1.5rem;">
+                            <strong>Submitted by:</strong> ${submission.userEmail}<br>
+                            <strong>Date:</strong> ${submission.submittedAt?.toDate().toLocaleString()}
+                        </p>
+                        <hr style="margin-bottom: 1.5rem;">
+                        <div style="display: grid; gap: 1rem;">
+                `;
+
+                // Display all form fields
+                Object.entries(formData).forEach(([key, value]) => {
+                    // Skip internal fields
+                    if (key === 'access_key' || key === 'subject' || key === 'from_name' || key === 'botcheck') {
+                        return;
+                    }
+
+                    // Format the key name
+                    const formattedKey = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                    const formattedValue = Array.isArray(value) ? value.join(', ') : value;
+
+                    content += `
+                        <div style="background: #f8f9fa; padding: 0.75rem; border-radius: 5px;">
+                            <strong style="color: #2c3e50;">${formattedKey}:</strong>
+                            <p style="margin: 0.5rem 0 0 0; color: #555;">${formattedValue || '(not provided)'}</p>
+                        </div>
+                    `;
+                });
+
+                content += `
+                        </div>
+                    </div>
+                `;
+
+                // Create modal
+                const modal = document.createElement('div');
+                modal.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 10000; padding: 2rem;';
+                modal.innerHTML = `
+                    <div style="background: white; border-radius: 10px; max-width: 800px; width: 100%; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+                        ${content}
+                        <div style="padding: 1rem; border-top: 1px solid #e0e0e0; text-align: right;">
+                            <button onclick="this.closest('[style*=fixed]').remove()" style="background: #6c757d; color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 5px; cursor: pointer; font-weight: 500;">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                // Close modal when clicking outside
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        modal.remove();
+                    }
+                });
+
+                document.body.appendChild(modal);
+
+            } catch (error) {
+                console.error('Error viewing submission:', error);
+                alert('Error loading submission details');
+            }
+        }
+
+        async function downloadSubmissionData(submissionId) {
+            try {
+                const doc = await db.collection('formSubmissions').doc(submissionId).get();
+                if (!doc.exists) {
+                    alert('Submission not found');
+                    return;
+                }
+
+                const submission = doc.data();
+                const dataStr = JSON.stringify(submission, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `submission-${submissionId}.json`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+
+            } catch (error) {
+                console.error('Error downloading submission:', error);
+                alert('Error downloading submission data');
+            }
         }
 
         function switchTab(tab) {

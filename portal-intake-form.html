@@ -963,7 +963,7 @@
         const originalText = submitButton.textContent;
 
         try {
-          submitButton.textContent = 'Sending...';
+          submitButton.textContent = 'Saving...';
           submitButton.disabled = true;
 
           const object = {};
@@ -978,6 +978,23 @@
             }
           });
 
+          // Save to Firestore first
+          const submissionData = {
+            formType: 'intake-questionnaire',
+            formTitle: 'Client Intake Questionnaire',
+            userId: currentUser.uid,
+            userEmail: currentUser.email,
+            submittedAt: firebase.firestore.FieldValue.serverTimestamp(),
+            status: 'submitted',
+            formData: object
+          };
+
+          console.log('💾 Saving form submission to Firestore...');
+          const docRef = await db.collection('formSubmissions').add(submissionData);
+          console.log('✅ Form submission saved with ID:', docRef.id);
+
+          // Then send to Web3Forms for email notification
+          submitButton.textContent = 'Sending notification...';
           const response = await fetch('https://api.web3forms.com/submit', {
             method: 'POST',
             headers: {
@@ -990,6 +1007,7 @@
           const result = await response.json();
 
           if (result.success) {
+            console.log('✅ Email notification sent via Web3Forms');
             // Move to thank you page (step 8)
             fieldsets[currentStep].style.display = 'none';
             currentStep = 7;
@@ -997,12 +1015,17 @@
             progressbarItems[currentStep].classList.add('active');
             window.scrollTo(0, 0);
           } else {
-            alert('Failed to send form. Please try again or contact us directly.');
-            submitButton.textContent = originalText;
-            submitButton.disabled = false;
+            console.warn('⚠️ Email notification failed but form was saved to database');
+            // Still show thank you page since form was saved to Firestore
+            fieldsets[currentStep].style.display = 'none';
+            currentStep = 7;
+            fieldsets[currentStep].style.display = 'block';
+            progressbarItems[currentStep].classList.add('active');
+            window.scrollTo(0, 0);
           }
         } catch (error) {
-          alert('An error occurred. Please try again or contact us directly at caninekindtraining@gmail.com');
+          console.error('❌ Error submitting form:', error);
+          alert('An error occurred while submitting the form. Please try again or contact us directly at caninekindtraining@gmail.com');
           submitButton.textContent = originalText;
           submitButton.disabled = false;
         }
