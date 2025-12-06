@@ -291,10 +291,29 @@
             const submissionsList = document.getElementById('submissionsList');
 
             try {
+                console.log('🔵 [DEBUG] Starting loadSubmissions...');
+                console.log('🔵 [DEBUG] Current user:', auth.currentUser?.email, 'UID:', auth.currentUser?.uid);
+
+                // Check if user is admin
+                const userDoc = await db.collection('users').doc(auth.currentUser.uid).get();
+                console.log('🔵 [DEBUG] User document exists:', userDoc.exists);
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    console.log('🔵 [DEBUG] User data:', userData);
+                    console.log('🔵 [DEBUG] User role:', userData.role);
+                    console.log('🔵 [DEBUG] Is admin:', userData.role === 'admin');
+                }
+
                 // Query all form submissions (without orderBy to avoid index requirement)
+                console.log('🔵 [DEBUG] Querying formSubmissions collection...');
                 const submissionsSnapshot = await db.collection('formSubmissions').get();
 
+                console.log('🔵 [DEBUG] Query completed!');
+                console.log('🔵 [DEBUG] Snapshot empty:', submissionsSnapshot.empty);
+                console.log('🔵 [DEBUG] Number of docs:', submissionsSnapshot.docs.length);
+
                 if (submissionsSnapshot.empty) {
+                    console.log('⚠️ [DEBUG] No submissions found in Firestore');
                     submissionsList.innerHTML = `
                         <div class="empty-state">
                             <div style="font-size: 4rem; margin-bottom: 1rem;">📋</div>
@@ -305,6 +324,7 @@
                 }
 
                 // Sort by submittedAt in JavaScript (client-side) and limit to 50
+                console.log('🔵 [DEBUG] Processing submissions...');
                 const submissions = submissionsSnapshot.docs
                     .map(doc => ({ id: doc.id, data: doc.data() }))
                     .sort((a, b) => {
@@ -352,15 +372,24 @@
                     `;
                 });
 
+                console.log('🔵 [DEBUG] Processed submissions:', submissions.length);
+                console.log('🔵 [DEBUG] First submission:', submissions[0]);
+
                 html += '</div>';
                 submissionsList.innerHTML = html;
+                console.log('✅ [DEBUG] Submissions displayed successfully!');
 
             } catch (error) {
-                console.error('Error loading submissions:', error);
+                console.error('❌ [DEBUG] Error loading submissions:', error);
+                console.error('❌ [DEBUG] Error code:', error.code);
+                console.error('❌ [DEBUG] Error message:', error.message);
+                console.error('❌ [DEBUG] Full error:', error);
+
                 submissionsList.innerHTML = `
                     <div class="empty-state">
                         <div style="font-size: 4rem; margin-bottom: 1rem;">❌</div>
-                        <p style="color: #dc3545;">Error loading submissions. Please try refreshing the page.</p>
+                        <p style="color: #dc3545;">Error loading submissions: ${error.message}</p>
+                        <p style="color: #666; font-size: 0.9rem; margin-top: 1rem;">Check browser console (F12) for details</p>
                     </div>
                 `;
             }

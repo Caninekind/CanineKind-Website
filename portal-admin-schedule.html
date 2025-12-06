@@ -259,6 +259,21 @@
             const timeFilter = document.getElementById('timeFilter').value;
 
             try {
+                console.log('🔵 [DEBUG] Starting loadActivity...');
+                console.log('🔵 [DEBUG] Current user:', auth.currentUser?.email, 'UID:', auth.currentUser?.uid);
+                console.log('🔵 [DEBUG] Client filter:', clientFilter);
+                console.log('🔵 [DEBUG] Time filter:', timeFilter);
+
+                // Check if user is admin
+                const userDoc = await db.collection('users').doc(auth.currentUser.uid).get();
+                console.log('🔵 [DEBUG] User document exists:', userDoc.exists);
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    console.log('🔵 [DEBUG] User data:', userData);
+                    console.log('🔵 [DEBUG] User role:', userData.role);
+                    console.log('🔵 [DEBUG] Is admin:', userData.role === 'admin');
+                }
+
                 // Calculate time range
                 const now = new Date();
                 let startDate;
@@ -271,19 +286,27 @@
                 } else {
                     startDate = new Date(0);
                 }
+                console.log('🔵 [DEBUG] Start date:', startDate);
 
                 // Query schedule activity logs from Firestore
+                console.log('🔵 [DEBUG] Querying scheduleActivity collection...');
                 let query = db.collection('scheduleActivity');
 
                 // Filter by client if selected
                 if (clientFilter) {
+                    console.log('🔵 [DEBUG] Filtering by client:', clientFilter);
                     query = query.where('userId', '==', clientFilter);
                 }
 
                 // Filter by time (we'll do this client-side to avoid index requirements)
                 const activitiesSnapshot = await query.get();
 
+                console.log('🔵 [DEBUG] Query completed!');
+                console.log('🔵 [DEBUG] Snapshot empty:', activitiesSnapshot.empty);
+                console.log('🔵 [DEBUG] Number of docs:', activitiesSnapshot.docs.length);
+
                 if (activitiesSnapshot.empty) {
+                    console.log('⚠️ [DEBUG] No schedule activity found in Firestore');
                     feed.innerHTML = `
                         <div class="empty-state">
                             <div style="font-size: 4rem; margin-bottom: 1rem;">📊</div>
@@ -294,6 +317,7 @@
                 }
 
                 // Sort and filter activities client-side
+                console.log('🔵 [DEBUG] Processing activities...');
                 const activities = activitiesSnapshot.docs
                     .map(doc => ({ id: doc.id, ...doc.data() }))
                     .filter(activity => {
@@ -308,7 +332,11 @@
                     })
                     .slice(0, 50); // Limit to 50 most recent
 
+                console.log('🔵 [DEBUG] Filtered activities:', activities.length);
+                console.log('🔵 [DEBUG] First activity:', activities[0]);
+
                 if (activities.length === 0) {
+                    console.log('⚠️ [DEBUG] No activities match time filter');
                     feed.innerHTML = `
                         <div class="empty-state">
                             <div style="font-size: 4rem; margin-bottom: 1rem;">📊</div>
@@ -319,6 +347,7 @@
                 }
 
                 // Build activity feed HTML
+                console.log('🔵 [DEBUG] Building HTML...');
                 let html = '';
                 activities.forEach(activity => {
                     const timestamp = activity.timestamp?.toDate() || new Date();
@@ -338,13 +367,19 @@
                 });
 
                 feed.innerHTML = html;
+                console.log('✅ [DEBUG] Activity feed displayed successfully!');
 
             } catch (error) {
-                console.error('Error loading activity:', error);
+                console.error('❌ [DEBUG] Error loading activity:', error);
+                console.error('❌ [DEBUG] Error code:', error.code);
+                console.error('❌ [DEBUG] Error message:', error.message);
+                console.error('❌ [DEBUG] Full error:', error);
+
                 feed.innerHTML = `
                     <div class="empty-state">
                         <div style="font-size: 4rem; margin-bottom: 1rem;">❌</div>
-                        <p style="color: #dc3545;">Error loading activity feed. Please try refreshing the page.</p>
+                        <p style="color: #dc3545;">Error loading activity feed: ${error.message}</p>
+                        <p style="color: #666; font-size: 0.9rem; margin-top: 1rem;">Check browser console (F12) for details</p>
                     </div>
                 `;
             }
