@@ -937,7 +937,7 @@
                 const storage = firebase.storage();
                 const timestamp = Date.now();
                 const fileName = `legal-agreement-${currentUser.email.replace('@', '_at_')}-${timestamp}.pdf`;
-                const storageRef = storage.ref(`signed-documents/${currentUser.email}/${fileName}`);
+                const storageRef = storage.ref(`signed-documents/${currentUser.uid}/${fileName}`);
 
                 const uploadTask = await storageRef.put(pdfBlob);
                 const downloadURL = await uploadTask.ref.getDownloadURL();
@@ -946,14 +946,14 @@
                 // Save signature image separately
                 const signatureBlob = await (await fetch(signatureDataURL)).blob();
                 const signatureFileName = `signature-${currentUser.email.replace('@', '_at_')}-${timestamp}.png`;
-                const signatureRef = storage.ref(`signatures/${currentUser.email}/${signatureFileName}`);
+                const signatureRef = storage.ref(`signatures/${currentUser.uid}/${signatureFileName}`);
                 const signatureUpload = await signatureRef.put(signatureBlob);
                 const signatureURL = await signatureUpload.ref.getDownloadURL();
                 console.log('✅ Signature uploaded to Storage');
 
                 // Save record to Firestore
                 console.log('🔵 Saving to Firestore...');
-                await db.collection('users').doc(currentUser.email)
+                await db.collection('users').doc(currentUser.uid)
                     .collection('signedDocuments').doc('legal-agreement').set({
                         fullName: fullName,
                         email: currentUser.email,
@@ -975,7 +975,7 @@
                 console.log('✅ Saved to Firestore');
 
                 // Update main user document to mark documents as complete
-                await db.collection('users').doc(currentUser.email).update({
+                await db.collection('users').doc(currentUser.uid).update({
                     documentsComplete: true,
                     documentsCompletedAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
