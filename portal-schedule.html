@@ -2847,6 +2847,22 @@
                     .doc('weekly')
                     .set(scheduleData);
 
+                // Log this activity for admin monitoring
+                try {
+                    await db.collection('scheduleActivity').add({
+                        userId: currentUser.uid,
+                        userEmail: currentUser.email,
+                        userName: currentUser.displayName || currentUser.email,
+                        action: 'updated',
+                        day: currentDay || 'all days',
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                        scheduleSnapshot: scheduleData
+                    });
+                } catch (logError) {
+                    console.warn('Could not log activity:', logError);
+                    // Don't fail the save if logging fails
+                }
+
                 console.log('✅ Schedule saved successfully!');
                 alert('Schedule saved successfully!');
             } catch (error) {
