@@ -328,16 +328,33 @@
             <p>Manage and sign all required legal documents and training agreements</p>
         </div>
 
-        <!-- Documents Grid -->
-        <div class="documents-grid" id="documentsGrid">
-            <!-- Documents will be loaded here dynamically -->
+        <!-- Signed Documents Section -->
+        <div id="signedDocumentsSection" style="display: none; margin-bottom: 3rem;">
+            <div class="page-header" style="margin-bottom: 1.5rem;">
+                <h2 style="color: #51cf66;">✓ Signed Documents</h2>
+                <p>Your completed and signed documents</p>
+            </div>
+            <div class="documents-grid" id="signedDocumentsGrid">
+                <!-- Signed documents will be loaded here -->
+            </div>
         </div>
 
-        <!-- Empty State (shown when no documents) -->
-        <div class="empty-state" id="emptyState" style="display: none;">
-            <div class="empty-state-icon">📄</div>
-            <h3>No Documents Available</h3>
-            <p>There are currently no forms or documents assigned to your account.</p>
+        <!-- Available Forms Section -->
+        <div id="availableFormsSection">
+            <div class="page-header" style="margin-bottom: 1.5rem;">
+                <h2>📋 Forms Requiring Action</h2>
+                <p>Please review and complete the following documents</p>
+            </div>
+            <div class="documents-grid" id="documentsGrid">
+                <!-- Documents will be loaded here dynamically -->
+            </div>
+
+            <!-- Empty State (shown when no documents) -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <div class="empty-state-icon">🎉</div>
+                <h3>All Documents Complete!</h3>
+                <p>You have completed all required forms and documents.</p>
+            </div>
         </div>
 
         <!-- Past Submissions Section -->
@@ -386,9 +403,27 @@
             });
         });
 
+        // Helper function to get signed document from Firestore
+        async function getSignedDocument(userId, documentId) {
+            try {
+                const docRef = await db.collection('users').doc(userId)
+                    .collection('signedDocuments').doc(documentId).get();
+
+                if (docRef.exists) {
+                    return docRef.data();
+                }
+                return null;
+            } catch (error) {
+                console.error('Error fetching signed document:', error);
+                return null;
+            }
+        }
+
         // Load all documents for the user
         async function loadDocuments() {
             const documentsGrid = document.getElementById('documentsGrid');
+            const signedDocumentsGrid = document.getElementById('signedDocumentsGrid');
+            const signedDocumentsSection = document.getElementById('signedDocumentsSection');
             const emptyState = document.getElementById('emptyState');
 
             // Define available documents (you can expand this list later)
@@ -408,13 +443,15 @@
             ];
 
             // Check status of each document
-            const documentsHTML = [];
+            const availableHTML = [];
+            const signedHTML = [];
+
             for (const doc of availableDocuments) {
                 let statusHTML, actionsHTML, cardClass;
 
                 // Handle different document types
                 if (doc.id === 'intake-questionnaire') {
-                    // For intake questionnaire - UI only for now
+                    // For intake questionnaire - always show in available forms
                     statusHTML = `<div class="document-status needs-signature">
                         <span>Action Required</span>
                        </div>
@@ -424,47 +461,89 @@
 
                     actionsHTML = `<a href="portal-intake-form.html" class="btn btn-primary">Complete Questionnaire</a>`;
                     cardClass = 'needs-signature';
+
+                    availableHTML.push(`
+                        <div class="document-card ${cardClass}">
+                            <div class="document-icon">${doc.icon}</div>
+                            <div class="document-title">${doc.title}</div>
+                            <div class="document-description">${doc.description}</div>
+                            ${statusHTML}
+                            <div class="document-actions">
+                                ${actionsHTML}
+                            </div>
+                        </div>
+                    `);
                 } else {
                     // For legal agreement and other signable documents
-                    const signedDoc = await getSignedDocument(currentUser.email, doc.id);
+                    const signedDoc = await getSignedDocument(currentUser.uid, doc.id);
                     const isCompleted = signedDoc !== null;
 
-                    statusHTML = isCompleted
-                        ? `<div class="document-status completed">
-                            <span>Signed & Completed</span>
-                           </div>
-                           <div class="document-date">
-                            Signed on ${new Date(signedDoc.signedAt.toDate()).toLocaleDateString()}
-                           </div>`
-                        : `<div class="document-status needs-signature">
+                    if (isCompleted) {
+                        // Add to signed documents section
+                        const signedDate = new Date(signedDoc.signedAt.toDate()).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+
+                        signedHTML.push(`
+                            <div class="document-card completed">
+                                <div class="document-icon">${doc.icon}</div>
+                                <div class="document-title">${doc.title}</div>
+                                <div class="document-description">${doc.description}</div>
+                                <div class="document-status completed">
+                                    <span>✓</span>
+                                    <span>Signed & Completed</span>
+                                </div>
+                                <div class="document-date">
+                                    Signed on ${signedDate}
+                                </div>
+                                <div class="document-actions">
+                                    <a href="${signedDoc.pdfURL}" target="_blank" class="btn btn-view">View Signed PDF</a>
+                                </div>
+                            </div>
+                        `);
+                    } else {
+                        // Add to available forms section
+                        statusHTML = `<div class="document-status needs-signature">
+                            <span>⚠️</span>
                             <span>Signature Required</span>
                            </div>
                            <div class="document-date">
                             Please review and sign this document
                            </div>`;
 
-                    actionsHTML = isCompleted
-                        ? `<a href="${signedDoc.pdfURL}" target="_blank" class="btn btn-view">View Signed PDF</a>`
-                        : `<a href="portal-sign-document.html?doc=${doc.id}" class="btn btn-primary">Review & Sign</a>`;
+                        actionsHTML = `<a href="portal-sign-document.html?doc=${doc.id}" class="btn btn-primary">Review & Sign</a>`;
+                        cardClass = 'needs-signature';
 
-                    cardClass = isCompleted ? 'completed' : 'needs-signature';
+                        availableHTML.push(`
+                            <div class="document-card ${cardClass}">
+                                <div class="document-icon">${doc.icon}</div>
+                                <div class="document-title">${doc.title}</div>
+                                <div class="document-description">${doc.description}</div>
+                                ${statusHTML}
+                                <div class="document-actions">
+                                    ${actionsHTML}
+                                </div>
+                            </div>
+                        `);
+                    }
                 }
-
-                documentsHTML.push(`
-                    <div class="document-card ${cardClass}">
-                        <div class="document-icon">${doc.icon}</div>
-                        <div class="document-title">${doc.title}</div>
-                        <div class="document-description">${doc.description}</div>
-                        ${statusHTML}
-                        <div class="document-actions">
-                            ${actionsHTML}
-                        </div>
-                    </div>
-                `);
             }
 
-            if (documentsHTML.length > 0) {
-                documentsGrid.innerHTML = documentsHTML.join('');
+            // Display signed documents section if there are any
+            if (signedHTML.length > 0) {
+                signedDocumentsGrid.innerHTML = signedHTML.join('');
+                signedDocumentsSection.style.display = 'block';
+            } else {
+                signedDocumentsSection.style.display = 'none';
+            }
+
+            // Display available forms
+            if (availableHTML.length > 0) {
+                documentsGrid.innerHTML = availableHTML.join('');
                 emptyState.style.display = 'none';
             } else {
                 documentsGrid.innerHTML = '';
