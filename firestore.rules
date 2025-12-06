@@ -254,17 +254,16 @@ service cloud.firestore {
     // FORM SUBMISSIONS COLLECTION
     // ===========================
     match /formSubmissions/{submissionId} {
+      // Admins can read ALL submissions (check this first!)
+      allow read, list: if isAdmin();
+
       // Users can read their own submissions
       allow read: if isApproved() &&
                      hasPermission('canAccessForms') &&
                      resource.data.userId == request.auth.uid;
 
-      // Admins can read all submissions
-      allow read: if isAdmin();
-
       // Users can create their own submissions
-      allow create: if isApproved() &&
-                       hasPermission('canAccessForms') &&
+      allow create: if isSignedIn() &&
                        request.resource.data.userId == request.auth.uid;
 
       // Users can update their own pending submissions
