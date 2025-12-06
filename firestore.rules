@@ -280,6 +280,22 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
+    // ===========================
+    // SCHEDULE ACTIVITY COLLECTION
+    // ===========================
+    match /scheduleActivity/{activityId} {
+      // Approved users can create activity logs for their own actions
+      allow create: if isApproved() &&
+                       hasPermission('canAccessSchedule') &&
+                       request.resource.data.userId == request.auth.uid;
+
+      // Admins can read all activity logs
+      allow read: if isAdmin();
+
+      // Admins can delete activity logs
+      allow delete: if isAdmin();
+    }
+
     // Deny all other access by default
     match /{document=**} {
       allow read, write: if false;

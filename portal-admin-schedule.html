@@ -272,32 +272,105 @@
                     startDate = new Date(0);
                 }
 
-                // Query schedule activity logs
-                // Note: This would need activity logging implemented in the schedule page
-                // For now, showing placeholder message
+                // Query schedule activity logs from Firestore
+                let query = db.collection('scheduleActivity');
 
-                feed.innerHTML = `
-                    <div class="empty-state">
-                        <div style="font-size: 4rem; margin-bottom: 1rem;">📊</div>
-                        <p>Client schedule activity will appear here when clients update their training schedules</p>
-                        <p style="margin-top: 1rem; font-size: 0.9rem;">Activity logging can be implemented by adding update events to the schedule save functions</p>
-                    </div>
-                `;
+                // Filter by client if selected
+                if (clientFilter) {
+                    query = query.where('userId', '==', clientFilter);
+                }
 
-                // Example of what activity items would look like:
-                // <div class="activity-item">
-                //     <div class="activity-header">
-                //         <span class="activity-client">John Doe</span>
-                //         <span class="activity-time">2 hours ago</span>
-                //     </div>
-                //     <div class="activity-action">Added activity to Monday's schedule</div>
-                //     <div class="activity-details">🏃 Outdoor Play Session at 10:00 AM</div>
-                // </div>
+                // Filter by time (we'll do this client-side to avoid index requirements)
+                const activitiesSnapshot = await query.get();
+
+                if (activitiesSnapshot.empty) {
+                    feed.innerHTML = `
+                        <div class="empty-state">
+                            <div style="font-size: 4rem; margin-bottom: 1rem;">📊</div>
+                            <p>No schedule activity found. Activity will appear here when clients update their training schedules.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Sort and filter activities client-side
+                const activities = activitiesSnapshot.docs
+                    .map(doc => ({ id: doc.id, ...doc.data() }))
+                    .filter(activity => {
+                        if (!activity.timestamp) return false;
+                        const activityDate = activity.timestamp.toDate();
+                        return activityDate >= startDate;
+                    })
+                    .sort((a, b) => {
+                        const dateA = a.timestamp?.toDate() || new Date(0);
+                        const dateB = b.timestamp?.toDate() || new Date(0);
+                        return dateB - dateA; // Most recent first
+                    })
+                    .slice(0, 50); // Limit to 50 most recent
+
+                if (activities.length === 0) {
+                    feed.innerHTML = `
+                        <div class="empty-state">
+                            <div style="font-size: 4rem; margin-bottom: 1rem;">📊</div>
+                            <p>No schedule activity found for the selected time period.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Build activity feed HTML
+                let html = '';
+                activities.forEach(activity => {
+                    const timestamp = activity.timestamp?.toDate() || new Date();
+                    const timeAgo = getTimeAgo(timestamp);
+                    const formattedTime = timestamp.toLocaleString();
+
+                    html += `
+                        <div class="activity-item">
+                            <div class="activity-header">
+                                <span class="activity-client">${activity.userName || activity.userEmail || 'Unknown User'}</span>
+                                <span class="activity-time" title="${formattedTime}">${timeAgo}</span>
+                            </div>
+                            <div class="activity-action">Updated ${activity.day}'s schedule</div>
+                            <div class="activity-details">📅 Schedule modified and saved</div>
+                        </div>
+                    `;
+                });
+
+                feed.innerHTML = html;
 
             } catch (error) {
                 console.error('Error loading activity:', error);
-                feed.innerHTML = '<div class="empty-state"><p>Error loading activity feed</p></div>';
+                feed.innerHTML = `
+                    <div class="empty-state">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">❌</div>
+                        <p style="color: #dc3545;">Error loading activity feed. Please try refreshing the page.</p>
+                    </div>
+                `;
             }
+        }
+
+        // Helper function to get time ago string
+        function getTimeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+
+            const intervals = {
+                year: 31536000,
+                month: 2592000,
+                week: 604800,
+                day: 86400,
+                hour: 3600,
+                minute: 60
+            };
+
+            for (const [unit, secondsInUnit] of Object.entries(intervals)) {
+                const interval = Math.floor(seconds / secondsInUnit);
+                if (interval >= 1) {
+                    return interval === 1 ? `1 ${unit} ago` : `${interval} ${unit}s ago`;
+                }
+            }
+
+            return 'Just now';
         }
 
         function signOut() {
