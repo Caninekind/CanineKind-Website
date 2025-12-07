@@ -685,57 +685,80 @@
         }
 
         // View legal agreement language
-        function viewLegalAgreement() {
-            const legalContent = `
-                <div style="max-height: 70vh; overflow-y: auto; padding: 1.5rem;">
-                    <h2 style="color: #799972; margin-bottom: 1rem;">Legal Agreement & Consent Forms</h2>
-                    <p style="color: #666; margin-bottom: 1.5rem;">This is the complete legal agreement you signed.</p>
-                    <hr style="margin-bottom: 1.5rem;">
+        async function viewLegalAgreement() {
+            try {
+                // Get the signed document from Firestore to show actual agreed terms
+                const userId = auth.currentUser.uid;
+                const doc = await db.collection('users').doc(userId)
+                    .collection('signedDocuments').doc('legal-agreement').get();
 
-                    <h3 style="color: #2c3e50; margin-top: 1.5rem;">1. Scope of Services</h3>
-                    <p style="line-height: 1.6; color: #555;">CanineKind Training provides professional dog training services including, but not limited to, behavior modification, obedience training, and consultation services. All services are customized based on the individual needs of each dog and owner.</p>
-
-                    <h3 style="color: #2c3e50; margin-top: 1.5rem;">2. Training Methods & Tools Acknowledgment</h3>
-                    <p style="line-height: 1.6; color: #555;">I understand that CanineKind Training uses positive reinforcement-based training methods. I acknowledge that training tools and techniques will be selected based on my dog's individual needs and temperament. I agree to follow all training protocols and recommendations provided by CanineKind Training.</p>
-
-                    <h3 style="color: #2c3e50; margin-top: 1.5rem;">3. Assumption of Risk</h3>
-                    <p style="line-height: 1.6; color: #555;">I understand that dog training involves inherent risks, including but not limited to bites, scratches, and other injuries from my dog or other dogs. I voluntarily assume all risks associated with my participation in training services and agree that CanineKind Training is not responsible for any injuries or damages that may occur.</p>
-
-                    <h3 style="color: #2c3e50; margin-top: 1.5rem;">4. Liability Release & Indemnification</h3>
-                    <p style="line-height: 1.6; color: #555;">I hereby release, waive, and discharge CanineKind Training, its owners, employees, and agents from any and all liability, claims, demands, or causes of action arising from my participation in training services. I agree to indemnify and hold harmless CanineKind Training from any claims arising from my dog's behavior or actions.</p>
-
-                    <h3 style="color: #2c3e50; margin-top: 1.5rem;">5. Health & Behavior Disclosure</h3>
-                    <p style="line-height: 1.6; color: #555;">I certify that my dog is current on all required vaccinations and is in good health. I have disclosed all known behavioral issues, medical conditions, and bite history. I understand that failure to disclose this information may result in termination of services.</p>
-
-                    <h3 style="color: #2c3e50; margin-top: 1.5rem;">6. Privacy Policy</h3>
-                    <p style="line-height: 1.6; color: #555;">CanineKind Training respects your privacy. All personal information collected will be used solely for providing training services and will not be shared with third parties without your consent, except as required by law.</p>
-
-                    <h3 style="color: #2c3e50; margin-top: 1.5rem;">7. Cancellation & Refund Policy</h3>
-                    <p style="line-height: 1.6; color: #555;">Cancellations must be made at least 24 hours in advance. Late cancellations or no-shows may result in a fee. Refunds are provided on a case-by-case basis at the discretion of CanineKind Training.</p>
-                </div>
-            `;
-
-            // Create modal
-            const modal = document.createElement('div');
-            modal.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 10000; padding: 2rem;';
-            modal.innerHTML = `
-                <div style="background: white; border-radius: 10px; max-width: 900px; width: 100%; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
-                    ${legalContent}
-                    <div style="padding: 1rem; border-top: 1px solid #e0e0e0; text-align: right;">
-                        <button onclick="this.closest('[style*=fixed]').remove()" style="background: #6c757d; color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 5px; cursor: pointer; font-weight: 500;">
-                            Close
-                        </button>
-                    </div>
-                </div>
-            `;
-
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    modal.remove();
+                if (!doc.exists) {
+                    alert('Signed agreement not found');
+                    return;
                 }
-            });
 
-            document.body.appendChild(modal);
+                const signedDoc = doc.data();
+                const documentsAgreed = signedDoc.documentsAgreed || [];
+
+                const legalContent = `
+                    <div style="max-height: 70vh; overflow-y: auto; padding: 1.5rem;">
+                        <h2 style="color: #799972; margin-bottom: 1rem;">Legal Agreement & Consent Forms</h2>
+                        <p style="color: #666; margin-bottom: 1rem;">You signed and agreed to the following documents on ${signedDoc.signedAt?.toDate().toLocaleDateString()}:</p>
+                        <hr style="margin-bottom: 1.5rem;">
+
+                        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                            <h3 style="color: #2c3e50; margin-bottom: 1rem;">Documents Agreed To:</h3>
+                            <ul style="list-style: none; padding: 0;">
+                                ${documentsAgreed.map(doc => `
+                                    <li style="padding: 0.5rem 0; color: #555; font-size: 1rem;">
+                                        ✓ ${doc}
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+
+                        <div style="background: #e7f5ff; border-left: 4px solid #4a90e2; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+                            <p style="margin: 0; color: #1c7ed6; font-weight: 600;">
+                                📄 To view the complete legal agreement with all terms and conditions, please click "View Signed PDF" to see your signed document.
+                            </p>
+                        </div>
+
+                        <p style="color: #666; font-size: 0.9rem; margin-top: 1.5rem;">
+                            <strong>Signed by:</strong> ${signedDoc.fullName}<br>
+                            <strong>Email:</strong> ${signedDoc.email}<br>
+                            <strong>Date:</strong> ${signedDoc.signedAt?.toDate().toLocaleString()}
+                        </p>
+                    </div>
+                `;
+
+                // Create modal
+                const modal = document.createElement('div');
+                modal.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 10000; padding: 2rem;';
+                modal.innerHTML = `
+                    <div style="background: white; border-radius: 10px; max-width: 700px; width: 100%; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+                        ${legalContent}
+                        <div style="padding: 1rem; border-top: 1px solid #e0e0e0; text-align: right;">
+                            <a href="${signedDoc.pdfURL}" target="_blank" style="background: #4a90e2; color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 5px; cursor: pointer; font-weight: 500; text-decoration: none; display: inline-block; margin-right: 0.5rem;">
+                                View Signed PDF
+                            </a>
+                            <button onclick="this.closest('[style*=fixed]').remove()" style="background: #6c757d; color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 5px; cursor: pointer; font-weight: 500;">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        modal.remove();
+                    }
+                });
+
+                document.body.appendChild(modal);
+            } catch (error) {
+                console.error('Error loading agreement:', error);
+                alert('Error loading agreement details');
+            }
         }
 
         // Sign out function
