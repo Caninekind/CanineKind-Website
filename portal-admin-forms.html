@@ -304,15 +304,39 @@
                     console.log('🔵 [DEBUG] Is admin:', userData.role === 'admin');
                 }
 
-                // Query all form submissions (without orderBy to avoid index requirement)
-                console.log('🔵 [DEBUG] Querying formSubmissions collection...');
-                const submissionsSnapshot = await db.collection('formSubmissions').get();
+                // Get all users and their signed documents
+                console.log('🔵 [DEBUG] Querying all users...');
+                const usersSnapshot = await db.collection('users').get();
+                console.log('🔵 [DEBUG] Found', usersSnapshot.docs.length, 'users');
+
+                // Collect all form submissions from all users
+                const allSubmissions = [];
+                for (const userDoc of usersSnapshot.docs) {
+                    const userId = userDoc.id;
+                    const userData = userDoc.data();
+
+                    // Get all signed documents for this user
+                    const signedDocsSnapshot = await db.collection('users').doc(userId)
+                        .collection('signedDocuments').get();
+
+                    signedDocsSnapshot.docs.forEach(doc => {
+                        const data = doc.data();
+                        // Only include form submissions (not legal-agreement)
+                        if (data.formType && data.formType !== 'legal-agreement') {
+                            allSubmissions.push({
+                                id: `${userId}_${doc.id}`, // Composite ID for unique identification
+                                userId: userId,
+                                documentId: doc.id,
+                                data: data
+                            });
+                        }
+                    });
+                }
 
                 console.log('🔵 [DEBUG] Query completed!');
-                console.log('🔵 [DEBUG] Snapshot empty:', submissionsSnapshot.empty);
-                console.log('🔵 [DEBUG] Number of docs:', submissionsSnapshot.docs.length);
+                console.log('🔵 [DEBUG] Total submissions found:', allSubmissions.length);
 
-                if (submissionsSnapshot.empty) {
+                if (allSubmissions.length === 0) {
                     console.log('⚠️ [DEBUG] No submissions found in Firestore');
                     submissionsList.innerHTML = `
                         <div class="empty-state">
@@ -325,8 +349,7 @@
 
                 // Sort by submittedAt in JavaScript (client-side) and limit to 50
                 console.log('🔵 [DEBUG] Processing submissions...');
-                const submissions = submissionsSnapshot.docs
-                    .map(doc => ({ id: doc.id, data: doc.data() }))
+                const submissions = allSubmissions
                     .sort((a, b) => {
                         const dateA = a.data.submittedAt?.toDate() || new Date(0);
                         const dateB = b.data.submittedAt?.toDate() || new Date(0);
@@ -397,7 +420,11 @@
 
         async function viewSubmission(submissionId) {
             try {
-                const doc = await db.collection('formSubmissions').doc(submissionId).get();
+                // Parse composite ID (userId_documentId)
+                const [userId, documentId] = submissionId.split('_');
+
+                const doc = await db.collection('users').doc(userId)
+                    .collection('signedDocuments').doc(documentId).get();
                 if (!doc.exists) {
                     alert('Submission not found');
                     return;
@@ -473,7 +500,11 @@
 
         async function downloadSubmissionData(submissionId) {
             try {
-                const doc = await db.collection('formSubmissions').doc(submissionId).get();
+                // Parse composite ID (userId_documentId)
+                const [userId, documentId] = submissionId.split('_');
+
+                const doc = await db.collection('users').doc(userId)
+                    .collection('signedDocuments').doc(documentId).get();
                 if (!doc.exists) {
                     alert('Submission not found');
                     return;

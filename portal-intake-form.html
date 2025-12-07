@@ -990,8 +990,9 @@
           };
 
           console.log('💾 Saving form submission to Firestore...');
-          const docRef = await db.collection('formSubmissions').add(submissionData);
-          console.log('✅ Form submission saved with ID:', docRef.id);
+          await db.collection('users').doc(currentUser.uid)
+              .collection('signedDocuments').doc('intake-questionnaire').set(submissionData);
+          console.log('✅ Form submission saved under user document');
 
           // Then send to Web3Forms for email notification
           submitButton.textContent = 'Sending notification...';
