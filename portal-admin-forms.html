@@ -474,10 +474,18 @@
                 // Create modal
                 const modal = document.createElement('div');
                 modal.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 10000; padding: 2rem;';
+
+                // Add View PDF button if PDF URL exists
+                const pdfButton = submission.pdfURL ?
+                    `<a href="${submission.pdfURL}" target="_blank" style="background: #4a90e2; color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 5px; cursor: pointer; font-weight: 500; text-decoration: none; display: inline-block; margin-right: 0.5rem;">
+                        View Signed PDF
+                    </a>` : '';
+
                 modal.innerHTML = `
                     <div style="background: white; border-radius: 10px; max-width: 800px; width: 100%; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
                         ${content}
                         <div style="padding: 1rem; border-top: 1px solid #e0e0e0; text-align: right;">
+                            ${pdfButton}
                             <button onclick="this.closest('[style*=fixed]').remove()" style="background: #6c757d; color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 5px; cursor: pointer; font-weight: 500;">
                                 Close
                             </button>
