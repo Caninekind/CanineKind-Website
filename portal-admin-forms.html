@@ -183,6 +183,12 @@
                 <div class="section-header">
                     <h2>Recent Form Submissions</h2>
                 </div>
+                <div style="margin-bottom: 1.5rem; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+                    <label for="clientFilter" style="font-weight: 600; color: #2c3e50; margin-right: 1rem;">Filter by Client:</label>
+                    <select id="clientFilter" onchange="filterSubmissions()" style="padding: 0.5rem 1rem; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; min-width: 250px;">
+                        <option value="all">All Clients</option>
+                    </select>
+                </div>
                 <div id="submissionsList">
                     <div class="empty-state">
                         <div style="font-size: 4rem; margin-bottom: 1rem;">📋</div>
@@ -232,6 +238,7 @@
     <script src="firebase-config.js"></script>
     <script>
         let currentUser = null;
+        let allSubmissionsData = []; // Store all submissions for filtering
 
         document.addEventListener('DOMContentLoaded', async () => {
             const initialized = initializeFirebase();
@@ -345,19 +352,68 @@
                     return;
                 }
 
-                // Sort by submittedAt in JavaScript (client-side) and limit to 50
-                console.log('🔵 [DEBUG] Processing submissions...');
-                const submissions = allSubmissions
-                    .sort((a, b) => {
-                        const dateA = a.data.submittedAt?.toDate() || new Date(0);
-                        const dateB = b.data.submittedAt?.toDate() || new Date(0);
-                        return dateB - dateA; // Descending order (most recent first)
-                    })
-                    .slice(0, 50); // Limit to 50 most recent
+                // Store all submissions globally for filtering
+                allSubmissionsData = allSubmissions;
 
-                let html = '<div class="submissions-list" style="display: flex; flex-direction: column; gap: 1rem;">';
+                // Populate client filter dropdown
+                const clientFilter = document.getElementById('clientFilter');
+                const uniqueClients = new Set();
+                allSubmissions.forEach(sub => {
+                    const email = sub.data.userEmail || sub.data.email || 'Unknown';
+                    uniqueClients.add(email);
+                });
 
-                submissions.forEach(({ id, userId, documentId, data: submission }) => {
+                let filterOptions = '<option value="all">All Clients</option>';
+                Array.from(uniqueClients).sort().forEach(email => {
+                    filterOptions += `<option value="${email}">${email}</option>`;
+                });
+                clientFilter.innerHTML = filterOptions;
+
+                // Display submissions
+                displaySubmissions(allSubmissions);
+
+            } catch (error) {
+                console.error('❌ [DEBUG] Error loading submissions:', error);
+                console.error('❌ [DEBUG] Error code:', error.code);
+                console.error('❌ [DEBUG] Error message:', error.message);
+                console.error('❌ [DEBUG] Full error:', error);
+
+                submissionsList.innerHTML = `
+                    <div class="empty-state">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">❌</div>
+                        <p style="color: #dc3545;">Error loading submissions: ${error.message}</p>
+                        <p style="color: #666; font-size: 0.9rem; margin-top: 1rem;">Check browser console (F12) for details</p>
+                    </div>
+                `;
+            }
+        }
+
+        function displaySubmissions(submissions) {
+            const submissionsList = document.getElementById('submissionsList');
+
+            if (submissions.length === 0) {
+                submissionsList.innerHTML = `
+                    <div class="empty-state">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">📋</div>
+                        <p>No form submissions match the selected filter.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Sort by submittedAt in JavaScript (client-side) and limit to 50
+            console.log('🔵 [DEBUG] Processing submissions...');
+            const sortedSubmissions = submissions
+                .sort((a, b) => {
+                    const dateA = a.data.submittedAt?.toDate() || a.data.signedAt?.toDate() || new Date(0);
+                    const dateB = b.data.submittedAt?.toDate() || b.data.signedAt?.toDate() || new Date(0);
+                    return dateB - dateA; // Descending order (most recent first)
+                })
+                .slice(0, 50); // Limit to 50 most recent
+
+            let html = '<div class="submissions-list" style="display: flex; flex-direction: column; gap: 1rem;">';
+
+            sortedSubmissions.forEach(({ id, userId, documentId, data: submission }) => {
                     // Fallback values for older documents
                     const formTitle = submission.formTitle ||
                                      (documentId === 'legal-agreement' ? 'Legal Agreement & Consent Forms' : 'Form Submission');
@@ -397,26 +453,26 @@
                     `;
                 });
 
-                console.log('🔵 [DEBUG] Processed submissions:', submissions.length);
-                console.log('🔵 [DEBUG] First submission:', submissions[0]);
+                console.log('🔵 [DEBUG] Processed submissions:', sortedSubmissions.length);
+                console.log('🔵 [DEBUG] First submission:', sortedSubmissions[0]);
 
                 html += '</div>';
                 submissionsList.innerHTML = html;
                 console.log('✅ [DEBUG] Submissions displayed successfully!');
+        }
 
-            } catch (error) {
-                console.error('❌ [DEBUG] Error loading submissions:', error);
-                console.error('❌ [DEBUG] Error code:', error.code);
-                console.error('❌ [DEBUG] Error message:', error.message);
-                console.error('❌ [DEBUG] Full error:', error);
+        function filterSubmissions() {
+            const clientFilter = document.getElementById('clientFilter');
+            const selectedClient = clientFilter.value;
 
-                submissionsList.innerHTML = `
-                    <div class="empty-state">
-                        <div style="font-size: 4rem; margin-bottom: 1rem;">❌</div>
-                        <p style="color: #dc3545;">Error loading submissions: ${error.message}</p>
-                        <p style="color: #666; font-size: 0.9rem; margin-top: 1rem;">Check browser console (F12) for details</p>
-                    </div>
-                `;
+            if (selectedClient === 'all') {
+                displaySubmissions(allSubmissionsData);
+            } else {
+                const filtered = allSubmissionsData.filter(sub => {
+                    const email = sub.data.userEmail || sub.data.email || 'Unknown';
+                    return email === selectedClient;
+                });
+                displaySubmissions(filtered);
             }
         }
 
@@ -474,10 +530,18 @@
                 // Create modal
                 const modal = document.createElement('div');
                 modal.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 10000; padding: 2rem;';
+
+                // Add View PDF button if PDF URL exists
+                const pdfButton = submission.pdfURL ?
+                    `<a href="${submission.pdfURL}" target="_blank" style="background: #4a90e2; color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 5px; cursor: pointer; font-weight: 500; text-decoration: none; display: inline-block; margin-right: 0.5rem;">
+                        View Signed PDF
+                    </a>` : '';
+
                 modal.innerHTML = `
                     <div style="background: white; border-radius: 10px; max-width: 800px; width: 100%; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
                         ${content}
                         <div style="padding: 1rem; border-top: 1px solid #e0e0e0; text-align: right;">
+                            ${pdfButton}
                             <button onclick="this.closest('[style*=fixed]').remove()" style="background: #6c757d; color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 5px; cursor: pointer; font-weight: 500;">
                                 Close
                             </button>
