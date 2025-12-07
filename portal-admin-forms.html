@@ -321,15 +321,13 @@
 
                     signedDocsSnapshot.docs.forEach(doc => {
                         const data = doc.data();
-                        // Only include form submissions (not legal-agreement)
-                        if (data.formType && data.formType !== 'legal-agreement') {
-                            allSubmissions.push({
-                                id: `${userId}_${doc.id}`, // Composite ID for unique identification
-                                userId: userId,
-                                documentId: doc.id,
-                                data: data
-                            });
-                        }
+                        // Include all signed documents
+                        allSubmissions.push({
+                            id: `${userId}_${doc.id}`, // Composite ID for unique identification
+                            userId: userId,
+                            documentId: doc.id,
+                            data: data
+                        });
                     });
                 }
 
