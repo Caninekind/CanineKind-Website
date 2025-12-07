@@ -491,6 +491,15 @@
                 return;
             }
 
+            // Check for invitation token in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const inviteToken = urlParams.get('invite');
+            if (inviteToken) {
+                console.log('🎫 [INVITE] Invitation token detected:', inviteToken);
+                // Store in sessionStorage so we can use it after sign-in
+                sessionStorage.setItem('inviteToken', inviteToken);
+            }
+
             // NOTE: Removed onAuthStateChanged auto-redirect that was causing race condition
             // The sign-in button handler below properly checks approval before redirecting
         });
@@ -534,6 +543,9 @@
 
                         if (createResult.success) {
                             console.log('✅ [LOGIN] New user created successfully!');
+
+                            // Handle invitation acceptance if applicable
+                            await handleInvitationAcceptance(user.uid, user.email);
                         } else {
                             console.error('❌ [LOGIN] Failed to create user:', createResult.error);
                             showError('Failed to create user account: ' + createResult.error);
@@ -587,6 +599,66 @@
             const errorDiv = document.getElementById('errorMessage');
             errorDiv.textContent = message;
             errorDiv.style.display = 'block';
+        }
+
+        /**
+         * Handle invitation acceptance after new user signs up
+         * @param {string} userId - The newly created user's ID
+         * @param {string} userEmail - The user's email address
+         */
+        async function handleInvitationAcceptance(userId, userEmail) {
+            const inviteToken = sessionStorage.getItem('inviteToken');
+            if (!inviteToken) {
+                console.log('🎫 [INVITE] No invitation token found');
+                return;
+            }
+
+            console.log('🎫 [INVITE] Processing invitation acceptance...');
+
+            try {
+                const db = firebase.firestore();
+
+                // Find the invitation by token
+                const invitationQuery = await db.collection('invitations')
+                    .where('token', '==', inviteToken)
+                    .where('status', '==', 'pending')
+                    .get();
+
+                if (invitationQuery.empty) {
+                    console.log('🎫 [INVITE] No matching pending invitation found');
+                    sessionStorage.removeItem('inviteToken');
+                    return;
+                }
+
+                // Get the first (and should be only) matching invitation
+                const invitationDoc = invitationQuery.docs[0];
+                const invitation = invitationDoc.data();
+
+                console.log('🎫 [INVITE] Found invitation:', invitation);
+
+                // Verify the email matches (case-insensitive)
+                if (invitation.email.toLowerCase() !== userEmail.toLowerCase()) {
+                    console.warn('🎫 [INVITE] Email mismatch! Invitation email:', invitation.email, 'User email:', userEmail);
+                    showError('This invitation was sent to ' + invitation.email + '. Please sign in with the correct email address.');
+                    sessionStorage.removeItem('inviteToken');
+                    return;
+                }
+
+                // Update the invitation to 'accepted'
+                await db.collection('invitations').doc(invitationDoc.id).update({
+                    status: 'accepted',
+                    acceptedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    acceptedBy: userId
+                });
+
+                console.log('✅ [INVITE] Invitation accepted successfully!');
+
+                // Clear the token from sessionStorage
+                sessionStorage.removeItem('inviteToken');
+            } catch (error) {
+                console.error('❌ [INVITE] Error handling invitation:', error);
+                // Don't show error to user - this is not critical to the signup flow
+            }
         }
     </script>
 </body>
