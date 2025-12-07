@@ -955,9 +955,15 @@
                 console.log('🔵 Saving to Firestore...');
                 await db.collection('users').doc(currentUser.uid)
                     .collection('signedDocuments').doc('legal-agreement').set({
+                        formType: 'legal-agreement',
+                        formTitle: 'Legal Agreement & Consent Forms',
+                        userId: currentUser.uid,
+                        userEmail: currentUser.email,
                         fullName: fullName,
                         email: currentUser.email,
+                        submittedAt: firebase.firestore.FieldValue.serverTimestamp(),
                         signedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        status: 'signed',
                         pdfURL: downloadURL,
                         pdfFileName: fileName,
                         signatureURL: signatureURL,

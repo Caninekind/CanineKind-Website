@@ -510,119 +510,15 @@
                 <input type="hidden" name="from_name" value="CanineKind Client Portal - Intake Form">
                 <input type="checkbox" name="botcheck" style="display: none;">
                 <ul id="progressbar">
-                  <li class="active" id="step1"><strong>Owner</strong></li>
-                  <li id="step2"><strong>Dog</strong></li>
-                  <li id="step3"><strong>Dog Sociability</strong></li>
-                  <li id="step4"><strong>Human Sociability</strong></li>
-                  <li id="step5"><strong>Misc. Behavior Problems</strong></li>
-                  <li id="step6"><strong>Drive</strong></li>
-                  <li id="step7"><strong>Other Goals</strong></li>
-                  <li id="step8"><strong>Complete</strong></li>
+                  <li class="active" id="step1"><strong>Dog Sociability</strong></li>
+                  <li id="step2"><strong>Human Sociability</strong></li>
+                  <li id="step3"><strong>Misc. Behavior Problems</strong></li>
+                  <li id="step4"><strong>Drive</strong></li>
+                  <li id="step5"><strong>Other Goals</strong></li>
+                  <li id="step6"><strong>Complete</strong></li>
                 </ul>
 
-                <!-- Step 1: Owner Information -->
-                <fieldset>
-                  <div class="form-card">
-                    <h2 class="fs-title" style="margin-top: -10px;">Owner Information</h2>
-                    <p class="fs-subtitle">Let's get to know your dog's best friend!</p>
-                    <label>1. Owner Name</label>
-                    <input type="text" name="owner_full_name" placeholder="Full Name (First Last)"/>
-                    <label>2. State, City, Zipcode</label>
-                    <input type="text" name="owner_location" placeholder="City State Zipcode (e.g., Stoughton Massachusetts 02072)"/>
-                    <label>3. Email</label>
-                    <input type="email" name="owner_email" placeholder="Email Address"/>
-                    <label>4. Phone Number</label>
-                    <input type="tel" name="owner_phone" placeholder="Phone Number"/>
-                    <label>5. Who is responsible for the dog and its training?</label>
-                    <div class="checkbox-group-horizontal">
-                      <label><input type="checkbox" name="responsible_spouse" value="yes"/> Spouse</label>
-                      <label><input type="checkbox" name="responsible_roommates" value="yes"/> Roommates</label>
-                      <label><input type="checkbox" name="responsible_children" value="yes"/> Children</label>
-                      <label><input type="checkbox" name="responsible_parents" value="yes"/> Parents/In-laws</label>
-                      <label><input type="checkbox" name="responsible_other_check" value="yes"/> Other</label>
-                    </div>
-                    <input type="text" name="responsible_other_text" placeholder="If other, please specify..."/>
-                    <label>6. Have you worked with a dog trainer or received professional dog training before?</label>
-                    <div class="checkbox-group-horizontal">
-                      <label><input type="checkbox" name="previous_trainer_yes" value="yes"/> Yes</label>
-                      <label><input type="checkbox" name="previous_trainer_no" value="no"/> No</label>
-                    </div>
-                    <label>7. What services are you interested in?</label>
-                    <div class="checkbox-group-horizontal">
-                      <label><input type="checkbox" name="service_general_private" value="yes"/> General private lesson</label>
-                      <label><input type="checkbox" name="service_online" value="yes"/> Online lessons</label>
-                      <label><input type="checkbox" name="service_behavioral_eval" value="yes"/> Behavioral evaluation</label>
-                      <label><input type="checkbox" name="service_group" value="yes"/> Group lessons</label>
-                      <label><input type="checkbox" name="service_walking" value="yes"/> Dog walking services</label>
-                      <label><input type="checkbox" name="service_puppy" value="yes"/> Puppy lessons</label>
-                      <label><input type="checkbox" name="service_trick_training" value="yes"/> Trick training/competitive obedience help</label>
-                      <label><input type="checkbox" name="service_dog_skills" value="yes"/> Service dog skills/public access</label>
-                      <label><input type="checkbox" name="service_other_check" value="yes"/> Other</label>
-                    </div>
-                    <input type="text" name="service_other_text" placeholder="If other, please specify..."/>
-                    <label>8. What are your top 3 personal goals in seeking out professional dog training today?</label>
-                    <textarea name="training_goals_top3" placeholder="List your top 3 goals..." style="min-height: 80px;"></textarea>
-                  </div>
-                  <input type="button" name="next" class="next action-button" value="Next →"/>
-                </fieldset>
-
-                <!-- Step 2: Dog Basic Info -->
-                <fieldset>
-                  <div class="form-card">
-                    <h2 class="fs-title" style="margin-top: -10px;">Dog Basic Information</h2>
-                    <p class="fs-subtitle">Let's get some basic information on your dog!</p>
-                    <label>1. Dog's Name</label>
-                    <input type="text" name="dog_name" placeholder="Dog's Name"/>
-                    <label>2. Age</label>
-                    <input type="text" name="dog_age" placeholder="Age (years/months)"/>
-                    <label>3. Breed</label>
-                    <input type="text" name="dog_breed" placeholder="Breed or Mix"/>
-                    <label>4. Gender</label>
-                    <div class="checkbox-group-horizontal">
-                      <label><input type="checkbox" name="dog_gender_male" value="male"/> Male</label>
-                      <label><input type="checkbox" name="dog_gender_female" value="female"/> Female</label>
-                    </div>
-                    <label>5. Spayed/Neutered?</label>
-                    <div class="checkbox-group-horizontal">
-                      <label><input type="checkbox" name="dog_fixed_yes" value="yes"/> Yes</label>
-                      <label><input type="checkbox" name="dog_fixed_no" value="no"/> No</label>
-                    </div>
-                    <label>6. Weight</label>
-                    <input type="text" name="dog_weight" placeholder="Weight (lbs)"/>
-                    <label>7. Where did you get your dog?</label>
-                    <input type="text" name="dog_source" placeholder="Breeder, Rescue, Shelter, etc."/>
-                    <label>8. How long have you had your dog?</label>
-                    <input type="text" name="dog_duration" placeholder="Time with dog"/>
-                    <label>9. Vaccines/Prevention</label>
-                    <div class="checkbox-group-horizontal">
-                      <label><input type="checkbox" name="vaccine_rabies" value="yes"/> Rabies</label>
-                      <label><input type="checkbox" name="vaccine_flea_tick" value="yes"/> Flea/Tick</label>
-                      <label><input type="checkbox" name="vaccine_distemper" value="yes"/> Distemper</label>
-                      <label><input type="checkbox" name="vaccine_heartworm" value="yes"/> Heartworm</label>
-                      <label><input type="checkbox" name="vaccine_other_check" value="yes"/> Other</label>
-                    </div>
-                    <input type="text" name="vaccine_other_text" placeholder="If other, please specify..."/>
-                    <label>10. Does your dog have any diagnosed medical issues, sensitivities or conditions?</label>
-                    <textarea name="dog_medical_issues" placeholder="Describe any medical issues, sensitivities or conditions"></textarea>
-                    <label>11. In a couple sentences - describe what an average day for your dog looks like.</label>
-                    <textarea name="dog_average_day" placeholder="Describe your dog's typical day"></textarea>
-                    <label>12. Do you currently use any of these training tools?</label>
-                    <div class="checkbox-group-horizontal">
-                      <label><input type="checkbox" name="tool_gentle_leader" value="yes"/> Gentle Leader</label>
-                      <label><input type="checkbox" name="tool_prong_collar" value="yes"/> Prong Collar</label>
-                      <label><input type="checkbox" name="tool_no_pull_harness" value="yes"/> No Pull Harness</label>
-                      <label><input type="checkbox" name="tool_ecollar" value="yes"/> Electronic or Vibrate Collar</label>
-                      <label><input type="checkbox" name="tool_slip_lead" value="yes"/> Slip Lead</label>
-                      <label><input type="checkbox" name="tool_crate" value="yes"/> Crate/Kennel</label>
-                      <label><input type="checkbox" name="tool_other_check" value="yes"/> Other</label>
-                    </div>
-                    <input type="text" name="tool_other_text" placeholder="If other, please specify..."/>
-                  </div>
-                  <input type="button" name="previous" class="previous action-button-previous" value="← Previous"/>
-                  <input type="button" name="next" class="next action-button" value="Next →"/>
-                </fieldset>
-
-                <!-- Step 3: Dog Sociability -->
+                <!-- Step 1: Dog Sociability -->
                 <fieldset>
                   <div class="form-card">
                     <h2 class="fs-title" style="margin-top: -10px;">Dog Sociability</h2>
@@ -684,7 +580,7 @@
                   <input type="button" name="next" class="next action-button" value="Next →"/>
                 </fieldset>
 
-                <!-- Step 4: Human Sociability -->
+                <!-- Step 2: Human Sociability -->
                 <fieldset>
                   <div class="form-card">
                     <h2 class="fs-title" style="margin-top: -10px;">Human Sociability</h2>
@@ -741,7 +637,7 @@
                   <input type="button" name="next" class="next action-button" value="Next →"/>
                 </fieldset>
 
-                <!-- Step 5: Misc Behavioral Issues -->
+                <!-- Step 3: Misc Behavioral Issues -->
                 <fieldset>
                   <div class="form-card">
                     <h2 class="fs-title" style="margin-top: -10px;">Behavioral Issues</h2>
@@ -766,7 +662,7 @@
                   <input type="button" name="next" class="next action-button" value="Next →"/>
                 </fieldset>
 
-                <!-- Step 6: Drive -->
+                <!-- Step 4: Drive -->
                 <fieldset>
                   <div class="form-card">
                     <h2 class="fs-title" style="margin-top: -10px;">Drive</h2>
@@ -852,7 +748,7 @@
                   <input type="button" name="next" class="next action-button" value="Next →"/>
                 </fieldset>
 
-                <!-- Step 7: Other Issues and Goals -->
+                <!-- Step 5: Other Issues and Goals -->
                 <fieldset>
                   <div class="form-card">
                     <h2 class="fs-title" style="margin-top: -10px;">Training Goals & Other Information</h2>
@@ -885,7 +781,7 @@
                   <button type="submit" class="submit-button" id="submitBtn">Submit →</button>
                 </fieldset>
 
-                <!-- Step 8: Thank You / Confirmation -->
+                <!-- Step 6: Thank You / Confirmation -->
                 <fieldset>
                   <div class="form-card">
                     <h2 class="fs-title text-center">Thank You!</h2>
@@ -1009,9 +905,9 @@
 
           if (result.success) {
             console.log('✅ Email notification sent via Web3Forms');
-            // Move to thank you page (step 8)
+            // Move to thank you page (step 6)
             fieldsets[currentStep].style.display = 'none';
-            currentStep = 7;
+            currentStep = 5;
             fieldsets[currentStep].style.display = 'block';
             progressbarItems[currentStep].classList.add('active');
             window.scrollTo(0, 0);
@@ -1019,7 +915,7 @@
             console.warn('⚠️ Email notification failed but form was saved to database');
             // Still show thank you page since form was saved to Firestore
             fieldsets[currentStep].style.display = 'none';
-            currentStep = 7;
+            currentStep = 5;
             fieldsets[currentStep].style.display = 'block';
             progressbarItems[currentStep].classList.add('active');
             window.scrollTo(0, 0);
