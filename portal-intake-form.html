@@ -528,6 +528,7 @@
                     <div class="checkbox-group-horizontal">
                       <label><input type="checkbox" name="utilize_daycare" value="yes"/> Doggy Daycare</label>
                       <label><input type="checkbox" name="utilize_dog_parks" value="yes"/> Public Dog Parks</label>
+                      <label><input type="checkbox" name="utilize_dog_cafes" value="yes"/> Dog Cafe's/Indoor Lounge</label>
                       <label><input type="checkbox" name="utilize_other" value="yes"/> Other</label>
                     </div>
                     <input type="text" name="utilize_other_text" placeholder="If other, please specify..." style="margin-bottom: 10px;"/>
@@ -555,6 +556,7 @@
 
                     <label style="margin-top: 5px;">2. Which of the following things does your dog struggle with? (Check any/all that apply)</label>
                     <div class="checkbox-group">
+                      <label><input type="checkbox" name="struggle_newly_adopted_dog" value="yes"/> My dog is newly adopted or a puppy and so I am still figuring these things out.</label>
                       <label><input type="checkbox" name="struggle_onleash" value="yes"/> Seeing/passing other dogs when being walked ON LEASH and staying under control or redirected.</label>
                       <label><input type="checkbox" name="struggle_offleash" value="yes"/> Seeing/passing dogs when OFF LEASH and staying under control or redirected.</label>
                       <label><input type="checkbox" name="struggle_too_excited" value="yes"/> Liking dogs too much/being too excited persistent about playing with other dogs.</label>
@@ -609,6 +611,7 @@
 
                     <label style="margin-top: 5px;">2. Which of the following things does your dog struggle with? (Check any/all that apply)</label>
                     <div class="checkbox-group">
+                      <label><input type="checkbox" name="human_struggle_newly_adopted" value="yes"/> My dog is newly adopted or a puppy and so I am still figuring these things out.</label>
                       <label><input type="checkbox" name="human_struggle_strangers_onleash" value="yes"/> Seeing/passing strangers when being walked ON LEASH and staying under control or redirected.</label>
                       <label><input type="checkbox" name="human_struggle_strangers_offleash" value="yes"/> Seeing/passing strangers when OFF LEASH and staying under control or redirected.</label>
                       <label><input type="checkbox" name="human_struggle_too_excited" value="yes"/> Liking people too much/being too excited or persistent about greeting people.</label>
@@ -632,6 +635,9 @@
                       <label><input type="checkbox" name="human_struggle_other_check" value="yes"/> Other</label>
                     </div>
                     <input type="text" name="human_struggle_other_text" placeholder="If other, please describe..."/>
+
+                    <label style="margin-top: 20px;">3. We do not handle human aggression cases at this time. However, not all dogs may display these behaviors based in aggression. Please describe any situation below in which your dog has bitten somebody, where and how it happened and be sure to mention any additional details that were not discussed in your phone consultation if applicable.</label>
+                    <textarea name="human_aggression_details" placeholder="Please describe any biting incidents in detail..." style="min-height: 100px;"></textarea>
                   </div>
                   <input type="button" name="previous" class="previous action-button-previous" value="← Previous"/>
                   <input type="button" name="next" class="next action-button" value="Next →"/>
