@@ -289,7 +289,7 @@ service cloud.firestore {
                        request.resource.data.userId == request.auth.uid;
 
       // Admins can read all activity logs
-      allow read: if isAdmin();
+      allow read, list: if isAdmin();
 
       // Admins can delete activity logs
       allow delete: if isAdmin();
