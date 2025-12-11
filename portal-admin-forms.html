@@ -174,11 +174,63 @@
         </div>
 
         <div class="tabs">
-            <button class="tab active" onclick="switchTab('submissions')">Recent Submissions</button>
+            <button class="tab active" onclick="switchTab('assign')">Assign Forms to Clients</button>
+            <button class="tab" onclick="switchTab('submissions')">Recent Submissions</button>
             <button class="tab" onclick="switchTab('upload')">Upload New Form</button>
         </div>
 
-        <div class="tab-content active" id="submissions-tab">
+        <div class="tab-content active" id="assign-tab">
+            <div class="section-card">
+                <div class="section-header">
+                    <h2>Assign Forms to Clients</h2>
+                    <p style="color: #666; font-size: 0.95rem; margin-top: 0.5rem;">Select a client and choose which forms they need to complete</p>
+                </div>
+
+                <div class="form-group">
+                    <label>Select Client</label>
+                    <select id="assignClientSelect" onchange="loadClientAssignments()" style="padding: 0.75rem; font-size: 1rem;">
+                        <option value="">-- Choose a client --</option>
+                    </select>
+                </div>
+
+                <div id="clientAssignmentSection" style="display: none;">
+                    <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px; margin: 1.5rem 0;">
+                        <h3 style="color: #2c3e50; margin-bottom: 1rem; font-size: 1.2rem;">Available Forms</h3>
+                        <p style="color: #666; margin-bottom: 1rem; font-size: 0.9rem;">Check the boxes for forms this client needs to complete</p>
+
+                        <div style="display: flex; flex-direction: column; gap: 1rem;">
+                            <label style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: white; border-radius: 8px; cursor: pointer; border: 2px solid #e0e0e0;">
+                                <input type="checkbox" id="assign-legal-agreement" value="legal-agreement" style="width: 20px; height: 20px; cursor: pointer;">
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; color: #2c3e50; margin-bottom: 0.25rem;">📋 Legal Agreement & Consent Forms</div>
+                                    <div style="color: #666; font-size: 0.85rem;">Comprehensive agreement covering training services, liability, privacy policy, and cancellation terms</div>
+                                </div>
+                            </label>
+
+                            <label style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: white; border-radius: 8px; cursor: pointer; border: 2px solid #e0e0e0;">
+                                <input type="checkbox" id="assign-intake-questionnaire" value="intake-questionnaire" style="width: 20px; height: 20px; cursor: pointer;">
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; color: #2c3e50; margin-bottom: 0.25rem;">📝 Pre-Session Intake Questionnaire</div>
+                                    <div style="color: #666; font-size: 0.85rem;">In-depth questions about the dog's behavior and training needs (approx. 10 minutes)</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                        <button class="btn btn-primary" onclick="saveFormAssignments()">Save Form Assignments</button>
+                        <div id="saveStatus" style="color: #51cf66; font-weight: 600; display: none;">✓ Saved successfully!</div>
+                    </div>
+
+                    <div id="clientFormsStatus" style="margin-top: 2rem; padding: 1.5rem; background: #f0f7ff; border-radius: 10px; border: 2px solid #d1e5f4;">
+                        <h4 style="color: #2c3e50; margin-bottom: 1rem;">Client's Form Completion Status</h4>
+                        <div id="formsStatusList"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="submissions-tab">
             <div class="section-card">
                 <div class="section-header">
                     <h2>Recent Form Submissions</h2>
@@ -260,6 +312,7 @@
                     }
                     currentUser = user;
                     loadClients();
+                    loadClientsForAssignment();
                     loadSubmissions();
                 }
             });
@@ -291,6 +344,152 @@
                 select.innerHTML = options;
             } catch (error) {
                 console.error('Error loading clients:', error);
+            }
+        }
+
+        // Load clients for the assignment dropdown
+        async function loadClientsForAssignment() {
+            try {
+                const usersSnapshot = await db.collection('users').where('status', '==', 'approved').get();
+                const select = document.getElementById('assignClientSelect');
+                let options = '<option value="">-- Choose a client --</option>';
+                usersSnapshot.docs.forEach(doc => {
+                    const userData = doc.data();
+                    const displayName = userData.displayName || userData.name || doc.id;
+                    options += '<option value="' + doc.id + '" data-email="' + (userData.email || '') + '">' + displayName + ' (' + (userData.email || doc.id) + ')</option>';
+                });
+                select.innerHTML = options;
+            } catch (error) {
+                console.error('Error loading clients for assignment:', error);
+            }
+        }
+
+        // Load client's current form assignments
+        async function loadClientAssignments() {
+            const clientSelect = document.getElementById('assignClientSelect');
+            const clientId = clientSelect.value;
+            const assignmentSection = document.getElementById('clientAssignmentSection');
+
+            if (!clientId) {
+                assignmentSection.style.display = 'none';
+                return;
+            }
+
+            assignmentSection.style.display = 'block';
+
+            try {
+                // Get assigned forms for this client
+                const assignedFormsDoc = await db.collection('users').doc(clientId)
+                    .collection('assignedForms').doc('forms').get();
+
+                // Reset checkboxes
+                document.getElementById('assign-legal-agreement').checked = false;
+                document.getElementById('assign-intake-questionnaire').checked = false;
+
+                if (assignedFormsDoc.exists) {
+                    const assignedForms = assignedFormsDoc.data().forms || [];
+                    assignedForms.forEach(formId => {
+                        const checkbox = document.getElementById('assign-' + formId);
+                        if (checkbox) {
+                            checkbox.checked = true;
+                        }
+                    });
+                }
+
+                // Load completion status
+                await loadClientFormsStatus(clientId);
+            } catch (error) {
+                console.error('Error loading client assignments:', error);
+                alert('Error loading form assignments');
+            }
+        }
+
+        // Save form assignments for a client
+        async function saveFormAssignments() {
+            const clientSelect = document.getElementById('assignClientSelect');
+            const clientId = clientSelect.value;
+
+            if (!clientId) {
+                alert('Please select a client');
+                return;
+            }
+
+            // Get checked forms
+            const assignedForms = [];
+            if (document.getElementById('assign-legal-agreement').checked) {
+                assignedForms.push('legal-agreement');
+            }
+            if (document.getElementById('assign-intake-questionnaire').checked) {
+                assignedForms.push('intake-questionnaire');
+            }
+
+            try {
+                // Save to Firestore
+                await db.collection('users').doc(clientId)
+                    .collection('assignedForms').doc('forms').set({
+                        forms: assignedForms,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        updatedBy: currentUser.email
+                    });
+
+                // Show success message
+                const saveStatus = document.getElementById('saveStatus');
+                saveStatus.style.display = 'block';
+                setTimeout(() => {
+                    saveStatus.style.display = 'none';
+                }, 3000);
+
+                // Reload status
+                await loadClientFormsStatus(clientId);
+            } catch (error) {
+                console.error('Error saving form assignments:', error);
+                alert('Error saving form assignments');
+            }
+        }
+
+        // Load client's forms completion status
+        async function loadClientFormsStatus(clientId) {
+            const statusList = document.getElementById('formsStatusList');
+
+            try {
+                // Get assigned forms
+                const assignedFormsDoc = await db.collection('users').doc(clientId)
+                    .collection('assignedForms').doc('forms').get();
+
+                if (!assignedFormsDoc.exists || !assignedFormsDoc.data().forms || assignedFormsDoc.data().forms.length === 0) {
+                    statusList.innerHTML = '<p style="color: #999; font-style: italic;">No forms assigned to this client yet</p>';
+                    return;
+                }
+
+                const assignedForms = assignedFormsDoc.data().forms;
+                const formNames = {
+                    'legal-agreement': '📋 Legal Agreement & Consent Forms',
+                    'intake-questionnaire': '📝 Pre-Session Intake Questionnaire'
+                };
+
+                let statusHTML = '';
+                for (const formId of assignedForms) {
+                    // Check if completed
+                    const signedDoc = await db.collection('users').doc(clientId)
+                        .collection('signedDocuments').doc(formId).get();
+
+                    const isCompleted = signedDoc.exists;
+                    const statusIcon = isCompleted ? '✓' : '⚠️';
+                    const statusText = isCompleted ? 'Completed' : 'Not Completed';
+                    const statusColor = isCompleted ? '#51cf66' : '#ffa94d';
+
+                    statusHTML += `
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: white; border-radius: 6px; margin-bottom: 0.5rem;">
+                            <span>${formNames[formId] || formId}</span>
+                            <span style="color: ${statusColor}; font-weight: 600;">${statusIcon} ${statusText}</span>
+                        </div>
+                    `;
+                }
+
+                statusList.innerHTML = statusHTML;
+            } catch (error) {
+                console.error('Error loading client forms status:', error);
+                statusList.innerHTML = '<p style="color: #e74c3c;">Error loading status</p>';
             }
         }
 
