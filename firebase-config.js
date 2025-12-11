@@ -393,15 +393,45 @@ async function deleteUser(uid) {
 // DOCUMENT MANAGEMENT FUNCTIONS
 // ==========================================
 
-// Check if user has completed required documents
+// Check if user has completed required documents (only checks assigned forms)
 async function checkDocumentsComplete(email) {
     try {
         const userDoc = await db.collection('users').doc(email).get();
         if (!userDoc.exists) {
             return false;
         }
-        const userData = userDoc.data();
-        return userData.documentsComplete || false;
+
+        // Get assigned forms for this user
+        const assignedFormsDoc = await db.collection('users').doc(email)
+            .collection('assignedForms').doc('forms').get();
+
+        if (!assignedFormsDoc.exists) {
+            // If no forms assigned, consider complete
+            console.log('No forms assigned to user, considering complete');
+            return true;
+        }
+
+        const assignedForms = assignedFormsDoc.data().forms || [];
+
+        // If no forms assigned, consider complete
+        if (assignedForms.length === 0) {
+            console.log('Empty forms array, considering complete');
+            return true;
+        }
+
+        // Check if all assigned forms are completed
+        for (const formId of assignedForms) {
+            const signedDoc = await db.collection('users').doc(email)
+                .collection('signedDocuments').doc(formId).get();
+
+            if (!signedDoc.exists) {
+                console.log(`Form ${formId} not completed`);
+                return false;
+            }
+        }
+
+        console.log('All assigned forms completed');
+        return true;
     } catch (error) {
         console.error('Error checking documents:', error);
         return false;

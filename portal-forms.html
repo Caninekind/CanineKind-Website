@@ -424,21 +424,51 @@
             const signedDocumentsSection = document.getElementById('signedDocumentsSection');
             const emptyState = document.getElementById('emptyState');
 
-            // Define available documents (you can expand this list later)
-            const availableDocuments = [
-                {
+            // Get assigned forms for this user
+            let assignedFormIds = [];
+            try {
+                const assignedFormsDoc = await db.collection('users').doc(currentUser.uid)
+                    .collection('assignedForms').doc('forms').get();
+
+                if (assignedFormsDoc.exists) {
+                    assignedFormIds = assignedFormsDoc.data().forms || [];
+                    console.log('Assigned forms for user:', assignedFormIds);
+                }
+            } catch (error) {
+                console.error('Error loading assigned forms:', error);
+            }
+
+            // If no forms assigned, show empty state
+            if (assignedFormIds.length === 0) {
+                emptyState.style.display = 'block';
+                emptyState.innerHTML = `
+                    <div class="empty-state-icon">📋</div>
+                    <h3>No Forms Assigned Yet</h3>
+                    <p>Your trainer hasn't assigned any forms to you yet. Please check back later or contact your trainer.</p>
+                `;
+                return;
+            }
+
+            // Define available documents
+            const allDocuments = {
+                'legal-agreement': {
                     id: 'legal-agreement',
                     title: 'Legal Agreement & Consent Forms',
                     description: 'Comprehensive agreement covering training services, liability, privacy policy, and cancellation terms.',
                     icon: '📋'
                 },
-                {
+                'intake-questionnaire': {
                     id: 'intake-questionnaire',
                     title: 'PRE-SESSION INTAKE',
                     description: 'This questionnaire will ask you some quick but more in depth questions about your dog\'s behavior. This questionnaire should take you less than 10 minutes but please make sure to read each option carefully.',
                     icon: '📝'
                 }
-            ];
+            };
+
+            // Filter to only show assigned documents
+            const availableDocuments = assignedFormIds
+                .filter(id => allDocuments[id])
+                .map(id => allDocuments[id]);
 
             // Check status of each document
             const availableHTML = [];
