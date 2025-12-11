@@ -253,6 +253,39 @@
             margin-left: 10px;
         }
 
+        /* Disabled Card Styles */
+        .dashboard-card.disabled {
+            opacity: 0.6;
+            background: linear-gradient(white, white) padding-box,
+                        linear-gradient(135deg, #ccc 0%, #ddd 100%) border-box;
+            pointer-events: none;
+        }
+
+        .dashboard-card.disabled:hover {
+            transform: none;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            border-color: transparent;
+        }
+
+        .dashboard-card.disabled h2 {
+            background: linear-gradient(135deg, #999 0%, #aaa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card-btn.disabled {
+            background: linear-gradient(135deg, #ccc 0%, #ddd 100%);
+            cursor: not-allowed;
+            pointer-events: none;
+            box-shadow: none;
+        }
+
+        .card-btn.disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
         /* Quick Links Section */
         .quick-links {
             background: white;
@@ -460,15 +493,6 @@
             </div>
         </div>
 
-        <!-- Alert Banner for Profile Settings -->
-        <div class="alert-banner" id="settingsAlert">
-            <div class="alert-icon">ℹ</div>
-            <div class="alert-content">
-                <h3>Complete Your Profile Information</h3>
-                <p>Please fill out your profile settings to help us serve you better. Add your contact information and preferences.</p>
-                <a href="portal-settings.html" class="alert-btn">Update Settings →</a>
-            </div>
-        </div>
 
         <!-- Dashboard Grid -->
         <div class="dashboard-grid">
@@ -487,24 +511,24 @@
             </div>
 
             <!-- Weekly Schedule Card -->
-            <div class="dashboard-card">
-                <h2>Weekly Schedule</h2>
+            <div class="dashboard-card disabled">
+                <h2>Weekly Schedule <span class="coming-soon">Coming Soon</span></h2>
                 <p>Create and manage your dog's weekly activity schedule with drag-and-drop.</p>
-                <a href="portal-schedule.html" class="card-btn">Manage Schedule</a>
+                <button class="card-btn disabled">Coming Soon</button>
             </div>
 
             <!-- Training Goals Card -->
-            <div class="dashboard-card">
-                <h2>Training Goals</h2>
+            <div class="dashboard-card disabled">
+                <h2>Training Goals <span class="coming-soon">Coming Soon</span></h2>
                 <p>Set and track training goals for your dog with your trainer.</p>
-                <a href="portal-goals.html" class="card-btn">View Goals</a>
+                <button class="card-btn disabled">Coming Soon</button>
             </div>
 
             <!-- Account Settings Card -->
-            <div class="dashboard-card">
-                <h2>Account Settings</h2>
+            <div class="dashboard-card disabled">
+                <h2>Account Settings <span class="coming-soon">Coming Soon</span></h2>
                 <p>Manage your profile information and preferences.</p>
-                <a href="portal-settings.html" class="card-btn">Manage Settings</a>
+                <button class="card-btn disabled">Coming Soon</button>
             </div>
         </div>
     </div>
@@ -557,9 +581,6 @@
 
                         // Check if forms/documents are complete
                         checkAndShowFormsAlert(user.uid);
-
-                        // Check if settings are complete
-                        checkAndShowSettingsAlert(user.uid);
                     }
                 }
             });
@@ -611,43 +632,6 @@
                 }
             } catch (error) {
                 console.error('Error checking forms status:', error);
-            }
-        }
-
-        // Check and show settings alert if profile not complete
-        async function checkAndShowSettingsAlert(uid) {
-            try {
-                const alertBanner = document.getElementById('settingsAlert');
-                console.log('🔍 [SETTINGS ALERT] Element found:', alertBanner);
-
-                const settingsDoc = await db.collection('users')
-                    .doc(email)
-                    .collection('settings')
-                    .doc('profile')
-                    .get();
-
-                if (!settingsDoc.exists) {
-                    // Show alert banner if settings not saved
-                    alertBanner.classList.add('show');
-                    console.log('⚠️ [SETTINGS ALERT] SHOWING - User has not completed settings');
-                } else {
-                    const data = settingsDoc.data();
-                    // Check if all required fields are filled
-                    if (!data.ownerName || !data.dogName || !data.phone) {
-                        alertBanner.classList.add('show');
-                        console.log('⚠️ [SETTINGS ALERT] SHOWING - User settings incomplete');
-                    } else {
-                        console.log('✅ [SETTINGS ALERT] Hidden - User has completed settings');
-                    }
-                }
-            } catch (error) {
-                console.error('Error checking settings status:', error);
-                // Show alert by default if there's an error
-                const alertBanner = document.getElementById('settingsAlert');
-                if (alertBanner) {
-                    alertBanner.classList.add('show');
-                    console.log('⚠️ [SETTINGS ALERT] SHOWING - Error occurred, showing by default');
-                }
             }
         }
 
