@@ -793,6 +793,45 @@
       margin-bottom: 20px;
     }
 
+    /* Image Modal Styles */
+    .image-modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .image-modal.active {
+      display: flex;
+    }
+
+    .image-modal-content {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 20px;
+      right: 40px;
+      color: white;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 2001;
+    }
+
+    .close-modal:hover {
+      color: #ccc;
+    }
+
     /* Mobile Styles */
     @media (max-width: 768px) {
       body {
@@ -967,6 +1006,12 @@
     </div>
   </div>
 
+  <!-- Image Modal -->
+  <div class="image-modal" id="imageModal" onclick="closeImageModal()">
+    <span class="close-modal">&times;</span>
+    <img class="image-modal-content" id="modalImage">
+  </div>
+
   <!-- Checkout Modal -->
   <div class="checkout-overlay" id="checkoutOverlay">
     <div class="checkout-modal">
@@ -1033,7 +1078,9 @@
       </div>
 
       <div class="product-card">
-        <div class="product-image">🥚</div>
+        <div class="product-image" onclick="openImageModal('https://i.imgur.com/otP5ywh.jpeg')" style="cursor: pointer;">
+          <img src="https://i.imgur.com/otP5ywh.jpeg" alt="Freeze Dried Quail Egg Yolks" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
         <div class="product-content">
           <h3>Freeze Dried Quail Egg Yolks 2oz</h3>
           <div class="product-price">$5.00</div>
@@ -1043,7 +1090,9 @@
       </div>
 
       <div class="product-card">
-        <div class="product-image">🦆</div>
+        <div class="product-image" onclick="openImageModal('https://i.imgur.com/dApVzuv.jpeg')" style="cursor: pointer;">
+          <img src="https://i.imgur.com/dApVzuv.jpeg" alt="Duck Wrapped Okra" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
         <div class="product-content">
           <h3>Duck Wrapped Okra (Dehydrated) 5pcs</h3>
           <div class="product-price">$5.00</div>
@@ -1063,7 +1112,7 @@
       </div>
 
       <div class="product-card">
-        <div class="product-image">
+        <div class="product-image" onclick="openImageModal('https://i.imgur.com/kC95JKA.png')" style="cursor: pointer;">
           <img src="https://i.imgur.com/kC95JKA.png" alt="Dehydrated Goose Trachea Chew Sticks" style="width: 100%; height: 100%; object-fit: cover;">
         </div>
         <div class="product-content">
@@ -1095,7 +1144,9 @@
       </div>
 
       <div class="product-card">
-        <div class="product-image"><img src="https://i.imgur.com/doZAbhZ.jpeg" alt="Freeze Dried Chicken Liver Cubes" style="width: 100%; height: 100%; object-fit: cover;"></div>
+        <div class="product-image" onclick="openImageModal('https://i.imgur.com/doZAbhZ.jpeg')" style="cursor: pointer;">
+          <img src="https://i.imgur.com/doZAbhZ.jpeg" alt="Freeze Dried Chicken Liver Cubes" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
         <div class="product-content">
           <h3>Freeze Dried Chicken Liver Cubes 2oz</h3>
           <div class="product-price">$5.00</div>
@@ -1403,17 +1454,30 @@
       cart = [];
       saveCart();
       updateCartDisplay();
-      
+
       // Close checkout and cart
       closeCheckout();
       toggleCart();
-      
+
       // Reset form
       document.getElementById('checkout-form').reset();
       document.getElementById('checkout-form').style.display = 'block';
       document.getElementById('payment-status').style.display = 'none';
       document.getElementById('card-button').disabled = false;
       document.getElementById('card-button').textContent = 'Complete Payment';
+    }
+
+    // Image Modal Functions
+    function openImageModal(imageUrl) {
+      const modal = document.getElementById('imageModal');
+      const modalImg = document.getElementById('modalImage');
+      modal.classList.add('active');
+      modalImg.src = imageUrl;
+    }
+
+    function closeImageModal() {
+      const modal = document.getElementById('imageModal');
+      modal.classList.remove('active');
     }
   </script>
 </body>
