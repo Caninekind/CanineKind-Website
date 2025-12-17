@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shop - CanineKind Dog Training</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Square Web Payments SDK -->
-  <script type="text/javascript" src="https://sandbox.web.squarecdn.com/v1/square.js"></script>
   <style>
     * {
       margin: 0;
@@ -1012,49 +1010,7 @@
     <img class="image-modal-content" id="modalImage">
   </div>
 
-  <!-- Checkout Modal -->
-  <div class="checkout-overlay" id="checkoutOverlay">
-    <div class="checkout-modal">
-      <h2>Checkout</h2>
-      <form id="checkout-form">
-        <div class="form-group">
-          <label for="customerName">Full Name *</label>
-          <input type="text" id="customerName" required>
-        </div>
-        <div class="form-group">
-          <label for="customerEmail">Email *</label>
-          <input type="email" id="customerEmail" required>
-        </div>
-        <div class="form-group">
-          <label for="customerPhone">Phone</label>
-          <input type="tel" id="customerPhone">
-        </div>
-        <div class="form-group">
-          <label for="shippingAddress">Shipping Address</label>
-          <textarea id="shippingAddress" rows="3" placeholder="Enter your address or choose pickup"></textarea>
-        </div>
-        <div class="form-group">
-          <label for="orderNotes">Order Notes (optional)</label>
-          <textarea id="orderNotes" rows="2" placeholder="Any special requests or customization details..."></textarea>
-        </div>
-
-        <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; margin: 20px 0;">
-          <h3 style="margin: 0 0 10px 0; color: #496044;">Order Summary</h3>
-          <div id="checkoutSummary"></div>
-          <div style="border-top: 2px solid #496044; margin-top: 10px; padding-top: 10px; font-size: 20px; font-weight: bold; color: #496044;">
-            Total: <span id="checkoutTotal">$0.00</span>
-          </div>
-        </div>
-
-        <div id="card-container"></div>
-        
-        <button type="submit" class="payment-button" id="card-button">Complete Payment</button>
-        <button type="button" class="close-checkout" onclick="closeCheckout()">Cancel</button>
-      </form>
-      
-      <div id="payment-status" style="display: none;"></div>
-    </div>
-  </div>
+  <!-- Checkout Modal - Removed (Now using Square Checkout) -->
 
   <main>
     <div class="page-title-section">
@@ -1197,36 +1153,14 @@
   </footer>
 
   <script>
-    // IMPORTANT: Replace YOUR_SANDBOX_APPLICATION_ID_HERE with your actual Sandbox Application ID
-    const SQUARE_APPLICATION_ID = 'sandbox-sq0idb-Orqmme5n4V6GtL8eCnmkGw';
-
     // Shopping cart state
     let cart = [];
-    let payments;
-    let card;
 
     // Load cart from localStorage on page load
     window.addEventListener('DOMContentLoaded', () => {
       loadCart();
       updateCartDisplay();
     });
-
-    // Initialize Square Payment Form
-    async function initializeSquarePayment() {
-      if (!window.Square) {
-        console.error('Square.js failed to load');
-        return;
-      }
-
-      try {
-        payments = window.Square.payments(SQUARE_APPLICATION_ID);
-        card = await payments.card();
-        await card.attach('#card-container');
-      } catch (e) {
-        console.error('Payment form failed to initialize', e);
-        alert('Payment system failed to load. Please refresh the page and try again.');
-      }
-    }
 
     // Cart Functions
     function addToCart(id, name, price, icon) {
@@ -1359,121 +1293,41 @@
 
     async function openCheckout() {
       if (cart.length === 0) return;
-      
-      const checkoutOverlay = document.getElementById('checkoutOverlay');
-      const checkoutSummary = document.getElementById('checkoutSummary');
-      const checkoutTotal = document.getElementById('checkoutTotal');
-      
-      // Build checkout summary
-      checkoutSummary.innerHTML = cart.map(item => `
-        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-          <span>${item.name} (x${item.quantity})</span>
-          <span>${(item.price * item.quantity).toFixed(2)}</span>
-        </div>
-      `).join('');
-      
-      checkoutTotal.textContent = `${getCartTotal().toFixed(2)}`;
-      
-      checkoutOverlay.classList.add('active');
-      
-      // Initialize Square payment form
-      await initializeSquarePayment();
-    }
 
-    function closeCheckout() {
-      const checkoutOverlay = document.getElementById('checkoutOverlay');
-      checkoutOverlay.classList.remove('active');
-    }
+      const checkoutButton = document.querySelector('.checkout-button');
+      checkoutButton.disabled = true;
+      checkoutButton.textContent = 'Creating checkout...';
 
-    // Handle checkout form submission
-    document.getElementById('checkout-form').addEventListener('submit', async (event) => {
-      event.preventDefault();
-      
-      const cardButton = document.getElementById('card-button');
-      cardButton.disabled = true;
-      cardButton.textContent = 'Processing...';
-      
       try {
-        const result = await card.tokenize();
-        if (result.status === 'OK') {
-          const orderData = {
-            sourceId: result.token,
-            amount: Math.round(getCartTotal() * 100), // Amount in cents
-            customer: {
-              name: document.getElementById('customerName').value,
-              email: document.getElementById('customerEmail').value,
-              phone: document.getElementById('customerPhone').value,
-              address: document.getElementById('shippingAddress').value
-            },
+        // Send cart to Square Checkout API
+        const response = await fetch('/.netlify/functions/create-square-checkout', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
             items: cart,
-            notes: document.getElementById('orderNotes').value
-          };
-          
-          // Send to Netlify Function
-          const response = await fetch('/.netlify/functions/create-payment', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(orderData)
-          });
-          
-          const data = await response.json();
-          
-          if (data.success) {
-            // Payment successful!
-            showSuccessMessage();
-          } else {
-            throw new Error(data.error || 'Payment failed');
-          }
-          
+            customerInfo: null // We'll let Square collect customer info
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.checkoutUrl) {
+          // Redirect to Square's hosted checkout page
+          window.location.href = data.checkoutUrl;
         } else {
-          console.error('Tokenization errors:', result.errors);
-          alert('Payment failed. Please check your card details and try again.');
-          cardButton.disabled = false;
-          cardButton.textContent = 'Complete Payment';
+          throw new Error(data.error || 'Failed to create checkout');
         }
-      } catch (e) {
-        console.error('Payment error:', e);
-        alert('Payment failed: ' + (e.message || 'Please try again.'));
-        cardButton.disabled = false;
-        cardButton.textContent = 'Complete Payment';
+
+      } catch (error) {
+        console.error('Checkout error:', error);
+        alert('Unable to proceed to checkout. Please try again or contact us at caninekindtraining@gmail.com');
+        checkoutButton.disabled = false;
+        checkoutButton.textContent = 'Proceed to Checkout';
       }
-    });
-
-    function showSuccessMessage() {
-      const paymentStatus = document.getElementById('payment-status');
-      const checkoutForm = document.getElementById('checkout-form');
-      
-      checkoutForm.style.display = 'none';
-      paymentStatus.style.display = 'block';
-      paymentStatus.innerHTML = `
-        <div class="success-message">
-          <div class="success-icon">✓</div>
-          <h3 style="color: #496044; margin: 20px 0;">Payment Successful!</h3>
-          <p>Thank you for your order. We'll contact you shortly with shipping/pickup details.</p>
-          <button class="payment-button" onclick="completeOrder()">Close</button>
-        </div>
-      `;
     }
 
-    function completeOrder() {
-      // Clear cart
-      cart = [];
-      saveCart();
-      updateCartDisplay();
-
-      // Close checkout and cart
-      closeCheckout();
-      toggleCart();
-
-      // Reset form
-      document.getElementById('checkout-form').reset();
-      document.getElementById('checkout-form').style.display = 'block';
-      document.getElementById('payment-status').style.display = 'none';
-      document.getElementById('card-button').disabled = false;
-      document.getElementById('card-button').textContent = 'Complete Payment';
-    }
 
     // Image Modal Functions
     function openImageModal(imageUrl) {
