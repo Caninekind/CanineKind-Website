@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Confirmation - CanineKind</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background-color: #D1E5F4;
+      color: #333;
+      line-height: 1.6;
+      font-size: 20px;
+    }
+
+    .confirmation-container {
+      max-width: 600px;
+      margin: 100px auto;
+      padding: 60px 40px;
+      background-color: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      text-align: center;
+      border: 3px solid #799972;
+    }
+
+    .success-icon {
+      font-size: 80px;
+      color: #799972;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      color: #799972;
+      font-size: 2em;
+      margin-bottom: 20px;
+      font-family: Impact, sans-serif;
+    }
+
+    p {
+      font-size: 1.1em;
+      color: #555;
+      margin-bottom: 15px;
+      line-height: 1.8;
+    }
+
+    .back-button {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 15px 40px;
+      background: linear-gradient(135deg, #799972 0%, #8aaa83 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 1.1em;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    .back-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+    }
+
+    @media (max-width: 768px) {
+      .confirmation-container {
+        margin: 50px 20px;
+        padding: 40px 30px;
+      }
+
+      h1 {
+        font-size: 1.6em;
+      }
+
+      p {
+        font-size: 1em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="confirmation-container">
+    <div class="success-icon">✓</div>
+    <h1>Order Confirmed!</h1>
+    <p>Thank you for your purchase from CanineKind!</p>
+    <p>You'll receive an email confirmation shortly with your order details and shipping information.</p>
+    <p>We'll be in touch soon regarding pickup or delivery arrangements.</p>
+    <a href="https://caninekind.io/shop" class="back-button">Continue Shopping</a>
+  </div>
+
+  <script>
+    // Clear cart after successful order
+    localStorage.removeItem('canineKindCart');
+  </script>
+</body>
+</html>
