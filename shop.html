@@ -1299,8 +1299,8 @@
       checkoutButton.textContent = 'Creating checkout...';
 
       try {
-        // Send cart to Square Checkout API
-        const response = await fetch('/.netlify/functions/create-square-checkout', {
+        // Send cart to Square Checkout API via Firebase Function
+        const response = await fetch('https://us-central1-caninekind-client-portal.cloudfunctions.net/createSquareCheckout', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
