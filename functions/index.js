@@ -1,7 +1,6 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const nodemailer = require('nodemailer');
-const { Client, Environment } = require('square');
 
 admin.initializeApp();
 
@@ -315,102 +314,4 @@ exports.cleanupExpiredInvitations = functions.pubsub.schedule('every 24 hours').
 
   console.log(`Updated ${expiredInvitations.size} expired invitations`);
   return null;
-});
-
-/**
- * Create Square Checkout Session
- * Called from shop.html when customer proceeds to checkout
- */
-exports.createSquareCheckout = functions.https.onRequest(async (req, res) => {
-  // Set CORS headers
-  res.set('Access-Control-Allow-Origin', '*');
-  res.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.set('Access-Control-Allow-Headers', 'Content-Type');
-
-  // Handle preflight request
-  if (req.method === 'OPTIONS') {
-    res.status(204).send('');
-    return;
-  }
-
-  // Only allow POST requests
-  if (req.method !== 'POST') {
-    res.status(405).json({ error: 'Method not allowed' });
-    return;
-  }
-
-  try {
-    const { items, customerInfo } = req.body;
-
-    // Validate items
-    if (!items || items.length === 0) {
-      res.status(400).json({ error: 'No items in cart' });
-      return;
-    }
-
-    // Get Square configuration from environment variables
-    const squareAccessToken = process.env.SQUARE_ACCESS_TOKEN;
-    const squareLocationId = process.env.SQUARE_LOCATION_ID;
-    const squareEnvironment = process.env.SQUARE_ENVIRONMENT || 'sandbox';
-    const siteUrl = process.env.SITE_URL || 'https://caninekind.io';
-
-    if (!squareAccessToken || !squareLocationId) {
-      console.error('Missing Square credentials');
-      res.status(500).json({ error: 'Square checkout not configured' });
-      return;
-    }
-
-    // Initialize Square client
-    const client = new Client({
-      environment: squareEnvironment === 'production'
-        ? Environment.Production
-        : Environment.Sandbox,
-      accessToken: squareAccessToken
-    });
-
-    // Calculate total amount
-    const totalAmount = Math.round(
-      items.reduce((total, item) => total + (item.price * item.quantity), 0) * 100
-    );
-
-    // Create payment link
-    const { result } = await client.checkoutApi.createPaymentLink({
-      idempotencyKey: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-      quickPay: {
-        name: 'CanineKind Shop Order',
-        priceMoney: {
-          amount: totalAmount,
-          currency: 'USD'
-        },
-        locationId: squareLocationId
-      },
-      checkoutOptions: {
-        redirectUrl: `${siteUrl}/order-confirmation`,
-        askForShippingAddress: true,
-        merchantSupportEmail: 'caninekindtraining@gmail.com',
-        acceptedPaymentMethods: {
-          applePay: true,
-          googlePay: true,
-          cashAppPay: true,
-          afterpayClearpay: false
-        }
-      },
-      prePopulatedData: customerInfo ? {
-        buyerEmail: customerInfo.email,
-        buyerPhoneNumber: customerInfo.phone
-      } : undefined
-    });
-
-    res.status(200).json({
-      checkoutUrl: result.paymentLink.url,
-      orderId: result.paymentLink.orderId
-    });
-
-  } catch (error) {
-    console.error('Square Checkout Error:', error);
-    res.status(500).json({
-      error: 'Failed to create checkout session',
-      details: error.message
-    });
-  }
 });

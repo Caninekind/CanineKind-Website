@@ -1,0 +1,22 @@
+{
+  "name": "caninekind-client-portal",
+  "version": "1.0.0",
+  "description": "CanineKind Dog Training Client Portal",
+  "main": "seed-firestore.js",
+  "scripts": {
+    "seed": "node seed-firestore.js",
+    "deploy:rules": "firebase deploy --only firestore:rules",
+    "deploy:all": "firebase deploy"
+  },
+  "keywords": [
+    "firebase",
+    "firestore",
+    "dog-training",
+    "client-portal"
+  ],
+  "author": "CanineKind",
+  "license": "MIT",
+  "devDependencies": {
+    "firebase-admin": "^12.7.0"
+  }
+}
