@@ -912,7 +912,7 @@
         <div class="progress-overview">
             <h2>Training Progress</h2>
             <div class="current-level-info">
-                <div class="level-name" id="currentLevelName">Level 0: Get Ready to Train!</div>
+                <div class="level-name" id="currentLevelName">Level 1: Basic Obedience</div>
                 <div class="level-progress-bar">
                     <div class="progress-bar-label">Level Completion</div>
                     <div class="progress-bar-outer">
@@ -986,39 +986,6 @@
 
         // Define all goals with their levels and tasks
         const GOALS_STRUCTURE = {
-            0: [
-                {
-                    id: 'training-gear',
-                    title: 'Training Gear Checklist',
-                    description: `Make sure you have the following training gear for your first in-person session:
-
-• Flat collar or martingale collar
-• 6-foot leash (non-retractable)
-• High-value treats (small, soft pieces)
-• Treat pouch or bag
-• Long line (15-30 feet)
-• Poop bags
-• Water bowl and water
-• Any medications your dog needs
-• Copy of vaccination records`,
-                    type: 'single',
-                    tasks: ['Yes I have all my things']
-                },
-                {
-                    id: 'legal-forms',
-                    title: 'Sign Legal/Training Forms',
-                    description: 'Complete all required legal and training documentation',
-                    type: 'single',
-                    tasks: ['Forms completed and signed']
-                },
-                {
-                    id: 'review-instructions',
-                    title: 'Review Email Instructions',
-                    description: 'Review email instructions and guidance prior to meeting with your trainer to ensure your dog is set-up for success!',
-                    type: 'single',
-                    tasks: ['Yes I have checked my email 24-48 hours before my first session and have reviewed my trainers instructions for success!']
-                }
-            ],
             1: [
                 {
                     id: 'crate-manners-1',
@@ -1522,7 +1489,6 @@
         };
 
         const LEVEL_DESCRIPTIONS = {
-            0: 'Get Ready to Train!',
             1: 'Basic Obedience',
             2: 'Intermediate Obedience',
             3: 'Advanced Obedience',
@@ -1651,7 +1617,7 @@
 
                     // Admins have full access to everything
                     if (isAdmin) {
-                        userAccess.accessibleLevels = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+                        userAccess.accessibleLevels = [1, 2, 3, 4, 5, 6, 7, 8];
                         document.getElementById('adminPortalLink').style.display = 'inline-block';
                         console.log('✅ Admin detected - granting full access');
                     }
@@ -1676,9 +1642,6 @@
                     };
                 });
                 console.log('✅ Loaded', Object.keys(selectedGoals).length, 'goals in progress');
-
-                // Auto-assign Level 0 goals if not already assigned
-                await autoAssignLevel0Goals();
 
                 updateLevelProgress();
             } catch (error) {
@@ -1706,64 +1669,7 @@
             }
         }
 
-        // Auto-assign Level 0 goals to all users (required onboarding goals)
-        async function autoAssignLevel0Goals() {
-            try {
-                const level0Goals = GOALS_STRUCTURE[0];
-                const batch = db.batch();
-                let goalsAdded = 0;
-
-                for (const goal of level0Goals) {
-                    // Check if this Level 0 goal is already assigned
-                    if (!selectedGoals[goal.id]) {
-                        console.log(`Auto-assigning Level 0 goal: ${goal.title}`);
-
-                        // Prepare goal data
-                        const goalData = {
-                            ...goal,
-                            level: 0,
-                            selectedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                            progress: 0,
-                            tasks: goal.tasks.map(task => ({
-                                text: task,
-                                completed: false
-                            }))
-                        };
-
-                        // Add to selectedGoals in memory
-                        selectedGoals[goal.id] = goalData;
-
-                        // Add to batch for Firestore goalsProgress collection
-                        const progressRef = db.collection('goalsProgress').doc();
-                        batch.set(progressRef, {
-                            userId: currentUser.uid,
-                            goalId: goal.id,
-                            ...goalData
-                        });
-
-                        // Store progress doc ID for future updates
-                        selectedGoals[goal.id].progressDocId = progressRef.id;
-                        goalsAdded++;
-                    }
-                }
-
-                // Commit batch if we added any goals
-                if (goalsAdded > 0) {
-                    await batch.commit();
-                    console.log(`✅ Auto-assigned ${goalsAdded} Level 0 goals to user`);
-
-                    // Re-render the levels to show the newly assigned goals
-                    renderLevels();
-                }
-            } catch (error) {
-                console.error('Error auto-assigning Level 0 goals:', error);
-            }
-        }
-
         function hasAccessToGoal(goalId, level) {
-            // Level 0 is always accessible
-            if (level === 0) return true;
-
             // Check if user has level access
             if (userAccess.accessibleLevels && userAccess.accessibleLevels.includes(level)) {
                 return true;
@@ -1777,7 +1683,7 @@
 
         function determineCurrentLevel() {
             // Find the first level with selected but incomplete goals
-            for (let level = 0; level <= 8; level++) {
+            for (let level = 1; level <= 8; level++) {
                 const levelGoals = GOALS_STRUCTURE[level];
                 if (!levelGoals || levelGoals.length === 0) continue;
 
@@ -1790,8 +1696,8 @@
                     }
                 }
             }
-            // Default to Level 0
-            return 0;
+            // Default to Level 1
+            return 1;
         }
 
         function updateLevelProgress() {
@@ -1837,7 +1743,7 @@
 
             // Save currently open levels before re-rendering
             const openLevels = new Set();
-            for (let level = 0; level <= 8; level++) {
+            for (let level = 1; level <= 8; level++) {
                 const levelContent = document.getElementById(`level-content-${level}`);
                 if (levelContent && !levelContent.classList.contains('collapsed')) {
                     openLevels.add(level);
@@ -1846,9 +1752,9 @@
             const customGoalsOpen = document.getElementById('level-content-custom-goals')?.classList.contains('collapsed') === false;
 
             // Render regular levels
-            for (let level = 0; level <= 8; level++) {
+            for (let level = 1; level <= 8; level++) {
                 const goals = GOALS_STRUCTURE[level];
-                const hasLevelAccess = level === 0 || userAccess.accessibleLevels?.includes(level);
+                const hasLevelAccess = userAccess.accessibleLevels?.includes(level);
                 const isLocked = !hasLevelAccess && !goals.some(g => hasAccessToGoal(g.id, level));
                 const isComingSoon = false; // No longer using coming soon
 
@@ -1978,16 +1884,10 @@
                         </div>
                     ` : ''}
                     ${hasAccess ? `
-                        ${level === 0 && isSelected ? `
-                            <div class="required-goal-badge">
-                                <span>✓ Required Onboarding</span>
-                            </div>
-                        ` : `
-                            <button class="goal-toggle-btn ${isSelected ? 'remove' : ''}"
-                                    onclick="toggleGoal('${goal.id}', ${level})">
-                                ${isSelected ? 'Remove Goal' : 'Add Goal'}
-                            </button>
-                        `}
+                        <button class="goal-toggle-btn ${isSelected ? 'remove' : ''}"
+                                onclick="toggleGoal('${goal.id}', ${level})">
+                            ${isSelected ? 'Remove Goal' : 'Add Goal'}
+                        </button>
                     ` : ''}
                 </div>
             `;
@@ -2036,11 +1936,6 @@
 
             if (selectedGoals.hasOwnProperty(goalId)) {
                 console.log('📤 Attempting to remove goal:', goalId, 'Level:', level);
-                // Check if this is a Level 0 (onboarding) goal - these cannot be removed
-                if (level === 0) {
-                    alert('This is a required onboarding goal and cannot be removed. Please complete all onboarding tasks before proceeding with other training goals.');
-                    return;
-                }
 
                 // Deselect goal
                 if (confirm('Are you sure you want to remove this goal? Your progress will be saved.')) {
