@@ -44,6 +44,54 @@
             margin-bottom: 15px;
         }
 
+        /* Navigation Styles */
+        nav {
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            list-style: none;
+            padding: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .nav-links li {
+            margin: 0;
+        }
+
+        .nav-links a {
+            display: block;
+            color: #333;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            background-color: #D1E5F4;
+            color: #799972;
+        }
+
+        .nav-links a.active {
+            background-color: #799972;
+            color: white;
+        }
+
         /* User Info Bar */
         .user-info-bar {
             background-color: white;
@@ -435,6 +483,16 @@
                 padding: 8px 20px;
                 font-size: 14px;
             }
+
+            .nav-links {
+                gap: 8px;
+                padding: 10px 0;
+            }
+
+            .nav-links a {
+                padding: 8px 12px;
+                font-size: 13px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -459,6 +517,20 @@
             <img src="https://i.imgur.com/OXiQWa3.jpeg" alt="CanineKind Logo" class="logo">
         </div>
     </header>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <ul class="nav-links">
+                <li><a href="portal-dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="portal-sessions.html">Training Sessions</a></li>
+                <li><a href="portal-forms.html">Forms & Documents</a></li>
+                <li><a href="portal-schedule.html">Weekly Schedule</a></li>
+                <li><a href="portal-goals.html">Training Goals</a></li>
+                <li><a href="portal-settings.html">Account Settings</a></li>
+            </ul>
+        </div>
+    </nav>
 
     <!-- User Info Bar -->
     <div class="user-info-bar">
@@ -511,24 +583,24 @@
             </div>
 
             <!-- Weekly Schedule Card -->
-            <div class="dashboard-card disabled">
+            <div class="dashboard-card">
                 <h2>Weekly Schedule</h2>
                 <p>Create and manage your dog's weekly activity schedule with drag-and-drop.</p>
-                <button class="card-btn disabled">Coming Soon</button>
+                <a href="portal-schedule.html" class="card-btn">View Schedule</a>
             </div>
 
             <!-- Training Goals Card -->
-            <div class="dashboard-card disabled">
+            <div class="dashboard-card">
                 <h2>Training Goals</h2>
                 <p>Set and track training goals for your dog with your trainer.</p>
-                <button class="card-btn disabled">Coming Soon</button>
+                <a href="portal-goals.html" class="card-btn">View Goals</a>
             </div>
 
             <!-- Account Settings Card -->
-            <div class="dashboard-card disabled">
+            <div class="dashboard-card">
                 <h2>Account Settings</h2>
                 <p>Manage your profile information and preferences.</p>
-                <button class="card-btn disabled">Coming Soon</button>
+                <a href="portal-settings.html" class="card-btn">Manage Settings</a>
             </div>
         </div>
     </div>
