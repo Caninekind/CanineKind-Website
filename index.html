@@ -356,95 +356,179 @@
             background: linear-gradient(135deg, #8aaa83 0%, #799972 100%);
         }
 
-        /* Client Portal Section */
-        .client-portal-wrapper {
-            position: relative;
+        /* Google Reviews Section */
+        .google-reviews-wrapper {
             width: 100%;
-            background-image: url('https://i.imgur.com/cug3epT.jpeg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            padding: 40px 20px;
+            padding: 60px 20px;
             margin: 20px 0;
+            background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
         }
 
-        .client-portal-section {
-            max-width: 900px;
+        .google-reviews-section {
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 40px;
-            background-image: url('https://i.imgur.com/cug3epT.jpeg');
-            background-size: cover;
-            background-position: center;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), 0 0 20px rgba(121, 153, 114, 0.2);
             text-align: center;
-            position: relative;
-            overflow: hidden;
         }
 
-        .client-portal-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(121, 153, 114, 0.9) 0%, rgba(90, 115, 84, 0.85) 50%, rgba(121, 153, 114, 0.9) 100%);
-            border-radius: 15px;
-            z-index: 0;
+        .google-reviews-header {
+            margin-bottom: 40px;
         }
 
-        .client-portal-section::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: galaxyMove 20s linear infinite;
-            z-index: 1;
+        .google-reviews-header .google-logo-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 8px;
         }
 
-        @keyframes galaxyMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
+        .google-reviews-header .google-logo-row svg {
+            flex-shrink: 0;
         }
 
-        .client-portal-content {
-            position: relative;
-            z-index: 2;
+        .google-reviews-header .google-rating-text {
+            font-size: 1.1em;
+            color: #5f6368;
+            font-weight: 500;
         }
 
-        .client-portal-section h2 {
-            color: white;
-            font-size: 1.5em;
-            margin-bottom: 25px;
-            font-weight: 600;
-            line-height: 1.5;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        .google-reviews-header .google-stars-summary {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 6px;
         }
 
-        .portal-button {
-            display: inline-block;
-            padding: 15px 50px;
-            background: white;
-            color: #799972;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 1.2em;
+        .google-reviews-header .rating-number {
+            font-size: 2.8em;
             font-weight: 700;
-            text-align: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            letter-spacing: 0.5px;
+            color: #202124;
+            line-height: 1;
         }
 
-        .portal-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-            background: #f5f5f5;
+        .google-reviews-header .stars {
+            display: flex;
+            gap: 2px;
+        }
+
+        .google-reviews-header .stars svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .google-reviews-header .review-count {
+            font-size: 1em;
+            color: #70757a;
+        }
+
+        .google-reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 36px;
+        }
+
+        .google-review-card {
+            background: #ffffff;
+            border: 1px solid #e8eaed;
+            border-radius: 12px;
+            padding: 28px 24px;
+            text-align: left;
+            transition: box-shadow 0.3s ease, transform 0.2s ease;
+            position: relative;
+        }
+
+        .google-review-card:hover {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .google-review-card .reviewer-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .google-review-card .reviewer-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #799972;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1em;
+            flex-shrink: 0;
+        }
+
+        .google-review-card .reviewer-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .google-review-card .reviewer-name {
+            font-weight: 600;
+            color: #202124;
+            font-size: 0.95em;
+            line-height: 1.3;
+        }
+
+        .google-review-card .review-date {
+            font-size: 0.8em;
+            color: #70757a;
+        }
+
+        .google-review-card .review-stars {
+            display: flex;
+            gap: 1px;
+            margin-bottom: 10px;
+        }
+
+        .google-review-card .review-stars svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .google-review-card .review-text {
+            color: #3c4043;
+            font-size: 0.92em;
+            line-height: 1.65;
+            margin: 0;
+        }
+
+        .google-reviews-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 36px;
+            background: #ffffff;
+            color: #1a73e8;
+            text-decoration: none;
+            border-radius: 24px;
+            font-size: 1em;
+            font-weight: 600;
+            border: 2px solid #1a73e8;
+            transition: all 0.3s ease;
+            letter-spacing: 0.2px;
+        }
+
+        .google-reviews-cta:hover {
+            background: #1a73e8;
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(26, 115, 232, 0.3);
+        }
+
+        .google-reviews-cta svg {
+            transition: transform 0.3s ease;
+        }
+
+        .google-reviews-cta:hover svg {
+            transform: translateX(3px);
         }
 
         /* Galaxy Navigation Section */
@@ -1290,26 +1374,28 @@
                 display: block;
             }
 
-            .client-portal-wrapper {
-                padding: 30px 15px;
+            .google-reviews-wrapper {
+                padding: 40px 15px;
                 margin: 15px 0;
             }
 
-            .client-portal-section {
-                margin: 0;
-                padding: 30px 20px;
+            .google-reviews-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
             }
 
-            .client-portal-section h2 {
-                font-size: 1.2em;
-                margin-bottom: 20px;
+            .google-reviews-header .rating-number {
+                font-size: 2.2em;
             }
 
-            .portal-button {
+            .google-review-card {
+                padding: 22px 18px;
+            }
+
+            .google-reviews-cta {
                 width: 100%;
                 max-width: 300px;
-                font-size: 1.1em;
-                padding: 14px 30px;
+                justify-content: center;
             }
 
             .services-section-bg {
@@ -1453,12 +1539,86 @@
             </div>
         </section>
 
-        <div class="client-portal-wrapper">
-            <div class="client-portal-section">
-                <div class="client-portal-content">
-                    <h2>Are you a returning client looking to access the CanineKind Client Portal? Click here!</h2>
-                    <a href="https://caninekind.io/portal-login" class="portal-button">Client Portal</a>
+        <div class="google-reviews-wrapper">
+            <div class="google-reviews-section">
+                <div class="google-reviews-header">
+                    <div class="google-logo-row">
+                        <svg width="74" height="24" viewBox="0 0 74 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.24 8.19v2.46h5.88c-.18 1.38-.64 2.39-1.34 3.1-.86.86-2.2 1.8-4.54 1.8-3.62 0-6.45-2.92-6.45-6.54s2.83-6.54 6.45-6.54c1.95 0 3.38.77 4.43 1.76L15.4 2.5C13.94 1.08 11.98 0 9.24 0 4.28 0 .11 4.04.11 9s4.17 9 9.13 9c2.68 0 4.7-.88 6.28-2.52 1.62-1.62 2.13-3.91 2.13-5.75 0-.57-.04-1.1-.13-1.54H9.24z" fill="#4285F4"/><path d="M25 6.19c-3.21 0-5.83 2.44-5.83 5.81 0 3.34 2.62 5.81 5.83 5.81s5.83-2.46 5.83-5.81c0-3.37-2.62-5.81-5.83-5.81zm0 9.33c-1.76 0-3.28-1.45-3.28-3.52 0-2.09 1.52-3.52 3.28-3.52s3.28 1.43 3.28 3.52c0 2.07-1.52 3.52-3.28 3.52z" fill="#EA4335"/><path d="M53.58 7.49h-.09c-.57-.68-1.67-1.3-3.06-1.3C47.53 6.19 45 8.72 45 12c0 3.26 2.53 5.81 5.43 5.81 1.39 0 2.49-.62 3.06-1.32h.09v.81c0 2.22-1.19 3.41-3.1 3.41-1.56 0-2.53-1.12-2.93-2.07l-2.22.92c.64 1.54 2.33 3.43 5.15 3.43 2.99 0 5.52-1.76 5.52-6.05V6.49h-2.42v1zm-2.93 8.03c-1.76 0-3.1-1.5-3.1-3.52 0-2.05 1.34-3.52 3.1-3.52 1.74 0 3.1 1.49 3.1 3.54 0 2.03-1.36 3.5-3.1 3.5z" fill="#4285F4"/><path d="M38 6.19c-3.21 0-5.83 2.44-5.83 5.81 0 3.34 2.62 5.81 5.83 5.81s5.83-2.46 5.83-5.81c0-3.37-2.62-5.81-5.83-5.81zm0 9.33c-1.76 0-3.28-1.45-3.28-3.52 0-2.09 1.52-3.52 3.28-3.52s3.28 1.43 3.28 3.52c0 2.07-1.52 3.52-3.28 3.52z" fill="#FBBC05"/><path d="M58 .24h2.51v17.57H58z" fill="#34A853"/><path d="M68.26 15.52c-1.3 0-2.22-.59-2.82-1.76l7.77-3.21-.26-.66c-.48-1.3-1.96-3.7-4.97-3.7-2.99 0-5.48 2.35-5.48 5.81 0 3.26 2.46 5.81 5.76 5.81 2.66 0 4.2-1.63 4.84-2.57l-1.98-1.32c-.66.96-1.56 1.6-2.86 1.6zm-.18-7.15c1.03 0 1.91.53 2.2 1.28l-5.25 2.17c0-2.44 1.73-3.45 3.05-3.45z" fill="#EA4335"/></svg>
+                        <span class="google-rating-text">Reviews</span>
+                    </div>
+                    <div class="google-stars-summary">
+                        <span class="rating-number">5.0</span>
+                        <div class="stars">
+                            <svg viewBox="0 0 24 24" fill="#FBBC04"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#FBBC04"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#FBBC04"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#FBBC04"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#FBBC04"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        </div>
+                    </div>
+                    <span class="review-count">Based on Google Reviews</span>
                 </div>
+
+                <div class="google-reviews-grid">
+                    <div class="google-review-card scroll-animate">
+                        <div class="reviewer-row">
+                            <div class="reviewer-avatar">M</div>
+                            <div class="reviewer-info">
+                                <span class="reviewer-name">Meagan Harkins</span>
+                                <span class="review-date">Google Review</span>
+                            </div>
+                        </div>
+                        <div class="review-stars">
+                            <svg viewBox="0 0 24 24" fill="#FBBC04"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#FBBC04"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#FBBC04"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#FBBC04"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#FBBC04"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        </div>
+                        <p class="review-text">CanineKind has been absolutely incredible for our family. The training approach is patient, effective, and truly tailored to our dog's needs. We saw results after just the first session!</p>
+                    </div>
+
+                    <div class="google-review-card scroll-animate">
+                        <div class="reviewer-row">
+                            <div class="reviewer-avatar">J</div>
+                            <div class="reviewer-info">
+                                <span class="reviewer-name">Jason T.</span>
+                                <span class="review-date">Google Review</span>
+                            </div>
+                        </div>
+                        <div class="review-stars">
+                            <svg viewBox="0 0 24 24" fill="#FBBC04"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#FBBC04"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#FBBC04"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#FBBC04"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#FBBC04"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        </div>
+                        <p class="review-text">Hands down the best dog trainer we've ever worked with. They genuinely care about building a strong bond between you and your dog. Highly recommend CanineKind to anyone looking for real, lasting results.</p>
+                    </div>
+
+                    <div class="google-review-card scroll-animate">
+                        <div class="reviewer-row">
+                            <div class="reviewer-avatar">S</div>
+                            <div class="reviewer-info">
+                                <span class="reviewer-name">Sarah L.</span>
+                                <span class="review-date">Google Review</span>
+                            </div>
+                        </div>
+                        <div class="review-stars">
+                            <svg viewBox="0 0 24 24" fill="#FBBC04"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#FBBC04"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#FBBC04"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#FBBC04"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="#FBBC04"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        </div>
+                        <p class="review-text">We were struggling with our reactive dog and CanineKind completely changed our walks and daily life. The trainer's knowledge of canine behavior is outstanding. Worth every penny!</p>
+                    </div>
+                </div>
+
+                <a href="https://share.google/uxCsk8q2rCuZOC74M" target="_blank" rel="noopener noreferrer" class="google-reviews-cta">
+                    See All Reviews on Google
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
             </div>
         </div>
 
